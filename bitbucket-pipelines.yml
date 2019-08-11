@@ -1,0 +1,40 @@
+pipelines:
+  branches:
+      qa:
+        - step:
+            name: Deploy with AWS EB 
+            script:
+              - sh ./eb-init/qa.sh
+              # Installing pip and AWS EBCLi
+              - apt-get update && apt-get install -y python-dev
+              - curl -O https://bootstrap.pypa.io/get-pip.py
+              - python get-pip.py
+              - pip install awsebcli --upgrade
+              - eb --version
+              - eb deploy $QA_APPLICATION_ENV
+
+      stage:
+        - step:
+            name: Deploy with AWS EB 
+            script:
+              - sh ./eb-init/stage.sh
+              # Installing pip and AWS EBCLi
+              - apt-get update && apt-get install -y python-dev
+              - curl -O https://bootstrap.pypa.io/get-pip.py
+              - python get-pip.py
+              - pip install awsebcli --upgrade
+              - eb --version
+              - eb deploy $STAGE_APPLICATION_ENV
+
+      prod:
+        - step:
+            name: Deploy with AWS EB 
+            script:
+              - sh ./eb-init/prod.sh
+              # Installing pip and AWS EBCLi
+              - apt-get update && apt-get install -y python-dev
+              - curl -O https://bootstrap.pypa.io/get-pip.py
+              - python get-pip.py
+              - pip install awsebcli --upgrade
+              - eb --version
+              - eb deploy $PROD_APPLICATION_ENV
