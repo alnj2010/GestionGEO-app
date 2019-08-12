@@ -76,6 +76,16 @@ let LoginForm = props => {
     submitting,
     valid,
   } = props;
+  let rol=[{
+    key:"ESTUDIANTE",
+    value:"S"
+  },{
+    key:"ADMINISTRADOR",
+    value:"A"
+  },{
+    key:"PROFESOR",
+    value:"T"
+  }]
   return (
     <Form onSubmit={handleSubmit(handleLogin)}>
       <Grid container className={classes.container}>
@@ -90,27 +100,32 @@ let LoginForm = props => {
               <p className={classes.welcomeText}>Inicio de Sesion</p>
               <p className={classes.subtitleText}>GestionGEO</p>
             </Grid>
-            <RenderFields >{[
-              { field: 'identification', id: 'identification', type: 'text' },  
-            ]}</RenderFields>
+
+            <Grid item xs={12}>
+              <Field
+                name="identification"
+                component={TextInput}
+                id="identification"
+                label="Cedula"
+                placeholder="Ingresa tu cedula"
+                margin="normal"
+                type="text"
+                className={classes.input}
+              />
+            </Grid>
             <Grid item xs={12}>
               <Field
                 name="password"
                 component={PasswordInput}
                 className={classes.input}
                 id="password"
-                ariaLabel="See password"
-                inputLabel="Password"
+                ariaLabel="Ver clave"
+                inputLabel="Clave"
               />
             </Grid>
-            <RenderFields >{[
-              { field: 'user_type', id: 'user_type', type: 'text' },  
-            ]}</RenderFields>
-            <Grid item xs={12} className={classes.forgotPassword}>
-              <p className={classes.forgotPasswordText}>
-                ¿Forgot your password?
-              </p>
-            </Grid>
+              <RenderFields >{[
+                {field: 'user_type', id: 'user_type', type: 'select', placeholder:'¿Como desea ingresar?', options: rol.map(type => { return { key: type.key, value: type.value } }) },
+              ]}</RenderFields>
 
             <Grid item xs={12}>
               <Button
@@ -120,14 +135,10 @@ let LoginForm = props => {
                 disabled={!valid || pristine || submitting}
                 type="submit"
               >
-                Login
+                Ingresar
               </Button>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid container justify="space-between" className={classes.footer}>
-          <p className={classes.footerText}>Privacy</p>
-          <p className={classes.footerText}>Admin Panel Version 3.7</p>
         </Grid>
       </Grid>
       <CustomizedSnackbar />
@@ -144,13 +155,14 @@ LoginForm.propTypes = {
 
 const loginValidator = values => {
   const errors = {};
-  if (!values.email) {
-    errors.email = 'Email is required';
-  } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
-    errors.email = 'Introduce a valid email';
+  if (!values.identification) {
+    errors.identification = 'Cedula es requerida';
+  }
+  if (!values.user_type) {
+    errors.user_type = 'Rol es requerido';
   }
   if (!values.password) {
-    errors.password = 'Password is required';
+    errors.password = 'Clave es requerida';
   }
   return errors;
 };

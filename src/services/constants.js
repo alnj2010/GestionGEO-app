@@ -30,7 +30,7 @@ export const GOOGLE_API_MAP="https://maps.googleapis.com/maps/api/js?key="+GOOGL
 
 export const protocol =
   window.location.host === 'localhost:3000' ? 'http' : 'https';
-export const apiUrl ="http://192.168.1.9:8000/api"
+export const apiUrl ="http://127.0.0.1:8000/api"
 export const EMAIL_REGEX = /[^@]+@[^@]+\.[a-zA-Z]{2,6}/;
 
 export function headers(type) {
