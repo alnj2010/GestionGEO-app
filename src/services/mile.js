@@ -11,7 +11,7 @@ export const Mile = {
       })
       .catch(({ error: { response: { data } } }) => {
         if (data) return Promise.reject(data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   }
 }

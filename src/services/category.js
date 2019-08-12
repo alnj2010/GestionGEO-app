@@ -10,7 +10,7 @@ export const Category = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   findById(id) {
@@ -35,7 +35,7 @@ export const Category = {
             });
           return Promise.reject(error.response.data.message);
         }
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   save(category) {
@@ -48,7 +48,7 @@ export const Category = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   delete(id) {
@@ -59,7 +59,7 @@ export const Category = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   update(category) {
@@ -72,7 +72,7 @@ export const Category = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   uploadPhoto(photo, id) {
@@ -87,7 +87,7 @@ export const Category = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
 };

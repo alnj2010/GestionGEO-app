@@ -10,7 +10,7 @@ export const Question = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   getListByName(name) {
@@ -23,7 +23,7 @@ export const Question = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   findById(id) {
@@ -34,7 +34,7 @@ export const Question = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   save(question) {
@@ -47,7 +47,7 @@ export const Question = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   delete(id) {
@@ -58,7 +58,7 @@ export const Question = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   update(question) {
@@ -71,7 +71,7 @@ export const Question = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
 };

@@ -11,7 +11,7 @@ export const Location = {
       })
       .catch(({ error: { response: { data } } }) => {
         if (data) return Promise.reject(data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   findById(id) {
@@ -24,7 +24,7 @@ export const Location = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   save(location) {
@@ -37,7 +37,7 @@ export const Location = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   update(location) {
@@ -50,7 +50,7 @@ export const Location = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   delete(id) {
@@ -61,7 +61,7 @@ export const Location = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
 

@@ -19,7 +19,7 @@ export const InviteCode = {
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   getSetup() {
@@ -30,7 +30,7 @@ export const InviteCode = {
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   getList() {
@@ -41,7 +41,7 @@ export const InviteCode = {
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   getUserInvitations(id) {
@@ -54,7 +54,7 @@ export const InviteCode = {
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
 };

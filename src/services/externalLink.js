@@ -10,7 +10,7 @@ export const Link = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   findById(id) {
@@ -21,7 +21,7 @@ export const Link = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   save(link) {
@@ -34,7 +34,7 @@ export const Link = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   delete(title) {
@@ -45,7 +45,7 @@ export const Link = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   update(link) {
@@ -58,7 +58,7 @@ export const Link = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
 };

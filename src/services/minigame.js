@@ -12,7 +12,7 @@ export const Minigame = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   getCategoryList() {
@@ -23,7 +23,7 @@ export const Minigame = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   findTriviaById(id) {
@@ -39,7 +39,7 @@ export const Minigame = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   saveTrivia(trivia) {
@@ -52,7 +52,7 @@ export const Minigame = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   deleteTrivia(id) {
@@ -63,7 +63,7 @@ export const Minigame = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   updateTrivia(trivia) {
@@ -76,7 +76,7 @@ export const Minigame = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
 };

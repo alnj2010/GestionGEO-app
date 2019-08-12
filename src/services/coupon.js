@@ -12,7 +12,7 @@ export const Coupon = {
       })
       .catch(({ error: { response: { data } } }) => {
         if (data) return Promise.reject(data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   findById(id) {
@@ -25,7 +25,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   save(coupon) {
@@ -38,7 +38,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   delete(id) {
@@ -49,7 +49,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   update(coupon) {
@@ -62,7 +62,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   uploadPhoto(photo, id) {
@@ -77,7 +77,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   updateSettingsRC(settings) {
@@ -95,7 +95,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   getSettingsRC() {
@@ -115,7 +115,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   getListRC() {
@@ -127,7 +127,7 @@ export const Coupon = {
       })
       .catch(({ error: { response: { data } } }) => {
         if (data) return Promise.reject(data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
   findRCById(id) {
@@ -140,7 +140,7 @@ export const Coupon = {
       .catch(error => {
         if (error && error.response && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Unknow error');
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
 };
