@@ -161,6 +161,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'brands',
         name: 'brands',
         component: Brands,
@@ -183,6 +184,7 @@ class MenuApp extends React.Component {
         ],
       },
       {
+        role:'A',
         link: 'invitecode',
         name: 'invite code',
         component: Receipt,
@@ -199,8 +201,8 @@ class MenuApp extends React.Component {
           },
         ],
       },
-
       {
+        role:'A',
         link: 'coupons',
         name: 'coupons',
         component: Ticket,
@@ -208,6 +210,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'redeemcoupon',
         name: 'Redeem Coupon',
         component: RedeemCoupon,
@@ -230,6 +233,7 @@ class MenuApp extends React.Component {
         ],
       },
       {
+        role:'A',
         link: 'locations',
         name: 'Locations',
         component: Location,
@@ -237,6 +241,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'zipcodes',
         name: 'Zip codes',
         component: Zipcode,
@@ -244,6 +249,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'prizes',
         name: 'Prizes',
         component: Prizes,
@@ -251,6 +257,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'challenges',
         name: 'Challenges',
         component: DirectionsRun,
@@ -272,6 +279,7 @@ class MenuApp extends React.Component {
         ],
       },
       {
+        role:'A',
         link: 'questions',
         name: 'questions',
         component: Question,
@@ -279,6 +287,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'minigame',
         name: 'mini games',
         component: Games,
@@ -300,6 +309,7 @@ class MenuApp extends React.Component {
         ],
       },
       {
+        role:'A',
         link: 'wallet',
         name: 'wallet',
         component: Money,
@@ -307,6 +317,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'initial-phase',
         name: 'Initial Phase',
         component: View,
@@ -314,6 +325,7 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
+        role:'A',
         link: 'external-links',
         name: 'external links',
         component: Globe,
@@ -425,7 +437,7 @@ class MenuApp extends React.Component {
                 open={open}
                 onClose={this.handleClose}
               >
-                <MenuItem onClick={this.handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={this.handleLogout}>Salir</MenuItem>
               </Menu>
             </div>
           </Toolbar>
