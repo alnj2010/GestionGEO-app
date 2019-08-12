@@ -62,29 +62,7 @@ const styles = theme => ({
   error: {
     color: 'red',
   },
-  iphoneFrameContainer: {
-    width: 434,
-    height: '70vh',
-    float: 'left',
-    background:
-      'url("https://s3.us-east-2.amazonaws.com/winquest-api/initialPhase/iosFrame.png") center center no-repeat',
-    backgroundSize: 'contain',
-    display: 'flex',
-    justifyContent: 'center',
-    cursor: 'pointer',
-  },
 
-  androidFrameContainer: {
-    width: 434,
-    height: '70vh',
-    float: 'left',
-    background:
-      'url("https://s3.us-east-2.amazonaws.com/winquest-api/initialPhase/androidFrame.png") center center no-repeat',
-    backgroundSize: 'contain',
-    display: 'flex',
-    justifyContent: 'center',
-    cursor: 'pointer',
-  },
   iphoneFrameContent: {
     paddingTop: '2vh',
     textAlign: 'center',

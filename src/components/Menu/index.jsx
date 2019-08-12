@@ -339,12 +339,12 @@ class MenuApp extends React.Component {
   };
 
   handleLogout = () => {
-    sessionStorage.removeItem('WinToken');
+    sessionStorage.removeItem('GeoToken');
     this.handleClose();
   };
 
   validateToken = () => {
-    if (!sessionStorage.getItem('WinToken')) {
+    if (!sessionStorage.getItem('GeoToken')) {
       window.location.href = '/';
       return false;
     }

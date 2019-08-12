@@ -8,23 +8,28 @@ import CustomizedSnackbar from '../Snackbar';
 import TextInput from '../TextInput';
 import { bool, object, string, func } from 'prop-types';
 import RenderFields from '../RenderFields'
+import logo from '../../images/icon-gestionGeo.svg'
+import backImage from '../../images/pif.jpg'
 
 const styles = theme => ({
   container: {
     paddingLeft: '30%',
     paddingTop: '10%',
     paddingRight: '30%',
+    backgroundImage: `url(${backImage})`,
+    height:"100vh"
   },
   input: {
     width: '100%',
   },
   form: {
-    boxShadow: '-0.6px 1.2px 4px 0.5px rgba(66,71,78,0.3)',
+    borderRadius:"10px"
   },
   formContainer: {
     paddingLeft: '10%',
     paddingRight: '10%',
     paddingTop: '5%',
+    backgroundColor:'white'    
   },
   forgotPassword: {
     textAlign: 'right',
@@ -45,26 +50,10 @@ const styles = theme => ({
     backgroundColor: '#2196f3',
     fontWeight: 550,
   },
-  welcomeText: {
-    color: '#4A4A4A',
-    fontSize: 14,
-    marginBottom: 0,
-  },
-  subtitleText: {
-    color: '#4A4A4A',
-    fontSize: 26,
-    marginTop: 0,
-    marginBottom: 0,
-  },
-  loginBackground: {
-    height: '100%',
-    width: '100%',
-  },
   logo: {
-    height: '100%',
+    width:"60%",
+    height: "auto",
   },
-  footer: { color: '#4A4A4A', fontSize: 12, paddingTop: '1%' },
-  footerText: { cursor: 'pointer' },
 });
 
 let LoginForm = props => {
@@ -96,9 +85,9 @@ let LoginForm = props => {
             className={classes.formContainer}
             id="loginForm"
           >
-            <Grid item xs={12}>
-              <p className={classes.welcomeText}>Inicio de Sesion</p>
-              <p className={classes.subtitleText}>GestionGEO</p>
+            <Grid container item xs={12} justify="center" direction="column" alignItems="center">            
+      
+              <img src={logo} alt="GestionGEO" className={classes.logo}/>
             </Grid>
 
             <Grid item xs={12}>

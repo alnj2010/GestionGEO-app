@@ -1,9 +1,0 @@
-version: '3'
-services:
-  web-panel:
-    container_name: winquest-panel
-    build: .
-    volumes: 
-      - ./:/usr/src/app
-    ports:
-     - "3000:3000"

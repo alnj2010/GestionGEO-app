@@ -37,7 +37,7 @@ export function headers(type) {
   let items;
   if (type === 'form') items = { 'Content-Type': 'multipart/form-data' };
   else items = { 'Content-Type': 'application/json' };
-  const token = sessionStorage.getItem('WinToken');
+  const token = sessionStorage.getItem('GeoToken');
   if (token) {
     items.Authorization = `Bearer ${token}`;
   }

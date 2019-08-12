@@ -24,9 +24,9 @@ AXIOS.interceptors.response.use(
     if (status === 401) {
       return AXIOS.get('/auth/refresh-token', { headers: headers() })
         .then(res => {
-          sessionStorage.setItem('WinToken', res.data.winquestToken);
+          sessionStorage.setItem('GeoToken', res.data.geoToken);
           originalRequest.headers['Authorization'] =
-            'Bearer ' + res.data.winquestToken;
+            'Bearer ' + res.data.geoToken;
           return axios(originalRequest);
         })
         .catch(error => {

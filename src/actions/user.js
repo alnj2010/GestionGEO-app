@@ -8,7 +8,7 @@ export const ACTIONS = {
 export const login = ({ identification, password, user_type }) => async dispatch => {
   return User.login({ identification, password, user_type })
     .then(response => {
-      sessionStorage.setItem('WinToken', response.winquestToken);
+      sessionStorage.setItem('GeoToken', response.geoToken);
       dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
       return true;
     })
