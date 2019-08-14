@@ -15,7 +15,7 @@ export class LoginContainer extends Component {
     console.log({ identification, password, user_type })
     const { login, history } = this.props;
     login({ identification, password, user_type }).then(isLogged => {
-      if (isLogged) history.push('/dashboard');
+      if (isLogged) history.push('/home');
     });
   };
 

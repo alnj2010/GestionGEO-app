@@ -50,6 +50,7 @@ import { show, hide } from '../../actions/snackbar';
 import CustomizedSnackbar from '../Snackbar';
 import { Collapse } from '@material-ui/core';
 import { object } from 'prop-types';
+import { resolveSoa } from 'dns';
 
 const drawerWidth = 240;
 
@@ -137,6 +138,7 @@ class MenuApp extends React.Component {
         name: 'users',
         component: People,
         clicked: false,
+        roles:['A'],
         options: [
           {
             link: 'list',
@@ -149,6 +151,7 @@ class MenuApp extends React.Component {
             name: 'winners',
             component: Star,
             clicked: false,
+
           },
         ],
       },
@@ -157,18 +160,21 @@ class MenuApp extends React.Component {
         name: 'admins',
         component: PeopleOutline,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'categories',
         name: 'Brand categories',
         component: Category,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'trivia-categories',
         name: 'Trivia categories',
         component: Category,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'brands',
@@ -176,6 +182,7 @@ class MenuApp extends React.Component {
         component: Brands,
         clicked: false,
         open: false,
+        roles:['A'],
         options: [
           {
             link: 'list',
@@ -197,6 +204,7 @@ class MenuApp extends React.Component {
         component: Receipt,
         clicked: false,
         open: false,
+        roles:['A'],
         options: [
           { link: 'setup', name: 'setup', component: Settings, clicked: false },
           {
@@ -213,6 +221,7 @@ class MenuApp extends React.Component {
         name: 'coupons',
         component: Ticket,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'redeemcoupon',
@@ -220,6 +229,7 @@ class MenuApp extends React.Component {
         component: RedeemCoupon,
         clicked: false,
         open: false,
+        roles:['A'],
         options: [
           { 
             link: 'settings', 
@@ -240,24 +250,28 @@ class MenuApp extends React.Component {
         name: 'Locations',
         component: Location,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'zipcodes',
         name: 'Zip codes',
         component: Zipcode,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'prizes',
         name: 'Prizes',
         component: Prizes,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'challenges',
         name: 'Challenges',
         component: DirectionsRun,
         clicked: false,
+        roles:['A'],
         options: [
           {
             link: 'list',
@@ -278,12 +292,14 @@ class MenuApp extends React.Component {
         name: 'questions',
         component: Question,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'minigame',
         name: 'mini games',
         component: Games,
         clicked: false,
+        roles:['A'],
         options: [
           {
             link: 'trivia',
@@ -304,18 +320,21 @@ class MenuApp extends React.Component {
         name: 'wallet',
         component: Money,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'initial-phase',
         name: 'Initial Phase',
         component: View,
         clicked: false,
+        roles:['A'],
       },
       {
         link: 'external-links',
         name: 'external links',
         component: Globe,
         clicked: false,
+        roles:['A'],
       },
     ],
   };
@@ -371,7 +390,7 @@ class MenuApp extends React.Component {
     const { classes, theme, children } = this.props;
     const { anchorEl, options } = this.state;
     const open = Boolean(anchorEl);
-
+    const rol=sessionStorage.getItem('rol');
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -452,7 +471,8 @@ class MenuApp extends React.Component {
           </div>
           <Divider />
           <List>
-            {options.map((option, index) => (
+            {options.filter(option=>option.roles.some(item=>item===rol))
+              .map((option, index) => (
               <Fragment key={option.name}>
                 {option.options ? (
                   <ListItem

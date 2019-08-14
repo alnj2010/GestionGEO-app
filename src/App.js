@@ -4,7 +4,7 @@ import './App.css';
 import NotFound from './components/NotFound';
 import Login from './containers/Login';
 import Menu from './components/Menu';
-import Dashboard from './components/Dashboard';
+import Home from './components/Home';
 import PLayersList from './containers/Players';
 import PlayerDetail from './containers/Players/detail';
 import CategoriesContainer from './containers/Categories';
@@ -52,7 +52,7 @@ class App extends Component {
           <Route exact path="/" component={Login} />
           <Menu>
             <Switch>
-              <Route exact path="/dashboard" component={Dashboard} />
+              <Route exact path="/home" component={Home} />
               <Route exact path="/users/list" component={PLayersList} />
               <Route exact path="/users/edit/:id" component={PlayerDetail} />
               <Route exact path="/users/create" component={PlayerDetail} />
