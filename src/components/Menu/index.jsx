@@ -18,7 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Brands from '@material-ui/icons/Style';
-import People from '@material-ui/icons/People';
+import School from '@material-ui/icons/School';
 import RedeemCoupon from '@material-ui/icons/Redeem';
 import Location from '@material-ui/icons/LocationOn';
 import Zipcode from '@material-ui/icons/LocalPostOffice';
@@ -26,8 +26,8 @@ import Prizes from '@material-ui/icons/Star';
 import Receipt from '@material-ui/icons/Receipt';
 import Settings from '@material-ui/icons/Settings';
 import Contacts from '@material-ui/icons/Contacts';
-import PeopleOutline from '@material-ui/icons/PeopleOutline';
-import Category from '@material-ui/icons/Category';
+import Face from '@material-ui/icons/Face';
+import InsertInvitation from '@material-ui/icons/InsertInvitation';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -50,7 +50,6 @@ import { show, hide } from '../../actions/snackbar';
 import CustomizedSnackbar from '../Snackbar';
 import { Collapse } from '@material-ui/core';
 import { object } from 'prop-types';
-import { resolveSoa } from 'dns';
 
 const drawerWidth = 240;
 
@@ -134,45 +133,30 @@ class MenuApp extends React.Component {
     anchorEl: null,
     options: [
       {
-        link: 'users',
-        name: 'users',
-        component: People,
-        clicked: false,
-        roles:['A'],
-        options: [
-          {
-            link: 'list',
-            name: 'users list',
-            component: ListIcon,
-            clicked: false,
-          },
-          {
-            link: 'winners',
-            name: 'winners',
-            component: Star,
-            clicked: false,
-
-          },
-        ],
-      },
-      {
-        link: 'admins',
-        name: 'admins',
-        component: PeopleOutline,
+        link: 'postgrados',
+        name: 'Postgrados',
+        component: School,
         clicked: false,
         roles:['A'],
       },
       {
-        link: 'categories',
-        name: 'Brand categories',
-        component: Category,
+        link: 'estudiantes',
+        name: 'Estudiantes',
+        component: Face,
         clicked: false,
         roles:['A'],
       },
       {
+        link: 'periodo-semestral',
+        name: 'Periodo Semestral',
+        component: InsertInvitation,
+        clicked: false,
+        roles:['A'],
+      },
+      /*{
         link: 'trivia-categories',
         name: 'Trivia categories',
-        component: Category,
+        component: InsertInvitation,
         clicked: false,
         roles:['A'],
       },
@@ -335,7 +319,7 @@ class MenuApp extends React.Component {
         component: Globe,
         clicked: false,
         roles:['A'],
-      },
+      },*/
     ],
   };
 
@@ -415,7 +399,7 @@ class MenuApp extends React.Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
-              Winquest Admin Panel
+              GestionGEO
             </Typography>
 
             <div>
