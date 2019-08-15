@@ -20,17 +20,16 @@ export const getList = () => async dispatch => {
     });
 };
 
-export const selectAdmin = data => async dispatch => {
+/* export const selectAdmin = data => async dispatch => {
   dispatch({ type: ACTIONS.SELECT, payload: { selectedAdmin: data } });
-};
+}; */
 
 export const findAdminById = id => async dispatch => {
   return User.findAdminById(id)
     .then(response => {
-      response[0].password = '******';
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedAdmin: response[0] },
+        payload: { selectedAdmin: response },
       });
       return true;
     })
@@ -50,19 +49,23 @@ export const cleanSelectedAdmin = id => async dispatch => {
 export const updateAdmin = admin => async dispatch => {
   const payload = {
     id: admin.id,
-    email: admin.email,
-    password: admin.password,
-    name: admin.name,
-    last: admin.lastName,
+    first_name: admin.firstName, 
+    second_name: admin.secondName, 
+    first_surname: admin.firstSurname, 
+    second_surname: admin.secondSurname, 
+    identification: admin.identification, 
+    email: admin.email, 
+    mobile: admin.mobile, 
+    phone: admin.phone, 
+    work_phone: admin.workPhone, 
   };
   return User.update(payload)
     .then(response => {
-      response.password = '******';
       dispatch({
         type: ACTIONS.SELECT,
         payload: { selectedAdmin: response },
       });
-      show('Admin Updated', 'success')(dispatch);
+      show('Administrador actualizado', 'success')(dispatch);
       return true;
     })
     .catch(error => {
@@ -74,15 +77,19 @@ export const updateAdmin = admin => async dispatch => {
 export const saveAdmin = admin => async dispatch => {
   const payload = {
     email: admin.email,
-    password: admin.password,
-    name: admin.name,
-    last: admin.lastName,
-    role: 'admin',
-    adminCreated: true,
+    first_name: admin.firstName, 
+    second_name: admin.secondName, 
+    first_surname: admin.firstSurname, 
+    second_surname: admin.secondSurname, 
+    identification: admin.identification, 
+    email: admin.email, 
+    mobile: admin.mobile, 
+    telephone: admin.telephone, 
+    work_phone: admin.workPhone, 
   };
   return User.saveAdmin(payload)
     .then(res => {
-      show('Admin Saved', 'success')(dispatch);
+      show('Administrador guardado', 'success')(dispatch);
       return res.id;
     })
     .catch(error => {
@@ -94,7 +101,7 @@ export const saveAdmin = admin => async dispatch => {
 export const deleteAdmin = adminId => async dispatch => {
   return User.delete(adminId)
     .then(response => {
-      show('Admin deleted', 'success')(dispatch);
+      show('Administrador eliminado', 'success')(dispatch);
       return true;
     })
     .catch(error => {

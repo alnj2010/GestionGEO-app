@@ -15,7 +15,7 @@ export class AdminsListContainer extends Component {
   componentDidMount = () => {
     const { getList, define } = this.props;
     getList().then(() => this.setState({ isLoading: false }));
-    define('admin');
+    define('administrador');
   };
   componentWillUnmount = () => {
     this.props.cleanDialog();
@@ -61,9 +61,9 @@ const mD = {
   show,
 };
 
-const AdminsListPage = connect(
+AdminsListContainer = connect(
   mS,
   mD,
 )(AdminsListContainer);
 
-export default AdminsListPage;
+export default AdminsListContainer;

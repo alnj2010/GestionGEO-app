@@ -9,7 +9,7 @@ export const User = {
       user_type:user_type
     };
 
-    return AXIOS.post(`${URL.AUTH}/login`, formData, { headers: headers() })
+    return AXIOS.post(`${URL.AUTH}`, formData, { headers: headers() })
       .then(response => {
         console.log(response);
         return response.data;
@@ -22,7 +22,7 @@ export const User = {
   },
 
   getList() {
-    return AXIOS.get(`${URL.USER}?join=profile`, { headers: headers() })
+    return AXIOS.get(`${URL.ADMIN}?join=profile`, { headers: headers() })
       .then(response => {
         return response.data;
       })
@@ -46,10 +46,11 @@ export const User = {
       });
   },
   getAdminList() {
-    return AXIOS.get(`${URL.USER}?filter=profile||isnull`, {
+    return AXIOS.get(`${URL.ADMIN}`, {
       headers: headers(),
     })
       .then(response => {
+        console.log(response);
         return response.data;
       })
       .catch(error => {
@@ -59,7 +60,7 @@ export const User = {
       });
   },
   findById(id) {
-    return AXIOS.get(`${URL.USER}?filter=id||eq||${id}&join=profile`, {
+    return AXIOS.get(`${URL.ADMIN}?filter=id||eq||${id}&join=profile`, {
       headers: headers(),
     })
       .then(response => {
@@ -73,7 +74,7 @@ export const User = {
   },
 
   findAdminById(id) {
-    return AXIOS.get(`${URL.USER}?filter=id||eq||${id}`, {
+    return AXIOS.get(`${URL.ADMIN}/${id}`, {
       headers: headers(),
     })
       .then(response => {
@@ -86,7 +87,7 @@ export const User = {
       });
   },
   update(player) {
-    return AXIOS.patch(`${URL.USER}/${player.id}`, player, {
+    return AXIOS.patch(`${URL.ADMIN}/${player.id}`, player, {
       headers: headers(),
     })
       .then(response => {
@@ -99,7 +100,7 @@ export const User = {
       });
   },
   save(player) {
-    return AXIOS.post(`${URL.USER}/singIn`, player, {
+    return AXIOS.post(`${URL.ADMIN}`, player, {
       headers: headers(),
     })
       .then(response => {
@@ -113,7 +114,7 @@ export const User = {
   },
 
   saveAdmin(admin) {
-    return AXIOS.post(`${URL.USER}/singIn`, admin, {
+    return AXIOS.post(`${URL.ADMIN}`, admin, {
       headers: headers(),
     })
       .then(response => {
@@ -125,8 +126,8 @@ export const User = {
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
-  delete(playerId) {
-    return AXIOS.delete(`${URL.USER}/${playerId}`, {
+  delete(adminId) {
+    return AXIOS.delete(`${URL.ADMIN}/${adminId}`, {
       headers: headers(),
     })
       .then(response => {
@@ -141,7 +142,7 @@ export const User = {
   uploadPhoto(photo, id) {
     const formData = new FormData();
     formData.append('photo', photo);
-    return AXIOS.put(`${URL.USER}/upload/${id}`, formData, {
+    return AXIOS.put(`${URL.ADMIN}/upload/${id}`, formData, {
       headers: headers('form'),
     })
       .then(response => {

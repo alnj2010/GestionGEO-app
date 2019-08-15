@@ -37,11 +37,11 @@ class AlertDialogSlide extends React.Component {
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle id="alert-dialog-slide-title">
-          {`${entity} ${action}`}
+          {`${action} ${entity}`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Are you sure you want to {action} the {entity}?
+            Estas seguro que quieres {action} el {entity}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -49,7 +49,7 @@ class AlertDialogSlide extends React.Component {
             No
           </Button>
           <Button onClick={this.handleClose} type="submit" color="primary">
-            Yes
+            Si
           </Button>
         </DialogActions>
       </Dialog>

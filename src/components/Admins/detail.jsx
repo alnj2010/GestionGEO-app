@@ -81,17 +81,21 @@ class AdminDetail extends Component {
       <Form onSubmit={handleSubmit(saveAdmin)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {adminId ? `Admin: ${adminId}` : 'New Admin'}</h3>
+            <h3> {adminId ? `Administrador: ${adminId}` : 'Nuevo Administrador'}</h3>
             <hr />
           </Grid>
           <Grid item xs={6} className={classes.form}>
             <Grid container>
               <RenderFields >{[
-                { label: 'Name', field: 'name', id: 'name', type: 'text' },
-                { label: 'Last Name', field: 'lastName', id: 'last-name', type: 'text' },
-                { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Password', field: 'password', id: 'password', type: 'password'},
-                { label: 'Password Confirmation', field: 'passwordConfirmation', id: 'password-confirmation', type: 'password'},
+                { label: 'Nombre', field: 'firstName', id: 'firstName', type: 'text' },
+                { label: 'Segundo Nombre', field: 'secondName', id: 'secondName', type: 'text' },
+                { label: 'Apellido', field: 'firstSurname', id: 'firstSurname', type: 'text' },
+                { label: 'Segundo apellido', field: 'secondSurname', id: 'secondSurname', type: 'text' },
+                { label: 'Cedula', field: 'identification', id: 'identification', type: 'text' },
+                { label: 'Email', field: 'email', id: 'email', type: 'email' },
+                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'text' },
+                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'text' },
+                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'text' },
               ]}</RenderFields>
             </Grid>
             <Grid container>
@@ -121,7 +125,7 @@ class AdminDetail extends Component {
                       className={classes.save}
                       onClick={() =>
                         adminId
-                          ? this.handleDialogShow('update', submit)
+                          ? this.handleDialogShow('actualizar', submit)
                           : submit('user')
                       }
                       disabled={!valid || pristine || submitting}
@@ -154,39 +158,41 @@ AdminDetail.propTypes = {
 
 const userValidation = values => {
   const errors = {};
-  if (!values.name) {
-    errors.name = 'Name is required';
-  } else if (/(?=[0-9])/.test(values.name))
-    errors.name = 'Name must not contain numbers';
 
-  if (!values.lastName) {
-    errors.lastName = 'Last name is required';
-  } else if (/(?=[0-9])/.test(values.lastName))
-    errors.lastName = 'Name must not contain numbers';
+  if (!values.firstName) {
+    errors.firstName = 'Nombre es requerido';
+  } else if (/(?=[0-9])/.test(values.firstName))
+    errors.firstName = 'El nombre no debe contener numeros';
+
+  if (!values.firstSurname) {
+    errors.firstSurname = 'Apellido es requerido';
+  } else if (/(?=[0-9])/.test(values.firstSurname))
+    errors.firstSurname = 'El Apellido no debe contener numeros';
+
+  if (!values.identification) {
+    errors.identification = 'Cedula es requerido';
+  }
 
   if (!values.email) {
-    errors.email = 'Email is required';
+    errors.email = 'Email es requerido';
   } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
-    errors.email = 'Introduce a valid email';
+    errors.email = 'Introduce un email valido';
   }
 
-  if (!values.password) {
-    errors.password = 'Password is required';
+  if (!values.mobile) {
+    errors.mobile = 'movil es requerido';
+  } else if (!/^[0][4][1-9][1-9][0-9]{7}$/.test(values.mobile)) {
+    errors.mobile = 'Introduce un movil valido';
   }
 
-  if (values.passwordConfirmation !== values.password) {
-    errors.passwordConfirmation =
-      'Confirmation password must be the same as password';
+  if (values.telephone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.telephone)) {
+    errors.telephone = 'Introduce un telefono valido';
   }
 
-  if (!values.birthdate) {
-    errors.birthdate = 'Birthday is required';
+  if (values.workPhone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.workPhone)) {
+    errors.workPhone = 'Introduce un telefono valido';
   }
 
-  if (!values.phone) {
-    errors.phone = 'Phone number is required';
-  } else if (!/^\+(?:[0-9] ?){6,14}[0-9]$/.test(values.phone))
-    errors.phone = 'Enter a valid phone number';
   return errors;
 };
 
@@ -199,20 +205,32 @@ AdminDetail = reduxForm({
 AdminDetail = connect(
   state => ({
     initialValues: {
+      firstName: state.adminReducer.selectedAdmin.first_name
+        ? state.adminReducer.selectedAdmin.first_name
+        : '',
+      secondName: state.adminReducer.selectedAdmin.second_name
+        ? state.adminReducer.selectedAdmin.second_name
+        : '',
+      firstSurname: state.adminReducer.selectedAdmin.first_surname
+        ? state.adminReducer.selectedAdmin.first_surname
+        : '',
+      secondSurname: state.adminReducer.selectedAdmin.second_surname
+        ? state.adminReducer.selectedAdmin.second_surname
+        : '',
+      identification: state.adminReducer.selectedAdmin.identification
+        ? state.adminReducer.selectedAdmin.identification
+        : '',
       email: state.adminReducer.selectedAdmin.email
         ? state.adminReducer.selectedAdmin.email
         : '',
-      name: state.adminReducer.selectedAdmin.name
-        ? state.adminReducer.selectedAdmin.name
+      mobile: state.adminReducer.selectedAdmin.mobile
+        ? state.adminReducer.selectedAdmin.mobile
         : '',
-      lastName: state.adminReducer.selectedAdmin.last
-        ? state.adminReducer.selectedAdmin.last
+      telephone: state.adminReducer.selectedAdmin.telephone
+        ? state.adminReducer.selectedAdmin.telephone
         : '',
-      password: state.adminReducer.selectedAdmin.password
-        ? state.adminReducer.selectedAdmin.password
-        : '',
-      passwordConfirmation: state.adminReducer.selectedAdmin.password
-        ? state.adminReducer.selectedAdmin.password
+      workPhone: state.adminReducer.selectedAdmin.work_phone
+        ? state.adminReducer.selectedAdmin.work_phone
         : '',
     },
     action: state.dialogReducer.action,

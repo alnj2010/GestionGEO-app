@@ -5,6 +5,9 @@ import NotFound from './components/NotFound';
 import Login from './containers/Login';
 import Menu from './components/Menu';
 import Home from './components/Home';
+import AdminsList from './containers/Admins';
+import AdminDetail from './containers/Admins/detail';
+
 import PLayersList from './containers/Players';
 import PlayerDetail from './containers/Players/detail';
 import CategoriesContainer from './containers/Categories';
@@ -15,8 +18,7 @@ import BrandDetailContainer from './containers/Brands/detail';
 import BrandsAssociations from './containers/Brands/associations';
 import BrandsList from './containers/Brands';
 import InviteCode from './containers/InviteCode';
-import AdminsList from './containers/Admins';
-import AdminDetail from './containers/Admins/detail';
+
 import Invitations from './containers/InviteCode/invitations';
 import InvitationsDetailContainer from './containers/InviteCode/detail';
 import WinnersListContainer from './containers/Players/winners';
@@ -53,9 +55,11 @@ class App extends Component {
           <Menu>
             <Switch>
               <Route exact path="/home" component={Home} />
-              <Route exact path="/users/list" component={PLayersList} />
-              <Route exact path="/users/edit/:id" component={PlayerDetail} />
-              <Route exact path="/users/create" component={PlayerDetail} />
+
+              <Route exact path="/administradores/" component={AdminsList} />
+              <Route exact path="/administradores/edit/:id" component={AdminDetail} />
+              <Route exact path="/administradores/create" component={AdminDetail} />
+              
               <Route
                 exact
                 path="/users/winners"

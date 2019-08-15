@@ -1,27 +1,9 @@
 import { CsvBuilder } from 'filefy';
 
 export const URL = {
-  ADMIN: '/admin',
-  BRAND: '/brand',
-  BRAND_CATEGORY: '/categoryBrand',
-  CATEGORY: '/category',
-  COUPON: '/coupon',
-  EXTERNAL_LINK: '/links',
-  INITIAL_PHASE: '/initial-phase',
-  MASTER: '/master',
-  MINIGAME_TRIVIA: '/trivia',
-  QUESTION: '/question',
-  SCRATCH_OFF: '/scratch-off',
+  ADMIN: '/administrators',
   USER: '/user',
-  AUTH:'/auth',
-  WALLET: '/premium/wallet',
-  TRIVIA_CATEGORY: '/trivia-category',
-  LOCATION: '/location',
-  PRIZE:'/prize',
-  ZIPCODE:'/zipcode',
-  CHALLENGE:'/treasure-hunt',
-  CHALLENGE_TYPE:'/challenge-type',
-  MILE:'/miles'
+  AUTH:'/login',
 };
 export const AMOUNT_POINT=5
 export const INDEX_LAST_POINT = AMOUNT_POINT-1;

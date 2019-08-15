@@ -14,7 +14,7 @@ export class AdminDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findAdminById, define } = this.props;
     if (match.params.id) findAdminById(match.params.id);
-    define('admin');
+    define('administrador');
   };
   componentWillUnmount = () => {
     this.props.cleanSelectedAdmin();
@@ -30,7 +30,7 @@ export class AdminDetailContainer extends Component {
       history,
     } = this.props;
     const payload = { ...values };
-    if (values.password === '******') payload.password = undefined;
+ 
     if (match.params.id) updateAdmin({ ...payload, ...match.params });
     else
       saveAdmin({ ...payload }).then(response => {
@@ -55,6 +55,7 @@ export class AdminDetailContainer extends Component {
     const {
       admin: { id },
     } = this.props;
+
     return (
       <AdminDetail
         saveAdmin={this.saveAdmin}

@@ -14,13 +14,14 @@ class AdminsList extends Component {
     };
   }
   transformData = admins => {
+    console.log(admins);
     if (admins)
       return admins.map(admin => {
         return {
           id: admin.id,
           email: admin.email,
-          name: admin.name,
-          lastName: admin.last,
+          firstName: admin.first_name,
+          firstSurname: admin.first_surname,
         };
       });
     return [];
@@ -47,19 +48,19 @@ class AdminsList extends Component {
             onClick={() => history.push(`/admins/create`)}
           >
             <Add />
-            Add Admin
+            Agregar Administrador
           </Fab>
         </Grid>
         <Grid item xs={12}>
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
-              { title: 'Name', field: 'name' },
-              { title: 'Last Name', field: 'lastName' },
+              { title: 'Nombre', field: 'firstName' },
+              { title: 'Apellido', field: 'firstSurname' },
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(admins)}
-            title="Admin Users"
+            title="Administradores"
             actions={[
               {
                 icon: 'visibility',
@@ -72,7 +73,7 @@ class AdminsList extends Component {
                 icon: 'delete',
                 tooltip: 'Delete admin',
                 onClick: (event, rowData) => {
-                  this.handleDialogShow('delete', entity =>
+                  this.handleDialogShow('eliminar', entity =>
                     handleDeleteAdmin(rowData.id),
                   );
                 },

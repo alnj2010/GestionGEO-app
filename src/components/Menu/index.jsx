@@ -17,34 +17,14 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Brands from '@material-ui/icons/Style';
 import School from '@material-ui/icons/School';
-import RedeemCoupon from '@material-ui/icons/Redeem';
-import Location from '@material-ui/icons/LocationOn';
-import Zipcode from '@material-ui/icons/LocalPostOffice';
-import Prizes from '@material-ui/icons/Star';
-import Receipt from '@material-ui/icons/Receipt';
-import Settings from '@material-ui/icons/Settings';
-import Contacts from '@material-ui/icons/Contacts';
+import Admin from '@material-ui/icons/Group';
 import Face from '@material-ui/icons/Face';
 import InsertInvitation from '@material-ui/icons/InsertInvitation';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import ListIcon from '@material-ui/icons/List';
-import Star from '@material-ui/icons/Grade';
-import Assocations from '@material-ui/icons/CompareArrows';
-import Ticket from '@material-ui/icons/LocalPlay';
-import Question from '@material-ui/icons/LiveHelp';
-import Games from '@material-ui/icons/Games';
-import Trivia from '@material-ui/icons/QuestionAnswer';
-import ScratchOff from '@material-ui/icons/CalendarViewDay';
-import Globe from '@material-ui/icons/Language';
-import View from '@material-ui/icons/ViewWeek';
-import Money from '@material-ui/icons/AttachMoney';
-import Event from '@material-ui/icons/Event';
-import DirectionsRun from '@material-ui/icons/DirectionsRun';
 import Menu from '@material-ui/core/Menu';
 import { show, hide } from '../../actions/snackbar';
 import CustomizedSnackbar from '../Snackbar';
@@ -132,6 +112,13 @@ class MenuApp extends React.Component {
     open: false,
     anchorEl: null,
     options: [
+      {
+        link: 'administradores',
+        name: 'Administradores',
+        component: Admin,
+        clicked: false,
+        roles:['A'],
+      },
       {
         link: 'postgrados',
         name: 'Postgrados',
