@@ -2,13 +2,9 @@ import { CsvBuilder } from 'filefy';
 
 export const URL = {
   ADMIN: '/administrators',
-  USER: '/user',
   AUTH:'/login',
+  POSTGRADUATE:'/postgraduates',
 };
-export const AMOUNT_POINT=5
-export const INDEX_LAST_POINT = AMOUNT_POINT-1;
-export const GOOGLE_API_KEY=''
-export const GOOGLE_API_MAP="https://maps.googleapis.com/maps/api/js?key="+GOOGLE_API_KEY+"&v=3.exp&libraries=geometry,drawing,places"
 
 export const protocol =
   window.location.host === 'localhost:3000' ? 'http' : 'https';

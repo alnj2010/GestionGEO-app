@@ -6,22 +6,21 @@ import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import { handleExportCsv } from '../../services/constants';
 
-class AdminsList extends Component {
+class PostgraduatesList extends Component {
   constructor() {
     super();
     this.state = {
       func: null,
     };
   }
-  transformData = admins => {
-    console.log(admins);
-    if (admins)
-      return admins.map(admin => {
+  transformData = postgraduates => {
+    console.log(postgraduates);
+    if (postgraduates)
+      return postgraduates.map(postgraduate => {
         return {
-          id: admin.id,
-          email: admin.email,
-          firstName: admin.first_name,
-          firstSurname: admin.first_surname,
+          id: postgraduate.id,
+          postgraduateName: postgraduate.postgraduate_name,
+          numCu: postgraduate.num_cu,
         };
       });
     return [];
@@ -35,7 +34,7 @@ class AdminsList extends Component {
   };
 
   render = () => {
-    const { admins, isLoading, history, handleDeleteAdmin } = this.props;
+    const { postgraduates, isLoading, history, handleDeletePostgraduate } = this.props;
     const { func } = this.state;
     return (
       <Grid container spacing={8}>
@@ -45,36 +44,35 @@ class AdminsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/admins/create`)}
+            onClick={() => history.push(`/postgrados/create`)}
           >
             <Add />
-            Agregar Administrador
+            Agregar postgrado
           </Fab>
         </Grid>
         <Grid item xs={12}>
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
-              { title: 'Nombre', field: 'firstName' },
-              { title: 'Apellido', field: 'firstSurname' },
-              { title: 'Email', field: 'email' },
+              { title: 'Nombre', field: 'postgraduateName' },
+              { title: '# Unidades de credito', field: 'numCu' },
             ]}
-            data={this.transformData(admins)}
-            title="Administradores"
+            data={this.transformData(postgraduates)}
+            title="postgrados"
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/administradores/edit/${rowData.id}`);
+                  history.push(`/postgrados/edit/${rowData.id}`);
                 },
               },
               {
                 icon: 'delete',
-                tooltip: 'Borrar admin',
+                tooltip: 'Borrar postgrado',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', entity =>
-                    handleDeleteAdmin(rowData.id),
+                    handleDeletePostgraduate(rowData.id),
                   );
                 },
               },
@@ -84,7 +82,7 @@ class AdminsList extends Component {
               search: true,
               exportButton: true,
               exportCsv: (columns, renderData) =>
-                handleExportCsv(columns, renderData, 'admins'),
+                handleExportCsv(columns, renderData, 'postgraduates'),
             }}
             onChangePage={()=>{window.scroll(0,0)}}
             isLoading={isLoading}
@@ -96,11 +94,11 @@ class AdminsList extends Component {
   };
 }
 
-AdminsList.propTypes = {
-  admins: array,
+PostgraduatesList.propTypes = {
+  postgraduates: array,
   isLoading: bool.isRequired,
   history: object.isRequired,
-  handleDeleteAdmin: func.isRequired,
+  handleDeletePostgraduate: func.isRequired,
 };
 
-export default AdminsList;
+export default PostgraduatesList;

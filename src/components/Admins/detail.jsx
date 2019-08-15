@@ -103,7 +103,7 @@ class AdminDetail extends Component {
                 <Grid container className={classes.buttonContainer}>
                   <Grid item xs={4}>
                     <Button variant="contained" onClick={goBack}>
-                      Cancel
+                      Cancelar
                     </Button>
                   </Grid>
                   <Grid item xs={4}>
@@ -115,7 +115,7 @@ class AdminDetail extends Component {
                           this.handleDialogShow('delete', handleAdminDelete)
                         }
                       >
-                        Delete
+                        Borrar
                       </Button>
                     ) : null}
                   </Grid>
@@ -126,11 +126,11 @@ class AdminDetail extends Component {
                       onClick={() =>
                         adminId
                           ? this.handleDialogShow('actualizar', submit)
-                          : submit('user')
+                          : submit('admin')
                       }
                       disabled={!valid || pristine || submitting}
                     >
-                      Save Changes
+                      Guardar Cambios
                     </Button>
                   </Grid>
                 </Grid>
@@ -156,7 +156,7 @@ AdminDetail.propTypes = {
   valid: bool.isRequired,
 };
 
-const userValidation = values => {
+const adminValidation = values => {
   const errors = {};
 
   if (!values.firstName) {
@@ -197,8 +197,8 @@ const userValidation = values => {
 };
 
 AdminDetail = reduxForm({
-  form: 'user',
-  validate: userValidation,
+  form: 'admin',
+  validate: adminValidation,
   enableReinitialize: true,
 })(AdminDetail);
 
