@@ -5,47 +5,10 @@ import NotFound from './components/NotFound';
 import Login from './containers/Login';
 import Menu from './components/Menu';
 import Home from './components/Home';
+
 import AdminsList from './containers/Admins';
 import AdminDetail from './containers/Admins/detail';
 
-import PLayersList from './containers/Players';
-import PlayerDetail from './containers/Players/detail';
-import CategoriesContainer from './containers/Categories';
-import { CategoryDetailContainer } from './containers/Categories/detail';
-import triviaCategoryContainer from './containers/TriviaCategories';
-import TriviaCategoryDetailContainer from './containers/TriviaCategories/detail'
-import BrandDetailContainer from './containers/Brands/detail';
-import BrandsAssociations from './containers/Brands/associations';
-import BrandsList from './containers/Brands';
-import InviteCode from './containers/InviteCode';
-
-import Invitations from './containers/InviteCode/invitations';
-import InvitationsDetailContainer from './containers/InviteCode/detail';
-import WinnersListContainer from './containers/Players/winners';
-import CouponList from './containers/Coupons';
-import CouponDetail from './containers/Coupons/detail';
-import RedeemCoupon from './containers/RedeemCoupon';
-import RedeemCouponList from './containers/RedeemCoupon/list';
-import RedeemCouponDetail from './containers/RedeemCoupon/detail';
-import Location from './containers/Locations';
-import LocationDetail from './containers/Locations/detail';
-import Prizes from './containers/Prizes';
-import PrizesDetail from './containers/Prizes/detail';
-import Zipcodes from './containers/Zipcodes';
-import ZipcodesDetail from './containers/Zipcodes/detail';
-import Challenges from './containers/Challenges';
-import ChallengeCalendarContainer from './containers/Challenges/calendar';
-import ChallengesDetail from './containers/Challenges/detail';
-import QuestionsListContainer from './containers/Questions';
-import QuestionDetailContainer from './containers/Questions/detail';
-import TriviasList from './containers/Trivia';
-import TriviaDetail from './containers/Trivia/detail';
-import ExternalLinksList from './containers/ExternalLinks';
-import WalletList from './containers/Wallet';
-import PhasesList from './containers/InitialPhase';
-import PhaseDetail from './containers/InitialPhase/detail';
-import ScratchOffList from './containers/ScratchOff';
-import ScratchOffDetail from './containers/ScratchOff/detail';
 class App extends Component {
   render() {
     return (
@@ -60,7 +23,7 @@ class App extends Component {
               <Route exact path="/administradores/edit/:id" component={AdminDetail} />
               <Route exact path="/administradores/create" component={AdminDetail} />
               
-              <Route
+  {/*            <Route
                 exact
                 path="/users/winners"
                 component={WinnersListContainer}
@@ -106,7 +69,7 @@ class App extends Component {
               <Route exact path="/admins" component={AdminsList} />
               <Route exact path="/admins/edit/:id" component={AdminDetail} />
               <Route exact path="/admins/create" component={AdminDetail} />
-              <Route exact path="/invitecode/setup" component={InviteCode} />
+               <Route exact path="/invitecode/setup" component={InviteCode} />
               <Route
                 exact
                 path="/invitecode/invitations"
@@ -199,7 +162,7 @@ class App extends Component {
                 exact
                 path="/minigame/scratch-off/edit/:id"
                 component={ScratchOffDetail}
-              />
+              /> */}
               <NotFound />
             </Switch>
           </Menu>

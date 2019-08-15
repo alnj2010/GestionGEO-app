@@ -81,7 +81,7 @@ class AdminsList extends Component {
             ]}
             options={{
               pageSize: 10,
-              search: false,
+              search: true,
               exportButton: true,
               exportCsv: (columns, renderData) =>
                 handleExportCsv(columns, renderData, 'admins'),

@@ -20,10 +20,6 @@ export const getList = () => async dispatch => {
     });
 };
 
-/* export const selectAdmin = data => async dispatch => {
-  dispatch({ type: ACTIONS.SELECT, payload: { selectedAdmin: data } });
-}; */
-
 export const findAdminById = id => async dispatch => {
   return User.findAdminById(id)
     .then(response => {
@@ -82,7 +78,6 @@ export const saveAdmin = admin => async dispatch => {
     first_surname: admin.firstSurname, 
     second_surname: admin.secondSurname, 
     identification: admin.identification, 
-    email: admin.email, 
     mobile: admin.mobile, 
     telephone: admin.telephone, 
     work_phone: admin.workPhone, 
