@@ -4,6 +4,7 @@ export const URL = {
   ADMIN: '/administrators',
   AUTH:'/login',
   POSTGRADUATE:'/postgraduates',
+  SUBJECT:'/subjects',
 };
 
 export const protocol =

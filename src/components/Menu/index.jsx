@@ -20,6 +20,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import School from '@material-ui/icons/School';
 import Admin from '@material-ui/icons/Group';
 import Face from '@material-ui/icons/Face';
+import Subject from '@material-ui/icons/Create';
 import InsertInvitation from '@material-ui/icons/InsertInvitation';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -130,6 +131,13 @@ class MenuApp extends React.Component {
         link: 'estudiantes',
         name: 'Estudiantes',
         component: Face,
+        clicked: false,
+        roles:['A'],
+      },
+      {
+        link: 'materias',
+        name: 'Materias',
+        component: Subject,
         clicked: false,
         roles:['A'],
       },

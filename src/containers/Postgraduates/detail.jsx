@@ -43,6 +43,7 @@ export class PostgraduateDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
+    console.log(history);
     history.goBack();
   };
 
