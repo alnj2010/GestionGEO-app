@@ -29,7 +29,6 @@ export class SubjectsListContainer extends Component {
   render() {
     const { subjects, history, show } = this.props;
     const { isLoading } = this.state;
-    console.log(subjects,'asds')
     return (
       <SubjectsList
         subjects={subjects}

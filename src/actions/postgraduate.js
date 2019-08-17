@@ -11,7 +11,6 @@ export const ACTIONS = {
 export const getList = () => async dispatch => {
   return Postgraduate.getPostgraduateList()
     .then(response => {
-      console.log('action',response)
       dispatch({ type: ACTIONS.LIST, payload: { list: response } });
       return true;
     })

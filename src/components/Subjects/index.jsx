@@ -14,7 +14,6 @@ class SubjectsList extends Component {
     };
   }
   transformData = subjects => {
-    console.log(subjects);
     if (subjects)
       return subjects.map(subject => {
         return {

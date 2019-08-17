@@ -8,7 +8,6 @@ export const Postgraduate = {
       headers: headers(),
     })
       .then(response => {
-        console.log(response);
         return response.data;
       })
       .catch(error => {
@@ -35,7 +34,6 @@ export const Postgraduate = {
       headers: headers(),
     })
       .then(response => {
-        console.log('response',response.data);
         return response.data;
       })
       .catch(error => {

@@ -8,17 +8,20 @@ import {
   cleanSelectedSubject,
   saveSubject,
 } from '../../actions/subject';
+import { getList as getPostgraduateList } from '../../actions/postgraduate';
 import SubjectDetail from '../../components/Subjects/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 export class SubjectDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSubjectById, define } = this.props;
     if (match.params.id) findSubjectById(match.params.id);
+    this.props.getPostgraduateList();
     define('materia');
   };
   componentWillUnmount = () => {
     this.props.cleanSelectedSubject();
     this.props.cleanDialog();
+    
   };
 
   saveSubject = values => {
@@ -30,11 +33,9 @@ export class SubjectDetailContainer extends Component {
       history,
     } = this.props;
     const payload = { ...values };
-    console.log(values,match)
     if (match.params.id) updateSubject({ ...payload, ...match.params });
     else
       saveSubject({ ...payload }).then(response => {
-        console.log(response);
         if (response) {
           findSubjectById(response).then(res => history.push(`edit/${response}`));
         }
@@ -43,7 +44,6 @@ export class SubjectDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    console.log(history);
     history.goBack();
   };
 
@@ -56,10 +56,12 @@ export class SubjectDetailContainer extends Component {
   render() {
     const {
       subject: { id },
+      postgraduates
     } = this.props;
 
     return (
       <SubjectDetail
+        postgraduates={postgraduates}
         saveSubject={this.saveSubject}
         goBack={this.goBack}
         subjectId={id}
@@ -80,6 +82,7 @@ SubjectDetailContainer.propTypes = {
 
 const mS = state => ({
   subject: state.subjectReducer.selectedSubject,
+  postgraduates: state.postgraduateReducer.list,
 });
 
 const mD = {
@@ -90,6 +93,7 @@ const mD = {
   define,
   cleanSelectedSubject,
   cleanDialog,
+  getPostgraduateList
 };
 
 SubjectDetailContainer = connect(

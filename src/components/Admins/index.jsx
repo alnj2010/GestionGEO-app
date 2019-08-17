@@ -14,7 +14,6 @@ class AdminsList extends Component {
     };
   }
   transformData = admins => {
-    console.log(admins);
     if (admins)
       return admins.map(admin => {
         return {

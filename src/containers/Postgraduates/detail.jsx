@@ -30,11 +30,11 @@ export class PostgraduateDetailContainer extends Component {
       history,
     } = this.props;
     const payload = { ...values };
-    console.log(values,match)
+
     if (match.params.id) updatePostgraduate({ ...payload, ...match.params });
     else
       savePostgraduate({ ...payload }).then(response => {
-        console.log(response);
+
         if (response) {
           findPostgraduateById(response).then(res => history.push(`edit/${response}`));
         }
@@ -43,7 +43,7 @@ export class PostgraduateDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    console.log(history);
+
     history.goBack();
   };
 

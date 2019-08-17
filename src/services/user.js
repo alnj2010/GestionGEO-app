@@ -11,7 +11,6 @@ export const User = {
 
     return AXIOS.post(`${URL.AUTH}`, formData, { headers: headers() })
       .then(response => {
-        console.log(response);
         return response.data;
       })
       .catch(error => {
@@ -50,7 +49,6 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        console.log(response);
         return response.data;
       })
       .catch(error => {

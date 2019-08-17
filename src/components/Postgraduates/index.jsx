@@ -14,7 +14,6 @@ class PostgraduatesList extends Component {
     };
   }
   transformData = postgraduates => {
-    console.log(postgraduates);
     if (postgraduates)
       return postgraduates.map(postgraduate => {
         return {

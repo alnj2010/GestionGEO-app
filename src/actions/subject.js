@@ -11,7 +11,6 @@ export const ACTIONS = {
 export const getList = () => async dispatch => {
   return Subject.getSubjectList()
     .then(response => {
-      console.log('action',response)
       dispatch({ type: ACTIONS.LIST, payload: { list: response } });
       return true;
     })
@@ -45,8 +44,11 @@ export const cleanSelectedSubject = id => async dispatch => {
 
 export const updateSubject = subject => async dispatch => {
   const payload = {
+    uc:subject.uc,
+    subject_code:subject.subjectCode,
     subject_name:subject.subjectName,
-    num_cu:parseInt(subject.numCu),
+    subject_type:subject.subjectType,
+    postgraduates:subject.postgraduates,
   };
   return Subject.update(payload)
     .then(response => {
@@ -65,8 +67,11 @@ export const updateSubject = subject => async dispatch => {
 
 export const saveSubject = subject => async dispatch => {
   const payload = {
-   subject_name:subject.subjectName,
-   num_cu:subject.numCu,
+    uc:subject.uc,
+    subject_code:subject.subjectCode,
+    subject_name:subject.subjectName,
+    subject_type:subject.subjectType,
+    postgraduates:subject.postgraduates,
   };
   return Subject.saveSubject(payload)
     .then(res => {
