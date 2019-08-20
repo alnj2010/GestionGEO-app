@@ -5,7 +5,7 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
-import { Form, reduxForm, change, submit, FieldArray } from 'redux-form';
+import { Form, reduxForm, change, submit, FieldArray, formValueSelector, } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -81,7 +81,7 @@ class SubjectDetail extends Component {
       </Grid>
     </Fragment>      
     ))}
-    <Button variant="contained" color="primary" className={this.props.classes.buttonPostgraduates} onClick={() => fields.push({})}>Asignar a postgrado</Button>
+    <Button variant="contained" color="primary" className={this.props.classes.buttonPostgraduates} onClick={() => fields.push({})}>Asignar a otro postgrado</Button>
   </Grid>)
 
   render = () => {
@@ -96,9 +96,9 @@ class SubjectDetail extends Component {
       submitting,
       valid,
       submit,
-      postgraduates
     } = this.props;
     const { func } = this.state;
+
     return (
       <Form onSubmit={handleSubmit(saveSubject)}>
         <Grid container>
@@ -106,14 +106,16 @@ class SubjectDetail extends Component {
             <h3> {subjectId ? `Materia: ${subjectId}` : 'Nuevo Materia'}</h3>
             <hr />
           </Grid>
-          <Grid item xs={6} className={classes.form}>
+          <Grid item xs={12} className={classes.form}>
             <Grid container>
               <RenderFields >{[
                 { label: 'Codigo de la materia', field: 'subjectCode', id: 'subjectCode', type: 'text' },
                 { label: 'Nombre de la materia', field: 'subjectName', id: 'subjectName', type: 'text' },
-                { label: 'Tipo de materia', field: 'subjectType', id: 'subjectType', type: 'text' },
+                { label: 'Tipo de materia',field: `subjectType`, id: `subjectType`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'AMPLIACION',value:"AMP"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Unidades de credito', field: 'uc', id: 'uc', type: 'number', min:0 },
+                { label: 'Postgrados a los que pertenece la materia', type: 'label', },
               ]}</RenderFields>
+                
                <FieldArray name="postgraduates" component={this.renderPostgraduates} />
             </Grid>
             <Grid container>
@@ -237,7 +239,7 @@ SubjectDetail = connect(
         ? state.subjectReducer.selectedSubject.uc
         : '',
       postgraduates: state.subjectReducer.selectedSubject.postgraduates
-        ? state.subjectReducer.selectedSubject.postgraduates
+        ? state.subjectReducer.selectedSubject.postgraduates.map(post=>({ id:post.pivot.postgraduate_id,type:post.pivot.type}))
         : [{}],
     },
     action: state.dialogReducer.action,

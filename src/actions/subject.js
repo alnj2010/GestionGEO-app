@@ -44,6 +44,7 @@ export const cleanSelectedSubject = id => async dispatch => {
 
 export const updateSubject = subject => async dispatch => {
   const payload = {
+    id:subject.id,
     uc:subject.uc,
     subject_code:subject.subjectCode,
     subject_name:subject.subjectName,
