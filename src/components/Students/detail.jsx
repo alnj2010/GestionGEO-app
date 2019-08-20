@@ -52,7 +52,7 @@ const styles = theme => ({
   },
 });
 
-class SubjectDetail extends Component {
+class StudentDetail extends Component {
   constructor() {
     super();
     this.state = {
@@ -66,57 +66,47 @@ class SubjectDetail extends Component {
     });
   };
 
-  renderPostgraduates = ({ fields, meta: { error, submitFailed } }) => (<Grid container item>    
-    {fields.map((postgraduate, index) => (
-    <Fragment key={index}>
-      <Grid item xs={6}>
-        <RenderFields >{[
-          {field: `${postgraduate}.id`, id: `${postgraduate}.id`, type: 'select', placeholder:'Postgrado', options: this.props.postgraduates.map(post => { return { key: post.postgraduate_name, value: post.id } }) },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={6}>
-        <RenderFields >{[
-          {field: `${postgraduate}.type`, id: `${postgraduate}.type`, type: 'select', placeholder:'modalidad', options: [{key:'OBLIGATORIA',value:"O"}, {key:'ELECTIVA',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
-        ]}</RenderFields>      
-      </Grid>
-    </Fragment>      
-    ))}
-    <Button variant="contained" color="primary" className={this.props.classes.buttonPostgraduates} onClick={() => fields.push({})}>Asignar a otro postgrado</Button>
-  </Grid>)
-
+  
   render = () => {
     const {
       classes,
       handleSubmit,
-      saveSubject,
+      saveStudent,
       goBack,
-      subjectId,
-      handleSubjectDelete,
+      studentId,
+      handleStudentDelete,
       pristine,
       submitting,
       valid,
       submit,
+      postgraduates
     } = this.props;
     const { func } = this.state;
 
     return (
-      <Form onSubmit={handleSubmit(saveSubject)}>
+      <Form onSubmit={handleSubmit(saveStudent)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {subjectId ? `Materia: ${subjectId}` : 'Nuevo Materia'}</h3>
+            <h3> {studentId ? `Estudiante: ${studentId}` : 'Nuevo Estudiante'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
             <Grid container>
               <RenderFields >{[
-                { label: 'Codigo de la materia', field: 'subjectCode', id: 'subjectCode', type: 'text' },
-                { label: 'Nombre de la materia', field: 'subjectName', id: 'subjectName', type: 'text' },
-                { label: 'Tipo de materia',field: `subjectType`, id: `subjectType`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'AMPLIACION',value:"AMP"}].map(type => { return { key: type.key, value: type.value } }) },
-                { label: 'Unidades de credito', field: 'uc', id: 'uc', type: 'number', min:0 },
-                { label: 'Postgrados a los que pertenece la materia', type: 'label', },
+                { label: 'Cedula', field: 'identification', id: 'identification', type: 'text' },
+                { label: 'Nombre', field: 'firstName', id: 'firstName', type: 'text' },
+                { label: 'Segundo Nombre', field: 'secondName', id: 'secondName', type: 'text' },
+                { label: 'Apellido', field: 'firstSurname', id: 'firstSurname', type: 'text' },
+                { label: 'Segundo apellido', field: 'secondSurname', id: 'secondSurname', type: 'text' },
+                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'text' },
+                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'text' },
+                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'text' },
+                { label: 'Email', field: 'email', id: 'email', type: 'text' },
+                { label: 'Postgrado al que pertenece',field: `postgraduate`, id: `postgraduate`, type: 'select', options: postgraduates.map(post => { return { key: post.postgraduate_name, value: post.id } }) },
+                { label: 'Tipo',field: `studentType`, id: `studentType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }) },
+                { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text' },
               ]}</RenderFields>
                 
-               <FieldArray name="postgraduates" component={this.renderPostgraduates} />
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -127,12 +117,12 @@ class SubjectDetail extends Component {
                     </Button>
                   </Grid>
                   <Grid item xs={4}>
-                    {subjectId ? (
+                    {studentId ? (
                       <Button
                         variant="contained"
                         color="secondary"
                         onClick={() =>
-                          this.handleDialogShow('delete', handleSubjectDelete)
+                          this.handleDialogShow('delete', handleStudentDelete)
                         }
                       >
                         Borrar
@@ -144,9 +134,9 @@ class SubjectDetail extends Component {
                       variant="contained"
                       className={classes.save}
                       onClick={() =>
-                        subjectId
+                        studentId
                           ? this.handleDialogShow('actualizar', submit)
-                          : submit('subject')
+                          : submit('student')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -164,87 +154,108 @@ class SubjectDetail extends Component {
   };
 }
 
-SubjectDetail.propTypes = {
+StudentDetail.propTypes = {
   classes: object.isRequired,
   handleSubmit: func.isRequired,
-  saveSubject: func.isRequired,
+  saveStudent: func.isRequired,
   goBack: func.isRequired,
-  subjectId: number,
-  handleSubjectDelete: func.isRequired,
+  studentId: number,
+  handleStudentDelete: func.isRequired,
   pristine: bool.isRequired,
   submitting: bool.isRequired,
   valid: bool.isRequired,
 };
 
-const subjectValidation = values => {
+const studentValidation = values => {
   const errors = {};
-  if (!values.subjectCode) {
-    errors.subjectCode = 'Codigo de Materia es requerido';
+  if (!values.identification) {
+    errors.identification = 'Cedula es requerida';
+  }
+  if (!values.firstName) {
+    errors.firstName = 'Nombre es requerido';
+  } else if (/(?=[0-9])/.test(values.firstName))
+    errors.firstName = 'El nombre no debe contener numeros';
+
+  if (!values.firstSurname) {
+    errors.firstSurname = 'Apellido es requerido';
+  } else if (/(?=[0-9])/.test(values.firstSurname))
+    errors.firstSurname = 'El Apellido no debe contener numeros';
+  if (!values.mobile) {
+    errors.mobile = 'movil es requerido';
+  } else if (!/^[0][4][1-9][1-9][0-9]{7}$/.test(values.mobile)) {
+    errors.mobile = 'Introduce un movil valido';
   }
 
-  if (!values.subjectName) {
-    errors.subjectName = 'Nombre de Materia es requerido';
+  if (values.telephone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.telephone)) {
+    errors.telephone = 'Introduce un telefono valido';
   }
 
-  if (!values.subjectType) {
-    errors.subjectType = 'Tipo requerido';
+  if (values.workPhone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.workPhone)) {
+    errors.workPhone = 'Introduce un telefono valido';
+  }
+  if (!values.email) {
+    errors.email = 'Email es requerido';
+  } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
+    errors.email = 'Introduce un email valido';
   }
 
-  if (!values.uc) {
-    errors.uc = 'Unidades de credito es requerido';
-  }
-
-  if (values.postgraduates && values.postgraduates.length){
-    const postgraduatesArrayErrors = []
-    values.postgraduates.forEach((postgraduate, postgraduateIndex) => {
-      const postgraduateErrors = {}
-      if (!postgraduate || !postgraduate.id) {
-        postgraduateErrors.id = 'Requerido'
-        postgraduatesArrayErrors[postgraduateIndex] = postgraduateErrors
-      }
-      if (!postgraduate || !postgraduate.type) {
-        postgraduateErrors.type = 'Requerido'
-        postgraduatesArrayErrors[postgraduateIndex] = postgraduateErrors
-      }
-
-    })
-    if (postgraduatesArrayErrors.length) {
-      errors.postgraduates = postgraduatesArrayErrors
-    }
-  }
+  if(!values.postgraduate) errors.postgraduate = "Postgrado del estudiante Requerido"
+  if(!values.studentType) errors.studentType = " Tipo Requerido"
+  if(!values.homeUniversity) errors.homeUniversity = "Universidad de origen Requerido"
 
 
   return errors;
 };
 
-SubjectDetail = reduxForm({
-  form: 'subject',
-  validate: subjectValidation,
+StudentDetail = reduxForm({
+  form: 'student',
+  validate: studentValidation,
   enableReinitialize: true,
-})(SubjectDetail);
+})(StudentDetail);
 
-SubjectDetail = connect(
+StudentDetail = connect(
   state => ({
     initialValues: {
-      subjectName: state.subjectReducer.selectedSubject.subject_name
-        ? state.subjectReducer.selectedSubject.subject_name
+      identification: state.studentReducer.selectedStudent.identification
+        ? state.studentReducer.selectedStudent.identification
         : '',
-      subjectCode: state.subjectReducer.selectedSubject.subject_code
-        ? state.subjectReducer.selectedSubject.subject_code
+      firstName: state.studentReducer.selectedStudent.first_name
+        ? state.studentReducer.selectedStudent.first_name
         : '',
-      subjectType: state.subjectReducer.selectedSubject.subject_type
-        ? state.subjectReducer.selectedSubject.subject_type
+      secondName: state.studentReducer.selectedStudent.second_name
+        ? state.studentReducer.selectedStudent.second_name
         : '',
-      uc: state.subjectReducer.selectedSubject.uc
-        ? state.subjectReducer.selectedSubject.uc
+      firstSurname: state.studentReducer.selectedStudent.first_surname
+        ? state.studentReducer.selectedStudent.first_surname
         : '',
-      postgraduates: state.subjectReducer.selectedSubject.postgraduates
-        ? state.subjectReducer.selectedSubject.postgraduates.map(post=>({ id:post.pivot.postgraduate_id,type:post.pivot.type}))
-        : [{}],
+      secondSurname: state.studentReducer.selectedStudent.second_surname
+        ? state.studentReducer.selectedStudent.second_surname
+        : '',
+      email: state.studentReducer.selectedStudent.email
+        ? state.studentReducer.selectedStudent.email
+        : '',
+      mobile: state.studentReducer.selectedStudent.mobile
+        ? state.studentReducer.selectedStudent.mobile
+        : '',
+      telephone: state.studentReducer.selectedStudent.telephone
+        ? state.studentReducer.selectedStudent.telephone
+        : '',
+      workPhone: state.studentReducer.selectedStudent.work_phone
+        ? state.studentReducer.selectedStudent.work_phone
+        : '',
+      postgraduate: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.postgraduate_id
+        : '',
+      studentType: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.student_type
+        : '',
+      homeUniversity: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.home_university
+        : '',   
     },
     action: state.dialogReducer.action,
   }),
   { change, show, submit },
-)(SubjectDetail);
+)(StudentDetail);
 
-export default withStyles(styles)(SubjectDetail);
+export default withStyles(styles)(StudentDetail);

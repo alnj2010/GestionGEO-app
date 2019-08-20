@@ -23,9 +23,10 @@ export const getList = () => async dispatch => {
 export const findStudentById = id => async dispatch => {
   return Student.findStudentById(id)
     .then(response => {
+      console.log(response);
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedStudent: response },
+        payload: { selectedStudent: response[0] },
       });
       return true;
     })
@@ -45,11 +46,18 @@ export const cleanSelectedStudent = id => async dispatch => {
 export const updateStudent = student => async dispatch => {
   const payload = {
     id:student.id,
-    uc:student.uc,
-    student_code:student.studentCode,
-    student_name:student.studentName,
+    identification:student.identification,
+    first_name:student.firstName,
+    second_name: student.secondName, 
+    first_surname:student.firstSurname,
+    second_surname: student.secondSurname, 
+    mobile:student.mobile,
+    telephone: student.telephone, 
+    work_phone: student.workPhone, 
+    email:student.email,
+    postgraduate_id:student.postgraduate,
     student_type:student.studentType,
-    postgraduates:student.postgraduates,
+    home_university:student.homeUniversity,
   };
   return Student.update(payload)
     .then(response => {
@@ -68,11 +76,18 @@ export const updateStudent = student => async dispatch => {
 
 export const saveStudent = student => async dispatch => {
   const payload = {
-    uc:student.uc,
-    student_code:student.studentCode,
-    student_name:student.studentName,
+    identification:student.identification,
+    first_name:student.firstName,
+    second_name: student.secondName, 
+    first_surname:student.firstSurname,
+    second_surname: student.secondSurname, 
+    mobile:student.mobile,
+    telephone: student.telephone, 
+    work_phone: student.workPhone, 
+    email:student.email,
+    postgraduate_id:student.postgraduate,
     student_type:student.studentType,
-    postgraduates:student.postgraduates,
+    home_university:student.homeUniversity,
   };
   return Student.saveStudent(payload)
     .then(res => {

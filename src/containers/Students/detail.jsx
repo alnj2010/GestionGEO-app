@@ -2,42 +2,43 @@ import React, { Component } from 'react';
 import { func, object } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  findSubjectById,
-  updateSubject,
-  deleteSubject,
-  cleanSelectedSubject,
-  saveSubject,
-} from '../../actions/subject';
+  findStudentById,
+  updateStudent,
+  deleteStudent,
+  cleanSelectedStudent,
+  saveStudent,
+} from '../../actions/student';
 import { getList as getPostgraduateList } from '../../actions/postgraduate';
-import SubjectDetail from '../../components/Subjects/detail';
+import StudentDetail from '../../components/Students/detail';
 import { define, cleanDialog } from '../../actions/dialog';
-export class SubjectDetailContainer extends Component {
+export class StudentDetailContainer extends Component {
   componentDidMount = () => {
-    const { match, findSubjectById, define } = this.props;
-    if (match.params.id) findSubjectById(match.params.id);
+    const { match, findStudentById, define } = this.props;
+    console.log(match.params.id);
+    if (match.params.id) findStudentById(match.params.id);
     this.props.getPostgraduateList();
-    define('materia');
+    define('estudiante');
   };
   componentWillUnmount = () => {
-    this.props.cleanSelectedSubject();
+    this.props.cleanSelectedStudent();
     this.props.cleanDialog();
     
   };
 
-  saveSubject = values => {
+  saveStudent = values => {
     const {
       match,
-      updateSubject,
-      findSubjectById,
-      saveSubject,
+      updateStudent,
+      findStudentById,
+      saveStudent,
       history,
     } = this.props;
     const payload = { ...values };
-    if (match.params.id) updateSubject({ ...payload, ...match.params });
+    if (match.params.id) updateStudent({ ...payload, ...match.params });
     else
-      saveSubject({ ...payload }).then(response => {
+      saveStudent({ ...payload }).then(response => {
         if (response) {
-          findSubjectById(response).then(res => history.push(`edit/${response}`));
+          findStudentById(response).then(res => history.push(`edit/${response}`));
         }
       });
   };
@@ -47,58 +48,58 @@ export class SubjectDetailContainer extends Component {
     history.goBack();
   };
 
-  handleSubjectDelete = () => {
-    const { deleteSubject, history, match } = this.props;
-    deleteSubject(match.params.id).then(res => history.push('/materias'));
+  handleStudentDelete = () => {
+    const { deleteStudent, history, match } = this.props;
+    deleteStudent(match.params.id).then(res => history.push('/estudiantes'));
   };
 
 
   render() {
     const {
-      subject: { id },
+      student: { id },
       postgraduates
     } = this.props;
-
+    console.log('dasdsad',id);
     return (
-      <SubjectDetail
+      <StudentDetail
         postgraduates={postgraduates}
-        saveSubject={this.saveSubject}
+        saveStudent={this.saveStudent}
         goBack={this.goBack}
-        subjectId={id}
-        handleSubjectDelete={this.handleSubjectDelete}
+        studentId={id}
+        handleStudentDelete={this.handleStudentDelete}
       />
     );
   }
 }
 
-SubjectDetailContainer.propTypes = {
-  deleteSubject: func.isRequired,
+StudentDetailContainer.propTypes = {
+  deleteStudent: func.isRequired,
   history: object.isRequired,
   match: object.isRequired,
-  updateSubject: func.isRequired,
-  findSubjectById: func.isRequired,
-  saveSubject: func.isRequired,
+  updateStudent: func.isRequired,
+  findStudentById: func.isRequired,
+  saveStudent: func.isRequired,
 };
 
 const mS = state => ({
-  subject: state.subjectReducer.selectedSubject,
+  student: state.studentReducer.selectedStudent,
   postgraduates: state.postgraduateReducer.list,
 });
 
 const mD = {
-  findSubjectById,
-  updateSubject,
-  saveSubject,
-  deleteSubject,
+  findStudentById,
+  updateStudent,
+  saveStudent,
+  deleteStudent,
   define,
-  cleanSelectedSubject,
+  cleanSelectedStudent,
   cleanDialog,
   getPostgraduateList
 };
 
-SubjectDetailContainer = connect(
+StudentDetailContainer = connect(
   mS,
   mD,
-)(SubjectDetailContainer);
+)(StudentDetailContainer);
 
-export default SubjectDetailContainer;
+export default StudentDetailContainer;
