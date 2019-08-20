@@ -6,6 +6,7 @@ export const URL = {
   POSTGRADUATE:'/postgraduates',
   SUBJECT:'/subjects',
   STUDENT:'/students',
+  TEACHER:'/teachers',
 };
 
 export const protocol =
