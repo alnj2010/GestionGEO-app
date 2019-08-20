@@ -15,7 +15,7 @@ export class TeachersListContainer extends Component {
   componentDidMount = () => {
     const { getList, define } = this.props;
     getList().then(() => this.setState({ isLoading: false }));
-    define('Estudiante');
+    define('Profesor');
   };
   componentWillUnmount = () => {
     this.props.cleanDialog();

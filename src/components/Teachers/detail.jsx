@@ -102,7 +102,7 @@ class TeacherDetail extends Component {
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'text' },
                 { label: 'Email', field: 'email', id: 'email', type: 'text' },
                 { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }) },
-                { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text' },
+               
               ]}</RenderFields>
                 
             </Grid>
@@ -197,9 +197,8 @@ const teacherValidation = values => {
     errors.email = 'Introduce un email valido';
   }
 
-  if(!values.postgraduate) errors.postgraduate = "Postgrado del estudiante Requerido"
   if(!values.teacherType) errors.teacherType = " Tipo Requerido"
-  if(!values.homeUniversity) errors.homeUniversity = "Universidad de origen Requerido"
+
 
 
   return errors;
@@ -241,15 +240,9 @@ TeacherDetail = connect(
       workPhone: state.teacherReducer.selectedTeacher.work_phone
         ? state.teacherReducer.selectedTeacher.work_phone
         : '',
-      postgraduate: state.teacherReducer.selectedTeacher.teacher
-        ? state.teacherReducer.selectedTeacher.teacher.postgraduate_id
-        : '',
       teacherType: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.teacher_type
-        : '',
-      homeUniversity: state.teacherReducer.selectedTeacher.teacher
-        ? state.teacherReducer.selectedTeacher.teacher.home_university
-        : '',   
+        : '',  
     },
     action: state.dialogReducer.action,
   }),

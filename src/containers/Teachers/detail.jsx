@@ -17,7 +17,7 @@ export class TeacherDetailContainer extends Component {
     console.log(match.params.id);
     if (match.params.id) findTeacherById(match.params.id);
     this.props.getPostgraduateList();
-    define('estudiante');
+    define('profesor');
   };
   componentWillUnmount = () => {
     this.props.cleanSelectedTeacher();
