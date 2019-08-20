@@ -15,6 +15,9 @@ import PostgraduateDetail from './containers/Postgraduates/detail';
 import SubjectsList from './containers/Subjects';
 import SubjectDetail from './containers/Subjects/detail';
 
+import StudentsList from './containers/Students';
+import StudentDetail from './containers/Students/detail';
+
 class App extends Component {
   render() {
     return (
@@ -36,6 +39,10 @@ class App extends Component {
               <Route exact path="/materias/" component={SubjectsList} />
               <Route exact path="/materias/edit/:id" component={SubjectDetail} />
               <Route exact path="/materias/create" component={SubjectDetail} />
+
+              <Route exact path="/estudiantes/" component={StudentsList} />
+              <Route exact path="/estudiantes/edit/:id" component={StudentDetail} />
+              <Route exact path="/estudiantes/create" component={StudentDetail} />
               
   {/*            <Route
                 exact
