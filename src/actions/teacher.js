@@ -63,7 +63,7 @@ export const updateTeacher = teacher => async dispatch => {
         type: ACTIONS.SELECT,
         payload: { selectedTeacher: response },
       });
-      show('Estudiante actualizado', 'success')(dispatch);
+      show('Profesor actualizado', 'success')(dispatch);
       return true;
     })
     .catch(error => {
@@ -87,7 +87,7 @@ export const saveTeacher = teacher => async dispatch => {
   };
   return Teacher.saveTeacher(payload)
     .then(res => {
-      show('Estudiante guardado', 'success')(dispatch);
+      show('Profesor guardado', 'success')(dispatch);
       return res.id;
     })
     .catch(error => {
@@ -99,7 +99,7 @@ export const saveTeacher = teacher => async dispatch => {
 export const deleteTeacher = teacherId => async dispatch => {
   return Teacher.delete(teacherId)
     .then(response => {
-      show('Estudiante eliminado', 'success')(dispatch);
+      show('Profesor eliminado', 'success')(dispatch);
       return true;
     })
     .catch(error => {

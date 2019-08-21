@@ -101,7 +101,7 @@ class TeacherDetail extends Component {
                 { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'text' },
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'text' },
                 { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }) },
+                { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"INSTRUCTOR",id:"INS"},{value:"ASISTENTE",id:"ASI"},{value:"AGREGADO",id:"AGR"},{value:"TITULAR",id:"TIT"}].map(type => { return { key: type.value, value: type.id } }) },
                
               ]}</RenderFields>
                 
