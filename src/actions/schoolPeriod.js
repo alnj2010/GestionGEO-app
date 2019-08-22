@@ -27,7 +27,7 @@ export const findSchoolPeriodById = id => async dispatch => {
       console.log(response);
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedSchoolPeriod: response[0] },
+        payload: { selectedSchoolPeriod: response },
       });
       return true;
     })

@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
-  Button
+  Button,
+  TextField,
 } from '@material-ui/core';
 import { Form, reduxForm, change, submit, FieldArray, formValueSelector, } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
+import DatePicker from 'react-datepicker'
 
 const styles = theme => ({
   inputLabel: {
@@ -51,8 +53,39 @@ const styles = theme => ({
     color: 'red',
   },
 });
+function RenderDataRange () {
+  const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(new Date());
 
-class TeacherDetail extends Component {
+  const handleChangeStart=(date) => {
+    setStartDate(date)
+  }
+
+  const handleChangeEnd=(date) => {
+    setEndDate(date)
+  }
+  return (<Fragment>
+    <DatePicker
+      selected={startDate}
+      selectsStart
+      customInput={ ( <TextField />)}
+      startDate={startDate}
+      endDate={endDate}
+      onChange={handleChangeStart}
+    />
+
+    <DatePicker
+      selected={endDate}
+      selectsEnd
+      customInput={ ( <TextField />)}
+      startDate={startDate}
+      endDate={endDate}
+      onChange={handleChangeEnd}
+      minDate={startDate}
+    />
+  </Fragment>)
+}
+class SchoolPeriodDetail extends Component {
   constructor() {
     super();
     this.state = {
@@ -66,15 +99,15 @@ class TeacherDetail extends Component {
     });
   };
 
-  
+
   render = () => {
     const {
       classes,
       handleSubmit,
-      saveTeacher,
+      saveSchoolPeriod,
       goBack,
-      teacherId,
-      handleTeacherDelete,
+      schoolPeriodId,
+      handleSchoolPeriodDelete,
       pristine,
       submitting,
       valid,
@@ -83,28 +116,26 @@ class TeacherDetail extends Component {
     const { func } = this.state;
 
     return (
-      <Form onSubmit={handleSubmit(saveTeacher)}>
+      <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {teacherId ? `Profesor: ${teacherId}` : 'Nuevo Profesor'}</h3>
+            <h3> {schoolPeriodId ? `Periodo semestral: ${schoolPeriodId}` : 'Nuevo Periodo semestral'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
             <Grid container>
-              <RenderFields >{[
-                { label: 'Cedula', field: 'identification', id: 'identification', type: 'text' },
-                { label: 'Nombre', field: 'firstName', id: 'firstName', type: 'text' },
-                { label: 'Segundo Nombre', field: 'secondName', id: 'secondName', type: 'text' },
-                { label: 'Apellido', field: 'firstSurname', id: 'firstSurname', type: 'text' },
-                { label: 'Segundo apellido', field: 'secondSurname', id: 'secondSurname', type: 'text' },
-                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'text' },
-                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'text' },
-                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'text' },
-                { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"INSTRUCTOR",id:"INS"},{value:"ASISTENTE",id:"ASI"},{value:"AGREGADO",id:"AGR"},{value:"TITULAR",id:"TIT"}].map(type => { return { key: type.value, value: type.id } }) },
-               
-              ]}</RenderFields>
-                
+              <Grid container item xs={6}>
+                <RenderFields >{[
+                  { label: 'Codigo', field: 'codSchoolPeriod', id: 'codSchoolPeriod', type: 'text' },
+                  { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'datetime-local' },
+                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'datetime-local' },                
+                ]}</RenderFields>
+                <Grid item xs={12}>
+                  <RenderDataRange></RenderDataRange>
+                </Grid>
+              </Grid>
+              <Grid container item xs={6}>
+              </Grid>                
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -115,12 +146,12 @@ class TeacherDetail extends Component {
                     </Button>
                   </Grid>
                   <Grid item xs={4}>
-                    {teacherId ? (
+                    {schoolPeriodId ? (
                       <Button
                         variant="contained"
                         color="secondary"
                         onClick={() =>
-                          this.handleDialogShow('delete', handleTeacherDelete)
+                          this.handleDialogShow('delete', handleSchoolPeriodDelete)
                         }
                       >
                         Borrar
@@ -132,9 +163,9 @@ class TeacherDetail extends Component {
                       variant="contained"
                       className={classes.save}
                       onClick={() =>
-                        teacherId
+                        schoolPeriodId
                           ? this.handleDialogShow('actualizar', submit)
-                          : submit('teacher')
+                          : submit('schoolPeriod')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -152,19 +183,19 @@ class TeacherDetail extends Component {
   };
 }
 
-TeacherDetail.propTypes = {
+SchoolPeriodDetail.propTypes = {
   classes: object.isRequired,
   handleSubmit: func.isRequired,
-  saveTeacher: func.isRequired,
+  saveSchoolPeriod: func.isRequired,
   goBack: func.isRequired,
-  teacherId: number,
-  handleTeacherDelete: func.isRequired,
+  schoolPeriodId: number,
+  handleSchoolPeriodDelete: func.isRequired,
   pristine: bool.isRequired,
   submitting: bool.isRequired,
   valid: bool.isRequired,
 };
 
-const teacherValidation = values => {
+const schoolPeriodValidation = values => {
   const errors = {};
   if (!values.identification) {
     errors.identification = 'Cedula es requerida';
@@ -197,56 +228,56 @@ const teacherValidation = values => {
     errors.email = 'Introduce un email valido';
   }
 
-  if(!values.teacherType) errors.teacherType = " Tipo Requerido"
+  if(!values.schoolPeriodType) errors.schoolPeriodType = " Tipo Requerido"
 
 
 
   return errors;
 };
 
-TeacherDetail = reduxForm({
-  form: 'teacher',
-  validate: teacherValidation,
+SchoolPeriodDetail = reduxForm({
+  form: 'schoolPeriod',
+  validate: schoolPeriodValidation,
   enableReinitialize: true,
-})(TeacherDetail);
+})(SchoolPeriodDetail);
 
-TeacherDetail = connect(
+SchoolPeriodDetail = connect(
   state => ({
     initialValues: {
-      identification: state.teacherReducer.selectedTeacher.identification
-        ? state.teacherReducer.selectedTeacher.identification
+      identification: state.schoolPeriodReducer.selectedSchoolPeriod.identification
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.identification
         : '',
-      firstName: state.teacherReducer.selectedTeacher.first_name
-        ? state.teacherReducer.selectedTeacher.first_name
+      firstName: state.schoolPeriodReducer.selectedSchoolPeriod.first_name
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.first_name
         : '',
-      secondName: state.teacherReducer.selectedTeacher.second_name
-        ? state.teacherReducer.selectedTeacher.second_name
+      secondName: state.schoolPeriodReducer.selectedSchoolPeriod.second_name
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.second_name
         : '',
-      firstSurname: state.teacherReducer.selectedTeacher.first_surname
-        ? state.teacherReducer.selectedTeacher.first_surname
+      firstSurname: state.schoolPeriodReducer.selectedSchoolPeriod.first_surname
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.first_surname
         : '',
-      secondSurname: state.teacherReducer.selectedTeacher.second_surname
-        ? state.teacherReducer.selectedTeacher.second_surname
+      secondSurname: state.schoolPeriodReducer.selectedSchoolPeriod.second_surname
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.second_surname
         : '',
-      email: state.teacherReducer.selectedTeacher.email
-        ? state.teacherReducer.selectedTeacher.email
+      email: state.schoolPeriodReducer.selectedSchoolPeriod.email
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.email
         : '',
-      mobile: state.teacherReducer.selectedTeacher.mobile
-        ? state.teacherReducer.selectedTeacher.mobile
+      mobile: state.schoolPeriodReducer.selectedSchoolPeriod.mobile
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.mobile
         : '',
-      telephone: state.teacherReducer.selectedTeacher.telephone
-        ? state.teacherReducer.selectedTeacher.telephone
+      telephone: state.schoolPeriodReducer.selectedSchoolPeriod.telephone
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.telephone
         : '',
-      workPhone: state.teacherReducer.selectedTeacher.work_phone
-        ? state.teacherReducer.selectedTeacher.work_phone
+      workPhone: state.schoolPeriodReducer.selectedSchoolPeriod.work_phone
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.work_phone
         : '',
-      teacherType: state.teacherReducer.selectedTeacher.teacher
-        ? state.teacherReducer.selectedTeacher.teacher.teacher_type
+      schoolPeriodType: state.schoolPeriodReducer.selectedSchoolPeriod.schoolPeriod
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.schoolPeriod.schoolPeriod_type
         : '',  
     },
     action: state.dialogReducer.action,
   }),
   { change, show, submit },
-)(TeacherDetail);
+)(SchoolPeriodDetail);
 
-export default withStyles(styles)(TeacherDetail);
+export default withStyles(styles)(SchoolPeriodDetail);

@@ -2,43 +2,43 @@ import React, { Component } from 'react';
 import { func, object } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  findTeacherById,
-  updateTeacher,
-  deleteTeacher,
-  cleanSelectedTeacher,
-  saveTeacher,
-} from '../../actions/teacher';
+  findSchoolPeriodById,
+  updateSchoolPeriod,
+  deleteSchoolPeriod,
+  cleanSelectedSchoolPeriod,
+  saveSchoolPeriod,
+} from '../../actions/schoolPeriod';
 import { getList as getPostgraduateList } from '../../actions/postgraduate';
-import TeacherDetail from '../../components/Teachers/detail';
+import SchoolPeriodDetail from '../../components/SchoolPeriods/detail';
 import { define, cleanDialog } from '../../actions/dialog';
-export class TeacherDetailContainer extends Component {
+export class SchoolPeriodDetailContainer extends Component {
   componentDidMount = () => {
-    const { match, findTeacherById, define } = this.props;
+    const { match, findSchoolPeriodById, define } = this.props;
     console.log(match.params.id);
-    if (match.params.id) findTeacherById(match.params.id);
+    if (match.params.id) findSchoolPeriodById(match.params.id);
     this.props.getPostgraduateList();
-    define('profesor');
+    define('Periodo semestral');
   };
   componentWillUnmount = () => {
-    this.props.cleanSelectedTeacher();
+    this.props.cleanSelectedSchoolPeriod();
     this.props.cleanDialog();
     
   };
 
-  saveTeacher = values => {
+  saveSchoolPeriod = values => {
     const {
       match,
-      updateTeacher,
-      findTeacherById,
-      saveTeacher,
+      updateSchoolPeriod,
+      findSchoolPeriodById,
+      saveSchoolPeriod,
       history,
     } = this.props;
     const payload = { ...values };
-    if (match.params.id) updateTeacher({ ...payload, ...match.params });
+    if (match.params.id) updateSchoolPeriod({ ...payload, ...match.params });
     else
-      saveTeacher({ ...payload }).then(response => {
+      saveSchoolPeriod({ ...payload }).then(response => {
         if (response) {
-          findTeacherById(response).then(res => history.push(`edit/${response}`));
+          findSchoolPeriodById(response).then(res => history.push(`edit/${response}`));
         }
       });
   };
@@ -48,58 +48,58 @@ export class TeacherDetailContainer extends Component {
     history.goBack();
   };
 
-  handleTeacherDelete = () => {
-    const { deleteTeacher, history, match } = this.props;
-    deleteTeacher(match.params.id).then(res => history.push('/profesores'));
+  handleSchoolPeriodDelete = () => {
+    const { deleteSchoolPeriod, history, match } = this.props;
+    deleteSchoolPeriod(match.params.id).then(res => history.push('/periodo-semestral'));
   };
 
 
   render() {
     const {
-      teacher: { id },
+      schoolPeriod: { id },
       postgraduates
     } = this.props;
     console.log('dasdsad',id);
     return (
-      <TeacherDetail
+      <SchoolPeriodDetail
         postgraduates={postgraduates}
-        saveTeacher={this.saveTeacher}
+        saveSchoolPeriod={this.saveSchoolPeriod}
         goBack={this.goBack}
-        teacherId={id}
-        handleTeacherDelete={this.handleTeacherDelete}
+        schoolPeriodId={id}
+        handleSchoolPeriodDelete={this.handleSchoolPeriodDelete}
       />
     );
   }
 }
 
-TeacherDetailContainer.propTypes = {
-  deleteTeacher: func.isRequired,
+SchoolPeriodDetailContainer.propTypes = {
+  deleteSchoolPeriod: func.isRequired,
   history: object.isRequired,
   match: object.isRequired,
-  updateTeacher: func.isRequired,
-  findTeacherById: func.isRequired,
-  saveTeacher: func.isRequired,
+  updateSchoolPeriod: func.isRequired,
+  findSchoolPeriodById: func.isRequired,
+  saveSchoolPeriod: func.isRequired,
 };
 
 const mS = state => ({
-  teacher: state.teacherReducer.selectedTeacher,
+  schoolPeriod: state.schoolPeriodReducer.selectedSchoolPeriod,
   postgraduates: state.postgraduateReducer.list,
 });
 
 const mD = {
-  findTeacherById,
-  updateTeacher,
-  saveTeacher,
-  deleteTeacher,
+  findSchoolPeriodById,
+  updateSchoolPeriod,
+  saveSchoolPeriod,
+  deleteSchoolPeriod,
   define,
-  cleanSelectedTeacher,
+  cleanSelectedSchoolPeriod,
   cleanDialog,
   getPostgraduateList
 };
 
-TeacherDetailContainer = connect(
+SchoolPeriodDetailContainer = connect(
   mS,
   mD,
-)(TeacherDetailContainer);
+)(SchoolPeriodDetailContainer);
 
-export default TeacherDetailContainer;
+export default SchoolPeriodDetailContainer;
