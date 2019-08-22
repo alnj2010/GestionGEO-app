@@ -10,10 +10,15 @@ import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
   inputLabel: {
     paddingTop: '4%',
+  },
+  fab: {
+    margin: theme.spacing.unit,
   },
   input: {
     alignSelf: 'center',
@@ -85,7 +90,9 @@ class SubjectDetail extends Component {
       </Grid>
     </Fragment>      
     ))}
-    <Button variant="contained" disabled={this.props.postgraduates && this.props.postgraduatesSelected && (this.props.postgraduates.length===this.props.postgraduatesSelected.length)} color="primary" className={this.props.classes.buttonPostgraduates} onClick={() => fields.push({})}>Asignar a otro postgrado</Button>
+    <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.postgraduates && this.props.postgraduatesSelected && (this.props.postgraduates.length===this.props.postgraduatesSelected.length)} onClick={() => fields.push({})}>
+      <AddIcon />
+    </Fab>
   </Grid>)
 
   render = () => {
