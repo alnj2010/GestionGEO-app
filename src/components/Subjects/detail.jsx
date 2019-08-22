@@ -65,13 +65,17 @@ class SubjectDetail extends Component {
       this.props.show(action);
     });
   };
+  unselectedPostgraduates = ( pos ) =>{
+    const {postgraduates, postgraduatesSelected} =this.props;
+    return postgraduates.filter( item => !postgraduatesSelected.some((selected,index)=>selected.id===item.id && pos>index) )
+  }
 
   renderPostgraduates = ({ fields, meta: { error, submitFailed } }) => (<Grid container item>    
     {fields.map((postgraduate, index) => (
     <Fragment key={index}>
       <Grid item xs={6}>
         <RenderFields >{[
-          {field: `${postgraduate}.id`, id: `${postgraduate}.id`, type: 'select', placeholder:'Postgrado', options: this.props.postgraduates.map(post => { return { key: post.postgraduate_name, value: post.id } }) },
+          {field: `${postgraduate}.id`, id: `${postgraduate}.id`, type: 'select', placeholder:'Postgrado', options: this.unselectedPostgraduates(index).map(post => { return { key: post.postgraduate_name, value: post.id } }) },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={6}>
@@ -81,7 +85,7 @@ class SubjectDetail extends Component {
       </Grid>
     </Fragment>      
     ))}
-    <Button variant="contained" color="primary" className={this.props.classes.buttonPostgraduates} onClick={() => fields.push({})}>Asignar a otro postgrado</Button>
+    <Button variant="contained" disabled={this.props.postgraduates && this.props.postgraduatesSelected && (this.props.postgraduates.length===this.props.postgraduatesSelected.length)} color="primary" className={this.props.classes.buttonPostgraduates} onClick={() => fields.push({})}>Asignar a otro postgrado</Button>
   </Grid>)
 
   render = () => {
@@ -222,6 +226,7 @@ SubjectDetail = reduxForm({
   validate: subjectValidation,
   enableReinitialize: true,
 })(SubjectDetail);
+const selector = formValueSelector('subject');
 
 SubjectDetail = connect(
   state => ({
@@ -242,6 +247,7 @@ SubjectDetail = connect(
         ? state.subjectReducer.selectedSubject.postgraduates.map(post=>({ id:post.pivot.postgraduate_id,type:post.pivot.type}))
         : [{}],
     },
+    postgraduatesSelected: selector(state, 'postgraduates'),
     action: state.dialogReducer.action,
   }),
   { change, show, submit },
