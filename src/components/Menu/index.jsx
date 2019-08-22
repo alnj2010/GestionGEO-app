@@ -14,6 +14,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Actual from '@material-ui/icons/AlarmAdd';
+import ListIcon from '@material-ui/icons/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -155,6 +157,20 @@ class MenuApp extends React.Component {
         component: InsertInvitation,
         clicked: false,
         roles:['A'],
+        options: [
+          {
+            link: 'actual',
+            name: 'En curso',
+            component: Actual,
+            clicked: false,
+          },
+          {
+            link: 'list',
+            name: 'Lista semestral',
+            component: ListIcon,
+            clicked: false,
+          },
+        ],
       },
       /*{
         link: 'trivia-categories',

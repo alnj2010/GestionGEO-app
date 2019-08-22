@@ -6,7 +6,7 @@ import postgraduateReducer from './postgraduate';
 import subjectReducer from './subject';
 import studentReducer from './student';
 import teacherReducer from './teacher';
-
+import schoolPeriodReducer from './schoolPeriod';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
@@ -17,6 +17,7 @@ const rootReducer = combineReducers({
   studentReducer,
   subjectReducer, 
   postgraduateReducer,
+  schoolPeriodReducer,
   form: formReducer,
 });
 
