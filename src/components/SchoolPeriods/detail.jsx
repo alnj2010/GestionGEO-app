@@ -4,14 +4,17 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
   Button,
-  TextField,
+  Typography,
 } from '@material-ui/core';
+import * as moment from 'moment';
 import { Form, reduxForm, change, submit, FieldArray, formValueSelector, } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
-import DatePicker from 'react-datepicker'
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 
 const styles = theme => ({
   inputLabel: {
@@ -19,6 +22,10 @@ const styles = theme => ({
   },
   input: {
     alignSelf: 'center',
+  },
+  fab: {
+    marginTop:50,
+    margin: theme.spacing.unit,
   },
   form: {
     paddingLeft: '5%',
@@ -34,8 +41,10 @@ const styles = theme => ({
     cursor: 'pointer',
   },
   buttonContainer: { paddingTop: '2%' },
-  buttonPostgraduates:{
-    margin: theme.spacing.unit,
+  buttonSchedule:{
+    marginTop: theme.spacing.unit,
+    padding: 2,
+    width: '22%',
   },
   save: {
     color: 'white',
@@ -53,38 +62,7 @@ const styles = theme => ({
     color: 'red',
   },
 });
-function RenderDataRange () {
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
 
-  const handleChangeStart=(date) => {
-    setStartDate(date)
-  }
-
-  const handleChangeEnd=(date) => {
-    setEndDate(date)
-  }
-  return (<Fragment>
-    <DatePicker
-      selected={startDate}
-      selectsStart
-      customInput={ ( <TextField />)}
-      startDate={startDate}
-      endDate={endDate}
-      onChange={handleChangeStart}
-    />
-
-    <DatePicker
-      selected={endDate}
-      selectsEnd
-      customInput={ ( <TextField />)}
-      startDate={startDate}
-      endDate={endDate}
-      onChange={handleChangeEnd}
-      minDate={startDate}
-    />
-  </Fragment>)
-}
 class SchoolPeriodDetail extends Component {
   constructor() {
     super();
@@ -92,6 +70,60 @@ class SchoolPeriodDetail extends Component {
       func: null,
     };
   }
+  unselectedSubjects = ( pos ) =>{
+    const {subjects, subjectsSelected} =this.props;
+    return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.id===item.id && pos>index) )
+  }
+
+  renderSchedule = ({ fields, meta: { error, submitFailed } }) => (<Grid container item justify="center">    
+  {fields.map((schedule, index) => (
+    <Fragment key={index}>
+      <Grid item xs={4}>
+        <RenderFields >{[
+          { placeholder: 'Dia',field: `${schedule}.day`, id: `${schedule}.day`, type: 'select', options: ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'].map(day => { return { key: day, value: day } }) },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={3}>
+        <RenderFields >{[
+          { placeholder: 'Hora inicio',field: `${schedule}.startHour`, id: `${schedule}.startHour`, type: 'time' },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={3}>
+        <RenderFields >{[
+          { placeholder: 'Hora fin',field: `${schedule}.endHour`, id: `${schedule}.endHour`, type: 'time' },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={2}>
+        <RenderFields >{[
+          { placeholder: 'Aula',field: `${schedule}.classroom`, id: `${schedule}.classroom`, type: 'text' },
+        ]}</RenderFields>      
+      </Grid>
+    </Fragment>      
+    ))}
+    <Grid item xs={12}>
+        <Button variant="contained" color="primary" className={this.props.classes.buttonSchedule} onClick={() => fields.push({})} >horario +</Button>
+    </Grid>
+  </Grid>)
+
+  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Grid container item justify="center">    
+    {fields.map((subject, index) => (
+    <Fragment key={index}>
+      <Grid item xs={12}>
+        <RenderFields >{[
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', placeholder:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
+          {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', placeholder:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
+          {placeholder: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={12}>
+        <FieldArray name={`${subject}.schedule`} component={this.renderSchedule} />
+      </Grid>
+    </Fragment>      
+    ))}
+    <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({})}>
+      <AddIcon />
+    </Fab>
+  </Grid>)
 
   handleDialogShow = (action, func) => {
     this.setState({ func: func }, () => {
@@ -112,9 +144,10 @@ class SchoolPeriodDetail extends Component {
       submitting,
       valid,
       submit,
+      startDate,
     } = this.props;
     const { func } = this.state;
-
+    const today=new Date();
     return (
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
@@ -127,14 +160,17 @@ class SchoolPeriodDetail extends Component {
               <Grid container item xs={6}>
                 <RenderFields >{[
                   { label: 'Codigo', field: 'codSchoolPeriod', id: 'codSchoolPeriod', type: 'text' },
-                  { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'datetime-local' },
-                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'datetime-local' },                
+                  { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'datetime-local', minDate:today }, 
+                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'datetime-local', minDate:(new Date(startDate)), disabled:startDate==='Invalid date' },
+                                          
                 ]}</RenderFields>
-                <Grid item xs={12}>
-                  <RenderDataRange></RenderDataRange>
-                </Grid>
               </Grid>
+              <Grid container item xs={6}></Grid>
               <Grid container item xs={6}>
+                <RenderFields >{[
+                  { label: 'Materias del periodo', type: 'label' },        
+                ]}</RenderFields>
+                <FieldArray name="subject" component={this.renderSubjects} />
               </Grid>                
             </Grid>
             <Grid container>
@@ -240,42 +276,36 @@ SchoolPeriodDetail = reduxForm({
   validate: schoolPeriodValidation,
   enableReinitialize: true,
 })(SchoolPeriodDetail);
-
+const selector = formValueSelector('schoolPeriod');
 SchoolPeriodDetail = connect(
   state => ({
     initialValues: {
-      identification: state.schoolPeriodReducer.selectedSchoolPeriod.identification
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.identification
+      codSchoolPeriod: state.schoolPeriodReducer.selectedSchoolPeriod.cod_school_period
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.cod_school_period
         : '',
-      firstName: state.schoolPeriodReducer.selectedSchoolPeriod.first_name
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.first_name
-        : '',
-      secondName: state.schoolPeriodReducer.selectedSchoolPeriod.second_name
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.second_name
-        : '',
-      firstSurname: state.schoolPeriodReducer.selectedSchoolPeriod.first_surname
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.first_surname
-        : '',
-      secondSurname: state.schoolPeriodReducer.selectedSchoolPeriod.second_surname
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.second_surname
-        : '',
-      email: state.schoolPeriodReducer.selectedSchoolPeriod.email
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.email
-        : '',
-      mobile: state.schoolPeriodReducer.selectedSchoolPeriod.mobile
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.mobile
-        : '',
-      telephone: state.schoolPeriodReducer.selectedSchoolPeriod.telephone
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.telephone
-        : '',
-      workPhone: state.schoolPeriodReducer.selectedSchoolPeriod.work_phone
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.work_phone
-        : '',
-      schoolPeriodType: state.schoolPeriodReducer.selectedSchoolPeriod.schoolPeriod
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.schoolPeriod.schoolPeriod_type
-        : '',  
+      startDate: moment(
+          new Date(state.schoolPeriodReducer.selectedSchoolPeriod.start_date),
+        ).format('YYYY-MM-DD'),
+      endDate: moment(
+          new Date(state.schoolPeriodReducer.selectedSchoolPeriod.end_date),
+        ).format('YYYY-MM-DD'),
+      subject: state.schoolPeriodReducer.selectedSchoolPeriod.subject
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.subject.map(subj=>({ 
+          subjectId:subj.subject_id, 
+          teacherId:subj.teacher_id,
+          limit:subj.limit,
+          schedule: subj.schedule ? subj.schedule.map(sche =>({
+            day:sche.day,
+            startHour:sche.start_hour,
+            endHour:sche.end_hour,
+            classroom:sche.classroom,            
+          })) : [{}]
+        }))
+        : [{}],
     },
     action: state.dialogReducer.action,
+    startDate: selector(state, 'startDate'),
+    subjectsSelected: selector(state, 'subject')
   }),
   { change, show, submit },
 )(SchoolPeriodDetail);

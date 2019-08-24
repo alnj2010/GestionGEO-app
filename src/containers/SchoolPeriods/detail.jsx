@@ -8,7 +8,8 @@ import {
   cleanSelectedSchoolPeriod,
   saveSchoolPeriod,
 } from '../../actions/schoolPeriod';
-import { getList as getPostgraduateList } from '../../actions/postgraduate';
+import { getList as getSubjectList } from '../../actions/subject';
+import { getList as getTeacherList } from '../../actions/teacher';
 import SchoolPeriodDetail from '../../components/SchoolPeriods/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 export class SchoolPeriodDetailContainer extends Component {
@@ -16,7 +17,8 @@ export class SchoolPeriodDetailContainer extends Component {
     const { match, findSchoolPeriodById, define } = this.props;
     console.log(match.params.id);
     if (match.params.id) findSchoolPeriodById(match.params.id);
-    this.props.getPostgraduateList();
+    this.props.getSubjectList();
+    this.props.getTeacherList();
     define('Periodo semestral');
   };
   componentWillUnmount = () => {
@@ -57,12 +59,13 @@ export class SchoolPeriodDetailContainer extends Component {
   render() {
     const {
       schoolPeriod: { id },
-      postgraduates
+      subjects,
+      teachers,
     } = this.props;
-    console.log('dasdsad',id);
     return (
       <SchoolPeriodDetail
-        postgraduates={postgraduates}
+        subjects={subjects}
+        teachers={teachers}
         saveSchoolPeriod={this.saveSchoolPeriod}
         goBack={this.goBack}
         schoolPeriodId={id}
@@ -83,7 +86,8 @@ SchoolPeriodDetailContainer.propTypes = {
 
 const mS = state => ({
   schoolPeriod: state.schoolPeriodReducer.selectedSchoolPeriod,
-  postgraduates: state.postgraduateReducer.list,
+  subjects: state.subjectReducer.list,
+  teachers: state.teacherReducer.list,
 });
 
 const mD = {
@@ -94,7 +98,8 @@ const mD = {
   define,
   cleanSelectedSchoolPeriod,
   cleanDialog,
-  getPostgraduateList
+  getSubjectList,
+  getTeacherList,
 };
 
 SchoolPeriodDetailContainer = connect(

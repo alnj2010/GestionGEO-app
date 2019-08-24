@@ -35,6 +35,11 @@ const styles = theme => ({
   error: {
     color: 'red',
   },
+  inputTime: {
+    margin: theme.spacing.unit,
+    minWidth: "100%",
+    maxWidth: 200,
+  },
   formControl: {
     margin: theme.spacing.unit,
     minWidth: "100%",
@@ -52,7 +57,8 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
               id={params.id}
               margin="normal"
               {...params.input}
-              label={(params.field.title===undefined || params.field.title) ? "" : params.field.label}
+              label={params.field.placeholder ? params.field.placeholder:''}
+              className={classes.formControl}
             />
           )
         }
@@ -141,6 +147,25 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
             />
           )
         }
+        case 'time':{
+          
+          return (
+            <TextField
+              disabled={params.disabled}
+              id={params.id}
+              type="time"
+              label={params.field.placeholder ? params.field.placeholder:''}
+              {...params.input}
+              className={classes.inputTime}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 300, // 5 min
+              }}
+            />
+          )
+        }
         case 'datetime-local':{
           params.input.value =(!params.input.value || params.input.value==="Invalid date") ? null : new Date(params.input.value);
           return (
@@ -148,10 +173,9 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
                 disabled={params.disabled}
                 customInput={ ( <TextField />)}
                 onChange={params.input.onChange}
-                showTimeSelect
-                timeFormat="HH:mm"
+                showTimeSelect={params.input.showTimeSelect}
                 timeIntervals={15}
-                dateFormat="yyyy-MM-dd hh:mm"
+                dateFormat="yyyy-MM-dd"
                 timeCaption="time"
                 selected={params.input.value}
                 minDate={params.field.minDate}
@@ -179,7 +203,7 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
               id={params.id}
               margin="normal"
               {...params.input}
-              label=""
+              label={params.field.placeholder ? params.field.placeholder:''}
               type="number"
               inputProps={{ min: params.field.min, max: params.field.max, step: "1" }}
             />
