@@ -12,12 +12,17 @@ import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
   inputLabel: {
     paddingTop: '4%',
   },
   fab: {
+    margin: theme.spacing.unit,
+  },
+  button: {
     margin: theme.spacing.unit,
   },
   input: {
@@ -78,15 +83,20 @@ class SubjectDetail extends Component {
   renderPostgraduates = ({ fields, meta: { error, submitFailed } }) => (<Grid container item>    
     {fields.map((postgraduate, index) => (
     <Fragment key={index}>
-      <Grid item xs={6}>
+      <Grid item xs={5}>
         <RenderFields >{[
           {field: `${postgraduate}.id`, id: `${postgraduate}.id`, type: 'select', placeholder:'Postgrado', options: this.unselectedPostgraduates(index).map(post => { return { key: post.postgraduate_name, value: post.id } }) },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={5}>
         <RenderFields >{[
           {field: `${postgraduate}.type`, id: `${postgraduate}.type`, type: 'select', placeholder:'modalidad', options: [{key:'OBLIGATORIA',value:"O"}, {key:'ELECTIVA',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
         ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={2}>
+        <IconButton className={this.props.classes.button} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
+          <DeleteIcon />
+        </IconButton>
       </Grid>
     </Fragment>      
     ))}

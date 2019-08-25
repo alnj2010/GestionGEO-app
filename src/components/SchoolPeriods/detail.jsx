@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
   Button,
-  Typography,
-  Divider,
 } from '@material-ui/core';
 import * as moment from 'moment';
 import { Form, reduxForm, change, submit, FieldArray, formValueSelector,Field } from 'redux-form';
@@ -15,6 +13,8 @@ import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const styles = theme => ({
@@ -46,6 +46,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     padding: 2,
     width: '22%',
+  },
+  button: {
+    margin: theme.spacing.unit,
   },
   save: {
     color: 'white',
@@ -95,10 +98,15 @@ class SchoolPeriodDetail extends Component {
           { placeholder: 'Hora fin',field: `${schedule}.endHour`, id: `${schedule}.endHour`, type: 'time' },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={1}>
         <RenderFields >{[
           { placeholder: 'Aula',field: `${schedule}.classroom`, id: `${schedule}.classroom`, type: 'text' },
         ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={1}>
+        <IconButton className={this.props.classes.button} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
+          <DeleteIcon />
+        </IconButton>
       </Grid>
     </Fragment>      
     ))}
@@ -107,7 +115,7 @@ class SchoolPeriodDetail extends Component {
     </Grid>
   </Grid>)
 
-  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment >    
+  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
     {fields.map((subject, index) => (
     <Grid container justify="center" key={index}>
       <Grid item xs={3}>
@@ -120,16 +128,21 @@ class SchoolPeriodDetail extends Component {
           {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', placeholder:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={2}>
         <RenderFields >{[
           {placeholder: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={2}>
         <RenderFields >{[
           {placeholder: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
-        ]}</RenderFields>      
+        ]}</RenderFields>   
       </Grid>
+      <Grid item xs={2}>
+        <IconButton className={this.props.classes.button} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
+          <DeleteIcon />
+        </IconButton>
+      </Grid>   
       <Grid item xs={6}>
         <FieldArray name={`${subject}.schedule`} component={this.renderSchedule} />
       </Grid>
