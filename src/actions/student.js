@@ -23,7 +23,6 @@ export const getList = () => async dispatch => {
 export const findStudentById = id => async dispatch => {
   return Student.findStudentById(id)
     .then(response => {
-      console.log(response);
       dispatch({
         type: ACTIONS.SELECT,
         payload: { selectedStudent: response[0] },

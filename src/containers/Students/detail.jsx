@@ -14,7 +14,6 @@ import { define, cleanDialog } from '../../actions/dialog';
 export class StudentDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findStudentById, define } = this.props;
-    console.log(match.params.id);
     if (match.params.id) findStudentById(match.params.id);
     this.props.getPostgraduateList();
     define('estudiante');
@@ -59,7 +58,6 @@ export class StudentDetailContainer extends Component {
       student: { id },
       postgraduates
     } = this.props;
-    console.log('dasdsad',id);
     return (
       <StudentDetail
         postgraduates={postgraduates}

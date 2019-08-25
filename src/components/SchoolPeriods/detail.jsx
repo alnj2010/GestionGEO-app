@@ -73,7 +73,7 @@ class SchoolPeriodDetail extends Component {
   }
   unselectedSubjects = ( pos ) =>{
     const {subjects, subjectsSelected} =this.props;
-    return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.id===item.id && pos>index) )
+    return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
   }
 
   renderSchedule = ({ fields, meta: { error, submitFailed } }) => (<Grid container justify="center">    
@@ -137,7 +137,7 @@ class SchoolPeriodDetail extends Component {
     ))}
     <Grid container item xs={12} justify={'center'}>
       <Grid item xs={1}>
-        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({})}>
+        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({schedule:[{}]})}>
           <AddIcon />
         </Fab>
       </Grid>      
@@ -316,7 +316,6 @@ const schoolPeriodValidation = values => {
       errors.subject = subjectArrayErrors
     }
   }
-  console.log(errors);
   return errors;
 };
 

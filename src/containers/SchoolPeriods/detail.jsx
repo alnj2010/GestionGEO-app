@@ -15,7 +15,6 @@ import { define, cleanDialog } from '../../actions/dialog';
 export class SchoolPeriodDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSchoolPeriodById, define } = this.props;
-    console.log(match.params.id);
     if (match.params.id) findSchoolPeriodById(match.params.id);
     this.props.getSubjectList();
     this.props.getTeacherList();
@@ -36,7 +35,6 @@ export class SchoolPeriodDetailContainer extends Component {
       history,
     } = this.props;
     const payload = { ...values };
-    console.log(payload)
    if (match.params.id) updateSchoolPeriod({ ...payload, ...match.params });
    else
     saveSchoolPeriod({ ...payload }).then(response => {

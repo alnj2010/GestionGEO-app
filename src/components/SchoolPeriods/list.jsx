@@ -67,7 +67,6 @@ class SchoolPeriodsList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  console.log(rowData);
                   history.push(`/periodo-semestral/edit/${rowData.id}`);
                 },
               },

@@ -13,7 +13,6 @@ export const ACTIONS = {
 export const getList = () => async dispatch => {
   return SchoolPeriod.getSchoolPeriodList()
     .then(response => {
-      console.log('asdasd');
       dispatch({ type: ACTIONS.LIST, payload: { list: response } });
       return true;
     })
@@ -26,7 +25,6 @@ export const getList = () => async dispatch => {
 export const findSchoolPeriodById = id => async dispatch => {
   return SchoolPeriod.findSchoolPeriodById(id)
     .then(response => {
-      console.log(response);
       dispatch({
         type: ACTIONS.SELECT,
         payload: { selectedSchoolPeriod: response },

@@ -68,7 +68,6 @@ class TeachersList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  console.log(rowData);
                   history.push(`/profesores/edit/${rowData.id}`);
                 },
               },
