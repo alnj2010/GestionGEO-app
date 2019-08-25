@@ -23,6 +23,7 @@ import TeacherDetail from './containers/Teachers/detail';
 
 import SchoolPeriodsList from './containers/SchoolPeriods/list';
 import SchoolPeriodDetail from './containers/SchoolPeriods/detail';
+import SchoolPeriodActual from './containers/SchoolPeriods/actual';
 
 class App extends Component {
   render() {
@@ -54,7 +55,7 @@ class App extends Component {
               <Route exact path="/profesores/edit/:id" component={TeacherDetail} />
               <Route exact path="/profesores/create" component={TeacherDetail} />
 
-              {/* <Route exact path="/periodo-semestral/actual" component={SchoolPeriodsActual} /> */}
+              <Route exact path="/periodo-semestral/actual" component={SchoolPeriodActual} />
               <Route exact path="/periodo-semestral/list" component={SchoolPeriodsList} />
               <Route exact path="/periodo-semestral/edit/:id" component={SchoolPeriodDetail} />
               <Route exact path="/periodo-semestral/create" component={SchoolPeriodDetail} />
