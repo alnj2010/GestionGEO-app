@@ -1,5 +1,7 @@
 import { SchoolPeriod } from '../services/schoolPeriod';
 import { show } from './snackbar';
+import Subject from '../services/subject';
+import { startOfHour } from 'date-fns';
 
 export const ACTIONS = {
   LIST: 'schoolPeriod/list',
@@ -47,16 +49,26 @@ export const cleanSelectedSchoolPeriod = id => async dispatch => {
 export const updateSchoolPeriod = schoolPeriod => async dispatch => {
   const payload = {
     id:schoolPeriod.id,
-    identification:schoolPeriod.identification,
-    first_name:schoolPeriod.firstName,
-    second_name: schoolPeriod.secondName, 
-    first_surname:schoolPeriod.firstSurname,
-    second_surname: schoolPeriod.secondSurname, 
-    mobile:schoolPeriod.mobile,
-    telephone: schoolPeriod.telephone, 
-    work_phone: schoolPeriod.workPhone, 
-    email:schoolPeriod.email,
-    schoolPeriod_type:schoolPeriod.schoolPeriodType,
+    inscription_visible:schoolPeriod.inscriptionVisible,
+    end_school_period:schoolPeriod.endSchoolPeriod,
+    load_notes:schoolPeriod.loadNotes,
+    cod_school_period:schoolPeriod.codSchoolPeriod,
+    end_date:schoolPeriod.endDate,
+    start_date:schoolPeriod.startDate,
+    subjects: schoolPeriod.subjects.map(subject =>({
+
+      subject_id:subject.subjectId,
+      teacher_id:subject.teacherId,
+      duty:subject.duty,
+      limit:subject.limit,
+      schedules:schoolPeriod.schedules.map(schedule =>({
+        school_period_subject_teacher_id:schedule.schoolPeriodSubjectTeacherId,
+        day:schedule.day,
+        start_hour:schedule.startHour,
+        end_hour:schedule.endHour,
+        classroom:schedule.classroom
+      }))
+    }))
   };
   return SchoolPeriod.update(payload)
     .then(response => {
@@ -75,16 +87,26 @@ export const updateSchoolPeriod = schoolPeriod => async dispatch => {
 
 export const saveSchoolPeriod = schoolPeriod => async dispatch => {
   const payload = {
-    identification:schoolPeriod.identification,
-    first_name:schoolPeriod.firstName,
-    second_name: schoolPeriod.secondName, 
-    first_surname:schoolPeriod.firstSurname,
-    second_surname: schoolPeriod.secondSurname, 
-    mobile:schoolPeriod.mobile,
-    telephone: schoolPeriod.telephone, 
-    work_phone: schoolPeriod.workPhone, 
-    email:schoolPeriod.email,
-    schoolPeriod_type:schoolPeriod.schoolPeriodType,
+    inscription_visible:false,
+    end_school_period:false,
+    load_notes:false,
+    cod_school_period:schoolPeriod.codSchoolPeriod,
+    end_date:schoolPeriod.endDate,
+    start_date:schoolPeriod.startDate,
+    subjects: schoolPeriod.subjects.map(subject =>({
+
+      subject_id:subject.subjectId,
+      teacher_id:subject.teacherId,
+      duty:subject.duty,
+      limit:subject.limit,
+      schedules:schoolPeriod.schedules.map(schedule =>({
+
+        day:schedule.day,
+        start_hour:schedule.startHour,
+        end_hour:schedule.endHour,
+        classroom:schedule.classroom
+      }))
+    }))
   };
   return SchoolPeriod.saveSchoolPeriod(payload)
     .then(res => {

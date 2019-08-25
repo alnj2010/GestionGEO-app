@@ -204,6 +204,7 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
           return (
             <TextField
               disabled={params.disabled}
+              className={classes.formControl}
               id={params.id}
               margin="normal"
               {...params.input}

@@ -5,9 +5,10 @@ import {
   Grid,
   Button,
   Typography,
+  Divider,
 } from '@material-ui/core';
 import * as moment from 'moment';
-import { Form, reduxForm, change, submit, FieldArray, formValueSelector, } from 'redux-form';
+import { Form, reduxForm, change, submit, FieldArray, formValueSelector,Field } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -75,10 +76,11 @@ class SchoolPeriodDetail extends Component {
     return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.id===item.id && pos>index) )
   }
 
-  renderSchedule = ({ fields, meta: { error, submitFailed } }) => (<Grid container item justify="center">    
+  renderSchedule = ({ fields, meta: { error, submitFailed } }) => (<Grid container justify="center">    
   {fields.map((schedule, index) => (
     <Fragment key={index}>
       <Grid item xs={4}>
+        <Field component="input" name="schoolPeriodSubjectTeacherId" type="hidden" style={{ height: 0 }} />
         <RenderFields >{[
           { placeholder: 'Dia',field: `${schedule}.day`, id: `${schedule}.day`, type: 'select', options: ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'].map(day => { return { key: day, value: day } }) },
         ]}</RenderFields>      
@@ -105,26 +107,42 @@ class SchoolPeriodDetail extends Component {
     </Grid>
   </Grid>)
 
-  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Grid container item justify="center">    
+  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment >    
     {fields.map((subject, index) => (
-    <Fragment key={index}>
-      <Grid item xs={12}>
+    <Grid container justify="center" key={index}>
+      <Grid item xs={3}>
         <RenderFields >{[
           {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', placeholder:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={3}>
+        <RenderFields >{[
           {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', placeholder:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={3}>
+        <RenderFields >{[
           {placeholder: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={3}>
+        <RenderFields >{[
           {placeholder: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={6}>
         <FieldArray name={`${subject}.schedule`} component={this.renderSchedule} />
       </Grid>
-    </Fragment>      
+    </Grid>      
     ))}
-    <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({})}>
-      <AddIcon />
-    </Fab>
-  </Grid>)
+    <Grid container item xs={12} justify={'center'}>
+      <Grid item xs={1}>
+        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({})}>
+          <AddIcon />
+        </Fab>
+      </Grid>      
+    </Grid>
+  </Fragment>)
 
   handleDialogShow = (action, func) => {
     this.setState({ func: func }, () => {
@@ -166,7 +184,7 @@ class SchoolPeriodDetail extends Component {
                 ]}</RenderFields>
               </Grid>
               <Grid container item xs={6}></Grid>
-              <Grid container item xs={6}>
+              <Grid container item xs={12}>
                 <RenderFields >{[
                   { label: 'Materias del periodo', type: 'label' },        
                 ]}</RenderFields>
@@ -293,13 +311,7 @@ const schoolPeriodValidation = values => {
       }
   
     })
-
     
-
-
-
-
-
     if (subjectArrayErrors.length) {
       errors.subject = subjectArrayErrors
     }
@@ -333,6 +345,7 @@ SchoolPeriodDetail = connect(
           limit:subj.limit,
           duty:subj.duty,
           schedule: subj.schedule ? subj.schedule.map(sche =>({
+            schoolPeriodSubjectTeacherId:sche.school_period_subject_teacher_id,
             day:sche.day,
             startHour:sche.start_hour,
             endHour:sche.end_hour,

@@ -36,13 +36,14 @@ export class SchoolPeriodDetailContainer extends Component {
       history,
     } = this.props;
     const payload = { ...values };
-    if (match.params.id) updateSchoolPeriod({ ...payload, ...match.params });
-    else
-      saveSchoolPeriod({ ...payload }).then(response => {
-        if (response) {
-          findSchoolPeriodById(response).then(res => history.push(`edit/${response}`));
-        }
-      });
+    console.log(payload)
+   if (match.params.id) updateSchoolPeriod({ ...payload, ...match.params });
+   else
+    saveSchoolPeriod({ ...payload }).then(response => {
+      if (response) {
+        findSchoolPeriodById(response).then(res => history.push(`edit/${response}`));
+      }
+    });
   };
 
   goBack = () => {

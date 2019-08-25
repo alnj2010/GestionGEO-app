@@ -160,13 +160,13 @@ class MenuApp extends React.Component {
         options: [
           {
             link: 'actual',
-            name: 'En curso',
+            name: 'Periodo en curso',
             component: Actual,
             clicked: false,
           },
           {
             link: 'list',
-            name: 'Lista semestral',
+            name: 'Periodos',
             component: ListIcon,
             clicked: false,
           },
