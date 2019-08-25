@@ -113,6 +113,7 @@ class SchoolPeriodDetail extends Component {
           {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', placeholder:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
           {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', placeholder:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
           {placeholder: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
+          {placeholder: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={12}>
@@ -147,7 +148,7 @@ class SchoolPeriodDetail extends Component {
       startDate,
     } = this.props;
     const { func } = this.state;
-    const today=new Date();
+    
     return (
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
@@ -160,9 +161,8 @@ class SchoolPeriodDetail extends Component {
               <Grid container item xs={6}>
                 <RenderFields >{[
                   { label: 'Codigo', field: 'codSchoolPeriod', id: 'codSchoolPeriod', type: 'text' },
-                  { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'datetime-local', minDate:today }, 
-                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'datetime-local', minDate:(new Date(startDate)), disabled:startDate==='Invalid date' },
-                                          
+                  { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'date' }, 
+                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(new Date(startDate)), disabled:startDate==='Invalid date' },
                 ]}</RenderFields>
               </Grid>
               <Grid container item xs={6}></Grid>
@@ -233,41 +233,78 @@ SchoolPeriodDetail.propTypes = {
 
 const schoolPeriodValidation = values => {
   const errors = {};
-  if (!values.identification) {
-    errors.identification = 'Cedula es requerida';
+
+  if (!values.codSchoolPeriod) {
+    errors.codSchoolPeriod = '*codigo es requerido';
   }
-  if (!values.firstName) {
-    errors.firstName = 'Nombre es requerido';
-  } else if (/(?=[0-9])/.test(values.firstName))
-    errors.firstName = 'El nombre no debe contener numeros';
+  if(!values.startDate || values.startDate === '*Invalid date') 
+    errors.startDate = '*Fecha inicial es requerida';
 
-  if (!values.firstSurname) {
-    errors.firstSurname = 'Apellido es requerido';
-  } else if (/(?=[0-9])/.test(values.firstSurname))
-    errors.firstSurname = 'El Apellido no debe contener numeros';
-  if (!values.mobile) {
-    errors.mobile = 'movil es requerido';
-  } else if (!/^[0][4][1-9][1-9][0-9]{7}$/.test(values.mobile)) {
-    errors.mobile = 'Introduce un movil valido';
+  if(!values.endDate || values.endDate === '*Invalid date') 
+    errors.endDate = '*Fecha fin es requerida';
+  else if((new Date(values.endDate) <= new Date(values.startDate)))
+    errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';  
+
+  if (values.subject && values.subject.length){
+    const subjectArrayErrors = []
+    values.subject.forEach((subj, subjIndex) => {
+      const subjErrors = {}
+      if (!subj || !subj.subjectId) {
+        subjErrors.subjectId = '*Materia es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
+      if (!subj || !subj.teacherId) {
+        subjErrors.teacherId = '*Profesor es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
+      if (!subj || !subj.limit) {
+        subjErrors.limit = '*Maximo de alumnos es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }  
+      if (!subj || !subj.duty) {
+        subjErrors.duty = '*Aranceles es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
+  
+      if (subj.schedule && subj.schedule.length){
+        subjErrors.schedule = []
+        subj.schedule.forEach((sche,scheIndex)=>{
+
+          const scheErrors = {}
+          if (!sche || !sche.day) {
+            scheErrors.day = '*Dia es requerido'
+            subjErrors.schedule[scheIndex] = scheErrors
+          }
+          if (!sche || !sche.classroom) {
+            scheErrors.classroom = '*Aula es requerido'
+            subjErrors.schedule[scheIndex] = scheErrors
+          }
+          if (!sche || !sche.startHour) {
+            scheErrors.startHour = '*Hora inicio es requerida'
+            subjErrors.schedule[scheIndex] = scheErrors
+          }
+          if (!sche || !sche.endHour) {
+            scheErrors.endHour = '*Hora fin es requerida'
+            subjErrors.schedule[scheIndex] = scheErrors
+          } else if((sche.endHour <= sche.startHour))
+          scheErrors.endHour = '*Hora fin no debe estar por debajo de la inicial';  
+        })
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
+  
+    })
+
+    
+
+
+
+
+
+    if (subjectArrayErrors.length) {
+      errors.subject = subjectArrayErrors
+    }
   }
-
-  if (values.telephone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.telephone)) {
-    errors.telephone = 'Introduce un telefono valido';
-  }
-
-  if (values.workPhone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.workPhone)) {
-    errors.workPhone = 'Introduce un telefono valido';
-  }
-  if (!values.email) {
-    errors.email = 'Email es requerido';
-  } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
-    errors.email = 'Introduce un email valido';
-  }
-
-  if(!values.schoolPeriodType) errors.schoolPeriodType = " Tipo Requerido"
-
-
-
+  console.log(errors);
   return errors;
 };
 
@@ -294,6 +331,7 @@ SchoolPeriodDetail = connect(
           subjectId:subj.subject_id, 
           teacherId:subj.teacher_id,
           limit:subj.limit,
+          duty:subj.duty,
           schedule: subj.schedule ? subj.schedule.map(sche =>({
             day:sche.day,
             startHour:sche.start_hour,
@@ -301,7 +339,7 @@ SchoolPeriodDetail = connect(
             classroom:sche.classroom,            
           })) : [{}]
         }))
-        : [{}],
+        : [{schedule:[{}]}],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),

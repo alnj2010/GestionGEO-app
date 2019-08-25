@@ -136,15 +136,18 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
           return <Input id={params.id} type="password" {...params.input} disabled={params.disabled} />;
         }
         case 'date':{
+          params.input.value =(!params.input.value || params.input.value==="Invalid date") ? null : new Date(params.input.value);
           return (
-            <DateFormatInput
+            <DatePicker
               disabled={params.disabled}
-              id={params.id}
-              name="date-input"
+              customInput={ ( <TextField />)}
+              onChange={params.input.onChange}
+              
+              selected={params.input.value}
+              minDate={params.field.minDate}
+              maxDate={params.field.maxDate}
               {...params.input}
-              className={params.field.styles ? params.field.styles : '' }
-              max={new Date()}
-            />
+          />
           )
         }
         case 'time':{
@@ -173,9 +176,10 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
                 disabled={params.disabled}
                 customInput={ ( <TextField />)}
                 onChange={params.input.onChange}
-                showTimeSelect={params.input.showTimeSelect}
+                showTimeSelect
+                timeFormat="HH:mm"
                 timeIntervals={15}
-                dateFormat="yyyy-MM-dd"
+                dateFormat="yyyy-MM-dd hh:mm"
                 timeCaption="time"
                 selected={params.input.value}
                 minDate={params.field.minDate}
@@ -304,7 +308,7 @@ class RenderFields extends React.Component{
       const {
           meta: { touched, error },
       } = props;
-      
+
       return (
         <Grid item xs={12} key={props.field.id}>
           <Grid container>
@@ -314,8 +318,8 @@ class RenderFields extends React.Component{
             <Grid item xs={(props.field.type!=='file' && props.field.label)?6:12} className={this.props.classes.input}>
               <RenderComponent params={props}></RenderComponent>
             </Grid>
-            <Grid item xs={6} />
-            <Grid item xs={6}>
+            {props.field.label?<Grid item xs={6} />:null}
+            <Grid item xs={props.field.label?6:12}>
               {touched && error && <span className={this.props.classes.error}>{error}</span>}
             </Grid>
           </Grid>
