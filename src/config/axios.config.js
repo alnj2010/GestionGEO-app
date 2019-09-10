@@ -6,6 +6,7 @@ const AXIOS = axios.create({
   baseURL: apiUrl,
   headers: {
     'Content-Type': 'application/json',
+    'organization_key':'G'
   },
   timeout: 100000,
 });

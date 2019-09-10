@@ -25,7 +25,7 @@ export const findStudentById = id => async dispatch => {
     .then(response => {
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedStudent: response[0] },
+        payload: { selectedStudent: response },
       });
       return true;
     })

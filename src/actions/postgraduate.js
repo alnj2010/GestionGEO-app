@@ -44,6 +44,7 @@ export const cleanSelectedPostgraduate = id => async dispatch => {
 
 export const updatePostgraduate = postgraduate => async dispatch => {
   const payload = {
+    id:postgraduate.id,
     postgraduate_name:postgraduate.postgraduateName,
     num_cu:parseInt(postgraduate.numCu),
   };

@@ -44,7 +44,7 @@ class AdminsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/admins/create`)}
+            onClick={() => history.push(`/administradores/create`)}
           >
             <Add />
             Agregar Administrador

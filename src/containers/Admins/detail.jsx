@@ -47,7 +47,7 @@ export class AdminDetailContainer extends Component {
 
   handleAdminDelete = () => {
     const { deleteAdmin, history, match } = this.props;
-    deleteAdmin(match.params.id).then(res => history.push('/admins'));
+    deleteAdmin(match.params.id).then(res => history.push('/administradores'));
   };
 
 

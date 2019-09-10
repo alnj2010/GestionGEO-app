@@ -261,7 +261,7 @@ SubjectDetail = connect(
         ? state.subjectReducer.selectedSubject.uc
         : '',
       postgraduates: state.subjectReducer.selectedSubject.postgraduates
-        ? state.subjectReducer.selectedSubject.postgraduates.map(post=>({ id:post.pivot.postgraduate_id,type:post.pivot.type}))
+        ? state.subjectReducer.selectedSubject.postgraduates.map(post=>({ id:post.id,type:post.postgraduate_subject.type}))
         : [{}],
     },
     postgraduatesSelected: selector(state, 'postgraduates'),

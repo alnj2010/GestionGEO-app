@@ -76,6 +76,7 @@ export const saveSubject = subject => async dispatch => {
   };
   return Subject.saveSubject(payload)
     .then(res => {
+      console.log(res);
       show('Materia guardada', 'success')(dispatch);
       return res.id;
     })
