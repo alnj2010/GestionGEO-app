@@ -144,7 +144,7 @@ class SchoolPeriodDetail extends Component {
         </IconButton>
       </Grid>   
       <Grid item xs={6}>
-        <FieldArray name={`${subject}.schedule`} component={this.renderSchedule} />
+        <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
       </Grid>
     </Grid>      
     ))}
@@ -201,7 +201,7 @@ class SchoolPeriodDetail extends Component {
                 <RenderFields >{[
                   { label: 'Materias del periodo', type: 'label' },        
                 ]}</RenderFields>
-                <FieldArray name="subject" component={this.renderSubjects} />
+                <FieldArray name="subjects" component={this.renderSubjects} />
               </Grid>                
             </Grid>
             <Grid container>
@@ -350,13 +350,13 @@ SchoolPeriodDetail = connect(
       endDate: moment(
           new Date(state.schoolPeriodReducer.selectedSchoolPeriod.end_date),
         ).format('YYYY-MM-DD'),
-      subject: state.schoolPeriodReducer.selectedSchoolPeriod.subject
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.subject.map(subj=>({ 
+      subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map(subj=>({ 
           subjectId:subj.subject_id, 
           teacherId:subj.teacher_id,
           limit:subj.limit,
           duty:subj.duty,
-          schedule: subj.schedule ? subj.schedule.map(sche =>({
+          schedules: subj.schedules ? subj.schedules.map(sche =>({
             schoolPeriodSubjectTeacherId:sche.school_period_subject_teacher_id,
             day:sche.day,
             startHour:sche.start_hour,
@@ -364,11 +364,11 @@ SchoolPeriodDetail = connect(
             classroom:sche.classroom,            
           })) : [{}]
         }))
-        : [{schedule:[{}]}],
+        : [{schedules:[{}]}],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),
-    subjectsSelected: selector(state, 'subject')
+    subjectsSelected: selector(state, 'subjects')
   }),
   { change, show, submit },
 )(SchoolPeriodDetail);

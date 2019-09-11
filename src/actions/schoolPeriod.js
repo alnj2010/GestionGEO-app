@@ -45,6 +45,7 @@ export const cleanSelectedSchoolPeriod = id => async dispatch => {
 };
 
 export const updateSchoolPeriod = schoolPeriod => async dispatch => {
+  console.log(schoolPeriod);
   const payload = {
     id:schoolPeriod.id,
     inscription_visible:schoolPeriod.inscriptionVisible,
@@ -59,7 +60,7 @@ export const updateSchoolPeriod = schoolPeriod => async dispatch => {
       teacher_id:subject.teacherId,
       duty:subject.duty,
       limit:subject.limit,
-      schedules:schoolPeriod.schedules.map(schedule =>({
+      schedules:subject.schedules.map(schedule =>({
         school_period_subject_teacher_id:schedule.schoolPeriodSubjectTeacherId,
         day:schedule.day,
         start_hour:schedule.startHour,
@@ -97,7 +98,7 @@ export const saveSchoolPeriod = schoolPeriod => async dispatch => {
       teacher_id:subject.teacherId,
       duty:subject.duty,
       limit:subject.limit,
-      schedules:schoolPeriod.schedules.map(schedule =>({
+      schedules:subject.schedules.map(schedule =>({
 
         day:schedule.day,
         start_hour:schedule.startHour,
