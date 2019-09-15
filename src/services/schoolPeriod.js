@@ -29,6 +29,19 @@ export const SchoolPeriod = {
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
+  findCurrentSchoolPeriod() {
+    return AXIOS.get(`${URL.SCHOOL_PERIOD}/current`, {
+      headers: headers(),
+    })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        if (error && error.response && error.response && error.response.data)
+          return Promise.reject(error.response.data.message);
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+      });
+  },
   update(shoolPeriod) {
     return AXIOS.patch(`${URL.SCHOOL_PERIOD}/${shoolPeriod.id}`, shoolPeriod, {
       headers: headers(),

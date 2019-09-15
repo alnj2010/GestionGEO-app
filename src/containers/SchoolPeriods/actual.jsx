@@ -3,15 +3,15 @@ import { func, object } from 'prop-types';
 import { connect } from 'react-redux';
 import {
   updateSchoolPeriod,
-  getList
+  findCurrentSchoolPeriod
 } from '../../actions/schoolPeriod';
 import SchoolPeriodActual from '../../components/SchoolPeriods/actual';
 import { define, cleanDialog } from '../../actions/dialog';
 export class SchoolPeriodActualContainer extends Component {
   componentDidMount = () => {
-    const {define,getList } = this.props;
+    const {define,findCurrentSchoolPeriod } = this.props;
     define('periodo semestral');
-    getList();
+    findCurrentSchoolPeriod();
   };
   componentWillUnmount = () => {
     this.props.cleanDialog();    
@@ -21,10 +21,38 @@ export class SchoolPeriodActualContainer extends Component {
     const {
       match,
       updateSchoolPeriod,
+      schoolPeriodActual
     } = this.props;
-    const payload = { ...values };
-    console.log(payload);
-   //if (match.params.id) updateSchoolPeriod({ ...payload, ...match.params });
+    values={
+      end_date: values.endDate,
+      inscription_visible: values.incriptionVisible,
+      load_notes: values.loadNotes
+    }
+    let payload={...schoolPeriodActual, ...values }
+    payload = {
+      id:payload.id,
+      inscriptionVisible:payload.inscription_visible,
+      endSchoolPeriod:payload.end_school_period,
+      loadNotes:payload.load_notes,
+      codSchoolPeriod:payload.cod_school_period,
+      endDate:payload.end_date,
+      startDate:payload.start_date,
+      subjects: payload.subjects.map(subject =>({
+  
+        subjectId:subject.subject_id,
+        teacherId:subject.teacher_id,
+        duty:subject.duty,
+        limit:subject.limit,
+        schedules:subject.schedules.map(schedule =>({
+          schoolPeriodSubjectTeacherId:schedule.school_period_subject_teacher_id,
+          day:schedule.day,
+          startHour:schedule.start_hour,
+          endHour:schedule.end_hour,
+          classroom:schedule.classroom
+        }))
+      }))
+    };
+    updateSchoolPeriod(payload);
   };
 
 
@@ -32,7 +60,7 @@ export class SchoolPeriodActualContainer extends Component {
     const {
       schoolPeriodActual:{start_date,end_date}
     }=this.props;
- 
+    console.log(end_date)
     return (
       <SchoolPeriodActual
         startDate={start_date}
@@ -49,14 +77,14 @@ SchoolPeriodActualContainer.propTypes = {
 };
 
 const mS = state => ({
-  schoolPeriodActual: state.schoolPeriodReducer.list.length ? state.schoolPeriodReducer.list[0] : {},
+  schoolPeriodActual: state.schoolPeriodReducer.selectedSchoolPeriod,
 });
 
 const mD = {
   updateSchoolPeriod,
   define,
   cleanDialog,
-  getList,
+  findCurrentSchoolPeriod,
 };
 
 SchoolPeriodActualContainer = connect(

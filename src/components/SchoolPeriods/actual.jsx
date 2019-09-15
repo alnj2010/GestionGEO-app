@@ -87,7 +87,7 @@ class SchoolPeriodActual extends Component {
       valid,
       submit,
       startDate,
-      endDate
+      endDate,
     } = this.props;
     const { func } = this.state;
     const final=new Date(endDate);
@@ -109,7 +109,6 @@ class SchoolPeriodActual extends Component {
                     { label: 'Habilitar inscripcion', field: 'incriptionVisible', id: 'incriptionVisible', type: 'switch',disabled:finishedPeriod, checked:!finishedPeriod },
                     { label: 'Habilitar cargar notas', field: 'loadNotes', id: 'loadNotes', type: 'switch' },
                 ]}</RenderFields>
-                <Field component="input" name="endSchoolPeriod" value={finishedPeriod} type="hidden" style={{ height: 0 }} />
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -164,15 +163,13 @@ const selector = formValueSelector('schoolPeriodActual');
 SchoolPeriodActual = connect(
   state => ({
     initialValues: {
-        endDate: state.schoolPeriodReducer.list.length ? moment(
-            new Date(state.schoolPeriodReducer.list[0].end_date),
+        endDate: state.schoolPeriodReducer.selectedSchoolPeriod ? moment(
+            new Date(state.schoolPeriodReducer.selectedSchoolPeriod.end_date),
           ).format('YYYY-MM-DD') : 'Invalid date',
-        incriptionVisible:state.schoolPeriodReducer.list.length ? state.schoolPeriodReducer.list[0].incription_visible:false,
-        loadNotes:state.schoolPeriodReducer.list.length ? state.schoolPeriodReducer.list[0].load_notes:false,
-        endSchoolPeriod:state.schoolPeriodReducer.list.length ? state.schoolPeriodReducer.list[0].end_school_period:false,
+        incriptionVisible:state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
+        loadNotes:state.schoolPeriodReducer.selectedSchoolPeriod.load_notes,
     },
     action: state.dialogReducer.action,
-    endSchoolPeriod: selector(state, 'endSchoolPeriod'),
 
   }),
   { change, show, submit },

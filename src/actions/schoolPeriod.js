@@ -8,12 +8,28 @@ export const ACTIONS = {
   SELECT: `schoolPeriod/select`,
   UPDATE: `schoolPeriod/update`,
   CLEAN_SELECTED_SCHOOL_PERIOD: `schoolPeriod/clean-selected`,
+  CURRENT:`schoolPeriod/current`
 };
 
 export const getList = () => async dispatch => {
   return SchoolPeriod.getSchoolPeriodList()
     .then(response => {
       dispatch({ type: ACTIONS.LIST, payload: { list: response } });
+      return true;
+    })
+    .catch(error => {
+      show(error, 'error')(dispatch);
+      return false;
+    });
+};
+
+export const findCurrentSchoolPeriod = () => async dispatch => {
+  return SchoolPeriod.findCurrentSchoolPeriod()
+    .then(response => {
+      dispatch({
+        type: ACTIONS.SELECT,
+        payload: { selectedSchoolPeriod: response },
+      });
       return true;
     })
     .catch(error => {
