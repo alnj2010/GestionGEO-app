@@ -172,6 +172,13 @@ class MenuApp extends React.Component {
           },
         ],
       },
+      {
+        link: 'inscripcion',
+        name: 'Inscripcion',
+        component: Subject,
+        clicked: false,
+        roles:['A'],
+      },
       /*{
         link: 'trivia-categories',
         name: 'Trivia categories',

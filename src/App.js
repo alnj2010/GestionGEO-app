@@ -25,6 +25,8 @@ import SchoolPeriodsList from './containers/SchoolPeriods/list';
 import SchoolPeriodDetail from './containers/SchoolPeriods/detail';
 import SchoolPeriodActual from './containers/SchoolPeriods/actual';
 
+import InscriptionList from './containers/Inscription';
+
 class App extends Component {
   render() {
     return (
@@ -59,6 +61,8 @@ class App extends Component {
               <Route exact path="/periodo-semestral/list" component={SchoolPeriodsList} />
               <Route exact path="/periodo-semestral/edit/:id" component={SchoolPeriodDetail} />
               <Route exact path="/periodo-semestral/create" component={SchoolPeriodDetail} />
+
+              <Route exact path="/inscripcion/" component={InscriptionList} />
               <NotFound />
             </Switch>
           </Menu>
