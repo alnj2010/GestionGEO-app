@@ -10,6 +10,7 @@
     "axios-progress-bar": "^1.2.0",
     "date-arithmetic": "^4.0.1",
     "geodist": "^0.2.1",
+    "globalize": "^1.4.2",
     "google-maps-react": "^2.0.2",
     "material-table": "^1.34.2",
     "material-ui-next-pickers": "0.0.20",

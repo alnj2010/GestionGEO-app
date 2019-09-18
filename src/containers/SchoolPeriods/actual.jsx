@@ -58,7 +58,7 @@ export class SchoolPeriodActualContainer extends Component {
 
   render() {
     const {
-      schoolPeriodActual:{start_date,end_date}
+      schoolPeriodActual:{start_date,end_date,subjects}
     }=this.props;
     console.log(end_date)
     return (
@@ -66,6 +66,7 @@ export class SchoolPeriodActualContainer extends Component {
         startDate={start_date}
         endDate={end_date}
         saveSchoolPeriod={this.saveSchoolPeriod}
+        subjects={subjects}
       />
     );
   }

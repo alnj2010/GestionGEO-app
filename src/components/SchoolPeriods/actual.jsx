@@ -11,7 +11,21 @@ import { object, func, bool} from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
+import {
+  Calendar,
+  momentLocalizer,
+  Views,
+} from 'react-big-calendar'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 
+const localizer = momentLocalizer(moment)
+const weekdays={
+  Lunes:1,
+  Martes:2,
+  Miercoles:3,
+  Jueves:4,
+  Viernes:5,
+}
 const styles = theme => ({
   inputLabel: {
     paddingTop: '4%',
@@ -60,6 +74,9 @@ const styles = theme => ({
   error: {
     color: 'red',
   },
+  calendar:{
+    height:"100vh"
+  }
 });
 
 class SchoolPeriodActual extends Component {
@@ -76,6 +93,25 @@ class SchoolPeriodActual extends Component {
     });
   };
 
+  transformData = ()=>{
+    let arr;
+    if(this.props.subjects){
+         this.props.subjects.forEach(subject => {
+      arr=subject.schedules.map(schedule =>({
+        id: 1,
+        title:subject.subject.subject_name,
+        start: moment().isoWeekday(weekdays[schedule.day]).hours(10).minutes(0)._d,
+        end: moment().isoWeekday(weekdays[schedule.day]).hours(12).minutes(0)._d,
+
+      }))
+    });
+    console.log(arr);
+    return arr;
+    }else{
+      return [{}]
+    }    
+  }
+
   render = () => {
     const {
       classes,
@@ -88,11 +124,14 @@ class SchoolPeriodActual extends Component {
       submit,
       startDate,
       endDate,
+      subjects
     } = this.props;
+    let allViews = Object.keys(Views).map(k => Views[k])
     const { func } = this.state;
     const final=new Date(endDate);
     const today=new Date();
     let finishedPeriod=today>final;
+    console.log(subjects)
     return (
     <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
@@ -133,6 +172,16 @@ class SchoolPeriodActual extends Component {
             </Grid>
           </Grid>
         </Grid>
+        <Calendar
+          className={classes.calendar}
+          events={this.transformData()}
+          defaultView={Views.WORK_WEEK}
+          views={allViews}
+          toolbar={false}
+          culture="es"
+          
+          localizer={localizer}
+        />
         <Dialog handleAgree={func} />
       </Form>
     );
