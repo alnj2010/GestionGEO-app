@@ -96,16 +96,20 @@ class SchoolPeriodActual extends Component {
   transformData = ()=>{
     let arr;
     if(this.props.subjects){
-         this.props.subjects.forEach(subject => {
-      arr=subject.schedules.map(schedule =>({
-        id: 1,
-        title:subject.subject.subject_name,
-        start: moment().isoWeekday(weekdays[schedule.day]).hours(10).minutes(0)._d,
-        end: moment().isoWeekday(weekdays[schedule.day]).hours(12).minutes(0)._d,
+         this.props.subjects.forEach((subject,index) => {
+          arr=subject.schedules.map((schedule,index2) =>{
+          var startTime=schedule.start_hour.split(':');
+          var endTime=schedule.end_hour.split(':');
+          return {
+            id: parseInt(`${index}${index2}`),
+            title:subject.subject.subject_name,
+            start: moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(startTime[0])).minutes(parseInt(startTime[1]))._d,
+            end: moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(endTime[0])).minutes(endTime[1])._d,
+          }
 
-      }))
+      })
     });
-    console.log(arr);
+   
     return arr;
     }else{
       return [{}]
