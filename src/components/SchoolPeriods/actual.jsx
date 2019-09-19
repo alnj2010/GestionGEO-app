@@ -94,22 +94,22 @@ class SchoolPeriodActual extends Component {
   };
 
   transformData = ()=>{
-    let arr;
+    let arr=[];
+    
     if(this.props.subjects){
-         this.props.subjects.forEach((subject,index) => {
-          arr=subject.schedules.map((schedule,index2) =>{
+        this.props.subjects.forEach((subject,index) => {
+        let aux=subject.schedules.map((schedule,index2) =>{
           var startTime=schedule.start_hour.split(':');
-          var endTime=schedule.end_hour.split(':');
+          var endTime=schedule.end_hour.split(':');          
           return {
             id: parseInt(`${index}${index2}`),
             title:subject.subject.subject_name,
             start: moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(startTime[0])).minutes(parseInt(startTime[1]))._d,
             end: moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(endTime[0])).minutes(endTime[1])._d,
           }
-
-      })
+        })
+        arr=arr.concat(aux)
     });
-   
     return arr;
     }else{
       return [{}]
