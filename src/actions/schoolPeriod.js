@@ -64,9 +64,9 @@ export const updateSchoolPeriod = schoolPeriod => async dispatch => {
   console.log(schoolPeriod);
   const payload = {
     id:schoolPeriod.id,
-    inscription_visible:schoolPeriod.inscriptionVisible,
-    end_school_period:schoolPeriod.endSchoolPeriod,
-    load_notes:schoolPeriod.loadNotes,
+    inscription_visible:!!schoolPeriod.inscriptionVisible,
+    end_school_period:!!schoolPeriod.endSchoolPeriod,
+    load_notes:!!schoolPeriod.loadNotes,
     cod_school_period:schoolPeriod.codSchoolPeriod,
     end_date:schoolPeriod.endDate,
     start_date:schoolPeriod.startDate,

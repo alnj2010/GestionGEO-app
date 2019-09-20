@@ -142,7 +142,8 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
               disabled={params.disabled}
               customInput={ ( <TextField />)}
               onChange={params.input.onChange}
-              
+              dateFormat="yyyy-MM-dd"
+              strictParsing
               selected={params.input.value}
               minDate={params.field.minDate}
               maxDate={params.field.maxDate}
@@ -157,6 +158,7 @@ const RenderComponent = withStyles(styles)(({params,classes})=>{
               disabled={params.disabled}
               id={params.id}
               type="time"
+              step="1"
               label={params.field.placeholder ? params.field.placeholder:''}
               {...params.input}
               className={classes.inputTime}

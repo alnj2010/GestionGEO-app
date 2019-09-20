@@ -23,6 +23,7 @@
     "react-dom": "^16.8.6",
     "react-geocode-multi-language": "^0.1.6",
     "react-google-maps": "^9.4.5",
+    "react-html2pdf": "^1.0.1",
     "react-images-upload": "^1.2.6",
     "react-moment": "^0.8.4",
     "react-redux": "^6.0.1",

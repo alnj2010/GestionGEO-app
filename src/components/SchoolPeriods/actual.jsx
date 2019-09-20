@@ -11,11 +11,13 @@ import { object, func, bool} from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
+import { Preview, print } from 'react-html2pdf';
 import {
   Calendar,
   momentLocalizer,
   Views,
 } from 'react-big-calendar'
+import backImage from '../../images/pif.jpg'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 const localizer = momentLocalizer(moment)
@@ -27,6 +29,9 @@ const weekdays={
   Viernes:5,
 }
 const styles = theme => ({
+  pdf:{
+    backgroundColor:'red',
+  },
   inputLabel: {
     paddingTop: '4%',
   },
@@ -170,6 +175,14 @@ class SchoolPeriodActual extends Component {
                     >
                       Guardar Cambios
                     </Button>
+                    <Preview id={'jsx-template'} >
+                        <div className={classes.pdf}>
+                        <div><img src="https:\\homepages.cae.wisc.edu\~ece533\images\airplane.png" alt=""/></div>
+                        <div>2</div>
+                        <div>3</div>
+                        </div>
+                    </Preview>
+                    <button onClick={()=>print('a', 'jsx-template')}> print</button>
                   </Grid>
                 </Grid>
               </Grid>
