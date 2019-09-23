@@ -52,7 +52,7 @@ export const updateAdmin = admin => async dispatch => {
     identification: admin.identification, 
     email: admin.email, 
     mobile: admin.mobile, 
-    phone: admin.phone, 
+    telephone: admin.telephone, 
     work_phone: admin.workPhone, 
   };
   return User.update(payload)

@@ -175,13 +175,6 @@ class SchoolPeriodActual extends Component {
                     >
                       Guardar Cambios
                     </Button>
-                    <Preview id={'jsx-template'} >
-                        <div className={classes.pdf}>
-                        <div><img src="https:\\homepages.cae.wisc.edu\~ece533\images\airplane.png" alt=""/></div>
-                        <div>2</div>
-                        <div>3</div>
-                        </div>
-                    </Preview>
                     <button onClick={()=>print('a', 'jsx-template')}> print</button>
                   </Grid>
                 </Grid>
