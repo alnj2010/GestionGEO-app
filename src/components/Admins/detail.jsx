@@ -164,16 +164,14 @@ const adminValidation = values => {
 
   if (!values.mobile) {
     errors.mobile = 'movil es requerido';
-  } else if (!/(?=[0-9])/.test(values.mobile)) {
-    errors.mobile = 'Introduce un movil valido';
   }
 
-  if (values.telephone && !/(?=[0-9])/.test(values.telephone)) {
-    errors.telephone = 'Introduce un telefono valido';
+  if (!values.telephone) {
+    errors.telephone = 'Telefono es requerido';
   }
 
-  if (values.workPhone && !/(?=[0-9])/.test(values.workPhone)) {
-    errors.workPhone = 'Introduce un telefono valido';
+  if (!values.workPhone) {
+    errors.workPhone = 'Telefono del trabajo es requerido';
   }
 
   return errors;

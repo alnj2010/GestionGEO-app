@@ -12,29 +12,10 @@ import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
 
 const styles = theme => ({
-  inputLabel: {
-    paddingTop: '4%',
-  },
-  input: {
-    alignSelf: 'center',
-  },
   form: {
     paddingLeft: '5%',
   },
-  largeIcon: {
-    width: '36.5%',
-    height: '36.5%',
-    cursor: 'pointer',
-  },
-  profilePhoto: {
-    width: 360,
-    height: 360,
-    cursor: 'pointer',
-  },
   buttonContainer: { paddingTop: '2%' },
-  buttonPostgraduates:{
-    margin: theme.spacing.unit,
-  },
   save: {
     color: 'white',
     backgroundColor: '#61A956',
@@ -42,14 +23,10 @@ const styles = theme => ({
       backgroundColor: 'rgb(78, 127, 71)',
     },
   },
-  fileInput: {
-    display: 'none',
-  },
-  date: { boxSizing: 'content-box', paddingTop: '4%' },
-  lastSave: { justifyContent: 'flex-end', display: 'flex' },
-  error: {
-    color: 'red',
-  },
+  button:{
+    width:'100%'
+  }
+
 });
 
 class TeacherDetail extends Component {
@@ -97,9 +74,9 @@ class TeacherDetail extends Component {
                 { label: 'Segundo Nombre', field: 'secondName', id: 'secondName', type: 'text' },
                 { label: 'Apellido', field: 'firstSurname', id: 'firstSurname', type: 'text' },
                 { label: 'Segundo apellido', field: 'secondSurname', id: 'secondSurname', type: 'text' },
-                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'text' },
-                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'text' },
-                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'text' },
+                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'phone' },
+                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
+                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Email', field: 'email', id: 'email', type: 'text' },
                 { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"INSTRUCTOR",id:"INS"},{value:"ASISTENTE",id:"ASI"},{value:"AGREGADO",id:"AGR"},{value:"TITULAR",id:"TIT"}].map(type => { return { key: type.value, value: type.id } }) },
                
@@ -108,29 +85,12 @@ class TeacherDetail extends Component {
             </Grid>
             <Grid container>
               <Grid item xs={12}>
-                <Grid container className={classes.buttonContainer}>
-                  <Grid item xs={4}>
-                    <Button variant="contained" onClick={goBack}>
-                      Cancelar
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {teacherId ? (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handleTeacherDelete)
-                        }
-                      >
-                        Borrar
-                      </Button>
-                    ) : null}
-                  </Grid>
-                  <Grid item xs={4}>
+                <Grid container className={classes.buttonContainer} justify="space-between" spacing={16}>
+                 
+                  <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={classes.save}
+                      className={[classes.save,classes.button]}
                       onClick={() =>
                         teacherId
                           ? this.handleDialogShow('actualizar', submit)
@@ -140,6 +100,27 @@ class TeacherDetail extends Component {
                     >
                       Guardar Cambios
                     </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    <Button variant="contained" onClick={goBack} className={classes.button}>
+                      Cancelar
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    {teacherId ? (
+                      <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() =>
+                          this.handleDialogShow('delete', handleTeacherDelete)
+                        }
+                      >
+                        Borrar
+                      </Button>
+                    ) : null}
                   </Grid>
                 </Grid>
               </Grid>
@@ -178,19 +159,17 @@ const teacherValidation = values => {
     errors.firstSurname = 'Apellido es requerido';
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
-  if (!values.mobile) {
-    errors.mobile = 'movil es requerido';
-  } else if (!/^[0][4][1-9][1-9][0-9]{7}$/.test(values.mobile)) {
-    errors.mobile = 'Introduce un movil valido';
-  }
-
-  if (values.telephone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.telephone)) {
-    errors.telephone = 'Introduce un telefono valido';
-  }
-
-  if (values.workPhone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.workPhone)) {
-    errors.workPhone = 'Introduce un telefono valido';
-  }
+    if (!values.mobile) {
+      errors.mobile = 'movil es requerido';
+    }
+  
+    if (!values.telephone) {
+      errors.telephone = 'Telefono es requerido';
+    }
+  
+    if (!values.workPhone) {
+      errors.workPhone = 'Telefono del trabajo es requerido';
+    }
   if (!values.email) {
     errors.email = 'Email es requerido';
   } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
