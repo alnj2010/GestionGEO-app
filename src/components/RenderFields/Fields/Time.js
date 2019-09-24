@@ -13,6 +13,7 @@ const renderTimeField = ({
     <MuiPickersUtilsProvider utils={DateFnsUtils}>         
       <TimePicker
         autoOk
+        minutesStep={15}
         style={{width:'100%'}}
         label={label}
         {...input}

@@ -47,7 +47,8 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        return response.data;
+        if(response.status==200) return response.data;
+        return Promise.reject(new Error('fail'))
       })
       .catch(error => {
         if (error && error.response && error.response && error.response.data)

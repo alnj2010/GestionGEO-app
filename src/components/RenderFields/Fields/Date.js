@@ -12,6 +12,7 @@ const renderDateField = ({
   }) => (          
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <DatePicker
+        autoOk
         format="yyyy/MM/dd"
         margin="normal"
         style={{width:'100%'}}

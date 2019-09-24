@@ -69,10 +69,10 @@ class SchoolPeriodDetail extends Component {
       <Grid container item xs={10}>
         <Field component="input" name="schoolPeriodSubjectTeacherId" type="hidden" style={{ height: 0 }} />
         <RenderFields lineal={true} >{[
-          { placeholder: 'Dia',field: `${schedule}.day`, id: `${schedule}.day`, type: 'select', options: ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'].map(day => { return { key: day, value: day } }) },
-          { placeholder: 'Hora inicio',field: `${schedule}.startHour`, id: `${schedule}.startHour`, type: 'time' },
-          { placeholder: 'Hora fin',field: `${schedule}.endHour`, id: `${schedule}.endHour`, type: 'time' },
-          { placeholder: 'Aula',field: `${schedule}.classroom`, id: `${schedule}.classroom`, type: 'text' },
+          { label: 'Dia',field: `${schedule}.day`, id: `${schedule}.day`, type: 'select', options: ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'].map(day => { return { key: day, value: day } }) },
+          { label: 'Hora inicio',field: `${schedule}.startHour`, id: `${schedule}.startHour`, type: 'time' },
+          { label: 'Hora fin',field: `${schedule}.endHour`, id: `${schedule}.endHour`, type: 'time' },
+          { label: 'Aula',field: `${schedule}.classroom`, id: `${schedule}.classroom`, type: 'text' },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={2}>
@@ -83,7 +83,7 @@ class SchoolPeriodDetail extends Component {
     </Fragment>      
     ))}
     <Grid item xs={12}>
-        <Button variant="contained" color="primary" className={this.props.classes.buttonSchedule} onClick={() => fields.push({})} >horario +</Button>
+        <Button variant="contained" color="primary" className={this.props.classes.buttonSchedule} onClick={() => fields.push({endHour:'00:00:00',startHour:'00:00:00'})} >horario +</Button>
     </Grid>
   </Grid>)
 
@@ -92,10 +92,10 @@ class SchoolPeriodDetail extends Component {
     <Grid container justify="center" key={index}>
       <Grid container item xs={10}>
         <RenderFields lineal={true} >{[
-          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', placeholder:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
-          {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', placeholder:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
-          {placeholder: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
-          {placeholder: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
+          {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', label:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
+          {label: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
+          {label: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={2}>
@@ -110,7 +110,7 @@ class SchoolPeriodDetail extends Component {
     ))}
     <Grid container item xs={12} justify={'center'}>
       <Grid item xs={1}>
-        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({schedule:[{}]})}>
+        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({schedule:[{endHour:'00:00:00',startHour:'00:00:00'}]})}>
           <AddIcon />
         </Fab>
       </Grid>      
@@ -314,10 +314,10 @@ SchoolPeriodDetail = connect(
         : '',
       startDate:state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
         ? state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
-        : '' ,
+        : moment().format('YYYY-MM-DD'),
       endDate:state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
         ? state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
-        : '' ,
+        : moment().format('YYYY-MM-DD'),
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map(subj=>({ 
           subjectId:subj.subject_id, 
@@ -332,7 +332,7 @@ SchoolPeriodDetail = connect(
             classroom:sche.classroom,            
           })) : [{}]
         }))
-        : [{schedules:[{}]}],
+        : [{schedules:[{endHour:'00:00:00',startHour:'00:00:00'}]}],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),
