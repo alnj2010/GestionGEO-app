@@ -18,28 +18,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const styles = theme => ({
-  inputLabel: {
-    paddingTop: '4%',
-  },
-  input: {
-    alignSelf: 'center',
-  },
   fab: {
     marginTop:50,
     margin: theme.spacing.unit,
   },
   form: {
     paddingLeft: '5%',
-  },
-  largeIcon: {
-    width: '36.5%',
-    height: '36.5%',
-    cursor: 'pointer',
-  },
-  profilePhoto: {
-    width: 360,
-    height: 360,
-    cursor: 'pointer',
   },
   buttonContainer: { paddingTop: '2%' },
   buttonSchedule:{
@@ -48,7 +32,11 @@ const styles = theme => ({
     width: '22%',
   },
   button: {
-    margin: theme.spacing.unit,
+    width:'100%'
+  },
+  buttonDelete: {
+    marginTop:0,
+    padding:10
   },
   save: {
     color: 'white',
@@ -56,14 +44,6 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: 'rgb(78, 127, 71)',
     },
-  },
-  fileInput: {
-    display: 'none',
-  },
-  date: { boxSizing: 'content-box', paddingTop: '4%' },
-  lastSave: { justifyContent: 'flex-end', display: 'flex' },
-  error: {
-    color: 'red',
   },
 });
 
@@ -104,7 +84,7 @@ class SchoolPeriodDetail extends Component {
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={1}>
-        <IconButton className={this.props.classes.button} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
+        <IconButton className={this.props.classes.buttonDelete} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
           <DeleteIcon />
         </IconButton>
       </Grid>
@@ -188,15 +168,15 @@ class SchoolPeriodDetail extends Component {
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
-            <Grid container>
-              <Grid container item xs={6}>
+            <Grid container justify="space-between">
+              <Grid container item xs={12}>
                 <RenderFields >{[
                   { label: 'Codigo', field: 'codSchoolPeriod', id: 'codSchoolPeriod', type: 'text' },
                   { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'date' }, 
                   { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(new Date(startDate)), disabled:startDate==='Invalid date' },
                 ]}</RenderFields>
               </Grid>
-              <Grid container item xs={6}></Grid>
+
               <Grid container item xs={12}>
                 <RenderFields >{[
                   { label: 'Materias del periodo', type: 'label' },        
@@ -206,29 +186,12 @@ class SchoolPeriodDetail extends Component {
             </Grid>
             <Grid container>
               <Grid item xs={12}>
-                <Grid container className={classes.buttonContainer}>
-                  <Grid item xs={4}>
-                    <Button variant="contained" onClick={goBack}>
-                      Cancelar
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {schoolPeriodId ? (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handleSchoolPeriodDelete)
-                        }
-                      >
-                        Borrar
-                      </Button>
-                    ) : null}
-                  </Grid>
-                  <Grid item xs={4}>
+                <Grid container className={classes.buttonContainer} justify="space-between" spacing={16}>
+                 
+                  <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={classes.save}
+                      className={[classes.save,classes.button]}
                       onClick={() =>
                         schoolPeriodId
                           ? this.handleDialogShow('actualizar', submit)
@@ -238,6 +201,27 @@ class SchoolPeriodDetail extends Component {
                     >
                       Guardar Cambios
                     </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    <Button variant="contained" onClick={goBack} className={classes.button}>
+                      Cancelar
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    {schoolPeriodId ? (
+                      <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() =>
+                          this.handleDialogShow('delete', handleSchoolPeriodDelete)
+                        }
+                      >
+                        Borrar
+                      </Button>
+                    ) : null}
                   </Grid>
                 </Grid>
               </Grid>
