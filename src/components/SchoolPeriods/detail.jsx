@@ -102,25 +102,13 @@ class SchoolPeriodDetail extends Component {
   renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
     {fields.map((subject, index) => (
     <Grid container justify="center" key={index}>
-      <Grid item xs={3}>
-        <RenderFields >{[
+      <Grid item xs={10}>
+        <RenderFields lineal={true} >{[
           {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', placeholder:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={3}>
-        <RenderFields >{[
           {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', placeholder:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={2}>
-        <RenderFields >{[
           {placeholder: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={2}>
-        <RenderFields >{[
           {placeholder: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
-        ]}</RenderFields>   
+        ]}</RenderFields>      
       </Grid>
       <Grid item xs={2}>
         <IconButton className={this.props.classes.button} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>

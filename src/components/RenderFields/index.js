@@ -266,16 +266,18 @@ class RenderFields extends React.Component{
     }
 
     render(){
-      const { children }=this.props
-      const l=children.length;
+      const { children,lineal }=this.props
+      const totalFields=children.length;
+      let movil=12
+      let desktop=5
       return children.map((input,index) => {
         switch(input.type){
 
-          case 'text': return <Grid xs={12} sm={5}> <Text {...input} /></Grid>
-          case 'select': return <Grid xs={12} sm={l>1 ? 5 :12} style={{paddingTop:16}} ><Select {...input} /></Grid>
-          case 'phone': return <Grid xs={12} sm={5} style={{paddingTop:16}}><Phone {...input} /></Grid>
-          case 'number': return <Grid xs={12} sm={5}> <Number {...input} /></Grid>
-          case 'date': return <Grid xs={12} sm={5}> <Date {...input} /></Grid>
+          case 'text': return <Grid item xs={movil} sm={desktop}> <Text {...input} /></Grid>
+          case 'select': return <Grid item xs={movil} sm={totalFields>1 ? desktop :12} style={{paddingTop:16}} ><Select {...input} /></Grid>
+          case 'phone': return <Grid item xs={movil} sm={desktop} style={{paddingTop:16}}><Phone {...input} /></Grid>
+          case 'number': return <Grid item xs={movil} sm={desktop}> <Number {...input} /></Grid>
+          case 'date': return <Grid item xs={movil} sm={desktop}> <Date {...input} /></Grid>
           default: return <div>No esta creado</div>
         }
       });
