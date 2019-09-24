@@ -132,7 +132,7 @@ class SubjectDetail extends Component {
                   <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={classes.button}
+                      className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         subjectId
                           ? this.handleDialogShow('actualizar', submit)

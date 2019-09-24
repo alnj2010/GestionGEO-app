@@ -175,7 +175,7 @@ class SchoolPeriodDetail extends Component {
                   <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={classes.button}
+                      className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         schoolPeriodId
                           ? this.handleDialogShow('actualizar', submit)
@@ -236,14 +236,14 @@ const schoolPeriodValidation = values => {
   if (!values.codSchoolPeriod) {
     errors.codSchoolPeriod = '*codigo es requerido';
   }
-  if(!values.startDate || values.startDate === '*Invalid date') 
+/*   if(!values.startDate || values.startDate === '*Invalid date') 
     errors.startDate = '*Fecha inicial es requerida';
 
   if(!values.endDate || values.endDate === '*Invalid date') 
     errors.endDate = '*Fecha fin es requerida';
   else if((new Date(values.endDate) <= new Date(values.startDate)))
     errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';  
-
+ */
   if (values.subject && values.subject.length){
     const subjectArrayErrors = []
     values.subject.forEach((subj, subjIndex) => {
@@ -315,7 +315,7 @@ SchoolPeriodDetail = connect(
       startDate:state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
         ? state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
         : '' ,
-        startDate:state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
+      endDate:state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
         ? state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
         : '' ,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
