@@ -1,6 +1,7 @@
 import React from 'react'
 import Text from './Fields/Text'
 import Date from './Fields/Date'
+import Time from './Fields/Time'
 import Select from './Fields/Select'
 import Phone from './Fields/Phone'
 import Number from './Fields/Number'
@@ -269,15 +270,17 @@ class RenderFields extends React.Component{
       const { children,lineal }=this.props
       const totalFields=children.length;
       let movil=12
-      let desktop=5
+      let desktop=!lineal?5:Math.floor(12/totalFields)
+      
       return children.map((input,index) => {
         switch(input.type){
 
           case 'text': return <Grid item xs={movil} sm={desktop}> <Text {...input} /></Grid>
-          case 'select': return <Grid item xs={movil} sm={totalFields>1 ? desktop :12} style={{paddingTop:16}} ><Select {...input} /></Grid>
+          case 'select': return <Grid item xs={movil} sm={totalFields>1 ? desktop :12} ><Select {...input} /></Grid>
           case 'phone': return <Grid item xs={movil} sm={desktop} style={{paddingTop:16}}><Phone {...input} /></Grid>
           case 'number': return <Grid item xs={movil} sm={desktop}> <Number {...input} /></Grid>
           case 'date': return <Grid item xs={movil} sm={desktop}> <Date {...input} /></Grid>
+          case 'time': return <Grid item xs={movil} sm={desktop}> <Time {...input} /></Grid>
           default: return <div>No esta creado</div>
         }
       });

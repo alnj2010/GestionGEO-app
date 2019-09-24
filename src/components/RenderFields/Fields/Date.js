@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'redux-form';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import * as moment from 'moment';
 
 const renderDateField = ({
@@ -12,7 +12,7 @@ const renderDateField = ({
   }) => (          
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <DatePicker
-        format="dd/MM/yyyy"
+        format="yyyy/MM/dd"
         margin="normal"
         style={{width:'100%'}}
         label={label}
@@ -28,6 +28,7 @@ export default function Date(props){
         name={props.field}
         component={renderDateField}
         format={(value)=>moment(value)}
+        parse={(value)=>moment(value).format('YYYY-MM-DD')}
         //custom props
         label={props.label}          
         id={props.id}

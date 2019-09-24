@@ -66,28 +66,16 @@ class SchoolPeriodDetail extends Component {
   renderSchedule = ({ fields, meta: { error, submitFailed } }) => (<Grid container justify="center">    
   {fields.map((schedule, index) => (
     <Fragment key={index}>
-      <Grid item xs={4}>
+      <Grid container item xs={10}>
         <Field component="input" name="schoolPeriodSubjectTeacherId" type="hidden" style={{ height: 0 }} />
-        <RenderFields >{[
+        <RenderFields lineal={true} >{[
           { placeholder: 'Dia',field: `${schedule}.day`, id: `${schedule}.day`, type: 'select', options: ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'].map(day => { return { key: day, value: day } }) },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={3}>
-        <RenderFields >{[
           { placeholder: 'Hora inicio',field: `${schedule}.startHour`, id: `${schedule}.startHour`, type: 'time' },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={3}>
-        <RenderFields >{[
           { placeholder: 'Hora fin',field: `${schedule}.endHour`, id: `${schedule}.endHour`, type: 'time' },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={1}>
-        <RenderFields >{[
           { placeholder: 'Aula',field: `${schedule}.classroom`, id: `${schedule}.classroom`, type: 'text' },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={1}>
+      <Grid item xs={2}>
         <IconButton className={this.props.classes.buttonDelete} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
           <DeleteIcon />
         </IconButton>
@@ -102,7 +90,7 @@ class SchoolPeriodDetail extends Component {
   renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
     {fields.map((subject, index) => (
     <Grid container justify="center" key={index}>
-      <Grid item xs={10}>
+      <Grid container item xs={10}>
         <RenderFields lineal={true} >{[
           {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', placeholder:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
           {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', placeholder:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.id } }) },
@@ -115,7 +103,7 @@ class SchoolPeriodDetail extends Component {
           <DeleteIcon />
         </IconButton>
       </Grid>   
-      <Grid item xs={6}>
+      <Grid item xs={10}>
         <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
       </Grid>
     </Grid>      
