@@ -300,7 +300,6 @@ class RenderFields extends React.Component{
           case 'select': return <Grid xs={12} sm={l>1 ? 5 :12} style={{paddingTop:16}} ><Select {...input} /></Grid>
           case 'phone': return <Grid xs={12} sm={5} style={{paddingTop:16}}><Phone {...input} /></Grid>
           case 'number': return <Grid xs={12} sm={5}> <Number {...input} /></Grid>
-          
           default: return <div>No esta creado</div>
         }
       });

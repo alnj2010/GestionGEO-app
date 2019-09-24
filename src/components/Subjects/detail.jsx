@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
-  Button
+  Button,
+  Typography
 } from '@material-ui/core';
 import { Form, reduxForm, change, submit, FieldArray, formValueSelector, } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
@@ -16,49 +17,33 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
-  inputLabel: {
-    paddingTop: '4%',
-  },
   fab: {
     margin: theme.spacing.unit,
   },
-  button: {
-    margin: theme.spacing.unit,
+  subtitle:{
+    paddingTop:50
   },
-  input: {
-    alignSelf: 'center',
+  button: {
+    width:'100%'
+  },
+  buttonDelete: {
+    marginTop:0,
+    padding:10
+  },
+  buttonDeleteContainer:{
+    display:'flex',
+    alignItems:'end'
   },
   form: {
     paddingLeft: '5%',
   },
-  largeIcon: {
-    width: '36.5%',
-    height: '36.5%',
-    cursor: 'pointer',
-  },
-  profilePhoto: {
-    width: 360,
-    height: 360,
-    cursor: 'pointer',
-  },
   buttonContainer: { paddingTop: '2%' },
-  buttonPostgraduates:{
-    margin: theme.spacing.unit,
-  },
   save: {
     color: 'white',
     backgroundColor: '#61A956',
     '&:hover': {
       backgroundColor: 'rgb(78, 127, 71)',
     },
-  },
-  fileInput: {
-    display: 'none',
-  },
-  date: { boxSizing: 'content-box', paddingTop: '4%' },
-  lastSave: { justifyContent: 'flex-end', display: 'flex' },
-  error: {
-    color: 'red',
   },
 });
 
@@ -93,8 +78,8 @@ class SubjectDetail extends Component {
           {field: `${postgraduate}.type`, id: `${postgraduate}.type`, type: 'select', placeholder:'modalidad', options: [{key:'OBLIGATORIA',value:"O"}, {key:'ELECTIVA',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={2}>
-        <IconButton className={this.props.classes.button} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
+      <Grid item xs={2} className={this.props.classes.buttonDeleteContainer}>
+        <IconButton className={this.props.classes.buttonDelete} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
           <DeleteIcon />
         </IconButton>
       </Grid>
@@ -128,42 +113,26 @@ class SubjectDetail extends Component {
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
-            <Grid container>
+            <Grid container justify="space-between">
               <RenderFields >{[
                 { label: 'Codigo de la materia', field: 'subjectCode', id: 'subjectCode', type: 'text' },
                 { label: 'Nombre de la materia', field: 'subjectName', id: 'subjectName', type: 'text' },
                 { label: 'Tipo de materia',field: `subjectType`, id: `subjectType`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'AMPLIACION',value:"AMP"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Unidades de credito', field: 'uc', id: 'uc', type: 'number', min:0 },
-                { label: 'Postgrados a los que pertenece la materia', type: 'label', },
               ]}</RenderFields>
-                
+                <Grid xs="12" className={classes.subtitle}>
+                  <Typography variant="h6" gutterBottom>Postgrados a los que pertenece la materia</Typography>
+                </Grid>
                <FieldArray name="postgraduates" component={this.renderPostgraduates} />
             </Grid>
             <Grid container>
               <Grid item xs={12}>
-                <Grid container className={classes.buttonContainer}>
-                  <Grid item xs={4}>
-                    <Button variant="contained" onClick={goBack}>
-                      Cancelar
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {subjectId ? (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handleSubjectDelete)
-                        }
-                      >
-                        Borrar
-                      </Button>
-                    ) : null}
-                  </Grid>
-                  <Grid item xs={4}>
+                <Grid container className={classes.buttonContainer} justify="space-between" spacing={16}>
+                 
+                  <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={classes.save}
+                      className={[classes.save,classes.button]}
                       onClick={() =>
                         subjectId
                           ? this.handleDialogShow('actualizar', submit)
@@ -173,6 +142,27 @@ class SubjectDetail extends Component {
                     >
                       Guardar Cambios
                     </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    <Button variant="contained" onClick={goBack} className={classes.button}>
+                      Cancelar
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    {subjectId ? (
+                      <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() =>
+                          this.handleDialogShow('delete', handleSubjectDelete)
+                        }
+                      >
+                        Borrar
+                      </Button>
+                    ) : null}
                   </Grid>
                 </Grid>
               </Grid>
