@@ -1,13 +1,11 @@
 import React from 'react'
 import Text from './Fields/Text'
-import Date from './Fields/Text'
+import Date from './Fields/Date'
 import Select from './Fields/Select'
 import Phone from './Fields/Phone'
 import Number from './Fields/Number'
 
 import { Grid } from '@material-ui/core';
-
-import 'react-datepicker/dist/react-datepicker.css';
 
 /*const RenderComponent = withStyles(styles)(({params,classes})=>{
     switch (params.type) {      
@@ -264,32 +262,8 @@ class RenderFields extends React.Component{
 
     constructor(props){
         super(props)
-        //this.renderInput=this.renderInput.bind(this)
 
     }
-
-    /*renderInput = (props) => {
-      const {
-          meta: { touched, error },
-      } = props;
-
-      return (
-        <Grid item xs={12} key={props.field.id}>
-          <Grid container>
-
-            {props.field.type!=='file' && props.field.label && <SubHeading type={props.field.type} label={props.field.label}  title={props.field.title}/>}
-            
-            <Grid item xs={(props.field.type!=='file' && props.field.label)?6:12} className={this.props.classes.input}>
-              <RenderComponent params={props}></RenderComponent>
-            </Grid>
-            {props.field.label?<Grid item xs={6} />:null}
-            <Grid item xs={props.field.label?6:12}>
-              {touched && error && <span className={this.props.classes.error}>{error}</span>}
-            </Grid>
-          </Grid>
-        </Grid>
-      );
-    };*/
 
     render(){
       const { children }=this.props

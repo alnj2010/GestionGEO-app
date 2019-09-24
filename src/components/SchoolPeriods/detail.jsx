@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
   Button,
+  Typography
 } from '@material-ui/core';
 import * as moment from 'moment';
 import { Form, reduxForm, change, submit, FieldArray, formValueSelector,Field } from 'redux-form';
@@ -44,6 +45,9 @@ const styles = theme => ({
     '&:hover': {
       backgroundColor: 'rgb(78, 127, 71)',
     },
+  },
+  subtitle:{
+    paddingTop:50
   },
 });
 
@@ -168,19 +172,23 @@ class SchoolPeriodDetail extends Component {
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <Grid container item xs={12}>
+            <Grid container >
+              <Grid container justify="center" item xs={12}>
                 <RenderFields >{[
                   { label: 'Codigo', field: 'codSchoolPeriod', id: 'codSchoolPeriod', type: 'text' },
+                ]}</RenderFields>
+              </Grid>
+              <Grid container justify="space-between" item xs={12}>
+                <RenderFields >{[
                   { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'date' }, 
                   { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(new Date(startDate)), disabled:startDate==='Invalid date' },
                 ]}</RenderFields>
               </Grid>
-
+              
+              <Grid xs="12" className={classes.subtitle}>
+                <Typography variant="h6" gutterBottom>Materias del periodo</Typography>
+              </Grid>
               <Grid container item xs={12}>
-                <RenderFields >{[
-                  { label: 'Materias del periodo', type: 'label' },        
-                ]}</RenderFields>
                 <FieldArray name="subjects" component={this.renderSubjects} />
               </Grid>                
             </Grid>

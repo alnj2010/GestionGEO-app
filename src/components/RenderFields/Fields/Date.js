@@ -1,39 +1,36 @@
 import React from 'react';
-import { TextField} from '@material-ui/core';
 import { Field } from 'redux-form';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import * as moment from 'moment';
 
 const renderDateField = ({
     label,
     input,
     meta: { touched, invalid, error },
     ...custom
-  }) => (
-    <TextField
-      style={{width:'100%'}}
-      label={label}
-      type="date"
-      defaultValue="2017-05-24"
-      InputLabelProps={{
-        shrink: true,
-      }}
-      placeholder={label}
-      error={touched && invalid}
-      helperText={touched && error}
-      {...input}
-      {...custom}
-      
-    />
+  }) => (          
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <DatePicker
+        format="dd/MM/yyyy"
+        margin="normal"
+        style={{width:'100%'}}
+        label={label}
+        {...input}
+        {...custom}
+      />
+    </MuiPickersUtilsProvider>
   )
 
-export default function Text(props){ 
+export default function Date(props){ 
     return( 
       <Field
         name={props.field}
         component={renderDateField}
+        format={(value)=>moment(value)}
         //custom props
         label={props.label}          
         id={props.id}
-        type="date"
       /> 
             
   )

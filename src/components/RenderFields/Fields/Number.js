@@ -21,7 +21,7 @@ const renderTextField = ({
     />
   )
 
-export default function Text(props){ 
+export default function Number(props){ 
     return( 
       <Field
         name={props.field}

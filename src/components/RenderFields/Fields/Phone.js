@@ -40,7 +40,7 @@ const renderPhoneField =({
 
 }
 
-export default function Text(props){ 
+export default function Phone(props){ 
     return( 
       <Field
         name={props.field}
