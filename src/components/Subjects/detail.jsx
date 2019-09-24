@@ -120,7 +120,7 @@ class SubjectDetail extends Component {
                 { label: 'Tipo de materia',field: `subjectType`, id: `subjectType`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'AMPLIACION',value:"AMP"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Unidades de credito', field: 'uc', id: 'uc', type: 'number', min:0 },
               ]}</RenderFields>
-                <Grid xs="12" className={classes.subtitle}>
+                <Grid xs={12} className={classes.subtitle}>
                   <Typography variant="h6" gutterBottom>Postgrados a los que pertenece la materia</Typography>
                 </Grid>
                <FieldArray name="postgraduates" component={this.renderPostgraduates} />
@@ -132,7 +132,7 @@ class SubjectDetail extends Component {
                   <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={[classes.save,classes.button]}
+                      className={classes.button}
                       onClick={() =>
                         subjectId
                           ? this.handleDialogShow('actualizar', submit)

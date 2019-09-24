@@ -161,7 +161,7 @@ class SchoolPeriodDetail extends Component {
                 ]}</RenderFields>
               </Grid>
               
-              <Grid xs="12" className={classes.subtitle}>
+              <Grid item xs={12} className={classes.subtitle}>
                 <Typography variant="h6" gutterBottom>Materias del periodo</Typography>
               </Grid>
               <Grid container item xs={12}>
@@ -175,7 +175,7 @@ class SchoolPeriodDetail extends Component {
                   <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={[classes.save,classes.button]}
+                      className={classes.button}
                       onClick={() =>
                         schoolPeriodId
                           ? this.handleDialogShow('actualizar', submit)

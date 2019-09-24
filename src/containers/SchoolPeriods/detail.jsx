@@ -34,18 +34,11 @@ export class SchoolPeriodDetailContainer extends Component {
       saveSchoolPeriod,
       history,
     } = this.props;
-    const payload = { ...values };
-    console.log(payload)
-    payload.subjects= payload.subjects.map(subject=>({...subject, schedules:subject.schedules.map(schedule =>({
-      ...schedule,
-      startHour:schedule.startHour.length<8?`${schedule.startHour}:00`:schedule.startHour.subjects,
-      endHour:schedule.endHour.length<8?`${schedule.endHour}:00`:schedule.endHour
-
-    }))}))
-    
-   if (match.params.id) updateSchoolPeriod({ ...payload, ...match.params });
+  
+    console.log(values)
+   if (match.params.id) updateSchoolPeriod({ ...values, ...match.params });
    else
-    saveSchoolPeriod({ ...payload }).then(response => {
+    saveSchoolPeriod({ ...values }).then(response => {
       if (response) {
         findSchoolPeriodById(response).then(res => history.push(`edit/${response}`));
       }
