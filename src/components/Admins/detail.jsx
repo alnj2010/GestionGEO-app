@@ -12,24 +12,8 @@ import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
 
 const styles = theme => ({
-  inputLabel: {
-    paddingTop: '4%',
-  },
-  input: {
-    alignSelf: 'center',
-  },
   form: {
     paddingLeft: '5%',
-  },
-  largeIcon: {
-    width: '36.5%',
-    height: '36.5%',
-    cursor: 'pointer',
-  },
-  profilePhoto: {
-    width: 360,
-    height: 360,
-    cursor: 'pointer',
   },
   buttonContainer: { paddingTop: '2%' },
   save: {
@@ -39,14 +23,9 @@ const styles = theme => ({
       backgroundColor: 'rgb(78, 127, 71)',
     },
   },
-  fileInput: {
-    display: 'none',
-  },
-  date: { boxSizing: 'content-box', paddingTop: '4%' },
-  lastSave: { justifyContent: 'flex-end', display: 'flex' },
-  error: {
-    color: 'red',
-  },
+  button:{
+    width:'100%'
+  }
 });
 
 class AdminDetail extends Component {
@@ -84,45 +63,28 @@ class AdminDetail extends Component {
             <h3> {adminId ? `Administrador: ${adminId}` : 'Nuevo Administrador'}</h3>
             <hr />
           </Grid>
-          <Grid item xs={6} className={classes.form}>
-            <Grid container>
+          <Grid item xs={12} className={classes.form}>
+            <Grid container justify="space-between">
               <RenderFields >{[
                 { label: 'Nombre', field: 'firstName', id: 'firstName', type: 'text' },
                 { label: 'Segundo Nombre', field: 'secondName', id: 'secondName', type: 'text' },
                 { label: 'Apellido', field: 'firstSurname', id: 'firstSurname', type: 'text' },
-                { label: 'Segundo apellido', field: 'secondSurname', id: 'secondSurname', type: 'text' },
+                { label: 'Segundo Apellido', field: 'secondSurname', id: 'secondSurname', type: 'text' },
                 { label: 'Cedula', field: 'identification', id: 'identification', type: 'text' },
-                { label: 'Email', field: 'email', id: 'email', type: 'email' },
-                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'text' },
-                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'text' },
-                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'text' },
+                { label: 'Email', field: 'email', id: 'email', type: 'text' },
+                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'phone' },
+                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
+                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
               ]}</RenderFields>
             </Grid>
             <Grid container>
               <Grid item xs={12}>
-                <Grid container className={classes.buttonContainer}>
-                  <Grid item xs={4}>
-                    <Button variant="contained" onClick={goBack}>
-                      Cancelar
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {adminId ? (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handleAdminDelete)
-                        }
-                      >
-                        Borrar
-                      </Button>
-                    ) : null}
-                  </Grid>
-                  <Grid item xs={4}>
+                <Grid container className={classes.buttonContainer} justify="space-between" spacing={16}>
+                 
+                  <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={classes.save}
+                      className={[classes.save,classes.button]}
                       onClick={() =>
                         adminId
                           ? this.handleDialogShow('actualizar', submit)
@@ -132,6 +94,27 @@ class AdminDetail extends Component {
                     >
                       Guardar Cambios
                     </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    <Button variant="contained" onClick={goBack} className={classes.button}>
+                      Cancelar
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    {adminId ? (
+                      <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() =>
+                          this.handleDialogShow('delete', handleAdminDelete)
+                        }
+                      >
+                        Borrar
+                      </Button>
+                    ) : null}
                   </Grid>
                 </Grid>
               </Grid>
@@ -181,15 +164,15 @@ const adminValidation = values => {
 
   if (!values.mobile) {
     errors.mobile = 'movil es requerido';
-  } else if (!/^[0][4][1-9][1-9][0-9]{7}$/.test(values.mobile)) {
+  } else if (!/(?=[0-9])/.test(values.mobile)) {
     errors.mobile = 'Introduce un movil valido';
   }
 
-  if (values.telephone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.telephone)) {
+  if (values.telephone && !/(?=[0-9])/.test(values.telephone)) {
     errors.telephone = 'Introduce un telefono valido';
   }
 
-  if (values.workPhone && !/^[0][1-9][1-9][1-9][0-9]{7}$/.test(values.workPhone)) {
+  if (values.workPhone && !/(?=[0-9])/.test(values.workPhone)) {
     errors.workPhone = 'Introduce un telefono valido';
   }
 

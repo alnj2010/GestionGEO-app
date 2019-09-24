@@ -1,54 +1,12 @@
-import React, {Fragment} from 'react'
-import {
-    Grid,
-    TextField,
-    Typography,
-    FormControlLabel,
-    Input,
-    Select,
-    MenuItem,
-    Checkbox,
-    Switch,
-    FormControl,
-    InputLabel
-
-  } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { Field } from 'redux-form';
-import { DateFormatInput } from 'material-ui-next-pickers';
-import DatePicker from 'react-datepicker'
-import Texture from '@material-ui/icons/Texture';
+import React from 'react'
+import Text from './Fields/Text'
+import Select from './Fields/Select'
+import Phone from './Fields/Phone'
+import { Grid } from '@material-ui/core';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-const styles = theme => ({
-  inputLabel: {
-    paddingTop: '4%',
-  },
-  input: {
-    alignSelf: 'center',
-  },
-  form: {
-    paddingLeft: '5%',
-    width:'100%'
-  },
-  error: {
-    color: 'red',
-  },
-  inputTime: {
-    margin: theme.spacing.unit,
-    minWidth: "100%",
-    maxWidth: 200,
-  },
-  formControl: {
-    margin: theme.spacing.unit,
-    minWidth: "100%",
-    maxWidth: 200,
-  },
-});
-
-
-const RenderComponent = withStyles(styles)(({params,classes})=>{
+/*const RenderComponent = withStyles(styles)(({params,classes})=>{
     switch (params.type) {      
         case 'text':{
           return (
@@ -297,17 +255,17 @@ const SubHeading = withStyles(styles)((props) => {
     </Grid>)
   }
   return <div></div>
-})
+})*/
 
 class RenderFields extends React.Component{
 
     constructor(props){
         super(props)
-        this.renderInput=this.renderInput.bind(this)
+        //this.renderInput=this.renderInput.bind(this)
 
     }
 
-    renderInput = (props) => {
+    /*renderInput = (props) => {
       const {
           meta: { touched, error },
       } = props;
@@ -328,29 +286,23 @@ class RenderFields extends React.Component{
           </Grid>
         </Grid>
       );
-    };
+    };*/
 
     render(){
-      const {children,classes}=this.props
+      const { children }=this.props
       
       return children.map((input,index) => {
-          input.title=(input.title === undefined) ? true : input.title;
-          return (
-            <Fragment key={index}>
-              <Field
-                name={input.field ? input.field :'label'}
-                component={this.renderInput}
-                className={classes.input}
-                field={input}                
-                disabled={input.disabled===undefined ? false : input.disabled}
-                type={input.type ? input.type : 'text'}
-              />
-             {input.type==='file' && <Field name="avatar" component="input" type="hidden"/> }
-            </Fragment>
-          );
+        switch(input.type){
+
+          case 'text': return <Grid xs={12} sm={5}> <Text {...input} /></Grid>
+          case 'select': return <Grid xs={12}><Select {...input} /></Grid>
+          case 'phone': return <Grid xs={12} sm={5} style={{paddingTop:16}}><Phone {...input} /></Grid>
+          
+          default: return <div>No esta creado</div>
+        }
       });
     }
 
 }
 
-export default withStyles(styles)(RenderFields);
+export default RenderFields;
