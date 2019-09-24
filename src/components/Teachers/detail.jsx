@@ -67,7 +67,7 @@ class TeacherDetail extends Component {
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
-            <Grid container>
+            <Grid container justify="space-between">
               <RenderFields >{[
                 { label: 'Cedula', field: 'identification', id: 'identification', type: 'text' },
                 { label: 'Nombre', field: 'firstName', id: 'firstName', type: 'text' },

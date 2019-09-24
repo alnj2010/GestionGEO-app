@@ -64,7 +64,7 @@ class PostgraduateDetail extends Component {
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
-            <Grid container>
+            <Grid container justify="space-between">
               <RenderFields >{[
                 { label: 'Nombre del postgrado', field: 'postgraduateName', id: 'postgraduateName', type: 'text' },
                 { label: 'Unidades de credito', field: 'numCu', id: 'numCu', type: 'number', min:0 },
