@@ -12,24 +12,8 @@ import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
 
 const styles = theme => ({
-  inputLabel: {
-    paddingTop: '4%',
-  },
-  input: {
-    alignSelf: 'center',
-  },
   form: {
     paddingLeft: '5%',
-  },
-  largeIcon: {
-    width: '36.5%',
-    height: '36.5%',
-    cursor: 'pointer',
-  },
-  profilePhoto: {
-    width: 360,
-    height: 360,
-    cursor: 'pointer',
   },
   buttonContainer: { paddingTop: '2%' },
   save: {
@@ -39,14 +23,9 @@ const styles = theme => ({
       backgroundColor: 'rgb(78, 127, 71)',
     },
   },
-  fileInput: {
-    display: 'none',
-  },
-  date: { boxSizing: 'content-box', paddingTop: '4%' },
-  lastSave: { justifyContent: 'flex-end', display: 'flex' },
-  error: {
-    color: 'red',
-  },
+  button:{
+    width:'100%'
+  }
 });
 
 class PostgraduateDetail extends Component {
@@ -84,7 +63,7 @@ class PostgraduateDetail extends Component {
             <h3> {postgraduateId ? `Postgrado: ${postgraduateId}` : 'Nuevo Postgrado'}</h3>
             <hr />
           </Grid>
-          <Grid item xs={6} className={classes.form}>
+          <Grid item xs={12} className={classes.form}>
             <Grid container>
               <RenderFields >{[
                 { label: 'Nombre del postgrado', field: 'postgraduateName', id: 'postgraduateName', type: 'text' },
@@ -93,29 +72,12 @@ class PostgraduateDetail extends Component {
             </Grid>
             <Grid container>
               <Grid item xs={12}>
-                <Grid container className={classes.buttonContainer}>
-                  <Grid item xs={4}>
-                    <Button variant="contained" onClick={goBack}>
-                      Cancelar
-                    </Button>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {postgraduateId ? (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handlePostgraduateDelete)
-                        }
-                      >
-                        Borrar
-                      </Button>
-                    ) : null}
-                  </Grid>
-                  <Grid item xs={4}>
+                <Grid container className={classes.buttonContainer} justify="space-between" spacing={16}>
+                 
+                  <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={classes.save}
+                      className={[classes.save,classes.button]}
                       onClick={() =>
                         postgraduateId
                           ? this.handleDialogShow('actualizar', submit)
@@ -125,6 +87,27 @@ class PostgraduateDetail extends Component {
                     >
                       Guardar Cambios
                     </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    <Button variant="contained" onClick={goBack} className={classes.button}>
+                      Cancelar
+                    </Button>
+                  </Grid>
+
+                  <Grid item xs={12} sm={3}>
+                    {postgraduateId ? (
+                      <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() =>
+                          this.handleDialogShow('delete', handlePostgraduateDelete)
+                        }
+                      >
+                        Borrar
+                      </Button>
+                    ) : null}
                   </Grid>
                 </Grid>
               </Grid>

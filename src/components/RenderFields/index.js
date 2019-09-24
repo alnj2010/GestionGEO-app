@@ -2,6 +2,8 @@ import React from 'react'
 import Text from './Fields/Text'
 import Select from './Fields/Select'
 import Phone from './Fields/Phone'
+import Number from './Fields/Number'
+
 import { Grid } from '@material-ui/core';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -297,6 +299,7 @@ class RenderFields extends React.Component{
           case 'text': return <Grid xs={12} sm={5}> <Text {...input} /></Grid>
           case 'select': return <Grid xs={12}><Select {...input} /></Grid>
           case 'phone': return <Grid xs={12} sm={5} style={{paddingTop:16}}><Phone {...input} /></Grid>
+          case 'number': return <Grid xs={12} sm={5}> <Number {...input} /></Grid>
           
           default: return <div>No esta creado</div>
         }
