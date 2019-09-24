@@ -312,12 +312,12 @@ SchoolPeriodDetail = connect(
       codSchoolPeriod: state.schoolPeriodReducer.selectedSchoolPeriod.cod_school_period
         ? state.schoolPeriodReducer.selectedSchoolPeriod.cod_school_period
         : '',
-      startDate: moment(
-          new Date(state.schoolPeriodReducer.selectedSchoolPeriod.start_date),
-        ).format('YYYY-MM-DD'),
-      endDate: moment(
-          new Date(state.schoolPeriodReducer.selectedSchoolPeriod.end_date),
-        ).format('YYYY-MM-DD'),
+      startDate:state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
+        : '' ,
+        startDate:state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
+        : '' ,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map(subj=>({ 
           subjectId:subj.subject_id, 
