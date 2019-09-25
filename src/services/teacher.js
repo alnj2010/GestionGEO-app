@@ -48,7 +48,6 @@ export const Teacher = {
       headers: headers(),
     })
       .then(response => {
-        console.log(response);
         return response.data;
       })
       .catch(error => {

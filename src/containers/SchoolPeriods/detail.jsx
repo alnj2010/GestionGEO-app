@@ -35,7 +35,6 @@ export class SchoolPeriodDetailContainer extends Component {
       history,
     } = this.props;
   
-    console.log(values)
    if (match.params.id) updateSchoolPeriod({ ...values, ...match.params });
    else
     saveSchoolPeriod({ ...values }).then(response => {

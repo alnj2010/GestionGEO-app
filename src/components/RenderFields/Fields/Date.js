@@ -33,6 +33,8 @@ export default function Date(props){
         //custom props
         label={props.label}          
         id={props.id}
+        minDate={props.minDate}
+        disabled={props.disabled}
       /> 
             
   )

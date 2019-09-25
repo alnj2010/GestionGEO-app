@@ -19,7 +19,6 @@ export class SchoolPeriodActualContainer extends Component {
 
   saveSchoolPeriod = values => {
     const {
-      match,
       updateSchoolPeriod,
       schoolPeriodActual
     } = this.props;
@@ -60,7 +59,6 @@ export class SchoolPeriodActualContainer extends Component {
     const {
       schoolPeriodActual:{start_date,end_date,subjects}
     }=this.props;
-    console.log(end_date)
     return (
       <SchoolPeriodActual
         startDate={start_date}

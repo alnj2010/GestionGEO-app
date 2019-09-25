@@ -1,17 +1,17 @@
-import React, { Component,Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
   Button
 } from '@material-ui/core';
-import { Form, reduxForm, change, submit, FieldArray, formValueSelector, } from 'redux-form';
+import { Form, reduxForm, change, submit } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
 
-const styles = theme => ({
+const styles = () => ({
   form: {
     paddingLeft: '5%',
   },

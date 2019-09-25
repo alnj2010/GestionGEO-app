@@ -157,7 +157,7 @@ class SchoolPeriodDetail extends Component {
               <Grid container justify="space-between" item xs={12}>
                 <RenderFields >{[
                   { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'date' }, 
-                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(new Date(startDate)), disabled:startDate==='Invalid date' },
+                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(moment(startDate)), },
                 ]}</RenderFields>
               </Grid>
               
@@ -236,14 +236,14 @@ const schoolPeriodValidation = values => {
   if (!values.codSchoolPeriod) {
     errors.codSchoolPeriod = '*codigo es requerido';
   }
-/*   if(!values.startDate || values.startDate === '*Invalid date') 
+ if(!values.startDate) 
     errors.startDate = '*Fecha inicial es requerida';
 
-  if(!values.endDate || values.endDate === '*Invalid date') 
+  if(!values.endDate) 
     errors.endDate = '*Fecha fin es requerida';
-  else if((new Date(values.endDate) <= new Date(values.startDate)))
+  else if((moment(values.endDate) <= moment(values.startDate)))
     errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';  
- */
+
   if (values.subject && values.subject.length){
     const subjectArrayErrors = []
     values.subject.forEach((subj, subjIndex) => {

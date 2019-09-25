@@ -1,4 +1,4 @@
-import React, { Component,Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -6,18 +6,16 @@ import {
   Button,
 } from '@material-ui/core';
 import * as moment from 'moment';
-import { Form, reduxForm, change, submit, FieldArray, formValueSelector,Field } from 'redux-form';
+import { Form, reduxForm, change, submit } from 'redux-form';
 import { object, func, bool} from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
-import { Preview, print } from 'react-html2pdf';
 import {
   Calendar,
   momentLocalizer,
-  Views,
+  Views
 } from 'react-big-calendar'
-import backImage from '../../images/pif.jpg'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 const localizer = momentLocalizer(moment)
@@ -28,42 +26,14 @@ const weekdays={
   Jueves:4,
   Viernes:5,
 }
-const styles = theme => ({
+const styles = () => ({
   pdf:{
     backgroundColor:'red',
-  },
-  inputLabel: {
-    paddingTop: '4%',
-  },
-  input: {
-    alignSelf: 'center',
-  },
-  fab: {
-    marginTop:50,
-    margin: theme.spacing.unit,
   },
   form: {
     paddingLeft: '5%',
   },
-  largeIcon: {
-    width: '36.5%',
-    height: '36.5%',
-    cursor: 'pointer',
-  },
-  profilePhoto: {
-    width: 360,
-    height: 360,
-    cursor: 'pointer',
-  },
   buttonContainer: { paddingTop: '2%' },
-  buttonSchedule:{
-    marginTop: theme.spacing.unit,
-    padding: 2,
-    width: '22%',
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
   save: {
     color: 'white',
     backgroundColor: '#61A956',
@@ -71,16 +41,9 @@ const styles = theme => ({
       backgroundColor: 'rgb(78, 127, 71)',
     },
   },
-  fileInput: {
-    display: 'none',
-  },
-  date: { boxSizing: 'content-box', paddingTop: '4%' },
-  lastSave: { justifyContent: 'flex-end', display: 'flex' },
-  error: {
-    color: 'red',
-  },
   calendar:{
-    height:"100vh"
+    height:"100vh",
+    paddingTop:50
   }
 });
 
@@ -131,16 +94,13 @@ class SchoolPeriodActual extends Component {
       submitting,
       valid,
       submit,
-      startDate,
-      endDate,
-      subjects
+      endDate
     } = this.props;
     let allViews = Object.keys(Views).map(k => Views[k])
     const { func } = this.state;
-    const final=new Date(endDate);
-    const today=new Date();
+    const final=moment(endDate);
+    const today=moment();
     let finishedPeriod=today>final;
-    console.log(subjects)
     return (
     <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
@@ -148,17 +108,16 @@ class SchoolPeriodActual extends Component {
             <h3> Periodo semestral actual</h3>
             <hr />
           </Grid>
-          <Grid item xs={6} className={classes.form}>
+          <Grid item xs={12} className={classes.form}>
             <Grid container>
-                <Grid item xs={6}>Fecha inicial</Grid>
-                <Grid item xs={6}>{startDate}</Grid>
                 <RenderFields >{[
-                    { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(new Date()), disabled:startDate==='Invalid date' },
+                    { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'date',disabled:true },
+                    { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(moment()) },
                     { label: 'Habilitar inscripcion', field: 'incriptionVisible', id: 'incriptionVisible', type: 'switch',disabled:finishedPeriod, checked:!finishedPeriod },
                     { label: 'Habilitar cargar notas', field: 'loadNotes', id: 'loadNotes', type: 'switch' },
                 ]}</RenderFields>
             </Grid>
-            <Grid container>
+            <Grid item xs={12} container>
               <Grid item xs={12}>
                 <Grid container className={classes.buttonContainer}>
                   <Grid item xs={4}/>     
@@ -175,7 +134,6 @@ class SchoolPeriodActual extends Component {
                     >
                       Guardar Cambios
                     </Button>
-                    <button onClick={()=>print('a', 'jsx-template')}> print</button>
                   </Grid>
                 </Grid>
               </Grid>
@@ -207,26 +165,22 @@ SchoolPeriodActual.propTypes = {
   valid: bool.isRequired,
 };
 
-const schoolPeriodValidation = values => {
-  const errors = {};
-
-  return errors;
-};
-
 SchoolPeriodActual = reduxForm({
   form: 'schoolPeriodActual',
-  validate: schoolPeriodValidation,
   enableReinitialize: true,
 })(SchoolPeriodActual);
-const selector = formValueSelector('schoolPeriodActual');
+
 SchoolPeriodActual = connect(
   state => ({
     initialValues: {
-        endDate: state.schoolPeriodReducer.selectedSchoolPeriod ? moment(
-            new Date(state.schoolPeriodReducer.selectedSchoolPeriod.end_date),
-          ).format('YYYY-MM-DD') : 'Invalid date',
-        incriptionVisible:state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
-        loadNotes:state.schoolPeriodReducer.selectedSchoolPeriod.load_notes,
+      startDate:state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
+        : moment().format('YYYY-MM-DD'),
+      endDate:state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
+        : moment().format('YYYY-MM-DD'),
+      incriptionVisible:state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
+      loadNotes:state.schoolPeriodReducer.selectedSchoolPeriod.load_notes,
     },
     action: state.dialogReducer.action,
 

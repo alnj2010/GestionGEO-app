@@ -1,7 +1,5 @@
 import { SchoolPeriod } from '../services/schoolPeriod';
 import { show } from './snackbar';
-import Subject from '../services/subject';
-import { startOfHour } from 'date-fns';
 
 export const ACTIONS = {
   LIST: 'schoolPeriod/list',
@@ -61,7 +59,6 @@ export const cleanSelectedSchoolPeriod = id => async dispatch => {
 };
 
 export const updateSchoolPeriod = schoolPeriod => async dispatch => {
-  console.log(schoolPeriod);
   const payload = {
     id:schoolPeriod.id,
     inscription_visible:!!schoolPeriod.inscriptionVisible,
