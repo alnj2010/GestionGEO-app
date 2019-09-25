@@ -7,6 +7,7 @@ import {
 } from '../../actions/schoolPeriod';
 import SchoolPeriodActual from '../../components/SchoolPeriods/actual';
 import { define, cleanDialog } from '../../actions/dialog';
+import Typography from '@material-ui/core/Typography';
 export class SchoolPeriodActualContainer extends Component {
   componentDidMount = () => {
     const {define,findCurrentSchoolPeriod } = this.props;
@@ -59,13 +60,14 @@ export class SchoolPeriodActualContainer extends Component {
     const {
       schoolPeriodActual:{start_date,end_date,subjects}
     }=this.props;
+    console.log()
     return (
-      <SchoolPeriodActual
+      !this.props.schoolPeriodActual.message ? <SchoolPeriodActual
         startDate={start_date}
         endDate={end_date}
         saveSchoolPeriod={this.saveSchoolPeriod}
         subjects={subjects}
-      />
+      /> :  <Typography variant="h6" gutterBottom>Actualmente no existe un periodo semestral abierto</Typography>
     );
   }
 }
