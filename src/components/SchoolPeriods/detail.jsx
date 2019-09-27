@@ -157,7 +157,7 @@ class SchoolPeriodDetail extends Component {
               <Grid container justify="space-between" item xs={12}>
                 <RenderFields >{[
                   { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'date' }, 
-                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(moment(startDate)), },
+                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(moment(startDate).add(1, 'days')), },
                 ]}</RenderFields>
               </Grid>
               
@@ -232,7 +232,6 @@ SchoolPeriodDetail.propTypes = {
 
 const schoolPeriodValidation = values => {
   const errors = {};
-
   if (!values.codSchoolPeriod) {
     errors.codSchoolPeriod = '*codigo es requerido';
   }
@@ -242,11 +241,10 @@ const schoolPeriodValidation = values => {
   if(!values.endDate) 
     errors.endDate = '*Fecha fin es requerida';
   else if((moment(values.endDate) <= moment(values.startDate)))
-    errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';  
-
-  if (values.subject && values.subject.length){
+    errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';
+  if (values.subjects && values.subjects.length){
     const subjectArrayErrors = []
-    values.subject.forEach((subj, subjIndex) => {
+    values.subjects.forEach((subj, subjIndex) => {
       const subjErrors = {}
       if (!subj || !subj.subjectId) {
         subjErrors.subjectId = '*Materia es requerido'
@@ -265,28 +263,33 @@ const schoolPeriodValidation = values => {
         subjectArrayErrors[subjIndex] = subjErrors
       }
   
-      if (subj.schedule && subj.schedule.length){
-        subjErrors.schedule = []
-        subj.schedule.forEach((sche,scheIndex)=>{
+      if (subj.schedules && subj.schedules.length){
+        subjErrors.schedules = []
+        subj.schedules.forEach((sche,scheIndex)=>{
 
           const scheErrors = {}
           if (!sche || !sche.day) {
             scheErrors.day = '*Dia es requerido'
-            subjErrors.schedule[scheIndex] = scheErrors
+            subjErrors.schedules[scheIndex] = scheErrors
           }
           if (!sche || !sche.classroom) {
             scheErrors.classroom = '*Aula es requerido'
-            subjErrors.schedule[scheIndex] = scheErrors
+            subjErrors.schedules[scheIndex] = scheErrors
           }
           if (!sche || !sche.startHour) {
             scheErrors.startHour = '*Hora inicio es requerida'
-            subjErrors.schedule[scheIndex] = scheErrors
+            subjErrors.schedules[scheIndex] = scheErrors
           }
+
           if (!sche || !sche.endHour) {
             scheErrors.endHour = '*Hora fin es requerida'
-            subjErrors.schedule[scheIndex] = scheErrors
-          } else if((sche.endHour <= sche.startHour))
-          scheErrors.endHour = '*Hora fin no debe estar por debajo de la inicial';  
+            subjErrors.schedules[scheIndex] = scheErrors
+          } else if((moment(sche.endHour,'hh:mm:ss').isBefore(moment(sche.startHour,'hh:mm:ss'))))
+          {
+            scheErrors.endHour = '*Hora fin no debe estar por debajo de la inicial';
+            subjErrors.schedules[scheIndex] = scheErrors  
+
+          }
         })
         subjectArrayErrors[subjIndex] = subjErrors
       }
@@ -294,7 +297,7 @@ const schoolPeriodValidation = values => {
     })
     
     if (subjectArrayErrors.length) {
-      errors.subject = subjectArrayErrors
+      errors.subjects = subjectArrayErrors
     }
   }
   return errors;
@@ -317,7 +320,7 @@ SchoolPeriodDetail = connect(
         : moment().format('YYYY-MM-DD'),
       endDate:state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
         ? state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
-        : moment().format('YYYY-MM-DD'),
+        : moment().add(1, 'days').format('YYYY-MM-DD'),
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map(subj=>({ 
           subjectId:subj.subject_id, 

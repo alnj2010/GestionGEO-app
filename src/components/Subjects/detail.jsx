@@ -70,12 +70,12 @@ class SubjectDetail extends Component {
     <Fragment key={index}>
       <Grid item xs={5}>
         <RenderFields >{[
-          {field: `${postgraduate}.id`, id: `${postgraduate}.id`, type: 'select', placeholder:'Postgrado', options: this.unselectedPostgraduates(index).map(post => { return { key: post.postgraduate_name, value: post.id } }) },
+          {field: `${postgraduate}.id`, id: `${postgraduate}.id`, type: 'select', label:'Postgrado', options: this.unselectedPostgraduates(index).map(post => { return { key: post.postgraduate_name, value: post.id } }) },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={5}>
         <RenderFields >{[
-          {field: `${postgraduate}.type`, id: `${postgraduate}.type`, type: 'select', placeholder:'modalidad', options: [{key:'OBLIGATORIA',value:"O"}, {key:'ELECTIVA',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
+          {field: `${postgraduate}.type`, id: `${postgraduate}.type`, type: 'select', label:'modalidad', options: [{key:'OBLIGATORIA',value:"O"}, {key:'ELECTIVA',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={2} className={this.props.classes.buttonDeleteContainer}>
