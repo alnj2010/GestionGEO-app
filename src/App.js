@@ -17,6 +17,7 @@ import SubjectDetail from './containers/Subjects/detail';
 
 import StudentsList from './containers/Students';
 import StudentDetail from './containers/Students/detail';
+import StudentInscription from './containers/Students/inscription';
 
 import TeachersList from './containers/Teachers';
 import TeacherDetail from './containers/Teachers/detail';
@@ -25,7 +26,7 @@ import SchoolPeriodsList from './containers/SchoolPeriods/list';
 import SchoolPeriodDetail from './containers/SchoolPeriods/detail';
 import SchoolPeriodActual from './containers/SchoolPeriods/actual';
 
-import InscriptionList from './containers/Inscription';
+
 
 class App extends Component {
   render() {
@@ -52,6 +53,7 @@ class App extends Component {
               <Route exact path="/estudiantes/" component={StudentsList} />
               <Route exact path="/estudiantes/edit/:id" component={StudentDetail} />
               <Route exact path="/estudiantes/create" component={StudentDetail} />
+              <Route exact path="/estudiantes/inscripcion/:id" component={StudentInscription} />
 
               <Route exact path="/profesores/" component={TeachersList} />
               <Route exact path="/profesores/edit/:id" component={TeacherDetail} />
@@ -60,9 +62,7 @@ class App extends Component {
               <Route exact path="/periodo-semestral/actual" component={SchoolPeriodActual} />
               <Route exact path="/periodo-semestral/list" component={SchoolPeriodsList} />
               <Route exact path="/periodo-semestral/edit/:id" component={SchoolPeriodDetail} />
-              <Route exact path="/periodo-semestral/create" component={SchoolPeriodDetail} />
-
-              <Route exact path="/inscripcion/" component={InscriptionList} />
+              <Route exact path="/periodo-semestral/create" component={SchoolPeriodDetail} /> 
               <NotFound />
             </Switch>
           </Menu>

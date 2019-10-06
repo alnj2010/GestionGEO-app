@@ -7,6 +7,7 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.1",
+    "axios-progress-bar": "^1.2.0",
     "globalize": "^1.4.2",
     "material-table": "^1.34.2",
     "material-ui-next-pickers": "0.0.20",

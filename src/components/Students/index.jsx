@@ -5,6 +5,7 @@ import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import { handleExportCsv } from '../../services/constants';
+import Inscription from '@material-ui/icons/HowToVote';
 
 class StudentsList extends Component {
   constructor() {
@@ -70,6 +71,11 @@ class StudentsList extends Component {
                 onClick: (event, rowData) => {
                   history.push(`/estudiantes/edit/${rowData.id}`);
                 },
+              },
+              {
+                icon: Inscription,
+                tooltip: 'Inscribir',
+                onClick: (event, rowData) => history.push(`/estudiantes/inscripcion/${rowData.id}`)
               },
               {
                 icon: 'delete',
