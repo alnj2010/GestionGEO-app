@@ -1,15 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
   Button
 } from '@material-ui/core';
-import { Form, reduxForm, change, submit} from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
+import { Form, reduxForm, change, submit, FieldArray, formValueSelector,Field } from 'redux-form';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = () => ({
 
@@ -24,12 +27,16 @@ const styles = () => ({
       backgroundColor: 'rgb(78, 127, 71)',
     },
   },
+  buttonDelete: {
+    marginTop:30,
+    padding:10
+  },
   button:{
     width:'100%'
   }
 });
 
-class StudentDetail extends Component {
+class StudentInscription extends Component {
   constructor() {
     super();
     this.state = {
@@ -43,47 +50,70 @@ class StudentDetail extends Component {
     });
   };
 
+  unselectedSubjects = ( pos ) =>{
+    const {subjects, subjectsSelected} =this.props;
+    return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
+  }
+
+  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
+    {fields.map((subject, index) => (
+    <Grid container justify="center" key={index}>
+      <Grid container item xs={10}>
+        <RenderFields lineal={true} >{[
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.props.subjects.map(subject => { return { key: subject.subject_name, value: subject.id } }) },
+          {label: 'Estado Materia', field: `${subject}.status`, id: `${subject}.status`, type: 'select', options: [{key:'CURSANDO', value:'CUR'},{key:'RETIRADO', value:'RET'},{key:'APROBADO', value:'APR'},{key:'REPROBADO', value:'REP'}].map(status => { return { key: status.key, value: status.value } }) },
+          {label: 'Nota', field: `${subject}.nota`, id: `${subject}.nota`, type: 'number', min:0, max:20 },
+        ]}</RenderFields>      
+      </Grid>
+      <Grid item xs={2}>
+        <IconButton className={this.props.classes.buttonDelete} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
+          <DeleteIcon />
+        </IconButton>
+      </Grid>
+    </Grid>      
+    ))}
+    <Grid container item xs={12} justify={'center'}>
+      <Grid item xs={1}>
+        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({schedule:[{endHour:'00:00:00',startHour:'00:00:00'}]})}>
+          <AddIcon />
+        </Fab>
+      </Grid>      
+    </Grid>
+  </Fragment>)
+
   
   render = () => {
     const {
       classes,
       handleSubmit,
-      saveStudent,
+      saveInscription,
       goBack,
       studentId,
-      handleStudentDelete,
       pristine,
       submitting,
       valid,
       submit,
-      postgraduates
+      schoolPeriods
     } = this.props;
     const { func } = this.state;
 
     return (
-      <Form onSubmit={handleSubmit(saveStudent)}>
+      <Form onSubmit={handleSubmit(saveInscription)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {studentId ? `Estudiante: ${studentId}` : 'Nuevo Estudiante'}</h3>
+            <h3> Inscripcion estudiante: {studentId}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
-              <RenderFields >{[
-                { label: 'Cedula', field: 'identification', id: 'identification', type: 'text' },
-                { label: 'Nombre', field: 'firstName', id: 'firstName', type: 'text' },
-                { label: 'Segundo Nombre', field: 'secondName', id: 'secondName', type: 'text' },
-                { label: 'Apellido', field: 'firstSurname', id: 'firstSurname', type: 'text' },
-                { label: 'Segundo apellido', field: 'secondSurname', id: 'secondSurname', type: 'text' },
-                { label: 'Movil', field: 'mobile', id: 'mobile', type: 'phone' },
-                { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
-                { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
-                { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Postgrado al que pertenece',field: `postgraduate`, id: `postgraduate`, type: 'select', options: postgraduates.map(post => { return { key: post.postgraduate_name, value: post.id } }) },
-                { label: 'Tipo',field: `studentType`, id: `studentType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }) },
-                { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text' },
-              ]}</RenderFields>
-                
+            <RenderFields >{[
+              {field: `schoolPeriodId`, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }) },
+              {field: `schoolPeriodStatus`, id: `schoolPeriodStatus`, type: 'select', label:'Estado periodo semestral', options: ['RET-A','RET-B','DES-A','DES-B','INC-A','INC-B','REI-A','REI-B','REG'].map(status => { return { key: status, value: status } }) },
+
+            ]}</RenderFields>
+              <Grid container item xs={12}>
+                <FieldArray name="subjects" component={this.renderSubjects} />
+              </Grid>     
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -109,21 +139,6 @@ class StudentDetail extends Component {
                       Cancelar
                     </Button>
                   </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {studentId ? (
-                      <Button
-                        className={classes.button}
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handleStudentDelete)
-                        }
-                      >
-                        Borrar
-                      </Button>
-                    ) : null}
-                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -135,106 +150,25 @@ class StudentDetail extends Component {
   };
 }
 
-StudentDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveStudent: func.isRequired,
-  goBack: func.isRequired,
-  studentId: number,
-  handleStudentDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
-};
-
 const studentValidation = values => {
   const errors = {};
-  if (!values.identification) {
-    errors.identification = 'Cedula es requerida';
-  }
-  if (!values.firstName) {
-    errors.firstName = 'Nombre es requerido';
-  } else if (/(?=[0-9])/.test(values.firstName))
-    errors.firstName = 'El nombre no debe contener numeros';
-
-  if (!values.firstSurname) {
-    errors.firstSurname = 'Apellido es requerido';
-  } else if (/(?=[0-9])/.test(values.firstSurname))
-    errors.firstSurname = 'El Apellido no debe contener numeros';
-    if (!values.mobile) {
-      errors.mobile = 'movil es requerido';
-    }
-  
-    if (!values.telephone) {
-      errors.telephone = 'Telefono es requerido';
-    }
-  
-    if (!values.workPhone) {
-      errors.workPhone = 'Telefono del trabajo es requerido';
-    }
-  if (!values.email) {
-    errors.email = 'Email es requerido';
-  } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
-    errors.email = 'Introduce un email valido';
-  }
-
-  if(!values.postgraduate) errors.postgraduate = "Postgrado del estudiante Requerido"
-  if(!values.studentType) errors.studentType = " Tipo Requerido"
-  if(!values.homeUniversity) errors.homeUniversity = "Universidad de origen Requerido"
-
 
   return errors;
 };
 
-StudentDetail = reduxForm({
+StudentInscription = reduxForm({
   form: 'student',
   validate: studentValidation,
   enableReinitialize: true,
-})(StudentDetail);
+})(StudentInscription);
 
-StudentDetail = connect(
+StudentInscription = connect(
   state => ({
     initialValues: {
-      identification: state.studentReducer.selectedStudent.identification
-        ? state.studentReducer.selectedStudent.identification
-        : '',
-      firstName: state.studentReducer.selectedStudent.first_name
-        ? state.studentReducer.selectedStudent.first_name
-        : '',
-      secondName: state.studentReducer.selectedStudent.second_name
-        ? state.studentReducer.selectedStudent.second_name
-        : '',
-      firstSurname: state.studentReducer.selectedStudent.first_surname
-        ? state.studentReducer.selectedStudent.first_surname
-        : '',
-      secondSurname: state.studentReducer.selectedStudent.second_surname
-        ? state.studentReducer.selectedStudent.second_surname
-        : '',
-      email: state.studentReducer.selectedStudent.email
-        ? state.studentReducer.selectedStudent.email
-        : '',
-      mobile: state.studentReducer.selectedStudent.mobile
-        ? state.studentReducer.selectedStudent.mobile
-        : '',
-      telephone: state.studentReducer.selectedStudent.telephone
-        ? state.studentReducer.selectedStudent.telephone
-        : '',
-      workPhone: state.studentReducer.selectedStudent.work_phone
-        ? state.studentReducer.selectedStudent.work_phone
-        : '',
-      postgraduate: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.postgraduate_id
-        : '',
-      studentType: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.student_type
-        : '',
-      homeUniversity: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.home_university
-        : '',   
     },
     action: state.dialogReducer.action,
   }),
   { change, show, submit },
-)(StudentDetail);
+)(StudentInscription);
 
-export default withStyles(styles)(StudentDetail);
+export default withStyles(styles)(StudentInscription);

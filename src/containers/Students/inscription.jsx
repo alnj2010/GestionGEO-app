@@ -1,45 +1,26 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  findStudentById,
-  updateStudent,
-  deleteStudent,
-  cleanSelectedStudent,
-  saveStudent,
-} from '../../actions/student';
-import { getList as getPostgraduateList } from '../../actions/postgraduate';
-import StudentDetail from '../../components/Students/detail';
+
+import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
+import { getList as getSubjectList } from '../../actions/subject';
+
+import StudentInscription from '../../components/Students/inscription';
 import { define, cleanDialog } from '../../actions/dialog';
-export class StudentDetailContainer extends Component {
+export class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
-    const { match, findStudentById, define } = this.props;
-    if (match.params.id) findStudentById(match.params.id);
-    this.props.getPostgraduateList();
+    const { match, define } = this.props;
+    this.props.getSchoolPeriodsList();
+    this.props.getSubjectList();
     define('estudiante');
   };
   componentWillUnmount = () => {
-    this.props.cleanSelectedStudent();
+    //this.props.cleanSelectedStudent();
     this.props.cleanDialog();
     
   };
 
-  saveStudent = values => {
-    const {
-      match,
-      updateStudent,
-      findStudentById,
-      saveStudent,
-      history,
-    } = this.props;
-    const payload = { ...values };
-    if (match.params.id) updateStudent({ ...payload, ...match.params });
-    else
-      saveStudent({ ...payload }).then(response => {
-        if (response) {
-          findStudentById(response).then(res => history.push(`edit/${response}`));
-        }
-      });
+  saveInscription = values => {
+    alert('Guardando inscripcion')
   };
 
   goBack = () => {
@@ -47,57 +28,40 @@ export class StudentDetailContainer extends Component {
     history.goBack();
   };
 
-  handleStudentDelete = () => {
-    const { deleteStudent, history, match } = this.props;
-    deleteStudent(match.params.id).then(res => history.push('/estudiantes'));
-  };
-
-
   render() {
     const {
-      student: { id },
-      postgraduates
+      schoolPeriods,
+      match:{params:{id}},
+      subjects
     } = this.props;
     return (
-      <StudentDetail
-        postgraduates={postgraduates}
-        saveStudent={this.saveStudent}
+      <StudentInscription
+        schoolPeriods={schoolPeriods}
+        saveInscription={this.saveInscription}
         goBack={this.goBack}
         studentId={id}
-        handleStudentDelete={this.handleStudentDelete}
+        subjects={subjects}
       />
     );
   }
 }
 
-StudentDetailContainer.propTypes = {
-  deleteStudent: func.isRequired,
-  history: object.isRequired,
-  match: object.isRequired,
-  updateStudent: func.isRequired,
-  findStudentById: func.isRequired,
-  saveStudent: func.isRequired,
-};
 
 const mS = state => ({
-  student: state.studentReducer.selectedStudent,
-  postgraduates: state.postgraduateReducer.list,
+  subjects: state.subjectReducer.list,
+  schoolPeriods: state.schoolPeriodReducer.list,
 });
 
 const mD = {
-  findStudentById,
-  updateStudent,
-  saveStudent,
-  deleteStudent,
   define,
-  cleanSelectedStudent,
   cleanDialog,
-  getPostgraduateList
+  getSubjectList,
+  getSchoolPeriodsList
 };
 
-StudentDetailContainer = connect(
+StudentInscriptionContainer = connect(
   mS,
   mD,
-)(StudentDetailContainer);
+)(StudentInscriptionContainer);
 
-export default StudentDetailContainer;
+export default StudentInscriptionContainer;

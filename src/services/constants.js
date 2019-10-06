@@ -8,6 +8,7 @@ export const URL = {
   STUDENT:'/students',
   TEACHER:'/teachers',
   SCHOOL_PERIOD:'/schoolPeriods',
+  INSCRIPTION:'/inscriptions',
 };
 
 export const protocol =
