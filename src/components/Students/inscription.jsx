@@ -13,6 +13,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Student } from '../../services/student';
 
 const styles = () => ({
 
@@ -55,12 +56,17 @@ class StudentInscription extends Component {
     return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
   }
 
+  getSubjects(){
+    console.log(this.props.schoolPeriodId);
+    if(this.props.schoolPeriodId) Student.availableSubjects(this.props.studentId,this.props.schoolPeriodId).then(res => res.map(subject => { return { key: subject.subject.subject_name, value: subject.id } }))
+  }
+
   renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
     {fields.map((subject, index) => (
     <Grid container justify="center" key={index}>
       <Grid container item xs={10}>
         <RenderFields lineal={true} >{[
-          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.props.subjects.map(subject => { return { key: subject.subject_name, value: subject.id } }) },
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.getSubjects() },
           {label: 'Estado Materia', field: `${subject}.status`, id: `${subject}.status`, type: 'select', options: [{key:'CURSANDO', value:'CUR'},{key:'RETIRADO', value:'RET'},{key:'APROBADO', value:'APR'},{key:'REPROBADO', value:'REP'}].map(status => { return { key: status.key, value: status.value } }) },
           {label: 'Nota', field: `${subject}.nota`, id: `${subject}.nota`, type: 'number', min:0, max:20 },
         ]}</RenderFields>      
@@ -93,10 +99,10 @@ class StudentInscription extends Component {
       submitting,
       valid,
       submit,
-      schoolPeriods
+      schoolPeriods,
     } = this.props;
     const { func } = this.state;
-
+    
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
         <Grid container>
@@ -157,16 +163,17 @@ const studentValidation = values => {
 };
 
 StudentInscription = reduxForm({
-  form: 'student',
+  form: 'inscription',
   validate: studentValidation,
   enableReinitialize: true,
 })(StudentInscription);
-
+const selector = formValueSelector('inscription');
 StudentInscription = connect(
   state => ({
     initialValues: {
     },
     action: state.dialogReducer.action,
+    schoolPeriodId: selector(state, 'schoolPeriodId'),
   }),
   { change, show, submit },
 )(StudentInscription);

@@ -2,7 +2,7 @@ import { ACTIONS } from '../actions/student';
 
 const initialState = {
   list: [],
-  selectedStudent: {},
+  selectedStudent: {student:{}},
 };
 
 const studentReducer = (state = initialState, action) => {

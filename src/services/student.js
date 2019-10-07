@@ -69,6 +69,20 @@ export const Student = {
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
+
+  availableSubjects(studentId,schoolPeriodId) {
+    return AXIOS.get(`${URL.INSCRIPTION}/availableSubjects?student_id=${studentId}&school_period_id=${schoolPeriodId}`, {
+      headers: headers(),
+    })
+      .then(response => {
+        return response.data;
+      })
+      .catch(error => {
+        if (error && error.response && error.response && error.response.data)
+          return Promise.reject(error.response.data.message);
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+      });
+  },
 };
 
 export default Student;

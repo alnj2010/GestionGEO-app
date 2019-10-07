@@ -110,3 +110,13 @@ export const deleteStudent = studentId => async dispatch => {
       return false;
     });
 };
+
+export const availableSubjects = (studentId,schoolPeriodId) => async dispatch => {
+  return Student.availableSubjects(studentId,schoolPeriodId)
+    .then(response => {
+      return Promise.resolve(response);
+    })
+    .catch(error => {
+      return error;
+    });
+};

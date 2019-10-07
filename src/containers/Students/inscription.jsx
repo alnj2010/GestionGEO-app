@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import {
+availableSubjects,
+findStudentById
+} from '../../actions/student';
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 import { getList as getSubjectList } from '../../actions/subject';
 
@@ -9,6 +12,7 @@ import { define, cleanDialog } from '../../actions/dialog';
 export class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
     const { match, define } = this.props;
+    this.props.findStudentById(match.params.id);
     this.props.getSchoolPeriodsList();
     this.props.getSubjectList();
     define('estudiante');
@@ -17,6 +21,10 @@ export class StudentInscriptionContainer extends Component {
     //this.props.cleanSelectedStudent();
     this.props.cleanDialog();
     
+  };
+
+  availableSubjects = (schoolPeriodId) => {
+    return availableSubjects(this.props.match.params.id,schoolPeriodId)
   };
 
   saveInscription = values => {
@@ -31,7 +39,7 @@ export class StudentInscriptionContainer extends Component {
   render() {
     const {
       schoolPeriods,
-      match:{params:{id}},
+      student:{student:{id}},
       subjects
     } = this.props;
     return (
@@ -41,6 +49,7 @@ export class StudentInscriptionContainer extends Component {
         goBack={this.goBack}
         studentId={id}
         subjects={subjects}
+        availableSubjects={availableSubjects}
       />
     );
   }
@@ -50,13 +59,15 @@ export class StudentInscriptionContainer extends Component {
 const mS = state => ({
   subjects: state.subjectReducer.list,
   schoolPeriods: state.schoolPeriodReducer.list,
+  student: state.studentReducer.selectedStudent,
 });
 
 const mD = {
   define,
   cleanDialog,
   getSubjectList,
-  getSchoolPeriodsList
+  getSchoolPeriodsList,
+  findStudentById
 };
 
 StudentInscriptionContainer = connect(
