@@ -8,6 +8,7 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -21,6 +22,7 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -34,6 +36,7 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -47,7 +50,8 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        if(response.status===200) return response.data;
+        if(response.status===200) if( response.status && response.status!==200) throw {response:response};
+        return response.data;
         return Promise.reject(new Error('fail'))
       })
       .catch(error => {
@@ -62,6 +66,7 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -75,6 +80,7 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {

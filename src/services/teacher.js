@@ -8,6 +8,7 @@ export const Teacher = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -21,6 +22,7 @@ export const Teacher = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -34,6 +36,7 @@ export const Teacher = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -48,6 +51,7 @@ export const Teacher = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
@@ -61,6 +65,7 @@ export const Teacher = {
       headers: headers(),
     })
       .then(response => {
+        if( response.status && response.status!==200) throw {response:response};
         return response.data;
       })
       .catch(error => {
