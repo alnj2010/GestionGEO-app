@@ -13,6 +13,10 @@ export class SchoolPeriodActualContainer extends Component {
     const {define,findCurrentSchoolPeriod } = this.props;
     define('periodo semestral');
     findCurrentSchoolPeriod();
+    const weekDays=['Lunes','Martes','Miercoles','Jueves','Viernes']
+    document.querySelectorAll('.rbc-header').forEach((column,index)=>{
+      column.innerText=weekDays[index];
+    })
   };
   componentWillUnmount = () => {
     this.props.cleanDialog();    
