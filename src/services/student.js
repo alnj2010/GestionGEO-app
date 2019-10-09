@@ -30,7 +30,7 @@ export const Student = {
       });
   },
   update(student) {
-    return AXIOS.patch(`${URL.STUDENT}/${student.id}`, student, {
+    return AXIOS.put(`${URL.STUDENT}/${student.id}`, student, {
       headers: headers(),
     })
       .then(response => {

@@ -85,7 +85,7 @@ export const User = {
       });
   },
   update(player) {
-    return AXIOS.patch(`${URL.ADMIN}/${player.id}`, player, {
+    return AXIOS.put(`${URL.ADMIN}/${player.id}`, player, {
       headers: headers(),
     })
       .then(response => {

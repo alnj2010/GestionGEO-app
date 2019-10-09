@@ -43,7 +43,7 @@ export const SchoolPeriod = {
       });
   },
   update(shoolPeriod) {
-    return AXIOS.patch(`${URL.SCHOOL_PERIOD}/${shoolPeriod.id}`, shoolPeriod, {
+    return AXIOS.put(`${URL.SCHOOL_PERIOD}/${shoolPeriod.id}`, shoolPeriod, {
       headers: headers(),
     })
       .then(response => {

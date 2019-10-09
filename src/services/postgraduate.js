@@ -30,7 +30,7 @@ export const Postgraduate = {
       });
   },
   update(postgraduate) {
-    return AXIOS.patch(`${URL.POSTGRADUATE}/${postgraduate.id}`, postgraduate, {
+    return AXIOS.put(`${URL.POSTGRADUATE}/${postgraduate.id}`, postgraduate, {
       headers: headers(),
     })
       .then(response => {
