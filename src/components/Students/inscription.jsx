@@ -52,8 +52,8 @@ class StudentInscription extends Component {
   };
 
   unselectedSubjects = ( pos ) => {
-    const {subjects, subjectsSelected} =this.props;
-    return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
+    const {subjectInscriptions, subjectsSelected} =this.props;
+    return subjectInscriptions.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
   }
 
   renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
@@ -61,7 +61,7 @@ class StudentInscription extends Component {
     <Grid container justify="center" key={index}>
       <Grid container item xs={10}>
         <RenderFields lineal={true} >{[
-          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.props.subjectInscriptions.map(subject=>({key:subject.subject.subject_name, value:subject.id})) },
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject=>({key:subject.subject.subject_name, value:subject.id})) },
           {label: 'Estado Materia', field: `${subject}.status`, id: `${subject}.status`, type: 'select', options: [{key:'CURSANDO', value:'CUR'},{key:'RETIRADO', value:'RET'},{key:'APROBADO', value:'APR'},{key:'REPROBADO', value:'REP'}].map(status => { return { key: status.key, value: status.value } }) },
           {label: 'Nota', field: `${subject}.nota`, id: `${subject}.nota`, type: 'number', min:0, max:20 },
         ]}</RenderFields>      
@@ -75,7 +75,13 @@ class StudentInscription extends Component {
     ))}
     <Grid container item xs={12} justify={'center'}>
       <Grid item xs={1}>
-        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({schedule:[{endHour:'00:00:00',startHour:'00:00:00'}]})}>
+        <Fab 
+          color="primary" 
+          aria-label="Add" 
+          className={this.props.classes.fab} 
+          disabled={!this.props.schoolPeriodId || (this.props.subjectsSelected && this.props.subjectInscriptions.length===this.props.subjectsSelected.length)} 
+          onClick={() => fields.push({})}
+        >
           <AddIcon />
         </Fab>
       </Grid>      
@@ -168,6 +174,8 @@ StudentInscription = connect(
     initialValues: {
     },
     action: state.dialogReducer.action,
+    schoolPeriodId: selector(state, 'schoolPeriodId'),
+    subjectsSelected: selector(state, 'subjects'),
   }),
   { change, show, submit },
 )(StudentInscription);
