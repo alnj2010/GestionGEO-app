@@ -11,7 +11,7 @@ export const Teacher = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -24,7 +24,7 @@ export const Teacher = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -37,7 +37,7 @@ export const Teacher = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -51,7 +51,7 @@ export const Teacher = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -64,7 +64,7 @@ export const Teacher = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
 availableSubjects,
-findStudentById
+findStudentById,
+addStudentPeriodSchool
 } from '../../actions/student';
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 import { getList as getSubjectList } from '../../actions/subject';
@@ -24,7 +25,11 @@ export class StudentInscriptionContainer extends Component {
   };
 
   saveInscription = values => {
-    alert('Guardando inscripcion')
+    const{
+      addStudentPeriodSchool,
+      student:{student:{id}},
+    }=this.props
+    addStudentPeriodSchool({ ...values, studentId:id })
   };
 
   goBack = () => {
@@ -68,7 +73,8 @@ const mD = {
   getSubjectList,
   getSchoolPeriodsList,
   findStudentById,
-  availableSubjects
+  availableSubjects,
+  addStudentPeriodSchool
 };
 
 StudentInscriptionContainer = connect(

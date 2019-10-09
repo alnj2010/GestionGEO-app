@@ -11,7 +11,7 @@ export const Student = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -24,7 +24,7 @@ export const Student = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -37,7 +37,7 @@ export const Student = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -51,7 +51,7 @@ export const Student = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -64,7 +64,7 @@ export const Student = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
@@ -78,7 +78,24 @@ export const Student = {
         return response.data;
       })
       .catch(error => {
-        if (error && error.response && error.response && error.response.data)
+        if (error && error.response && error.response.data)
+          return Promise.reject(error.response.data.message);
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+      });
+  },
+
+  addStudentPeriodSchool(payload) {
+    return AXIOS.post(`${URL.INSCRIPTION}`, payload, {
+      headers: headers(),
+    })
+      .then(response => {
+
+        if( response.status && response.status!==200) throw {response:response};
+        return response.data;
+      })
+      .catch(error => {
+        console.log(error);
+        if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });

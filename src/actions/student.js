@@ -124,3 +124,28 @@ export const availableSubjects = (studentId,schoolPeriodId) => async dispatch =>
       return error;
     });
 };
+
+export const addStudentPeriodSchool = value => async dispatch => {
+  let payload={
+      student_id: value.studentId,
+      school_period_id: value.schoolPeriodId,
+      status:value.schoolPeriodStatus,
+      subjects: value.subjects.map(subject=>({
+        school_period_subject_teacher_id:subject.subjectId,
+        qualification:parseInt(subject.nota),
+        status:subject.status,
+      }))
+    }
+  console.log(payload);
+
+  return Student.addStudentPeriodSchool(payload)
+    .then(res => {
+      console.log(res);
+      show(res.message, 'success')(dispatch);
+      return true;
+    })
+    .catch(error => {
+      show(error, 'error')(dispatch);
+      return false;
+    });
+};
