@@ -84,7 +84,7 @@ class AdminDetail extends Component {
                   <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={[classes.save,classes.button]}
+                      className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         adminId
                           ? this.handleDialogShow('actualizar', submit)

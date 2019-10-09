@@ -4,6 +4,7 @@ import { show } from './snackbar';
 export const ACTIONS = {
   LIST: 'student/list',
   SELECT: `student/select`,
+  SUBJECTS_INSCRIPTION: `student/subjects_inscription`,
   UPDATE: `student/update`,
   CLEAN_SELECTED_STUDENT: `student/clean-selected`,
 };
@@ -114,7 +115,10 @@ export const deleteStudent = studentId => async dispatch => {
 export const availableSubjects = (studentId,schoolPeriodId) => async dispatch => {
   return Student.availableSubjects(studentId,schoolPeriodId)
     .then(response => {
-      return Promise.resolve(response);
+      dispatch({
+        type: ACTIONS.SUBJECTS_INSCRIPTION,
+        payload: { subjectsInscription: response },
+      });
     })
     .catch(error => {
       return error;

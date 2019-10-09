@@ -49,6 +49,7 @@ export default function SelectField(props){
         name={props.field}
         component={renderSelectField}
         //custom props
+        onChange = {props.onchange ? (event, newValue, previousValue, name) => props.onchange(newValue) : null}
         label={props.label}
         id={props.id}
         options={props.options}

@@ -23,10 +23,6 @@ export class StudentInscriptionContainer extends Component {
     
   };
 
-  availableSubjects = (schoolPeriodId) => {
-    return availableSubjects(this.props.match.params.id,schoolPeriodId)
-  };
-
   saveInscription = values => {
     alert('Guardando inscripcion')
   };
@@ -40,7 +36,9 @@ export class StudentInscriptionContainer extends Component {
     const {
       schoolPeriods,
       student:{student:{id}},
-      subjects
+      subjects,
+      availableSubjects,
+      subjectInscriptions
     } = this.props;
     return (
       <StudentInscription
@@ -50,6 +48,7 @@ export class StudentInscriptionContainer extends Component {
         studentId={id}
         subjects={subjects}
         availableSubjects={availableSubjects}
+        subjectInscriptions={subjectInscriptions}
       />
     );
   }
@@ -60,6 +59,7 @@ const mS = state => ({
   subjects: state.subjectReducer.list,
   schoolPeriods: state.schoolPeriodReducer.list,
   student: state.studentReducer.selectedStudent,
+  subjectInscriptions: state.studentReducer.subjectsInscription,
 });
 
 const mD = {
@@ -67,7 +67,8 @@ const mD = {
   cleanDialog,
   getSubjectList,
   getSchoolPeriodsList,
-  findStudentById
+  findStudentById,
+  availableSubjects
 };
 
 StudentInscriptionContainer = connect(

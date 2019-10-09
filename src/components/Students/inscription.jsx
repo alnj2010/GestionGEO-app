@@ -13,7 +13,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Student } from '../../services/student';
+
 
 const styles = () => ({
 
@@ -51,14 +51,9 @@ class StudentInscription extends Component {
     });
   };
 
-  unselectedSubjects = ( pos ) =>{
+  unselectedSubjects = ( pos ) => {
     const {subjects, subjectsSelected} =this.props;
     return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
-  }
-
-  getSubjects(){
-    console.log(this.props.schoolPeriodId);
-    if(this.props.schoolPeriodId) Student.availableSubjects(this.props.studentId,this.props.schoolPeriodId).then(res => res.map(subject => { return { key: subject.subject.subject_name, value: subject.id } }))
   }
 
   renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
@@ -66,7 +61,7 @@ class StudentInscription extends Component {
     <Grid container justify="center" key={index}>
       <Grid container item xs={10}>
         <RenderFields lineal={true} >{[
-          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.getSubjects() },
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.props.subjectInscriptions.map(subject=>({key:subject.subject.subject_name, value:subject.id})) },
           {label: 'Estado Materia', field: `${subject}.status`, id: `${subject}.status`, type: 'select', options: [{key:'CURSANDO', value:'CUR'},{key:'RETIRADO', value:'RET'},{key:'APROBADO', value:'APR'},{key:'REPROBADO', value:'REP'}].map(status => { return { key: status.key, value: status.value } }) },
           {label: 'Nota', field: `${subject}.nota`, id: `${subject}.nota`, type: 'number', min:0, max:20 },
         ]}</RenderFields>      
@@ -100,9 +95,9 @@ class StudentInscription extends Component {
       valid,
       submit,
       schoolPeriods,
+      availableSubjects,
     } = this.props;
     const { func } = this.state;
-    
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
         <Grid container>
@@ -113,7 +108,7 @@ class StudentInscription extends Component {
           <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
             <RenderFields >{[
-              {field: `schoolPeriodId`, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }) },
+              {field: `schoolPeriodId`, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>availableSubjects(studentId,schoolPeriodId) },
               {field: `schoolPeriodStatus`, id: `schoolPeriodStatus`, type: 'select', label:'Estado periodo semestral', options: ['RET-A','RET-B','DES-A','DES-B','INC-A','INC-B','REI-A','REI-B','REG'].map(status => { return { key: status, value: status } }) },
 
             ]}</RenderFields>
@@ -128,7 +123,7 @@ class StudentInscription extends Component {
                   <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
-                      className={[classes.save,classes.button]}
+                      className={`${classes.save} ${classes.button} `}
                       onClick={() =>
                         studentId
                           ? this.handleDialogShow('actualizar', submit)
@@ -173,7 +168,6 @@ StudentInscription = connect(
     initialValues: {
     },
     action: state.dialogReducer.action,
-    schoolPeriodId: selector(state, 'schoolPeriodId'),
   }),
   { change, show, submit },
 )(StudentInscription);
