@@ -4,7 +4,8 @@ import { show } from './snackbar';
 export const ACTIONS = {
   LIST: 'student/list',
   SELECT: `student/select`,
-  SUBJECTS_INSCRIPTION: `student/subjects_inscription`,
+  AVAILABLE_SUBJECTS: `student/subjects_inscription`,
+  INSCRIBED_SCHOOL_PERIODS: `student/inscribed_school_periods`,
   UPDATE: `student/update`,
   CLEAN_SELECTED_STUDENT: `student/clean-selected`,
 };
@@ -112,12 +113,13 @@ export const deleteStudent = studentId => async dispatch => {
     });
 };
 
-export const availableSubjects = (studentId,schoolPeriodId) => async dispatch => {
-  return Student.availableSubjects(studentId,schoolPeriodId)
+export const getAvailableSubjects = (studentId,schoolPeriodId) => async dispatch => {
+  return Student.getAvailableSubjects(studentId,schoolPeriodId)
     .then(response => {
       dispatch({
-        type: ACTIONS.SUBJECTS_INSCRIPTION,
-        payload: { subjectsInscription: response },
+        type: ACTIONS.AVAILABLE_SUBJECTS
+,
+        payload: { availableSubjects: response },
       });
     })
     .catch(error => {
@@ -147,5 +149,18 @@ export const addStudentPeriodSchool = value => async dispatch => {
     .catch(error => {
       show(error, 'error')(dispatch);
       return false;
+    });
+};
+
+export const getInscribedSchoolPeriods = (studentId) => async dispatch => {
+  return Student.getInscribedSchoolPeriods(studentId)
+    .then(response => {
+      dispatch({
+        type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
+        payload: { inscribedSchoolPeriods: response },
+      });
+    })
+    .catch(error => {
+      return error;
     });
 };

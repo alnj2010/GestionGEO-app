@@ -101,7 +101,7 @@ class StudentInscription extends Component {
       valid,
       submit,
       schoolPeriods,
-      availableSubjects,
+      getAvailableSubjects,
     } = this.props;
     const { func } = this.state;
     return (
@@ -114,7 +114,7 @@ class StudentInscription extends Component {
           <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
             <RenderFields >{[
-              {field: `schoolPeriodId`, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>availableSubjects(studentId,schoolPeriodId) },
+              {field: `schoolPeriodId`, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>getAvailableSubjects(studentId,schoolPeriodId) },
               {field: `schoolPeriodStatus`, id: `schoolPeriodStatus`, type: 'select', label:'Estado periodo semestral', options: ['RET-A','RET-B','DES-A','DES-B','INC-A','INC-B','REI-A','REI-B','REG'].map(status => { return { key: status, value: status } }) },
 
             ]}</RenderFields>

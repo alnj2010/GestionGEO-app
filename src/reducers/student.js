@@ -3,7 +3,8 @@ import { ACTIONS } from '../actions/student';
 const initialState = {
   list: [],
   selectedStudent: {student:{}},
-  subjectsInscription: [],
+  availableSubjects: [],
+  inscribedSchoolPeriods:[]
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -14,9 +15,11 @@ const studentReducer = (state = initialState, action) => {
       return { ...state, ...action.payload };
     case ACTIONS.CLEAN_SELECTED_STUDENT:
       return { ...state, selectedStudent: {} };
-
       
-    case ACTIONS.SUBJECTS_INSCRIPTION:
+    case ACTIONS.AVAILABLE_SUBJECTS:
+      return { ...state, ...action.payload };
+    
+    case ACTIONS.INSCRIBED_SCHOOL_PERIODS:
       return { ...state, ...action.payload };
     default:
       return state;

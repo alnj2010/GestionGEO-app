@@ -19,6 +19,7 @@ class StudentsList extends Component {
       return students.map(student => {
         return {
           id: student.id,
+          studentId:student.student.id,
           email: student.email,
           identification:student.identification,
           firstName: student.first_name,
@@ -56,6 +57,7 @@ class StudentsList extends Component {
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
+              { title: '#', field: 'studentId', hidden: true },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
               { title: 'Cedula', field: 'identification' },
@@ -75,7 +77,7 @@ class StudentsList extends Component {
               {
                 icon: Inscription,
                 tooltip: 'Inscribir',
-                onClick: (event, rowData) => history.push(`/estudiantes/inscripcion/${rowData.id}`)
+                onClick: (event, rowData) => history.push(`/estudiantes/inscripcion/${rowData.studentId}`)
               },
               {
                 icon: 'delete',

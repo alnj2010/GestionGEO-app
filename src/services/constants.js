@@ -9,6 +9,7 @@ export const URL = {
   TEACHER:'/teachers',
   SCHOOL_PERIOD:'/schoolPeriods',
   INSCRIPTION:'/inscriptions',
+  CONSTANCE:'/constance',
 };
 
 export const protocol =

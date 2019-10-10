@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-availableSubjects,
-findStudentById,
-addStudentPeriodSchool
+getAvailableSubjects,
+addStudentPeriodSchool,
+getInscribedSchoolPeriods
 } from '../../actions/student';
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 import { getList as getSubjectList } from '../../actions/subject';
@@ -12,10 +12,14 @@ import StudentInscription from '../../components/Students/inscription';
 import { define, cleanDialog } from '../../actions/dialog';
 export class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
-    const { match, define } = this.props;
-    this.props.findStudentById(match.params.id);
+    const { 
+      match:{params:{id}}, 
+      define 
+    } = this.props;
+    
     this.props.getSchoolPeriodsList();
     this.props.getSubjectList();
+    this.props.getInscribedSchoolPeriods(id)
     define('estudiante');
   };
   componentWillUnmount = () => {
@@ -27,7 +31,7 @@ export class StudentInscriptionContainer extends Component {
   saveInscription = values => {
     const{
       addStudentPeriodSchool,
-      student:{student:{id}},
+      match:{params:{id}},
     }=this.props
     addStudentPeriodSchool({ ...values, studentId:id })
   };
@@ -40,9 +44,9 @@ export class StudentInscriptionContainer extends Component {
   render() {
     const {
       schoolPeriods,
-      student:{student:{id}},
       subjects,
-      availableSubjects,
+      match:{params:{id}},
+      getAvailableSubjects,
       subjectInscriptions
     } = this.props;
     return (
@@ -52,7 +56,7 @@ export class StudentInscriptionContainer extends Component {
         goBack={this.goBack}
         studentId={id}
         subjects={subjects}
-        availableSubjects={availableSubjects}
+        getAvailableSubjects={getAvailableSubjects}
         subjectInscriptions={subjectInscriptions}
       />
     );
@@ -63,8 +67,8 @@ export class StudentInscriptionContainer extends Component {
 const mS = state => ({
   subjects: state.subjectReducer.list,
   schoolPeriods: state.schoolPeriodReducer.list,
-  student: state.studentReducer.selectedStudent,
-  subjectInscriptions: state.studentReducer.subjectsInscription,
+  subjectInscriptions: state.studentReducer.availableSubjects,
+  
 });
 
 const mD = {
@@ -72,9 +76,9 @@ const mD = {
   cleanDialog,
   getSubjectList,
   getSchoolPeriodsList,
-  findStudentById,
-  availableSubjects,
-  addStudentPeriodSchool
+  getAvailableSubjects,
+  addStudentPeriodSchool,
+  getInscribedSchoolPeriods
 };
 
 StudentInscriptionContainer = connect(
