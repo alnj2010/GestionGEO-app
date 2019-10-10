@@ -77,7 +77,7 @@ class StudentsList extends Component {
               {
                 icon: Inscription,
                 tooltip: 'Inscribir',
-                onClick: (event, rowData) => history.push(`/estudiantes/inscripcion/${rowData.studentId}`)
+                onClick: (event, rowData) => history.push(`/estudiantes/inscripciones/${rowData.studentId}`)
               },
               {
                 icon: 'delete',
