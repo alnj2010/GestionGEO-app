@@ -11,7 +11,10 @@ export const User = {
 
     return AXIOS.post(`${URL.AUTH}`, formData, { headers: headers() })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -24,7 +27,10 @@ export const User = {
   getList() {
     return AXIOS.get(`${URL.ADMIN}?join=profile`, { headers: headers() })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -38,7 +44,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -52,7 +61,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -66,7 +78,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -81,7 +96,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -95,7 +113,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -109,7 +130,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -124,7 +148,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -138,7 +165,10 @@ export const User = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -154,7 +184,10 @@ export const User = {
       headers: headers('form'),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {

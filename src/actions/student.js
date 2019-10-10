@@ -141,7 +141,7 @@ export const addStudentPeriodSchool = value => async dispatch => {
   return Student.addStudentPeriodSchool(payload)
     .then(res => {
       console.log(res);
-      show(res.message, 'success')(dispatch);
+      show('Inscripcion sastifactoria', 'success')(dispatch);
       return true;
     })
     .catch(error => {

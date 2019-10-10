@@ -8,7 +8,10 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -22,7 +25,10 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -36,7 +42,10 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -50,9 +59,11 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        if(response.status===200) if( response.status && response.status!==200) throw {response:response};
+        if(response.status===200) if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
-        return Promise.reject(new Error('fail'))
       })
       .catch(error => {
         if (error && error.response && error.response.data)
@@ -66,7 +77,10 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -80,7 +94,10 @@ export const SchoolPeriod = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {

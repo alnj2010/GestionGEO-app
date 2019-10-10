@@ -8,7 +8,10 @@ export const Postgraduate = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -22,7 +25,10 @@ export const Postgraduate = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -36,7 +42,10 @@ export const Postgraduate = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -51,7 +60,10 @@ export const Postgraduate = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
@@ -65,7 +77,10 @@ export const Postgraduate = {
       headers: headers(),
     })
       .then(response => {
-        if( response.status && response.status!==200) throw {response:response};
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
         return response.data;
       })
       .catch(error => {
