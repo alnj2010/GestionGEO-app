@@ -52,8 +52,19 @@ class StudentInscription extends Component {
   };
 
   unselectedSubjects = ( pos ) => {
-    const {subjectInscriptions, subjectsSelected} =this.props;
-    return subjectInscriptions.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
+    const {subjectInscriptions, subjectsSelected, subjects,idSchoolPeriod} =this.props;
+    if(idSchoolPeriod){
+      let subjectsAux=subjects.filter(item => subjectsSelected.some(s=>s.subjectId===item.id))
+      subjectsAux=subjectsAux.map(item=>({
+        id:item.id,
+        subject:{
+          subject_name:item.subject_name
+        }
+      }))
+
+      return subjectsAux.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
+    }else
+      return subjectInscriptions.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
   }
 
   renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
@@ -61,16 +72,17 @@ class StudentInscription extends Component {
     <Grid container justify="center" key={index}>
       <Grid container item xs={10}>
         <RenderFields lineal={true} >{[
-          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject=>({key:subject.subject.subject_name, value:subject.id})) },
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, disabled:this.props.idSchoolPeriod, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject=>({key:subject.subject.subject_name, value:subject.id})) },
           {label: 'Estado Materia', field: `${subject}.status`, id: `${subject}.status`, type: 'select', options: [{key:'CURSANDO', value:'CUR'},{key:'RETIRADO', value:'RET'},{key:'APROBADO', value:'APR'},{key:'REPROBADO', value:'REP'}].map(status => { return { key: status.key, value: status.value } }) },
           {label: 'Nota', field: `${subject}.nota`, id: `${subject}.nota`, type: 'number', min:0, max:20 },
         ]}</RenderFields>      
       </Grid>
-      <Grid item xs={2}>
+      {this.props.idSchoolPeriod? null :<Grid item xs={2}>
         <IconButton className={this.props.classes.buttonDelete} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
           <DeleteIcon />
         </IconButton>
-      </Grid>
+      </Grid>}
+
     </Grid>      
     ))}
     <Grid container item xs={12} justify={'center'}>
@@ -79,7 +91,7 @@ class StudentInscription extends Component {
           color="primary" 
           aria-label="Add" 
           className={this.props.classes.fab} 
-          disabled={!this.props.schoolPeriodId || (this.props.subjectsSelected && this.props.subjectInscriptions.length===this.props.subjectsSelected.length)} 
+          disabled={this.props.idSchoolPeriod || this.props.subjectInscriptions.length===0 || (this.props.subjectsSelected && this.props.subjectInscriptions.length===this.props.subjectsSelected.length)} 
           onClick={() => fields.push({})}
         >
           <AddIcon />
@@ -102,6 +114,7 @@ class StudentInscription extends Component {
       submit,
       schoolPeriods,
       getAvailableSubjects,
+      idSchoolPeriod
     } = this.props;
     const { func } = this.state;
     return (
@@ -114,7 +127,7 @@ class StudentInscription extends Component {
           <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
             <RenderFields >{[
-              {field: `schoolPeriodId`, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>getAvailableSubjects(studentId,schoolPeriodId) },
+              {field: `schoolPeriodId`, disabled:idSchoolPeriod, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>getAvailableSubjects(studentId,schoolPeriodId) },
               {field: `schoolPeriodStatus`, id: `schoolPeriodStatus`, type: 'select', label:'Estado periodo semestral', options: ['RET-A','RET-B','DES-A','DES-B','INC-A','INC-B','REI-A','REI-B','REG'].map(status => { return { key: status, value: status } }) },
 
             ]}</RenderFields>

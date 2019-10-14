@@ -139,11 +139,8 @@ export const addStudentPeriodSchool = value => async dispatch => {
         status:subject.status,
       }))
     }
-  console.log(payload);
-
   return Student.addStudentPeriodSchool(payload)
     .then(res => {
-      console.log(res);
       show('Inscripcion sastifactoria', 'success')(dispatch);
       return true;
     })
@@ -168,7 +165,6 @@ export const getInscribedSchoolPeriods = (studentId,idSchoolPeriod=null) => asyn
           ...data2,
           ...data,
         }
-        console.log(inscription)
         dispatch({
           type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
           payload: { selectedStudentSchoolPeriod: inscription },
@@ -179,4 +175,13 @@ export const getInscribedSchoolPeriods = (studentId,idSchoolPeriod=null) => asyn
     .catch(error => {
       return error;
     });
+  
+};
+
+
+export const cleanSelectedInscribedSchoolPeriods = id => async dispatch => {
+  dispatch({
+    type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
+    payload: { selectedStudentSchoolPeriod: {} },
+  });
 };

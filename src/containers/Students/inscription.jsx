@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
 getAvailableSubjects,
 addStudentPeriodSchool,
-getInscribedSchoolPeriods
+getInscribedSchoolPeriods,
+cleanSelectedInscribedSchoolPeriods
 } from '../../actions/student';
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 import { getList as getSubjectList } from '../../actions/subject';
@@ -22,7 +23,7 @@ export class StudentInscriptionContainer extends Component {
     define('estudiante');
   };
   componentWillUnmount = () => {
-    //this.props.cleanSelectedStudent();
+    this.props.cleanSelectedInscribedSchoolPeriods();
     this.props.cleanDialog();
     
   };
@@ -32,7 +33,7 @@ export class StudentInscriptionContainer extends Component {
       addStudentPeriodSchool,
       match:{params:{id}},
     }=this.props
-    addStudentPeriodSchool({ ...values, studentId:id })
+    addStudentPeriodSchool({ ...values, studentId:id }).then(res=>console.log('asd'));
   };
 
   goBack = () => {
@@ -79,7 +80,9 @@ const mD = {
   getSubjectList,
   getSchoolPeriodsList,
   getAvailableSubjects,
-  getInscribedSchoolPeriods
+  getInscribedSchoolPeriods,
+  cleanSelectedInscribedSchoolPeriods,
+  addStudentPeriodSchool
 };
 
 StudentInscriptionContainer = connect(

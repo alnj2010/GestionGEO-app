@@ -121,7 +121,6 @@ export const Student = {
         return response.data;
       })
       .catch(error => {
-        console.log(error);
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
         return Promise.reject('Ups! Al parecer hay un error desconocido.');

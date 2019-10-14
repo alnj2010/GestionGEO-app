@@ -64,7 +64,6 @@ export class SchoolPeriodActualContainer extends Component {
     const {
       schoolPeriodActual:{start_date,end_date,subjects}
     }=this.props;
-    console.log()
     return (
       !this.props.schoolPeriodActual.message ? <SchoolPeriodActual
         startDate={start_date}
