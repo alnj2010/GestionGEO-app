@@ -15,6 +15,7 @@ class StudentInscriptions extends Component {
     if (SchoolPeriods)
       return SchoolPeriods.map(SchoolPeriod => {
         return {
+          id:SchoolPeriod.id,
           code: SchoolPeriod.cod_school_period,
           startDate:SchoolPeriod.end_date,
           endDate: SchoolPeriod.start_date,  
@@ -34,7 +35,7 @@ class StudentInscriptions extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/inscription/${studentId}`)}
+            onClick={() => history.replace(`/estudiantes/inscripciones/nueva/${studentId}`,inscribedSchoolPeriods)}
           >
             <Add />
             Inscribir estudiante
@@ -43,6 +44,7 @@ class StudentInscriptions extends Component {
         <Grid item xs={12}>
           <MaterialTable
             columns={[
+              { title: 'id', field: 'id',hidden:true },
               { title: 'Codigo', field: 'code' },
               { title: 'Fecha Inicio', field: 'startDate' },
               { title: 'Fecha fin', field: 'endDate' },
@@ -55,7 +57,7 @@ class StudentInscriptions extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/estudiantes/edit/${rowData.id}`);
+                 history.replace(`/estudiantes/inscripciones/${studentId}/${rowData.id}`,inscribedSchoolPeriods)
                 },
               },
             ]}

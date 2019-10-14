@@ -8,6 +8,7 @@ export const ACTIONS = {
   INSCRIBED_SCHOOL_PERIODS: `student/inscribed_school_periods`,
   UPDATE: `student/update`,
   CLEAN_SELECTED_STUDENT: `student/clean-selected`,
+  SELECTED_STUDENT_SCHOOL_PERIOD:`student/elected_student_school_period`
 };
 
 export const getList = () => async dispatch => {
@@ -152,13 +153,28 @@ export const addStudentPeriodSchool = value => async dispatch => {
     });
 };
 
-export const getInscribedSchoolPeriods = (studentId) => async dispatch => {
+export const getInscribedSchoolPeriods = (studentId,idSchoolPeriod=null) => async dispatch => {
   return Student.getInscribedSchoolPeriods(studentId)
     .then(response => {
       dispatch({
         type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
         payload: { inscribedSchoolPeriods: response },
       });
+
+      if(idSchoolPeriod){
+        let data = response.find(item => parseInt(item.id)===parseInt(idSchoolPeriod));
+        let data2 = data.inscriptions.find(item=>parseInt(item.student_id)===parseInt(studentId))
+        let inscription = {
+          ...data2,
+          ...data,
+        }
+        console.log(inscription)
+        dispatch({
+          type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
+          payload: { selectedStudentSchoolPeriod: inscription },
+        })
+      }
+        
     })
     .catch(error => {
       return error;

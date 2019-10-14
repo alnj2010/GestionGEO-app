@@ -13,13 +13,12 @@ import { define, cleanDialog } from '../../actions/dialog';
 export class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
     const { 
-      match:{params:{id}}, 
+      match:{params:{id,idSchoolPeriod}}, 
       define 
     } = this.props;
-    
     this.props.getSchoolPeriodsList();
     this.props.getSubjectList();
-    this.props.getInscribedSchoolPeriods(id)
+    this.props.getInscribedSchoolPeriods(id,idSchoolPeriod)
     define('estudiante');
   };
   componentWillUnmount = () => {
@@ -45,16 +44,19 @@ export class StudentInscriptionContainer extends Component {
     const {
       schoolPeriods,
       subjects,
-      match:{params:{id}},
+      match:{params:{id,idSchoolPeriod}},
       getAvailableSubjects,
       subjectInscriptions
     } = this.props;
+    const inscriptedSP=this.props.location.state;
+  
     return (
       <StudentInscription
-        schoolPeriods={schoolPeriods}
+        schoolPeriods={ schoolPeriods.filter(sp => !inscriptedSP.some(isp=>isp.id===sp.id  && parseInt(isp.id)!==parseInt(idSchoolPeriod) )) }
         saveInscription={this.saveInscription}
         goBack={this.goBack}
         studentId={id}
+        idSchoolPeriod={idSchoolPeriod}
         subjects={subjects}
         getAvailableSubjects={getAvailableSubjects}
         subjectInscriptions={subjectInscriptions}
@@ -77,7 +79,6 @@ const mD = {
   getSubjectList,
   getSchoolPeriodsList,
   getAvailableSubjects,
-  addStudentPeriodSchool,
   getInscribedSchoolPeriods
 };
 

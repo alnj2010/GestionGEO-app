@@ -172,6 +172,21 @@ const selector = formValueSelector('inscription');
 StudentInscription = connect(
   state => ({
     initialValues: {
+      schoolPeriodId:state.studentReducer.selectedStudentSchoolPeriod.id
+      ? state.studentReducer.selectedStudentSchoolPeriod.id
+      : '',
+      schoolPeriodStatus:state.studentReducer.selectedStudentSchoolPeriod.status
+      ? state.studentReducer.selectedStudentSchoolPeriod.status
+      : '',
+      subjects:state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects 
+      ? state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects.map( subject =>({
+        subjectId:subject.id,
+        status:subject.status,
+        nota:subject.qualification
+
+      }))
+      : ''
+
     },
     action: state.dialogReducer.action,
     schoolPeriodId: selector(state, 'schoolPeriodId'),

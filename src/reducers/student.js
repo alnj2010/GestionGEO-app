@@ -4,7 +4,8 @@ const initialState = {
   list: [],
   selectedStudent: {student:{}},
   availableSubjects: [],
-  inscribedSchoolPeriods:[]
+  inscribedSchoolPeriods:[],
+  selectedStudentSchoolPeriod:{}
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -20,6 +21,9 @@ const studentReducer = (state = initialState, action) => {
       return { ...state, ...action.payload };
     
     case ACTIONS.INSCRIBED_SCHOOL_PERIODS:
+      return { ...state, ...action.payload };
+    
+    case ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD:
       return { ...state, ...action.payload };
     default:
       return state;

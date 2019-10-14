@@ -54,8 +54,9 @@ class App extends Component {
               <Route exact path="/estudiantes/" component={StudentsList} />
               <Route exact path="/estudiantes/edit/:id" component={StudentDetail} />
               <Route exact path="/estudiantes/create" component={StudentDetail} />
-              <Route exact path="/estudiantes/inscripcion/:id" component={StudentInscription} />
               <Route exact path="/estudiantes/inscripciones/:id" component={StudentInscriptions} />
+              <Route exact path="/estudiantes/inscripciones/nueva/:id" component={StudentInscription} />
+              <Route exact path="/estudiantes/inscripciones/:id/:idSchoolPeriod" component={StudentInscription} />
 
               <Route exact path="/profesores/" component={TeachersList} />
               <Route exact path="/profesores/edit/:id" component={TeacherDetail} />
