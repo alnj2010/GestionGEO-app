@@ -53,9 +53,8 @@ class StudentInscription extends Component {
 
   unselectedSubjects = ( pos ) => {
     const {subjectInscriptions, subjectsSelected, subjects,idSchoolPeriod} =this.props;
-    if(idSchoolPeriod){
-      let subjectsAux=subjects.filter(item => subjectsSelected.some(s=>s.subjectId===item.id))
-      subjectsAux=subjectsAux.map(item=>({
+    if(idSchoolPeriod){      
+      let subjectsAux=subjects.map(item=>({
         id:item.id,
         subject:{
           subject_name:item.subject_name
@@ -91,7 +90,7 @@ class StudentInscription extends Component {
           color="primary" 
           aria-label="Add" 
           className={this.props.classes.fab} 
-          disabled={this.props.idSchoolPeriod || this.props.subjectInscriptions.length===0 || (this.props.subjectsSelected && this.props.subjectInscriptions.length===this.props.subjectsSelected.length)} 
+          disabled={!!this.props.idSchoolPeriod || this.props.subjectInscriptions.length===0 || (!!this.props.subjectsSelected && this.props.subjectInscriptions.length===this.props.subjectsSelected.length)} 
           onClick={() => fields.push({})}
         >
           <AddIcon />
@@ -114,14 +113,15 @@ class StudentInscription extends Component {
       submit,
       schoolPeriods,
       getAvailableSubjects,
-      idSchoolPeriod
+      idSchoolPeriod,
+      fullname
     } = this.props;
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> Inscripcion estudiante: {studentId}</h3>
+            <h3> Inscripcion: {fullname}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>

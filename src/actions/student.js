@@ -185,3 +185,10 @@ export const cleanSelectedInscribedSchoolPeriods = id => async dispatch => {
     payload: { selectedStudentSchoolPeriod: {} },
   });
 };
+
+export const cleanSelectedInscriptionSchoolPeriods = id => async dispatch => {
+  dispatch({
+    type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
+    payload: { inscribedSchoolPeriods: [] },
+  });
+};

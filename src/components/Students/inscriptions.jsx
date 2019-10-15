@@ -25,7 +25,7 @@ class StudentInscriptions extends Component {
   };
 
   render = () => {
-    const { inscribedSchoolPeriods, isLoading, history, studentId } = this.props;
+    const { inscribedSchoolPeriods, isLoading, history, studentId,fullname } = this.props;
     const { func } = this.state;
     return (
       <Grid container spacing={8}>
@@ -35,7 +35,7 @@ class StudentInscriptions extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.replace(`/estudiantes/inscripciones/nueva/${studentId}`,inscribedSchoolPeriods)}
+            onClick={() => history.push(`/estudiantes/inscripciones/${studentId}/nueva`,{inscriptedSP:inscribedSchoolPeriods,fullname:fullname})}
           >
             <Add />
             Inscribir estudiante
@@ -51,13 +51,13 @@ class StudentInscriptions extends Component {
             
             ]}
             data={this.transformData(inscribedSchoolPeriods)}
-            title="estudiantes"
+            title={fullname.toUpperCase()}
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                 history.replace(`/estudiantes/inscripciones/${studentId}/${rowData.id}`,inscribedSchoolPeriods)
+                 history.push(`/estudiantes/inscripciones/${studentId}/${rowData.id}`,{inscriptedSP:inscribedSchoolPeriods,fullname:fullname})
                 },
               },
             ]}

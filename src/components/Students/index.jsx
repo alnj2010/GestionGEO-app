@@ -23,7 +23,9 @@ class StudentsList extends Component {
           email: student.email,
           identification:student.identification,
           firstName: student.first_name,
-          firstSurname: student.first_surname,       
+          firstSurname: student.first_surname,
+          secondName: student.second_name ? student.second_name : '',
+          secondSurname: student.second_surname ? student.second_surname : '',              
         };
       });
     return [];
@@ -58,6 +60,8 @@ class StudentsList extends Component {
             columns={[
               { title: '#', field: 'id', hidden: true },
               { title: '#', field: 'studentId', hidden: true },
+              { title: 'Nombre', field: 'secondName', hidden: true },
+              { title: 'Apellido', field: 'secondSurname', hidden: true },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
               { title: 'Cedula', field: 'identification' },
@@ -77,7 +81,7 @@ class StudentsList extends Component {
               {
                 icon: Inscription,
                 tooltip: 'Inscribir',
-                onClick: (event, rowData) => history.push(`/estudiantes/inscripciones/${rowData.studentId}`)
+                onClick: (event, rowData) => history.push(`/estudiantes/inscripciones/${rowData.studentId}`,{fullname:`${rowData.firstName} ${rowData.secondName} ${rowData.firstSurname} ${rowData.secondSurname}`})
               },
               {
                 icon: 'delete',

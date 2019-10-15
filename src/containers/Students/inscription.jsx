@@ -33,7 +33,7 @@ export class StudentInscriptionContainer extends Component {
       addStudentPeriodSchool,
       match:{params:{id}},
     }=this.props
-    addStudentPeriodSchool({ ...values, studentId:id }).then(res=>console.log('asd'));
+    addStudentPeriodSchool({ ...values, studentId:id }).then(res=>this.goBack());
   };
 
   goBack = () => {
@@ -47,10 +47,10 @@ export class StudentInscriptionContainer extends Component {
       subjects,
       match:{params:{id,idSchoolPeriod}},
       getAvailableSubjects,
-      subjectInscriptions
+      subjectInscriptions,
+      location:{state:{inscriptedSP, fullname }}
     } = this.props;
-    const inscriptedSP=this.props.location.state;
-  
+    console.log(subjects);
     return (
       <StudentInscription
         schoolPeriods={ schoolPeriods.filter(sp => !inscriptedSP.some(isp=>isp.id===sp.id  && parseInt(isp.id)!==parseInt(idSchoolPeriod) )) }
@@ -58,9 +58,10 @@ export class StudentInscriptionContainer extends Component {
         goBack={this.goBack}
         studentId={id}
         idSchoolPeriod={idSchoolPeriod}
-        subjects={subjects}
+        subjects={subjects?subjects.map(item =>({id:item.id,subject_name:item.data_subject.subject.subject_name}) ): []}
         getAvailableSubjects={getAvailableSubjects}
         subjectInscriptions={subjectInscriptions}
+        fullname={fullname}
       />
     );
   }
@@ -68,7 +69,7 @@ export class StudentInscriptionContainer extends Component {
 
 
 const mS = state => ({
-  subjects: state.subjectReducer.list,
+  subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
   schoolPeriods: state.schoolPeriodReducer.list,
   subjectInscriptions: state.studentReducer.availableSubjects,
   
