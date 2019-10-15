@@ -172,7 +172,35 @@ class StudentInscription extends Component {
 
 const studentValidation = values => {
   const errors = {};
-
+  if(!values.schoolPeriodId) errors.schoolPeriodId="*Periodo semestral requerido"
+  if(!values.schoolPeriodStatus) errors.schoolPeriodStatus="*Estado del periodo semestral requerido"
+  if (values.subjects && values.subjects.length){
+    const subjectArrayErrors = []
+    values.subjects.forEach((subj, subjIndex) => {
+      const subjErrors = {}
+      if (!subj || !subj.subjectId) {
+        subjErrors.subjectId = '*Materia es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
+      if (!subj || !subj.status) {
+        subjErrors.status = '*Estado es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
+      console.log(subj.nota);
+      if (!subj || !subj.nota) {
+        subjErrors.nota = '*nota es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }else if(parseInt(subj.nota)<0 || parseInt(subj.nota)>20){
+        subjErrors.nota = '*nota debe estar entre 0 y 20'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
+  
+    })
+    
+    if (subjectArrayErrors.length) {
+      errors.subjects = subjectArrayErrors
+    }
+  }
   return errors;
 };
 
