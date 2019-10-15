@@ -50,7 +50,6 @@ export class StudentInscriptionContainer extends Component {
       subjectInscriptions,
       location:{state:{inscriptedSP, fullname }}
     } = this.props;
-    console.log(subjects);
     return (
       <StudentInscription
         schoolPeriods={ schoolPeriods.filter(sp => !inscriptedSP.some(isp=>isp.id===sp.id  && parseInt(isp.id)!==parseInt(idSchoolPeriod) )) }
