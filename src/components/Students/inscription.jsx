@@ -193,7 +193,7 @@ StudentInscription = connect(
       : '',
       subjects:state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects 
       ? state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects.map( subject =>({
-        subjectId:subject.id,
+        subjectId:subject.school_period_subject_teacher_id,
         status:subject.status,
         nota:subject.qualification
 
