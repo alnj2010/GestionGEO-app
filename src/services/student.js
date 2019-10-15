@@ -126,6 +126,23 @@ export const Student = {
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
+  editStudentPeriodSchool(payload) {
+    return AXIOS.put(`${URL.INSCRIPTION}/${payload.id}`, payload, {
+      headers: headers(),
+    })
+      .then(response => {
+        if( response.status && response.status!==200){
+          let error={response:response};
+          throw error
+        };
+        return response.data;
+      })
+      .catch(error => {
+        if (error && error.response && error.response.data)
+          return Promise.reject(error.response.data.message);
+        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+      });
+  },
   getInscribedSchoolPeriods(studentId) {
     return AXIOS.get(`${URL.CONSTANCE}/studentHistorical?student_id=${studentId}`, {
       headers: headers(),

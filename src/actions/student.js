@@ -150,6 +150,29 @@ export const addStudentPeriodSchool = value => async dispatch => {
     });
 };
 
+export const editStudentPeriodSchool = value => async dispatch => {
+  let payload={
+      id:value.id,
+      student_id: value.studentId,
+      school_period_id: value.schoolPeriodId+'',
+      status:value.schoolPeriodStatus,
+      subjects: value.subjects.map(subject=>({
+        school_period_subject_teacher_id:subject.subjectId,
+        qualification:parseInt(subject.nota),
+        status:subject.status,
+      }))
+    }
+  return Student.editStudentPeriodSchool(payload)
+    .then(res => {
+      show('Inscripcion modificada sastifactoriamente', 'success')(dispatch);
+      return true;
+    })
+    .catch(error => {
+      show(error, 'error')(dispatch);
+      return false;
+    });
+};
+
 export const getInscribedSchoolPeriods = (studentId,idSchoolPeriod=null) => async dispatch => {
   return Student.getInscribedSchoolPeriods(studentId)
     .then(response => {
@@ -159,11 +182,16 @@ export const getInscribedSchoolPeriods = (studentId,idSchoolPeriod=null) => asyn
       });
 
       if(idSchoolPeriod){
+        
         let data = response.find(item => parseInt(item.id)===parseInt(idSchoolPeriod));
-        let data2 = data.inscriptions.find(item=>parseInt(item.student_id)===parseInt(studentId))
+        let data2 = data.inscriptions;
+        if(typeof data2 === 'Array')
+          data2 = data.inscriptions.find(item=>parseInt(item.student_id)===parseInt(studentId))
+          
         let inscription = {
           ...data2,
           ...data,
+          idInscription:data2.id
         }
         dispatch({
           type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,

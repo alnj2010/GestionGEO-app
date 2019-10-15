@@ -31,7 +31,7 @@ const renderPhoneField =({
           <Input
             id={input.name}
             error={touched && invalid}
-            helperText={touched && error}
+            //helperText={touched && error}
             inputComponent={TextMaskCustom}
             {...input}
             {...custom}
@@ -50,7 +50,7 @@ export default function Phone(props){
         id={props.id} 
         multiline
         rowsMax="4"
-        margin="normal"
+        margin="dense"
       /> 
             
   )

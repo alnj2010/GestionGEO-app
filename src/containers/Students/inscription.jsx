@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
 getAvailableSubjects,
 addStudentPeriodSchool,
+editStudentPeriodSchool,
 getInscribedSchoolPeriods,
 cleanSelectedInscribedSchoolPeriods
 } from '../../actions/student';
@@ -29,9 +30,14 @@ export class StudentInscriptionContainer extends Component {
   saveInscription = values => {
     const{
       addStudentPeriodSchool,
-      match:{params:{id}},
+      editStudentPeriodSchool,
+      idInscription,
+      match:{params:{id,idSchoolPeriod}},
     }=this.props
-    addStudentPeriodSchool({ ...values, studentId:id }).then(res=>this.goBack());
+    if(!idSchoolPeriod)
+      addStudentPeriodSchool({ ...values, studentId:id }).then(res=>this.goBack());
+    else
+      editStudentPeriodSchool({...values, studentId:id,id:idInscription })
   };
 
   goBack = () => {
@@ -67,6 +73,7 @@ export class StudentInscriptionContainer extends Component {
 
 const mS = state => ({
   subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
+  idInscription:state.studentReducer.selectedStudentSchoolPeriod.idInscription,
   schoolPeriods: state.schoolPeriodReducer.list,
   subjectInscriptions: state.studentReducer.availableSubjects,
   
@@ -79,7 +86,8 @@ const mD = {
   getAvailableSubjects,
   getInscribedSchoolPeriods,
   cleanSelectedInscribedSchoolPeriods,
-  addStudentPeriodSchool
+  addStudentPeriodSchool,
+  editStudentPeriodSchool
 };
 
 StudentInscriptionContainer = connect(
