@@ -24,7 +24,6 @@ import Postgraduate from '@material-ui/icons/Extension';
 import Admin from '@material-ui/icons/Group';
 import Face from '@material-ui/icons/Face';
 import Subject from '@material-ui/icons/LocalLibrary';
-import Inscription from '@material-ui/icons/HowToVote';
 import InsertInvitation from '@material-ui/icons/InsertInvitation';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';

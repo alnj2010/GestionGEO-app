@@ -5,7 +5,7 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
-import { Form, reduxForm, change, submit, FieldArray, formValueSelector,Field } from 'redux-form';
+import { Form, reduxForm, change, submit, FieldArray, formValueSelector } from 'redux-form';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
@@ -71,7 +71,7 @@ class StudentInscription extends Component {
     <Grid container justify="center" key={index}>
       <Grid container item xs={10}>
         <RenderFields lineal={true} >{[
-          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, disabled:this.props.idSchoolPeriod, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject=>({key:subject.subject.subject_name, value:subject.id})) },
+          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, disabled:!!this.props.idSchoolPeriod, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject=>({key:subject.subject.subject_name, value:subject.id})) },
           {label: 'Estado Materia', field: `${subject}.status`, id: `${subject}.status`, type: 'select', options: [{key:'CURSANDO', value:'CUR'},{key:'RETIRADO', value:'RET'},{key:'APROBADO', value:'APR'},{key:'REPROBADO', value:'REP'}].map(status => { return { key: status.key, value: status.value } }) },
           {label: 'Nota', field: `${subject}.nota`, id: `${subject}.nota`, type: 'number', min:0, max:20 },
         ]}</RenderFields>      
@@ -127,7 +127,7 @@ class StudentInscription extends Component {
           <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
             <RenderFields >{[
-              {field: `schoolPeriodId`, disabled:idSchoolPeriod, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>getAvailableSubjects(studentId,schoolPeriodId) },
+              {field: `schoolPeriodId`, disabled:!!idSchoolPeriod, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>getAvailableSubjects(studentId,schoolPeriodId) },
               {field: `schoolPeriodStatus`, id: `schoolPeriodStatus`, type: 'select', label:'Estado periodo semestral', options: ['RET-A','RET-B','DES-A','DES-B','INC-A','INC-B','REI-A','REI-B','REG'].map(status => { return { key: status, value: status } }) },
 
             ]}</RenderFields>

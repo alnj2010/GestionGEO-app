@@ -7,7 +7,6 @@ getInscribedSchoolPeriods,
 cleanSelectedInscribedSchoolPeriods
 } from '../../actions/student';
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
-import { getList as getSubjectList } from '../../actions/subject';
 
 import StudentInscription from '../../components/Students/inscription';
 import { define, cleanDialog } from '../../actions/dialog';
@@ -18,7 +17,6 @@ export class StudentInscriptionContainer extends Component {
       define 
     } = this.props;
     this.props.getSchoolPeriodsList();
-    this.props.getSubjectList();
     this.props.getInscribedSchoolPeriods(id,idSchoolPeriod)
     define('estudiante');
   };
@@ -77,7 +75,6 @@ const mS = state => ({
 const mD = {
   define,
   cleanDialog,
-  getSubjectList,
   getSchoolPeriodsList,
   getAvailableSubjects,
   getInscribedSchoolPeriods,
