@@ -185,7 +185,7 @@ export const getInscribedSchoolPeriods = (studentId,idSchoolPeriod=null) => asyn
         
         let data = response.find(item => parseInt(item.id)===parseInt(idSchoolPeriod));
         let data2 = data.inscriptions;
-        if(typeof data2 === 'Array')
+        if(Array.isArray(data2))
           data2 = data.inscriptions.find(item=>parseInt(item.student_id)===parseInt(studentId))
           
         let inscription = {
