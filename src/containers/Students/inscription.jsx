@@ -61,7 +61,7 @@ export class StudentInscriptionContainer extends Component {
         goBack={this.goBack}
         studentId={id}
         idSchoolPeriod={idSchoolPeriod}
-        subjects={subjects?subjects.map(item =>({id:item.school_period_subject_teacher_id,subject_name:item.data_subject.subject.subject_name}) ): []}
+        subjects={subjects?subjects.map(item =>({id:item.school_period_subject_teacher_id,subject_name:item.data_subject.subject.subject_name,duty:item.data_subject.duty,subject:{uc:item.data_subject.subject.uc}}) ): []}
         getAvailableSubjects={getAvailableSubjects}
         subjectInscriptions={subjectInscriptions}
         fullname={fullname}

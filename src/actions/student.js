@@ -133,6 +133,7 @@ export const addStudentPeriodSchool = value => async dispatch => {
       student_id: value.studentId,
       school_period_id: value.schoolPeriodId,
       status:value.schoolPeriodStatus,
+      pay_ref:value.payRef,      
       subjects: value.subjects.map(subject=>({
         school_period_subject_teacher_id:subject.subjectId,
         qualification:parseInt(subject.nota),
@@ -156,6 +157,7 @@ export const editStudentPeriodSchool = value => async dispatch => {
       student_id: value.studentId,
       school_period_id: value.schoolPeriodId+'',
       status:value.schoolPeriodStatus,
+      pay_ref:value.payRef,      
       subjects: value.subjects.map(subject=>({
         school_period_subject_teacher_id:subject.subjectId,
         qualification:parseInt(subject.nota),

@@ -114,8 +114,19 @@ class StudentInscription extends Component {
       schoolPeriods,
       getAvailableSubjects,
       idSchoolPeriod,
-      fullname
+      fullname,
+      subjectsSelected,
+      subjectInscriptions,
+      subjects,
     } = this.props;
+    let rolledSubjects=[]
+
+    if(subjectInscriptions.length && subjectsSelected){
+      rolledSubjects=subjectInscriptions.filter(item => subjectsSelected.some(subject=>subject.subjectId === item.id))
+    }else if(subjects.length && subjectsSelected){
+      rolledSubjects=subjects.filter(item => subjectsSelected.some(subject=>subject.subjectId === item.id))
+    }
+
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
@@ -129,11 +140,15 @@ class StudentInscription extends Component {
             <RenderFields >{[
               {field: `schoolPeriodId`, disabled:!!idSchoolPeriod, id: `schoolPeriodId`, type: 'select', label:'Periodo semestral', options: schoolPeriods.map(sp => { return { key: sp.cod_school_period, value: sp.id } }), onchange: (schoolPeriodId)=>getAvailableSubjects(studentId,schoolPeriodId) },
               {field: `schoolPeriodStatus`, id: `schoolPeriodStatus`, type: 'select', label:'Estado periodo semestral', options: ['RET-A','RET-B','DES-A','DES-B','INC-A','INC-B','REI-A','REI-B','REG'].map(status => { return { key: status, value: status } }) },
-
+              {field: `payRef`, id: `payRef`, type: 'text', label:'Referencia de pago' },
             ]}</RenderFields>
               <Grid container item xs={12}>
                 <FieldArray name="subjects" component={this.renderSubjects} />
-              </Grid>     
+              </Grid>
+              <div>
+                <h4>Total de creditos inscritos: <span style={{color:'#2196f3'}}>{ (rolledSubjects.reduce(((total, item) => total + parseInt(item.subject.uc)),0))} uc</span> </h4>
+                <h4>Costo total: <span style={{color:'#9e9d24'}} >{( rolledSubjects.reduce(((total, item) => total + parseFloat(item.duty)),0.00)).toFixed(2) } bs</span> </h4>
+              </div>     
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -186,7 +201,6 @@ const studentValidation = values => {
         subjErrors.status = '*Estado es requerido'
         subjectArrayErrors[subjIndex] = subjErrors
       }
-      console.log(subj.nota);
       if (!subj || !subj.nota) {
         subjErrors.nota = '*nota es requerido'
         subjectArrayErrors[subjIndex] = subjErrors
@@ -219,6 +233,9 @@ StudentInscription = connect(
       schoolPeriodStatus:state.studentReducer.selectedStudentSchoolPeriod.status
       ? state.studentReducer.selectedStudentSchoolPeriod.status
       : '',
+      payRef:state.studentReducer.selectedStudentSchoolPeriod.pay_ref
+      ? state.studentReducer.selectedStudentSchoolPeriod.pay_ref
+      : '',
       subjects:state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects 
       ? state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects.map( subject =>({
         subjectId:subject.school_period_subject_teacher_id,
@@ -226,7 +243,7 @@ StudentInscription = connect(
         nota:subject.qualification
 
       }))
-      : ''
+      : []
 
     },
     action: state.dialogReducer.action,
