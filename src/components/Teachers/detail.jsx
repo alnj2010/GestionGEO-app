@@ -163,15 +163,15 @@ const teacherValidation = values => {
     errors.firstSurname = 'Apellido es requerido';
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
-    if (!values.mobile) {
+  if (!values.mobile || values.mobile==='(   )    -    ') {
       errors.mobile = 'movil es requerido';
     }
   
-    if (!values.telephone) {
+  if (!values.telephone || values.telephone==='(   )    -    ') {
       errors.telephone = 'Telefono es requerido';
     }
   
-    if (!values.workPhone) {
+  if (!values.workPhone || values.workPhone==='(   )    -    ') {
       errors.workPhone = 'Telefono del trabajo es requerido';
     }
   if (!values.email) {
@@ -219,13 +219,13 @@ TeacherDetail = connect(
         : '',
       mobile: state.teacherReducer.selectedTeacher.mobile
         ? state.teacherReducer.selectedTeacher.mobile
-        : '',
+        : '(   )    -    ',
       telephone: state.teacherReducer.selectedTeacher.telephone
         ? state.teacherReducer.selectedTeacher.telephone
-        : '',
+        : '(   )    -    ',
       workPhone: state.teacherReducer.selectedTeacher.work_phone
         ? state.teacherReducer.selectedTeacher.work_phone
-        : '',
+        : '(   )    -    ',
       teacherType: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.teacher_type
         : '',

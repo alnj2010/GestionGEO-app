@@ -161,15 +161,15 @@ const studentValidation = values => {
     errors.firstSurname = 'Apellido es requerido';
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
-    if (!values.mobile) {
+    if (!values.mobile || values.mobile==='(   )    -    ') {
       errors.mobile = 'movil es requerido';
     }
   
-    if (!values.telephone) {
+    if (!values.telephone || values.telephone==='(   )    -    ') {
       errors.telephone = 'Telefono es requerido';
     }
   
-    if (!values.workPhone) {
+    if (!values.workPhone || values.workPhone==='(   )    -    ') {
       errors.workPhone = 'Telefono del trabajo es requerido';
     }
   if (!values.email) {
@@ -215,13 +215,13 @@ StudentDetail = connect(
         : '',
       mobile: state.studentReducer.selectedStudent.mobile
         ? state.studentReducer.selectedStudent.mobile
-        : '',
+        : '(   )    -    ',
       telephone: state.studentReducer.selectedStudent.telephone
         ? state.studentReducer.selectedStudent.telephone
-        : '',
+        : '(   )    -    ',
       workPhone: state.studentReducer.selectedStudent.work_phone
         ? state.studentReducer.selectedStudent.work_phone
-        : '',
+        : '(   )    -    ',
       schoolProgram: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.schoolProgram_id
         : '',

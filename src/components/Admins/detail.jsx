@@ -167,15 +167,15 @@ const adminValidation = values => {
     errors.email = 'Introduce un email valido';
   }
 
-  if (!values.mobile) {
+  if (!values.mobile || values.mobile==='(   )    -    ') {
     errors.mobile = 'movil es requerido';
   }
 
-  if (!values.telephone) {
+  if (!values.telephone || values.telephone==='(   )    -    ') {
     errors.telephone = 'Telefono es requerido';
   }
 
-  if (!values.workPhone) {
+  if (!values.workPhone || values.workPhone==='(   )    -    ') {
     errors.workPhone = 'Telefono del trabajo es requerido';
   }
 
@@ -183,7 +183,7 @@ const adminValidation = values => {
   if(!values.sex) errors.sex = " Sexo Requerido"
   if(!values.levelInstruction) errors.levelInstruction = " Nivel de instruccion Requerido"
   if(!values.rol) errors.rol = " Rol Requerido"
-
+  console.log(errors)
   return errors;
 };
 
@@ -216,13 +216,13 @@ AdminDetail = connect(
         : '',
       mobile: state.adminReducer.selectedAdmin.mobile
         ? state.adminReducer.selectedAdmin.mobile
-        : '',
+        : '(   )    -    ',
       telephone: state.adminReducer.selectedAdmin.telephone
         ? state.adminReducer.selectedAdmin.telephone
-        : '',
+        : '(   )    -    ',
       workPhone: state.adminReducer.selectedAdmin.work_phone
         ? state.adminReducer.selectedAdmin.work_phone
-        : '',
+        : '(   )    -    ',
       rol:state.adminReducer.selectedAdmin.administrator.rol
         ? state.adminReducer.selectedAdmin.administrator.rol
         : '',
