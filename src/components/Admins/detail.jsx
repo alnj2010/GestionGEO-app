@@ -77,7 +77,7 @@ class AdminDetail extends Component {
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Rol',field: `rol`, id: `rol`, type: 'select', options: [{key:'SECRETARIO',value:"SECRETARY"}, {key:'COORDINADOR',value:"COORDINATOR"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
-                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'text', maxlength:"3" },
+                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"lic"}].map(type => { return { key: type.value, value: type.id } }) },
                 { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
 
               ]}</RenderFields>
@@ -178,6 +178,11 @@ const adminValidation = values => {
   if (!values.workPhone) {
     errors.workPhone = 'Telefono del trabajo es requerido';
   }
+
+  if(!values.nationality) errors.nationality = " Nacionalidad Requerido"
+  if(!values.sex) errors.sex = " Sexo Requerido"
+  if(!values.levelInstruction) errors.levelInstruction = " Nivel de instruccion Requerido"
+  if(!values.rol) errors.rol = " Rol Requerido"
 
   return errors;
 };

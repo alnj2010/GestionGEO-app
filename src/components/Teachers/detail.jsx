@@ -78,8 +78,12 @@ class TeacherDetail extends Component {
                 { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"INSTRUCTOR",id:"INS"},{value:"ASISTENTE",id:"ASI"},{value:"AGREGADO",id:"AGR"},{value:"TITULAR",id:"TIT"}].map(type => { return { key: type.value, value: type.id } }) },
-               
+                { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"INSTRUCTOR",id:"INS"},{value:"INVITADO",id:"INV"},{value:"ASISTENTE",id:"ASI"},{value:"AGREGADO",id:"AGR"},{value:"TITULAR",id:"TIT"}].map(type => { return { key: type.value, value: type.id } }) },
+                { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
+                { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
+                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"Lic"}].map(type => { return { key: type.value, value: type.id } }) },
+                { label: 'Dedicacion',field: `dedication`, id: `dedication`, type: 'select', options: [{value:"INVITADO",id:"INV"},{value:"MEDIO-TIEMPO",id:"MT"},{value:"CONVENCIONAL",id:"CON"},{value:"TIEMPO-COMPLETO",id:"TC"},{value:"EXCLUSIVO",id:"EXC"}].map(type => { return { key: type.value, value: type.id } }) },
+
               ]}</RenderFields>
                 
             </Grid>
@@ -177,7 +181,10 @@ const teacherValidation = values => {
   }
 
   if(!values.teacherType) errors.teacherType = " Tipo Requerido"
-
+  if(!values.nationality) errors.nationality = " Nacionalidad Requerido"
+  if(!values.sex) errors.sex = " Sexo Requerido"
+  if(!values.levelInstruction) errors.levelInstruction = " Nivel de instruccion Requerido"
+  if(!values.dedication) errors.dedication = " Dedicacion Requerido"
 
 
   return errors;
@@ -221,7 +228,19 @@ TeacherDetail = connect(
         : '',
       teacherType: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.teacher_type
-        : '',  
+        : '',
+      nationality: state.teacherReducer.selectedTeacher.nationality
+        ? state.teacherReducer.selectedTeacher.nationality
+        : '',
+      sex: state.teacherReducer.selectedTeacher.sex
+        ? state.teacherReducer.selectedTeacher.sex
+        : '',
+      levelInstruction: state.teacherReducer.selectedTeacher.level_instruction
+        ? state.teacherReducer.selectedTeacher.level_instruction
+        : '',
+      dedication: state.teacherReducer.selectedTeacher.teacher
+        ? state.teacherReducer.selectedTeacher.teacher.dedication
+        : '',
     },
     action: state.dialogReducer.action,
   }),

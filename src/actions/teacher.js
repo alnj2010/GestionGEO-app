@@ -54,7 +54,11 @@ export const updateTeacher = teacher => async dispatch => {
     telephone: teacher.telephone, 
     work_phone: teacher.workPhone, 
     email:teacher.email,
-    teacher_type:teacher.teacherType,
+    teacher_type:teacher.teacherType,    
+    nationality:teacher.nationality,
+    sex:teacher.sex,
+    level_instruction:teacher.levelInstruction,
+    dedication:teacher.dedication,
   };
   return Teacher.update(payload)
     .then(response => {
