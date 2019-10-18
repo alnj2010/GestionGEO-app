@@ -182,7 +182,6 @@ const studentValidation = values => {
   if(!values.studentType) errors.studentType = " Tipo Requerido"
   if(!values.homeUniversity) errors.homeUniversity = "Universidad de origen Requerido"
 
-
   return errors;
 };
 

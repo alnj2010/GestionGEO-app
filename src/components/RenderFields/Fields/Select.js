@@ -23,7 +23,7 @@ const renderSelectField = ({
   options,
   ...custom
 }) => (
-  <FormControl error={touched && error} style={{width:'100%'}}>
+  <FormControl error={touched && !!error} style={{width:'100%'}}>
     <InputLabel htmlFor={input}>{label}</InputLabel>
     <Select
       {...input}
