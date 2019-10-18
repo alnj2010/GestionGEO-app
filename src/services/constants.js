@@ -3,7 +3,7 @@ import { CsvBuilder } from 'filefy';
 export const URL = {
   ADMIN: '/administrators',
   AUTH:'/login',
-  POSTGRADUATE:'/postgraduates',
+  SCHOOL_PROGRAM:'/schoolPrograms',
   SUBJECT:'/subjects',
   STUDENT:'/students',
   TEACHER:'/teachers',

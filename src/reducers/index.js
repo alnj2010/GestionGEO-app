@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import snackbarReducer from './snackbar';
 import dialogReducer from './dialog';
 import adminReducer from './admin';
-import postgraduateReducer from './postgraduate';
+import schoolProgramReducer from './schoolProgram';
 import subjectReducer from './subject';
 import studentReducer from './student';
 import teacherReducer from './teacher';
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   teacherReducer,
   studentReducer,
   subjectReducer, 
-  postgraduateReducer,
+  schoolProgramReducer,
   schoolPeriodReducer,
   form: formReducer,
 });

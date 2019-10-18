@@ -9,8 +9,8 @@ import Home from './components/Home';
 import AdminsList from './containers/Admins';
 import AdminDetail from './containers/Admins/detail';
 
-import PostgraduatesList from './containers/Postgraduates';
-import PostgraduateDetail from './containers/Postgraduates/detail';
+import SchoolProgramsList from './containers/SchoolPrograms';
+import SchoolProgramDetail from './containers/SchoolPrograms/detail';
 
 import SubjectsList from './containers/Subjects';
 import SubjectDetail from './containers/Subjects/detail';
@@ -43,9 +43,9 @@ class App extends Component {
               <Route exact path="/administradores/edit/:id" component={AdminDetail} />
               <Route exact path="/administradores/create" component={AdminDetail} />
 
-              <Route exact path="/postgrados/" component={PostgraduatesList} />
-              <Route exact path="/postgrados/edit/:id" component={PostgraduateDetail} />
-              <Route exact path="/postgrados/create" component={PostgraduateDetail} />
+              <Route exact path="/programas-academicos/" component={SchoolProgramsList} />
+              <Route exact path="/programas-academicos/edit/:id" component={SchoolProgramDetail} />
+              <Route exact path="/programas-academicos/create" component={SchoolProgramDetail} />
 
               <Route exact path="/materias/" component={SubjectsList} />
               <Route exact path="/materias/edit/:id" component={SubjectDetail} />

@@ -8,14 +8,14 @@ import {
   cleanSelectedSubject,
   saveSubject,
 } from '../../actions/subject';
-import { getList as getPostgraduateList } from '../../actions/postgraduate';
+import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import SubjectDetail from '../../components/Subjects/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 export class SubjectDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSubjectById, define } = this.props;
     if (match.params.id) findSubjectById(match.params.id);
-    this.props.getPostgraduateList();
+    this.props.getSchoolProgramList();
     define('materia');
   };
   componentWillUnmount = () => {
@@ -56,12 +56,12 @@ export class SubjectDetailContainer extends Component {
   render() {
     const {
       subject: { id },
-      postgraduates
+      schoolPrograms
     } = this.props;
 
     return (
       <SubjectDetail
-        postgraduates={postgraduates}
+        schoolPrograms={schoolPrograms}
         saveSubject={this.saveSubject}
         goBack={this.goBack}
         subjectId={id}
@@ -82,7 +82,7 @@ SubjectDetailContainer.propTypes = {
 
 const mS = state => ({
   subject: state.subjectReducer.selectedSubject,
-  postgraduates: state.postgraduateReducer.list,
+  schoolPrograms: state.schoolProgramReducer.list,
 });
 
 const mD = {
@@ -93,7 +93,7 @@ const mD = {
   define,
   cleanSelectedSubject,
   cleanDialog,
-  getPostgraduateList
+  getSchoolProgramList
 };
 
 SubjectDetailContainer = connect(

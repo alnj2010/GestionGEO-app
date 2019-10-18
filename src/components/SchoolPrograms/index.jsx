@@ -6,20 +6,20 @@ import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import { handleExportCsv } from '../../services/constants';
 
-class PostgraduatesList extends Component {
+class SchoolProgramsList extends Component {
   constructor() {
     super();
     this.state = {
       func: null,
     };
   }
-  transformData = postgraduates => {
-    if (postgraduates)
-      return postgraduates.map(postgraduate => {
+  transformData = schoolPrograms => {
+    if (schoolPrograms)
+      return schoolPrograms.map(schoolProgram => {
         return {
-          id: postgraduate.id,
-          postgraduateName: postgraduate.postgraduate_name,
-          numCu: postgraduate.num_cu,
+          id: schoolProgram.id,
+          schoolProgramName: schoolProgram.school_program_name,
+          numCu: schoolProgram.num_cu,
         };
       });
     return [];
@@ -33,7 +33,7 @@ class PostgraduatesList extends Component {
   };
 
   render = () => {
-    const { postgraduates, isLoading, history, handleDeletePostgraduate } = this.props;
+    const { schoolPrograms, isLoading, history, handleDeleteSchoolProgram } = this.props;
     const { func } = this.state;
     return (
       <Grid container spacing={8}>
@@ -43,35 +43,35 @@ class PostgraduatesList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/postgrados/create`)}
+            onClick={() => history.push(`/programas-academicos/create`)}
           >
             <Add />
-            Agregar postgrado
+            Agregar programa academico
           </Fab>
         </Grid>
         <Grid item xs={12}>
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
-              { title: 'Nombre', field: 'postgraduateName' },
+              { title: 'Nombre', field: 'schoolProgramName' },
               { title: '# Unidades de credito', field: 'numCu' },
             ]}
-            data={this.transformData(postgraduates)}
-            title="postgrados"
+            data={this.transformData(schoolPrograms)}
+            title="Programas Academicos"
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/postgrados/edit/${rowData.id}`);
+                  history.push(`/programas-academicos/edit/${rowData.id}`);
                 },
               },
               {
                 icon: 'delete',
-                tooltip: 'Borrar postgrado',
+                tooltip: 'Borrar programa academico',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', entity =>
-                    handleDeletePostgraduate(rowData.id),
+                    handleDeleteSchoolProgram(rowData.id),
                   );
                 },
               },
@@ -81,7 +81,7 @@ class PostgraduatesList extends Component {
               search: true,
               exportButton: true,
               exportCsv: (columns, renderData) =>
-                handleExportCsv(columns, renderData, 'postgraduates'),
+                handleExportCsv(columns, renderData, 'schoolPrograms'),
             }}
             onChangePage={()=>{window.scroll(0,0)}}
             isLoading={isLoading}
@@ -93,11 +93,11 @@ class PostgraduatesList extends Component {
   };
 }
 
-PostgraduatesList.propTypes = {
-  postgraduates: array,
+SchoolProgramsList.propTypes = {
+  schoolPrograms: array,
   isLoading: bool.isRequired,
   history: object.isRequired,
-  handleDeletePostgraduate: func.isRequired,
+  handleDeleteSchoolProgram: func.isRequired,
 };
 
-export default PostgraduatesList;
+export default SchoolProgramsList;

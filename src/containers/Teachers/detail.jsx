@@ -8,14 +8,14 @@ import {
   cleanSelectedTeacher,
   saveTeacher,
 } from '../../actions/teacher';
-import { getList as getPostgraduateList } from '../../actions/postgraduate';
+import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import TeacherDetail from '../../components/Teachers/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 export class TeacherDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findTeacherById, define } = this.props;
     if (match.params.id) findTeacherById(match.params.id);
-    this.props.getPostgraduateList();
+    this.props.getSchoolProgramList();
     define('profesor');
   };
   componentWillUnmount = () => {
@@ -56,11 +56,11 @@ export class TeacherDetailContainer extends Component {
   render() {
     const {
       teacher: { id },
-      postgraduates
+      schoolPrograms
     } = this.props;
     return (
       <TeacherDetail
-        postgraduates={postgraduates}
+        schoolPrograms={schoolPrograms}
         saveTeacher={this.saveTeacher}
         goBack={this.goBack}
         teacherId={id}
@@ -81,7 +81,7 @@ TeacherDetailContainer.propTypes = {
 
 const mS = state => ({
   teacher: state.teacherReducer.selectedTeacher,
-  postgraduates: state.postgraduateReducer.list,
+  schoolPrograms: state.schoolProgramReducer.list,
 });
 
 const mD = {
@@ -92,7 +92,7 @@ const mD = {
   define,
   cleanSelectedTeacher,
   cleanDialog,
-  getPostgraduateList
+  getSchoolProgramList
 };
 
 TeacherDetailContainer = connect(

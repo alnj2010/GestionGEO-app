@@ -49,7 +49,7 @@ export const updateSubject = subject => async dispatch => {
     subject_code:subject.subjectCode,
     subject_name:subject.subjectName,
     subject_type:subject.subjectType,
-    postgraduates:subject.postgraduates,
+    school_programs:subject.schoolPrograms,
   };
   return Subject.update(payload)
     .then(response => {
@@ -72,7 +72,7 @@ export const saveSubject = subject => async dispatch => {
     subject_code:subject.subjectCode,
     subject_name:subject.subjectName,
     subject_type:subject.subjectType,
-    postgraduates:subject.postgraduates,
+    school_programs:subject.schoolPrograms,
   };
   return Subject.saveSubject(payload)
     .then(res => {

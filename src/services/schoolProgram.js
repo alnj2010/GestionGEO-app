@@ -1,10 +1,10 @@
 import AXIOS from '../config/axios.config';
 import { headers, URL } from './constants';
 
-export const Postgraduate = {
+export const SchoolProgram = {
 
-  getPostgraduateList() {
-    return AXIOS.get(`${URL.POSTGRADUATE}`, {
+  getSchoolProgramList() {
+    return AXIOS.get(`${URL.SCHOOL_PROGRAM}`, {
       headers: headers(),
     })
       .then(response => {
@@ -20,8 +20,8 @@ export const Postgraduate = {
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
-  findPostgraduateById(id) {
-    return AXIOS.get(`${URL.POSTGRADUATE}/${id}`, {
+  findSchoolProgramById(id) {
+    return AXIOS.get(`${URL.SCHOOL_PROGRAM}/${id}`, {
       headers: headers(),
     })
       .then(response => {
@@ -37,8 +37,8 @@ export const Postgraduate = {
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
-  update(postgraduate) {
-    return AXIOS.put(`${URL.POSTGRADUATE}/${postgraduate.id}`, postgraduate, {
+  update(schoolProgram) {
+    return AXIOS.put(`${URL.SCHOOL_PROGRAM}/${schoolProgram.id}`, schoolProgram, {
       headers: headers(),
     })
       .then(response => {
@@ -55,8 +55,8 @@ export const Postgraduate = {
       });
   },
 
-  savePostgraduate(postgraduate) {
-    return AXIOS.post(`${URL.POSTGRADUATE}`, postgraduate, {
+  saveSchoolProgram(schoolProgram) {
+    return AXIOS.post(`${URL.SCHOOL_PROGRAM}`, schoolProgram, {
       headers: headers(),
     })
       .then(response => {
@@ -72,8 +72,8 @@ export const Postgraduate = {
         return Promise.reject('Ups! Al parecer hay un error desconocido.');
       });
   },
-  delete(postgraduateId) {
-    return AXIOS.delete(`${URL.POSTGRADUATE}/${postgraduateId}`, {
+  delete(schoolProgramId) {
+    return AXIOS.delete(`${URL.SCHOOL_PROGRAM}/${schoolProgramId}`, {
       headers: headers(),
     })
       .then(response => {
@@ -91,4 +91,4 @@ export const Postgraduate = {
   },
 };
 
-export default Postgraduate;
+export default SchoolProgram;

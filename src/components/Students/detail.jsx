@@ -56,7 +56,7 @@ class StudentDetail extends Component {
       submitting,
       valid,
       submit,
-      postgraduates
+      schoolPrograms
     } = this.props;
     const { func } = this.state;
 
@@ -79,7 +79,7 @@ class StudentDetail extends Component {
                 { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Postgrado al que pertenece',field: `postgraduate`, id: `postgraduate`, type: 'select', options: postgraduates.map(post => { return { key: post.postgraduate_name, value: post.id } }) },
+                { label: 'Programa academico al que pertenece',field: `schoolProgram`, id: `schoolProgram`, type: 'select', options: schoolPrograms.map(post => { return { key: post.school_program_name, value: post.id } }) },
                 { label: 'Tipo',field: `studentType`, id: `studentType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }) },
                 { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text' },
               ]}</RenderFields>
@@ -178,7 +178,7 @@ const studentValidation = values => {
     errors.email = 'Introduce un email valido';
   }
 
-  if(!values.postgraduate) errors.postgraduate = "Postgrado del estudiante Requerido"
+  if(!values.schoolProgram) errors.schoolProgram = "Programa academico del estudiante Requerido"
   if(!values.studentType) errors.studentType = " Tipo Requerido"
   if(!values.homeUniversity) errors.homeUniversity = "Universidad de origen Requerido"
 
@@ -222,8 +222,8 @@ StudentDetail = connect(
       workPhone: state.studentReducer.selectedStudent.work_phone
         ? state.studentReducer.selectedStudent.work_phone
         : '',
-      postgraduate: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.postgraduate_id
+      schoolProgram: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.schoolProgram_id
         : '',
       studentType: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.student_type

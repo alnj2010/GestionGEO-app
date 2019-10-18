@@ -20,7 +20,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Teacher from '@material-ui/icons/School';
-import Postgraduate from '@material-ui/icons/Extension';
+import SchoolProgram from '@material-ui/icons/Extension';
 import Admin from '@material-ui/icons/Group';
 import Face from '@material-ui/icons/Face';
 import Subject from '@material-ui/icons/LocalLibrary';
@@ -124,9 +124,9 @@ class MenuApp extends React.Component {
         roles:['A'],
       },
       {
-        link: 'postgrados',
-        name: 'Postgrados',
-        component: Postgraduate,
+        link: 'programas-academicos',
+        name: 'Programa Academicos',
+        component: SchoolProgram,
         clicked: false,
         roles:['A'],
       },

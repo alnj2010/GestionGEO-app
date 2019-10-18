@@ -60,22 +60,22 @@ class SubjectDetail extends Component {
       this.props.show(action);
     });
   };
-  unselectedPostgraduates = ( pos ) =>{
-    const {postgraduates, postgraduatesSelected} =this.props;
-    return postgraduates.filter( item => !postgraduatesSelected.some((selected,index)=>selected.id===item.id && pos>index) )
+  unselectedSchoolPrograms = ( pos ) =>{
+    const {schoolPrograms, schoolProgramsSelected} =this.props;
+    return schoolPrograms.filter( item => !schoolProgramsSelected.some((selected,index)=>selected.id===item.id && pos>index) )
   }
 
-  renderPostgraduates = ({ fields, meta: { error, submitFailed } }) => (<Grid container item>    
-    {fields.map((postgraduate, index) => (
+  renderSchoolPrograms = ({ fields, meta: { error, submitFailed } }) => (<Grid container item>    
+    {fields.map((schoolProgram, index) => (
     <Fragment key={index}>
       <Grid item xs={5}>
         <RenderFields >{[
-          {field: `${postgraduate}.id`, id: `${postgraduate}.id`, type: 'select', label:'Postgrado', options: this.unselectedPostgraduates(index).map(post => { return { key: post.postgraduate_name, value: post.id } }) },
+          {field: `${schoolProgram}.id`, id: `${schoolProgram}.id`, type: 'select', label:'Programa academico', options: this.unselectedSchoolPrograms(index).map(post => { return { key: post.school_program_name, value: post.id } }) },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={5}>
         <RenderFields >{[
-          {field: `${postgraduate}.type`, id: `${postgraduate}.type`, type: 'select', label:'modalidad', options: [{key:'OBLIGATORIA',value:"O"}, {key:'ELECTIVA',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
+          {field: `${schoolProgram}.type`, id: `${schoolProgram}.type`, type: 'select', label:'modalidad', options: [{key:'OBLIGATORIA',value:"OB"},{key:'OPTATIVA',value:"OP"}, {key:'ELECTIVA',value:"EL"}].map(type => { return { key: type.key, value: type.value } }) },
         ]}</RenderFields>      
       </Grid>
       <Grid item xs={2} className={this.props.classes.buttonDeleteContainer}>
@@ -85,7 +85,7 @@ class SubjectDetail extends Component {
       </Grid>
     </Fragment>      
     ))}
-    <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.postgraduates && this.props.postgraduatesSelected && (this.props.postgraduates.length===this.props.postgraduatesSelected.length)} onClick={() => fields.push({})}>
+    <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.schoolPrograms && this.props.schoolProgramsSelected && (this.props.schoolPrograms.length===this.props.schoolProgramsSelected.length)} onClick={() => fields.push({})}>
       <AddIcon />
     </Fab>
   </Grid>)
@@ -120,10 +120,10 @@ class SubjectDetail extends Component {
                 { label: 'Tipo de materia',field: `subjectType`, id: `subjectType`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'AMPLIACION',value:"AMP"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Unidades de credito', field: 'uc', id: 'uc', type: 'number', min:0 },
               ]}</RenderFields>
-                <Grid xs={12} className={classes.subtitle}>
-                  <Typography variant="h6" gutterBottom>Postgrados a los que pertenece la materia</Typography>
+                <Grid item xs={12} className={classes.subtitle}>
+                  <Typography variant="h6" gutterBottom>Programa academicos a los que pertenece la materia</Typography>
                 </Grid>
-               <FieldArray name="postgraduates" component={this.renderPostgraduates} />
+               <FieldArray name="schoolPrograms" component={this.renderSchoolPrograms} />
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -205,22 +205,22 @@ const subjectValidation = values => {
     errors.uc = 'Unidades de credito es requerido';
   }
 
-  if (values.postgraduates && values.postgraduates.length){
-    const postgraduatesArrayErrors = []
-    values.postgraduates.forEach((postgraduate, postgraduateIndex) => {
-      const postgraduateErrors = {}
-      if (!postgraduate || !postgraduate.id) {
-        postgraduateErrors.id = 'Requerido'
-        postgraduatesArrayErrors[postgraduateIndex] = postgraduateErrors
+  if (values.schoolPrograms && values.schoolPrograms.length){
+    const schoolProgramsArrayErrors = []
+    values.schoolPrograms.forEach((schoolProgram, schoolProgramIndex) => {
+      const schoolProgramErrors = {}
+      if (!schoolProgram || !schoolProgram.id) {
+        schoolProgramErrors.id = 'Requerido'
+        schoolProgramsArrayErrors[schoolProgramIndex] = schoolProgramErrors
       }
-      if (!postgraduate || !postgraduate.type) {
-        postgraduateErrors.type = 'Requerido'
-        postgraduatesArrayErrors[postgraduateIndex] = postgraduateErrors
+      if (!schoolProgram || !schoolProgram.type) {
+        schoolProgramErrors.type = 'Requerido'
+        schoolProgramsArrayErrors[schoolProgramIndex] = schoolProgramErrors
       }
 
     })
-    if (postgraduatesArrayErrors.length) {
-      errors.postgraduates = postgraduatesArrayErrors
+    if (schoolProgramsArrayErrors.length) {
+      errors.schoolPrograms = schoolProgramsArrayErrors
     }
   }
 
@@ -250,11 +250,11 @@ SubjectDetail = connect(
       uc: state.subjectReducer.selectedSubject.uc
         ? state.subjectReducer.selectedSubject.uc
         : '',
-      postgraduates: state.subjectReducer.selectedSubject.postgraduates
-        ? state.subjectReducer.selectedSubject.postgraduates.map(post=>({ id:post.id,type:post.postgraduate_subject.type}))
+      schoolPrograms: state.subjectReducer.selectedSubject.school_programs
+        ? state.subjectReducer.selectedSubject.school_programs.map(sp=>({ id:sp.id,type:sp.school_program_subject.type}))
         : [{}],
     },
-    postgraduatesSelected: selector(state, 'postgraduates'),
+    schoolProgramsSelected: selector(state, 'schoolPrograms'),
     action: state.dialogReducer.action,
   }),
   { change, show, submit },

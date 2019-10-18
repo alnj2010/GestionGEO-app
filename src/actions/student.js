@@ -57,7 +57,7 @@ export const updateStudent = student => async dispatch => {
     telephone: student.telephone, 
     work_phone: student.workPhone, 
     email:student.email,
-    postgraduate_id:student.postgraduate,
+    school_program_id:student.schoolProgram,
     student_type:student.studentType,
     home_university:student.homeUniversity,
   };
@@ -87,7 +87,7 @@ export const saveStudent = student => async dispatch => {
     telephone: student.telephone, 
     work_phone: student.workPhone, 
     email:student.email,
-    postgraduate_id:student.postgraduate,
+    school_program_id:student.schoolProgram,
     student_type:student.studentType,
     home_university:student.homeUniversity,
   };

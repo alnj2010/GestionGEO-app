@@ -28,7 +28,7 @@ const styles = theme => ({
   }
 });
 
-class PostgraduateDetail extends Component {
+class SchoolProgramDetail extends Component {
   constructor() {
     super();
     this.state = {
@@ -46,10 +46,10 @@ class PostgraduateDetail extends Component {
     const {
       classes,
       handleSubmit,
-      savePostgraduate,
+      saveSchoolProgram,
       goBack,
-      postgraduateId,
-      handlePostgraduateDelete,
+      schoolProgramId,
+      handleSchoolProgramDelete,
       pristine,
       submitting,
       valid,
@@ -57,17 +57,19 @@ class PostgraduateDetail extends Component {
     } = this.props;
     const { func } = this.state;
     return (
-      <Form onSubmit={handleSubmit(savePostgraduate)}>
+      <Form onSubmit={handleSubmit(saveSchoolProgram)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {postgraduateId ? `Postgrado: ${postgraduateId}` : 'Nuevo Postgrado'}</h3>
+            <h3> {schoolProgramId ? `Programa academico: ${schoolProgramId}` : 'Nuevo Programa academico'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
               <RenderFields >{[
-                { label: 'Nombre del postgrado', field: 'postgraduateName', id: 'postgraduateName', type: 'text' },
+                { label: 'Nombre del programa academico', field: 'schoolProgramName', id: 'schoolProgramName', type: 'text' },
                 { label: 'Unidades de credito', field: 'numCu', id: 'numCu', type: 'number', min:0 },
+                { label: 'Duracion (Años)', field: 'duration', id: 'duration', type: 'number', min:0 },
+
               ]}</RenderFields>
             </Grid>
             <Grid container>
@@ -79,9 +81,9 @@ class PostgraduateDetail extends Component {
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
-                        postgraduateId
+                        schoolProgramId
                           ? this.handleDialogShow('actualizar', submit)
-                          : submit('postgraduate')
+                          : submit('schoolProgram')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -96,13 +98,13 @@ class PostgraduateDetail extends Component {
                   </Grid>
 
                   <Grid item xs={12} sm={3}>
-                    {postgraduateId ? (
+                    {schoolProgramId ? (
                       <Button
                         className={classes.button}
                         variant="contained"
                         color="secondary"
                         onClick={() =>
-                          this.handleDialogShow('delete', handlePostgraduateDelete)
+                          this.handleDialogShow('delete', handleSchoolProgramDelete)
                         }
                       >
                         Borrar
@@ -120,52 +122,59 @@ class PostgraduateDetail extends Component {
   };
 }
 
-PostgraduateDetail.propTypes = {
+SchoolProgramDetail.propTypes = {
   classes: object.isRequired,
   handleSubmit: func.isRequired,
-  savePostgraduate: func.isRequired,
+  saveSchoolProgram: func.isRequired,
   goBack: func.isRequired,
-  postgraduateId: number,
-  handlePostgraduateDelete: func.isRequired,
+  schoolProgramId: number,
+  handleSchoolProgramDelete: func.isRequired,
   pristine: bool.isRequired,
   submitting: bool.isRequired,
   valid: bool.isRequired,
 };
 
-const postgraduateValidation = values => {
+const schoolProgramValidation = values => {
   const errors = {};
 
-  if (!values.postgraduateName) {
-    errors.postgraduateName = 'Nombre del Postgrado es requerido';
+  if (!values.schoolProgramName) {
+    errors.schoolProgramName = 'Nombre del Programa academico es requerido';
   }
 
   if (!values.numCu) {
     errors.numCu = 'Unidades de credito es requerido';
   }
 
+  if (!values.duration) {
+    errors.duration = 'Duracion es requerido';
+  }
+
 
   return errors;
 };
 
-PostgraduateDetail = reduxForm({
-  form: 'postgraduate',
-  validate: postgraduateValidation,
+SchoolProgramDetail = reduxForm({
+  form: 'schoolProgram',
+  validate: schoolProgramValidation,
   enableReinitialize: true,
-})(PostgraduateDetail);
+})(SchoolProgramDetail);
 
-PostgraduateDetail = connect(
+SchoolProgramDetail = connect(
   state => ({
     initialValues: {
-      postgraduateName: state.postgraduateReducer.selectedPostgraduate.postgraduate_name
-        ? state.postgraduateReducer.selectedPostgraduate.postgraduate_name
+      schoolProgramName: state.schoolProgramReducer.selectedSchoolProgram.school_program_name
+        ? state.schoolProgramReducer.selectedSchoolProgram.school_program_name
         : '',
-      numCu: state.postgraduateReducer.selectedPostgraduate.num_cu
-        ? state.postgraduateReducer.selectedPostgraduate.num_cu
+      numCu: state.schoolProgramReducer.selectedSchoolProgram.num_cu
+        ? state.schoolProgramReducer.selectedSchoolProgram.num_cu
+        : '',      
+      duration: state.schoolProgramReducer.selectedSchoolProgram.duration
+        ? state.schoolProgramReducer.selectedSchoolProgram.duration
         : '',
     },
     action: state.dialogReducer.action,
   }),
   { change, show, submit },
-)(PostgraduateDetail);
+)(SchoolProgramDetail);
 
-export default withStyles(styles)(PostgraduateDetail);
+export default withStyles(styles)(SchoolProgramDetail);
