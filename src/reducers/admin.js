@@ -2,7 +2,7 @@ import { ACTIONS } from '../actions/admin';
 
 const initialState = {
   list: [],
-  selectedAdmin: {},
+  selectedAdmin: {administrator:{}},
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -12,7 +12,7 @@ const adminReducer = (state = initialState, action) => {
     case ACTIONS.SELECT:
       return { ...state, ...action.payload };
     case ACTIONS.CLEAN_SELECTED_ADMIN:
-      return { ...state, selectedAdmin: {} };
+      return { ...state, selectedAdmin: {administrator:{}} };
     default:
       return state;
   }

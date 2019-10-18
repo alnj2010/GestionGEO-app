@@ -53,7 +53,11 @@ export const updateAdmin = admin => async dispatch => {
     email: admin.email, 
     mobile: admin.mobile, 
     telephone: admin.telephone, 
-    work_phone: admin.workPhone, 
+    work_phone: admin.workPhone,
+    rol:admin.rol,
+    sex:admin.sex,
+    nationality:admin.nationality,
+    level_instruction:admin.levelInstruction,  
   };
   return User.update(payload)
     .then(response => {
@@ -80,7 +84,11 @@ export const saveAdmin = admin => async dispatch => {
     identification: admin.identification, 
     mobile: admin.mobile, 
     telephone: admin.telephone, 
-    work_phone: admin.workPhone, 
+    work_phone: admin.workPhone,
+    rol:admin.rol,
+    sex:admin.sex,
+    nationality:admin.nationality,
+    level_instruction:admin.levelInstruction, 
   };
   return User.saveAdmin(payload)
     .then(res => {

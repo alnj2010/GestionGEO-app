@@ -75,6 +75,11 @@ class AdminDetail extends Component {
                 { label: 'Movil', field: 'mobile', id: 'mobile', type: 'phone' },
                 { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
+                { label: 'Rol',field: `rol`, id: `rol`, type: 'select', options: [{key:'SECRETARIO',value:"SECRETARY"}, {key:'COORDINADOR',value:"COORDINATOR"}].map(type => { return { key: type.key, value: type.value } }) },
+                { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
+                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'text', maxlength:"3" },
+                { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
+
               ]}</RenderFields>
             </Grid>
             <Grid container>
@@ -212,6 +217,18 @@ AdminDetail = connect(
         : '',
       workPhone: state.adminReducer.selectedAdmin.work_phone
         ? state.adminReducer.selectedAdmin.work_phone
+        : '',
+      rol:state.adminReducer.selectedAdmin.administrator.rol
+        ? state.adminReducer.selectedAdmin.administrator.rol
+        : '',
+      sex:state.adminReducer.selectedAdmin.sex
+        ? state.adminReducer.selectedAdmin.sex
+        : '',
+      nationality:state.adminReducer.selectedAdmin.nationality
+        ? state.adminReducer.selectedAdmin.nationality
+        : '',
+      levelInstruction:state.adminReducer.selectedAdmin.level_instruction
+        ? state.adminReducer.selectedAdmin.level_instruction
         : '',
     },
     action: state.dialogReducer.action,
