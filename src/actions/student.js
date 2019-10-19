@@ -60,6 +60,13 @@ export const updateStudent = student => async dispatch => {
     school_program_id:student.schoolProgram,
     student_type:student.studentType,
     home_university:student.homeUniversity,
+    sex:student.sex,
+    nationality:student.nationality,
+    is_ucv_teacher:student.isUcvTeacher,
+    is_available_final_work:student.isAvailableFinalWork,
+    repeat_approved_subject:student.repeatApprovedSubject,
+    repeat_reprobated_subject:student.repeatApprovedSubject,
+
   };
   return Student.update(payload)
     .then(response => {
@@ -90,6 +97,13 @@ export const saveStudent = student => async dispatch => {
     school_program_id:student.schoolProgram,
     student_type:student.studentType,
     home_university:student.homeUniversity,
+    sex:student.sex,
+    nationality:student.nationality,
+    is_ucv_teacher:student.isUcvTeacher,
+    is_available_final_work:student.isAvailableFinalWork,
+    repeat_approved_subject:student.repeatApprovedSubject,
+    repeat_reprobated_subject:student.repeatApprovedSubject,
+
   };
   return Student.saveStudent(payload)
     .then(res => {

@@ -82,6 +82,12 @@ class StudentDetail extends Component {
                 { label: 'Programa academico al que pertenece',field: `schoolProgram`, id: `schoolProgram`, type: 'select', options: schoolPrograms.map(post => { return { key: post.school_program_name, value: post.id } }) },
                 { label: 'Tipo',field: `studentType`, id: `studentType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }) },
                 { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text' },
+                { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
+                { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
+                { label: '¿Profesor de la UCV?', field: 'isUcvTeacher', id: 'isUcvTeacher', type:'switch' },
+                { label: '¿Puede Inscribir tesis?', field: 'isAvailableFinalWork', id: 'isAvailableFinalWork', type:( studentId ? 'switch' :'hidden') },
+                { label: '¿Ha cursado una materia aprovada dos veces?', field: 'repeatApprovedSubject', id: 'repeatApprovedSubject', type:( studentId ? 'switch' :'hidden') },
+                { label: '¿Ha cursado una materia ya aplazada?', field: 'repeatReprobatedSubject', id: 'repeatReprobatedSubject', type:( studentId ? 'switch' :'hidden') },
               ]}</RenderFields>
                 
             </Grid>
@@ -164,20 +170,14 @@ const studentValidation = values => {
     if (!values.mobile || values.mobile==='(   )    -    ') {
       errors.mobile = 'movil es requerido';
     }
-  
-    if (!values.telephone || values.telephone==='(   )    -    ') {
-      errors.telephone = 'Telefono es requerido';
-    }
-  
-    if (!values.workPhone || values.workPhone==='(   )    -    ') {
-      errors.workPhone = 'Telefono del trabajo es requerido';
-    }
   if (!values.email) {
     errors.email = 'Email es requerido';
   } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
     errors.email = 'Introduce un email valido';
   }
 
+  if(!values.nationality) errors.nationality = " Nacionalidad Requerido"
+  if(!values.sex) errors.sex = " Sexo Requerido"
   if(!values.schoolProgram) errors.schoolProgram = "Programa academico del estudiante Requerido"
   if(!values.studentType) errors.studentType = " Tipo Requerido"
   if(!values.homeUniversity) errors.homeUniversity = "Universidad de origen Requerido"
@@ -222,14 +222,32 @@ StudentDetail = connect(
         ? state.studentReducer.selectedStudent.work_phone
         : '(   )    -    ',
       schoolProgram: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.schoolProgram_id
+        ? state.studentReducer.selectedStudent.student.school_program_id
         : '',
       studentType: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.student_type
         : '',
       homeUniversity: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.home_university
-        : '',   
+        : '',
+      sex:state.studentReducer.selectedStudent.sex
+        ? state.studentReducer.selectedStudent.sex
+        : '',
+      nationality:state.studentReducer.selectedStudent.nationality
+        ? state.studentReducer.selectedStudent.nationality
+        : '',
+      isUcvTeacher: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.is_ucv_teacher
+        : false,
+      isAvailableFinalWork: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.is_available_final_work
+        : false,
+      repeatApprovedSubject: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.repeat_approved_subject
+        : false,
+      repeatApprovedSubject: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.repeat_reprobated_subject
+        : false,
     },
     action: state.dialogReducer.action,
   }),
