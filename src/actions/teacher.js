@@ -59,6 +59,8 @@ export const updateTeacher = teacher => async dispatch => {
     sex:teacher.sex,
     level_instruction:teacher.levelInstruction,
     dedication:teacher.dedication,
+    home_institute:teacher.homeInstitute,
+    country:teacher.country   
   };
   return Teacher.update(payload)
     .then(response => {
@@ -87,6 +89,9 @@ export const saveTeacher = teacher => async dispatch => {
     work_phone: teacher.workPhone, 
     email:teacher.email,
     teacher_type:teacher.teacherType,
+    home_institute:teacher.homeInstitute,
+    country:teacher.country   
+
   };
   return Teacher.saveTeacher(payload)
     .then(res => {

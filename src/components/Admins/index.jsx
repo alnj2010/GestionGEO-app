@@ -21,6 +21,7 @@ class AdminsList extends Component {
           email: admin.email,
           firstName: admin.first_name,
           firstSurname: admin.first_surname,
+          rol: admin.administrator.rol,
         };
       });
     return [];
@@ -57,6 +58,7 @@ class AdminsList extends Component {
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
               { title: 'Email', field: 'email' },
+              { title: 'Rol', field: 'rol' },
             ]}
             data={this.transformData(admins)}
             title="Administradores"

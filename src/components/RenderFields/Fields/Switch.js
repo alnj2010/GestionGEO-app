@@ -4,18 +4,7 @@ import {
     Switch,
 } from '@material-ui/core';
 import { Field } from 'redux-form';
-/* case 'switch':{
-  return (
-    <Switch
-      disabled={params.disabled}
-      disableRipple
-      {...params.input}
-      color="primary"
-      checked={params.input.value && (params.field.checked===undefined || params.field.checked===true) ? true : false}
-      onChange={params.input.onChange}
-    />
-  )
-} */
+
 const renderSwitch = ({
   input,
   label,
@@ -23,6 +12,7 @@ const renderSwitch = ({
   ...custom
 }) =>(
     <FormControlLabel
+        style={{marginTop:'22px'}}
         control={
           <Switch
             checked={input.value && !input.disabled ? true : false}

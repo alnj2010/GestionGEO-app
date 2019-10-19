@@ -57,7 +57,8 @@ export const updateAdmin = admin => async dispatch => {
     rol:admin.rol,
     sex:admin.sex,
     nationality:admin.nationality,
-    level_instruction:admin.levelInstruction,  
+    level_instruction:admin.levelInstruction,
+    principal:admin.principal  
   };
   return User.update(payload)
     .then(response => {
@@ -88,7 +89,8 @@ export const saveAdmin = admin => async dispatch => {
     rol:admin.rol,
     sex:admin.sex,
     nationality:admin.nationality,
-    level_instruction:admin.levelInstruction, 
+    level_instruction:admin.levelInstruction,
+    principal:admin.principal 
   };
   return User.saveAdmin(payload)
     .then(res => {

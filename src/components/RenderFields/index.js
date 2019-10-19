@@ -27,7 +27,7 @@ class RenderFields extends React.Component{
           case 'time': return <Grid key={index} item xs={movil} sm={desktop} style={{paddingTop:16}}> <Time {...input} /></Grid>
           case 'switch': return <Grid key={index} item xs={movil} sm={desktop}> <Switch {...input} /></Grid>
 
-          default: return <div key={index} >No esta creado</div>
+          default: return <span key={index} ></span>
         }
       });
     }

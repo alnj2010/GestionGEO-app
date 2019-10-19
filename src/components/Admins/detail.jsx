@@ -5,7 +5,7 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
-import { Form, reduxForm, change, submit } from 'redux-form';
+import { Form, reduxForm, change, submit,formValueSelector } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -54,8 +54,10 @@ class AdminDetail extends Component {
       submitting,
       valid,
       submit,
+      rol
     } = this.props;
     const { func } = this.state;
+    let isMain=sessionStorage.getItem('main')==='true'
     return (
       <Form onSubmit={handleSubmit(saveAdmin)}>
         <Grid container>
@@ -77,9 +79,9 @@ class AdminDetail extends Component {
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Rol',field: `rol`, id: `rol`, type: 'select', options: [{key:'SECRETARIO',value:"SECRETARY"}, {key:'COORDINADOR',value:"COORDINATOR"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
-                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"lic"}].map(type => { return { key: type.value, value: type.id } }) },
+                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"lic"}].map(type => { return { key: type.value, value: type.id } }) },
                 { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
-
+                { label: 'Coordinador principal', field: 'principal', id: 'principal', type:( isMain && rol !== "SECRETARY" ? 'switch' :'hidden') },
               ]}</RenderFields>
             </Grid>
             <Grid container>
@@ -171,19 +173,10 @@ const adminValidation = values => {
     errors.mobile = 'movil es requerido';
   }
 
-  if (!values.telephone || values.telephone==='(   )    -    ') {
-    errors.telephone = 'Telefono es requerido';
-  }
-
-  if (!values.workPhone || values.workPhone==='(   )    -    ') {
-    errors.workPhone = 'Telefono del trabajo es requerido';
-  }
-
   if(!values.nationality) errors.nationality = " Nacionalidad Requerido"
   if(!values.sex) errors.sex = " Sexo Requerido"
   if(!values.levelInstruction) errors.levelInstruction = " Nivel de instruccion Requerido"
   if(!values.rol) errors.rol = " Rol Requerido"
-  console.log(errors)
   return errors;
 };
 
@@ -192,6 +185,7 @@ AdminDetail = reduxForm({
   validate: adminValidation,
   enableReinitialize: true,
 })(AdminDetail);
+const selector = formValueSelector('admin');
 
 AdminDetail = connect(
   state => ({
@@ -223,7 +217,7 @@ AdminDetail = connect(
       workPhone: state.adminReducer.selectedAdmin.work_phone
         ? state.adminReducer.selectedAdmin.work_phone
         : '(   )    -    ',
-      rol:state.adminReducer.selectedAdmin.administrator.rol
+      rol:state.adminReducer.selectedAdmin.administrator
         ? state.adminReducer.selectedAdmin.administrator.rol
         : '',
       sex:state.adminReducer.selectedAdmin.sex
@@ -235,8 +229,12 @@ AdminDetail = connect(
       levelInstruction:state.adminReducer.selectedAdmin.level_instruction
         ? state.adminReducer.selectedAdmin.level_instruction
         : '',
+      principal:state.adminReducer.selectedAdmin.administrator
+        ? state.adminReducer.selectedAdmin.administrator.principal
+        : false,
     },
     action: state.dialogReducer.action,
+    rol: selector(state, 'rol'),
   }),
   { change, show, submit },
 )(AdminDetail);

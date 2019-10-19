@@ -10,6 +10,7 @@ export const login = ({ identification, password, user_type }) => async dispatch
     .then(response => {
       sessionStorage.setItem('GeoToken', response.token);
       sessionStorage.setItem('rol', response.user.user_type);
+      sessionStorage.setItem('main', !!response.user.administrator.principal);
       dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
       return true;
     })

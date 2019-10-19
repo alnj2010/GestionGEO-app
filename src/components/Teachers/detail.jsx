@@ -5,7 +5,7 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
-import { Form, reduxForm, change, submit } from 'redux-form';
+import { Form, reduxForm, change, submit,formValueSelector } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -56,6 +56,7 @@ class TeacherDetail extends Component {
       submitting,
       valid,
       submit,
+      teacherType
     } = this.props;
     const { func } = this.state;
 
@@ -81,10 +82,13 @@ class TeacherDetail extends Component {
                 { label: 'Tipo',field: `teacherType`, id: `teacherType`, type: 'select', options: [{value:"INSTRUCTOR",id:"INS"},{value:"INVITADO",id:"INV"},{value:"ASISTENTE",id:"ASI"},{value:"AGREGADO",id:"AGR"},{value:"TITULAR",id:"TIT"}].map(type => { return { key: type.value, value: type.id } }) },
                 { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
-                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"Lic"}].map(type => { return { key: type.value, value: type.id } }) },
-                { label: 'Dedicacion',field: `dedication`, id: `dedication`, type: 'select', options: [{value:"INVITADO",id:"INV"},{value:"MEDIO-TIEMPO",id:"MT"},{value:"CONVENCIONAL",id:"CON"},{value:"TIEMPO-COMPLETO",id:"TC"},{value:"EXCLUSIVO",id:"EXC"}].map(type => { return { key: type.value, value: type.id } }) },
-
+                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"Lic"}].map(type => { return { key: type.value, value: type.id } }) },
+                { label: 'Dedicacion',field: `dedication`, id: `dedication`, type: 'select', options: [{value:"INVITADO",id:"INV"},{value:"MEDIO-TIEMPO",id:"MT"},{value:"CONVENCIONAL",id:"CON"},{value:"TIEMPO-COMPLETO",id:"TC"},{value:"EXCLUSIVO",id:"EXC"}].map(type => { return { key: type.value, value: type.id } }) },                
               ]}</RenderFields>
+              { teacherType==='INV'?<RenderFields >{[
+                { label: 'Pais', field: 'homeInstitute', id: 'homeInstitute', type: 'text' },
+                { label: 'Universidad proveniente', field: 'country', id: 'country', type: 'text' },
+              ]}</RenderFields>:''}
                 
             </Grid>
             <Grid container>
@@ -166,14 +170,7 @@ const teacherValidation = values => {
   if (!values.mobile || values.mobile==='(   )    -    ') {
       errors.mobile = 'movil es requerido';
     }
-  
-  if (!values.telephone || values.telephone==='(   )    -    ') {
-      errors.telephone = 'Telefono es requerido';
-    }
-  
-  if (!values.workPhone || values.workPhone==='(   )    -    ') {
-      errors.workPhone = 'Telefono del trabajo es requerido';
-    }
+
   if (!values.email) {
     errors.email = 'Email es requerido';
   } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
@@ -195,6 +192,7 @@ TeacherDetail = reduxForm({
   validate: teacherValidation,
   enableReinitialize: true,
 })(TeacherDetail);
+const selector = formValueSelector('teacher');
 
 TeacherDetail = connect(
   state => ({
@@ -241,8 +239,15 @@ TeacherDetail = connect(
       dedication: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.dedication
         : '',
+      homeInstitute: state.teacherReducer.selectedTeacher.teacher
+      ? state.teacherReducer.selectedTeacher.teacher.home_institute
+      : '',
+      country: state.teacherReducer.selectedTeacher.teacher
+        ? state.teacherReducer.selectedTeacher.teacher.country
+        : '',
     },
     action: state.dialogReducer.action,
+    teacherType: selector(state, 'teacherType'),
   }),
   { change, show, submit },
 )(TeacherDetail);
