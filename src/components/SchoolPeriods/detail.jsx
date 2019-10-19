@@ -94,6 +94,8 @@ class SchoolPeriodDetail extends Component {
         <RenderFields lineal={true} >{[
           {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
           {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', label:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.teacher.id } }) },
+          {label:'Modalidad', field: `${subject}.modality`, id: `${subject}.modality`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'INTENSIVO',value:"INT"}].map(type => { return { key: type.key, value: type.value } }) },
+
           {label: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
           {label: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
         ]}</RenderFields>      
@@ -254,6 +256,11 @@ const schoolPeriodValidation = values => {
         subjErrors.teacherId = '*Profesor es requerido'
         subjectArrayErrors[subjIndex] = subjErrors
       }
+
+      if (!subj || !subj.modality) {
+        subjErrors.modality = '*Modalidad es requerido'
+        subjectArrayErrors[subjIndex] = subjErrors
+      }
       if (!subj || !subj.limit) {
         subjErrors.limit = '*Maximo de alumnos es requerido'
         subjectArrayErrors[subjIndex] = subjErrors
@@ -325,6 +332,7 @@ SchoolPeriodDetail = connect(
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map(subj=>({ 
           subjectId:subj.subject_id, 
           teacherId:subj.teacher_id,
+          modality:subj.modality,
           limit:subj.limit,
           duty:subj.duty,
           schedules: subj.schedules ? subj.schedules.map(sche =>({

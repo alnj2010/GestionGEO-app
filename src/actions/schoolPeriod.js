@@ -71,6 +71,7 @@ export const updateSchoolPeriod = schoolPeriod => async dispatch => {
 
       subject_id:subject.subjectId,
       teacher_id:subject.teacherId,
+      modality:subject.modality,
       duty:subject.duty,
       limit:subject.limit,
       schedules:subject.schedules.map(schedule =>({
@@ -109,6 +110,7 @@ export const saveSchoolPeriod = schoolPeriod => async dispatch => {
 
       subject_id:subject.subjectId,
       teacher_id:subject.teacherId,
+      modality:subject.modality,
       duty:subject.duty,
       limit:subject.limit,
       schedules:subject.schedules.map(schedule =>({
