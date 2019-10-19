@@ -5,7 +5,9 @@ import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import { handleExportCsv } from '../../services/constants';
+import { Constance } from '../../services/constance';
 import Inscription from '@material-ui/icons/HowToVote';
+import Download from '@material-ui/icons/Archive';
 
 class StudentsList extends Component {
   constructor() {
@@ -76,6 +78,13 @@ class StudentsList extends Component {
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
                   history.push(`/estudiantes/edit/${rowData.id}`);
+                },
+              },
+              {
+                icon: Download,
+                tooltip: 'Constancia de estudio',
+                onClick: (event, rowData) => {
+                  Constance.getStudyConstance(rowData.studentId);
                 },
               },
               {
