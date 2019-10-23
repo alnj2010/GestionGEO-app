@@ -91,7 +91,7 @@ class SchoolPeriodDetail extends Component {
     {fields.map((subject, index) => (
     <Grid container justify="center" key={index}>
       <Grid container item xs={10}>
-        <RenderFields lineal={true} >{[
+        <RenderFields lineal={[3,3,2,2,2]} >{[
           {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
           {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', label:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.teacher.id } }) },
           {label:'Modalidad', field: `${subject}.modality`, id: `${subject}.modality`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'INTENSIVO',value:"INT"}].map(type => { return { key: type.key, value: type.value } }) },

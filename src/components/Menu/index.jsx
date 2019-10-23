@@ -14,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Home from '@material-ui/icons/Home';
 import Actual from '@material-ui/icons/AlarmAdd';
 import ListIcon from '@material-ui/icons/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -116,6 +117,13 @@ class MenuApp extends React.Component {
     open: false,
     anchorEl: null,
     options: [
+      {
+        link: 'home',
+        name: 'Home',
+        component: Home,
+        clicked: false,
+        roles:['A'],
+      },
       {
         link: 'administradores',
         name: 'Administradores',
@@ -456,6 +464,7 @@ class MenuApp extends React.Component {
                 open={open}
                 onClose={this.handleClose}
               >
+                <MenuItem onClick={this.handleLogout}>Mi Perfil</MenuItem>
                 <MenuItem onClick={this.handleLogout}>Salir</MenuItem>
               </Menu>
             </div>
