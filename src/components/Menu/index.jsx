@@ -384,6 +384,15 @@ class MenuApp extends React.Component {
     sessionStorage.removeItem('GeoToken');
     this.handleClose();
   };
+  handleProfile = () =>{
+    const rol=sessionStorage.getItem('rol');
+    const id=sessionStorage.getItem('id');
+    switch(rol){
+      case 'A': window.location.href=`/administradores/edit/${id}`; break;
+      case 'T': window.location.href=`/profesores/edit/${id}`; break;
+      case 'S': window.location.href=`/estudiantes/edit/${id}`; break;
+    }
+  }
 
   validateToken = () => {
     if (!sessionStorage.getItem('GeoToken')) {
@@ -410,7 +419,8 @@ class MenuApp extends React.Component {
   };
 
   render() {
-    const { classes, theme, children } = this.props;
+    const { classes, theme, children} = this.props;
+    console.log(this.props);
     const { anchorEl, options } = this.state;
     const open = Boolean(anchorEl);
     const rol=sessionStorage.getItem('rol');
@@ -464,7 +474,8 @@ class MenuApp extends React.Component {
                 open={open}
                 onClose={this.handleClose}
               >
-                <MenuItem onClick={this.handleLogout}>Mi Perfil</MenuItem>
+                <MenuItem onClick={this.handleProfile}>Mi Perfil</MenuItem>
+                <MenuItem onClick={()=>{window.location.href=`/mi-perfil`}}>Cambio de contrasena</MenuItem>
                 <MenuItem onClick={this.handleLogout}>Salir</MenuItem>
               </Menu>
             </div>
