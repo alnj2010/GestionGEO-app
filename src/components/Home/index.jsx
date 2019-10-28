@@ -6,7 +6,7 @@ import AdminHomeContainer from '../../containers/Home/admin'
 class Home extends Component {
   render(){
     const rol = sessionStorage.getItem('rol');
-    console.log(rol);
+
     switch(rol){
       case 'A': return <AdminHomeContainer/>; break;
       case 'T': return <TeacherHomeContainer/>; break;

@@ -241,7 +241,6 @@ class MenuApp extends React.Component {
 
   render() {
     const { classes, theme, children} = this.props;
-    console.log(this.props);
     const { anchorEl, options } = this.state;
     const open = Boolean(anchorEl);
     const rol=sessionStorage.getItem('rol');

@@ -20,7 +20,7 @@ class RenderFields extends React.Component{
         desktop=lineal;
       else
         desktop=Array(totalFields).fill(lineal?Math.floor(12/totalFields):5);
-      console.log(desktop)
+      
       return children.map((input,index) => {
         switch(input.type){
 
