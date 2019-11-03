@@ -55,14 +55,14 @@ export class SchoolProgramDetailContainer extends Component {
 
   render() {
     const {
-      schoolProgram: { id },
+      schoolProgram,
     } = this.props;
-
     return (
       <SchoolProgramDetail
         saveSchoolProgram={this.saveSchoolProgram}
         goBack={this.goBack}
-        schoolProgramId={id}
+        schoolProgram={schoolProgram}
+        schoolProgramId={schoolProgram.id}
         handleSchoolProgramDelete={this.handleSchoolProgramDelete}
       />
     );

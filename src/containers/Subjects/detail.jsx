@@ -55,16 +55,16 @@ export class SubjectDetailContainer extends Component {
 
   render() {
     const {
-      subject: { id },
+      subject,
       schoolPrograms
     } = this.props;
-
     return (
       <SubjectDetail
         schoolPrograms={schoolPrograms}
         saveSubject={this.saveSubject}
         goBack={this.goBack}
-        subjectId={id}
+        subject = {subject}
+        subjectId={subject.id}
         handleSubjectDelete={this.handleSubjectDelete}
       />
     );

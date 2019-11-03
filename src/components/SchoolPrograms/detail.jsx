@@ -54,13 +54,14 @@ class SchoolProgramDetail extends Component {
       submitting,
       valid,
       submit,
+      schoolProgram,
     } = this.props;
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(saveSchoolProgram)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {schoolProgramId ? `Programa academico: ${schoolProgramId}` : 'Nuevo Programa academico'}</h3>
+            <h3> {schoolProgramId ? `Programa academico: ${schoolProgram.school_program_name}` : 'Nuevo Programa academico'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>

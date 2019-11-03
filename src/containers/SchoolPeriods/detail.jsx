@@ -57,7 +57,7 @@ export class SchoolPeriodDetailContainer extends Component {
 
   render() {
     const {
-      schoolPeriod: { id },
+      schoolPeriod,
       subjects,
       teachers,
     } = this.props;
@@ -67,7 +67,8 @@ export class SchoolPeriodDetailContainer extends Component {
         teachers={teachers}
         saveSchoolPeriod={this.saveSchoolPeriod}
         goBack={this.goBack}
-        schoolPeriodId={id}
+        schoolPeriod={schoolPeriod}
+        schoolPeriodId={schoolPeriod.id}
         handleSchoolPeriodDelete={this.handleSchoolPeriodDelete}
       />
     );

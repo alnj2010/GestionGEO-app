@@ -56,6 +56,7 @@ class TeacherDetail extends Component {
       submitting,
       valid,
       submit,
+      teacher,
       teacherType
     } = this.props;
     const { func } = this.state;
@@ -64,7 +65,7 @@ class TeacherDetail extends Component {
       <Form onSubmit={handleSubmit(saveTeacher)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {teacherId ? `Profesor: ${teacherId}` : 'Nuevo Profesor'}</h3>
+            <h3> {teacherId ? `Profesor: ${teacher.first_surname} ${teacher.first_name}` : 'Nuevo Profesor'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>

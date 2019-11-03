@@ -54,7 +54,8 @@ class AdminDetail extends Component {
       submitting,
       valid,
       submit,
-      rol
+      rol,
+      admin
     } = this.props;
     const { func } = this.state;
     let isMain=sessionStorage.getItem('main')==='true'
@@ -62,7 +63,7 @@ class AdminDetail extends Component {
       <Form onSubmit={handleSubmit(saveAdmin)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {adminId ? `Administrador: ${adminId}` : 'Nuevo Administrador'}</h3>
+            <h3> {adminId ? `Administrador: ${admin.first_surname} ${admin.first_name}` : 'Nuevo Administrador'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -79,7 +80,7 @@ class AdminDetail extends Component {
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Rol',field: `rol`, id: `rol`, type: 'select', options: [{key:'SECRETARIO',value:"SECRETARY"}, {key:'COORDINADOR',value:"COORDINATOR"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
-                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"lic"}].map(type => { return { key: type.value, value: type.id } }) },
+                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"Lic"}].map(type => { return { key: type.value, value: type.id } }) },
                 { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
                 { label: 'Coordinador principal', field: 'principal', id: 'principal', type:( isMain && rol !== "SECRETARY" ? 'switch' :'hidden') },
               ]}</RenderFields>

@@ -97,6 +97,7 @@ class SubjectDetail extends Component {
       saveSubject,
       goBack,
       subjectId,
+      subject,
       handleSubjectDelete,
       pristine,
       submitting,
@@ -109,7 +110,7 @@ class SubjectDetail extends Component {
       <Form onSubmit={handleSubmit(saveSubject)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {subjectId ? `Materia: ${subjectId}` : 'Nuevo Materia'}</h3>
+            <h3> {subjectId ? `Materia: ${subject.subject_name}` : 'Nuevo Materia'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>

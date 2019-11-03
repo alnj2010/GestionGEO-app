@@ -56,7 +56,8 @@ class StudentDetail extends Component {
       submitting,
       valid,
       submit,
-      schoolPrograms
+      schoolPrograms,
+      student
     } = this.props;
     const { func } = this.state;
 
@@ -64,7 +65,7 @@ class StudentDetail extends Component {
       <Form onSubmit={handleSubmit(saveStudent)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {studentId ? `Estudiante: ${studentId}` : 'Nuevo Estudiante'}</h3>
+            <h3> {studentId ? `Estudiante: ${student.first_surname} ${student.first_name}` : 'Nuevo Estudiante'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>

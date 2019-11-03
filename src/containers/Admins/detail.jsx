@@ -53,14 +53,15 @@ export class AdminDetailContainer extends Component {
 
   render() {
     const {
-      admin: { id },
+      admin,
     } = this.props;
-
+    console.log(admin)
     return (
       <AdminDetail
+        admin = { admin }
         saveAdmin={this.saveAdmin}
         goBack={this.goBack}
-        adminId={id}
+        adminId={admin.id}
         handleAdminDelete={this.handleAdminDelete}
       />
     );

@@ -14,16 +14,17 @@ class AdminsList extends Component {
     };
   }
   transformData = admins => {
+    let id = sessionStorage.getItem('id');
     if (admins)
       return admins.map(admin => {
         return {
           id: admin.id,
           email: admin.email,
           firstName: admin.first_name,
-          firstSurname: admin.first_surname,
-          rol: admin.administrator.rol,
+          firstSurname: admin.first_surname, 
+          rol: admin.administrator ? admin.administrator.rol: false,
         };
-      });
+      }).filter(admin => parseInt(id) !== parseInt(admin.id) );
     return [];
   };
 

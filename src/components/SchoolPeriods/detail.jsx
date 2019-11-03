@@ -139,6 +139,7 @@ class SchoolPeriodDetail extends Component {
       valid,
       submit,
       startDate,
+      schoolPeriod
     } = this.props;
     const { func } = this.state;
     
@@ -146,7 +147,7 @@ class SchoolPeriodDetail extends Component {
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {schoolPeriodId ? `Periodo semestral: ${schoolPeriodId}` : 'Nuevo Periodo semestral'}</h3>
+            <h3> {schoolPeriodId ? `Periodo semestral: ${schoolPeriod.cod_school_period}` : 'Nuevo Periodo semestral'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>

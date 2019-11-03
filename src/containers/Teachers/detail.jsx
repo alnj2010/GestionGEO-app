@@ -55,7 +55,7 @@ export class TeacherDetailContainer extends Component {
 
   render() {
     const {
-      teacher: { id },
+      teacher,
       schoolPrograms
     } = this.props;
     return (
@@ -63,7 +63,8 @@ export class TeacherDetailContainer extends Component {
         schoolPrograms={schoolPrograms}
         saveTeacher={this.saveTeacher}
         goBack={this.goBack}
-        teacherId={id}
+        teacherId={teacher.id}
+        teacher={teacher}
         handleTeacherDelete={this.handleTeacherDelete}
       />
     );
