@@ -119,10 +119,24 @@ class MenuApp extends React.Component {
     options: [
       {
         link: 'home',
-        name: 'Home',
+        name: 'Inicio',
         component: Home,
         clicked: false,
         roles:['A','S','T'],
+      },
+      {
+        link: 'home',
+        name: 'Inscripcion',
+        component: Home,
+        clicked: false,
+        roles:['S'],
+      },
+      {
+        link: 'home',
+        name: 'Constancias',
+        component: Home,
+        clicked: false,
+        roles:['S','T'],
       },
       {
         link: 'administradores',
