@@ -13,10 +13,11 @@ import StudentDetail from '../../components/Students/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 export class StudentDetailContainer extends Component {
   componentDidMount = () => {
+    let rol = sessionStorage.getItem('rol');
     const { match, findStudentById, define } = this.props;
     if (match.params.id) findStudentById(match.params.id);
     this.props.getSchoolProgramList();
-    define('estudiante');
+    define(rol!=='A'?'perfil':'estudiante');
   };
   componentWillUnmount = () => {
     this.props.cleanSelectedStudent();

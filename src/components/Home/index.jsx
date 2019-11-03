@@ -8,9 +8,12 @@ class Home extends Component {
     const rol = sessionStorage.getItem('rol');
 
     switch(rol){
-      case 'A': return <AdminHomeContainer/>; break;
-      case 'T': return <TeacherHomeContainer/>; break;
-      case 'S': return <StudentHomeContainer/>; break;
+      // eslint-disable-next-line
+      case 'A': return (<AdminHomeContainer/>); break;
+      // eslint-disable-next-line
+      case 'T': return (<TeacherHomeContainer/>); break;
+      // eslint-disable-next-line
+      case 'S': return (<StudentHomeContainer/>); break;
       default: return null;
     }
     

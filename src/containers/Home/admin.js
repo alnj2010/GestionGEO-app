@@ -9,8 +9,8 @@ export class AdminHomeContainer extends Component {
   };
 
   render() {
-    const {
-    } = this.props;
+    //const {
+    //} = this.props;
 
     return (
         <AdminHome/>

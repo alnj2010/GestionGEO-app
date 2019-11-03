@@ -212,6 +212,7 @@ class MenuApp extends React.Component {
       case 'A': window.location.href=`/administradores/edit/${id}`; break;
       case 'T': window.location.href=`/profesores/edit/${id}`; break;
       case 'S': window.location.href=`/estudiantes/edit/${id}`; break;
+      default : window.location.href=`/`; break;
     }
   }
 

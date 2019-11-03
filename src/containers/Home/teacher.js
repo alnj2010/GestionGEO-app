@@ -9,8 +9,8 @@ export class TeacherHomeContainer extends Component {
   };
 
   render() {
-    const {
-    } = this.props;
+    //const {
+    //} = this.props;
 
     return (
         <TeacherHome/>

@@ -60,7 +60,7 @@ class StudentDetail extends Component {
       student
     } = this.props;
     const { func } = this.state;
-
+    let rol = sessionStorage.getItem('rol');
     return (
       <Form onSubmit={handleSubmit(saveStudent)}>
         <Grid container>
@@ -80,15 +80,15 @@ class StudentDetail extends Component {
                 { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Programa academico al que pertenece',field: `schoolProgram`, id: `schoolProgram`, type: 'select', options: schoolPrograms.map(post => { return { key: post.school_program_name, value: post.id } }) },
-                { label: 'Tipo',field: `studentType`, id: `studentType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }) },
-                { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text' },
-                { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }) },
-                { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }) },
-                { label: '¿Profesor de la UCV?', field: 'isUcvTeacher', id: 'isUcvTeacher', type:'switch' },
-                { label: '¿Puede Inscribir tesis?', field: 'isAvailableFinalWork', id: 'isAvailableFinalWork', type:( studentId ? 'switch' :'hidden') },
-                { label: '¿Ha cursado una materia aprovada dos veces?', field: 'repeatApprovedSubject', id: 'repeatApprovedSubject', type:( studentId ? 'switch' :'hidden') },
-                { label: '¿Ha cursado una materia ya aplazada?', field: 'repeatReprobatedSubject', id: 'repeatReprobatedSubject', type:( studentId ? 'switch' :'hidden') },
+                { label: 'Programa academico al que pertenece',field: `schoolProgram`, id: `schoolProgram`, type: 'select', options: schoolPrograms.map(post => { return { key: post.school_program_name, value: post.id } }),disabled:rol!=='A' },
+                { label: 'Tipo',field: `studentType`, id: `studentType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }),disabled:rol!=='A' },
+                { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text',disabled:rol!=='A'  },
+                { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }),disabled:rol!=='A'  },
+                { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }),disabled:rol!=='A'  },
+                { label: '¿Profesor de la UCV?', field: 'isUcvTeacher', id: 'isUcvTeacher', type:'switch', disabled:rol!=='A' },
+                { label: '¿Puede Inscribir tesis?', field: 'isAvailableFinalWork', id: 'isAvailableFinalWork', type:( studentId && rol==='A' ? 'switch' :'hidden') },
+                { label: '¿Ha cursado una materia aprovada dos veces?', field: 'repeatApprovedSubject', id: 'repeatApprovedSubject', type:( studentId && rol==='A'  ? 'switch' :'hidden') },
+                { label: '¿Ha cursado una materia ya aplazada?', field: 'repeatReprobatedSubject', id: 'repeatReprobatedSubject', type:( studentId && rol==='A' ? 'switch' :'hidden') },
               ]}</RenderFields>
                 
             </Grid>
@@ -246,7 +246,7 @@ StudentDetail = connect(
       repeatApprovedSubject: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.repeat_approved_subject
         : false,
-      repeatApprovedSubject: state.studentReducer.selectedStudent.student
+      repeatReprobatedSubject: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.repeat_reprobated_subject
         : false,
     },

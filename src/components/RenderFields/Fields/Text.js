@@ -25,6 +25,7 @@ export default function Text(props){
         name={props.field}
         component={renderTextField}
         //custom props
+        disabled = {props.disabled}
         label={props.label}          
         id={props.id} 
         multiline

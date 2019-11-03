@@ -19,7 +19,6 @@ export class StudentHomeContainer extends Component {
         student
     } = this.props;
 
-    console.log(student)
     return (
         <StudentHome/>
     );
