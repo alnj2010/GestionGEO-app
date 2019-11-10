@@ -5,6 +5,7 @@ import NotFound from './components/NotFound';
 import Login from './containers/Login';
 import Menu from './components/Menu';
 import Home from './components/Home';
+import Constancia from './components/Constance';
 
 import AdminsList from './containers/Admins';
 import AdminDetail from './containers/Admins/detail';
@@ -38,6 +39,7 @@ class App extends Component {
           <Menu>
             <Switch>
               <Route exact path="/home" component={Home} />
+              <Route exact path="/constancias" component={Constancia} />
 
               <Route exact path="/administradores/" component={AdminsList} />
               <Route exact path="/administradores/edit/:id" component={AdminDetail} />

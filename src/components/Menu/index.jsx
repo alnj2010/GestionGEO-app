@@ -15,6 +15,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Home from '@material-ui/icons/Home';
+import Inscription from '@material-ui/icons/HowToVote';
+import Download from '@material-ui/icons/Archive';
 import Actual from '@material-ui/icons/AlarmAdd';
 import ListIcon from '@material-ui/icons/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -127,14 +129,14 @@ class MenuApp extends React.Component {
       {
         link: 'home',
         name: 'Inscripcion',
-        component: Home,
+        component: Inscription,
         clicked: false,
         roles:['S'],
       },
       {
-        link: 'home',
+        link: 'constancias',
         name: 'Constancias',
-        component: Home,
+        component: Download,
         clicked: false,
         roles:['S','T'],
       },
