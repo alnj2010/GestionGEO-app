@@ -6,7 +6,7 @@ import schoolProgramReducer from './schoolProgram';
 import subjectReducer from './subject';
 import studentReducer from './student';
 import teacherReducer from './teacher';
-import miPerilReducer from './miPerfil';
+import miPerfilReducer from './miPerfil';
 import schoolPeriodReducer from './schoolPeriod';
 import { reducer as formReducer } from 'redux-form';
 
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
   subjectReducer, 
   schoolProgramReducer,
   schoolPeriodReducer,
-  miPerilReducer,
+  miPerfilReducer,
   form: formReducer,
 });
 

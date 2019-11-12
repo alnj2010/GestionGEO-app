@@ -8,6 +8,8 @@ export const ACTIONS = {
 export const login = ({ identification, password, user_type }) => async dispatch => {
   return User.login({ identification, password, user_type })
     .then(response => {
+
+      sessionStorage.setItem('user', (JSON.stringify(response.user)));
       sessionStorage.setItem('GeoToken', response.token);
       sessionStorage.setItem('rol', response.user.user_type);
       sessionStorage.setItem('id', response.user.id);

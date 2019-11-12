@@ -1,4 +1,4 @@
-import { MiPerfil } from '../services/student';
+import { MiPerfil } from '../services/miPerfil';
 import { show } from './snackbar';
 
 export const ACTIONS = {
@@ -7,20 +7,13 @@ export const ACTIONS = {
 
 };
 
-
-export const findMiPerfilById = id => async dispatch => {
-  return MiPerfil.findMiPerfilById(id)
-    .then(response => {
-      dispatch({
-        type: ACTIONS.SELECT,
-        payload: { selectedMiPerfil: response },
-      });
-      return true;
-    })
-    .catch(error => {
-      show(error, 'error')(dispatch);
-      return false;
-    });
+export const findMiPerfil = () => dispatch => {
+  console.log(MiPerfil.findMiPerfil())
+  dispatch({
+    type: ACTIONS.SELECT,
+    payload: { selectedMiPerfil: MiPerfil.findMiPerfil() },
+  });
+  return true;
 };
 
 export const cleanSelectedMiPerfil = id => async dispatch => {
