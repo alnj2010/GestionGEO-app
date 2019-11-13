@@ -8,7 +8,6 @@ export const ACTIONS = {
 };
 
 export const findMiPerfil = () => dispatch => {
-  console.log(MiPerfil.findMiPerfil())
   dispatch({
     type: ACTIONS.SELECT,
     payload: { selectedMiPerfil: MiPerfil.findMiPerfil() },
@@ -23,28 +22,20 @@ export const cleanSelectedMiPerfil = id => async dispatch => {
   });
 };
 
-export const updateMiPerfil = student => async dispatch => {
+export const updateMiPerfil = perfil => async dispatch => {
   const payload = {
-    id:student.id,
-    identification:student.identification,
-    first_name:student.firstName,
-    second_name: student.secondName, 
-    first_surname:student.firstSurname,
-    second_surname: student.secondSurname, 
-    mobile:student.mobile,
-    telephone: student.telephone, 
-    work_phone: student.workPhone, 
-    email:student.email,
-    school_program_id:student.schoolProgram,
-    student_type:student.studentType,
-    home_university:student.homeUniversity,
-    sex:student.sex,
-    nationality:student.nationality,
-    is_ucv_teacher:student.isUcvTeacher,
-    is_available_final_work:student.isAvailableFinalWork,
-    repeat_approved_subject:student.repeatApprovedSubject,
-    repeat_reprobated_subject:student.repeatApprovedSubject,
-
+    identification:perfil.identification,
+    first_name:perfil.firstName,
+    second_name: perfil.secondName, 
+    first_surname:perfil.firstSurname,
+    second_surname: perfil.secondSurname, 
+    mobile:perfil.mobile,
+    telephone: perfil.telephone, 
+    work_phone: perfil.workPhone, 
+    email:perfil.email,
+    sex:perfil.sex,
+    nationality:perfil.nationality,
+    level_instruction:perfil.levelInstruction
   };
   return MiPerfil.update(payload)
     .then(response => {
@@ -53,6 +44,8 @@ export const updateMiPerfil = student => async dispatch => {
         payload: { selectedMiPerfil: response },
       });
       show('Pefil actualizado', 'success')(dispatch);
+      let value=JSON.parse(sessionStorage.getItem('user'));      
+      sessionStorage.setItem('user', (JSON.stringify({...value, ...payload})));
       return true;
     })
     .catch(error => {

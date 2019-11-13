@@ -11,6 +11,7 @@ import { define, cleanDialog } from '../../actions/dialog';
 export class MiPerfilContainer extends Component {
   componentDidMount = () => {
    this.props.findMiPerfil();
+   this.props.define('perfil');    
   };
   componentWillUnmount = () => {
     this.props.cleanSelectedMiPerfil();
@@ -21,8 +22,7 @@ export class MiPerfilContainer extends Component {
     const {
       updateMiPerfil,
     } = this.props;
-    const payload = { ...values };
-    updateMiPerfil({ ...payload })
+    updateMiPerfil(values)
   };
 
   goBack = () => {

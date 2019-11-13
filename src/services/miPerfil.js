@@ -6,8 +6,8 @@ export const MiPerfil = {
   findMiPerfil() {
       return JSON.parse(sessionStorage.getItem('user'));
   },
-  update(student) {
-    return AXIOS.put(`${URL.STUDENT}/${student.id}`, student, {
+  update(perfil) {
+    return AXIOS.post(`/updateUser`, perfil, {
       headers: headers(),
     })
       .then(response => {

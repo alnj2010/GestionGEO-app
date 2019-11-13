@@ -6,7 +6,6 @@ import {
   Button
 } from '@material-ui/core';
 import { Form, reduxForm, change, submit} from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields'
@@ -29,7 +28,7 @@ const styles = () => ({
   }
 });
 
-class StudentDetail extends Component {
+class MiPerfil extends Component {
   constructor() {
     super();
     this.state = {
@@ -47,22 +46,21 @@ class StudentDetail extends Component {
   render = () => {
     const {
       classes,
-      saveStudent,
+      updateMiPerfil,
       goBack,
-      studentId,
-      handleStudentDelete,
       pristine,
       submitting,
       valid,
+      handleSubmit,
       submit,
     } = this.props;
     const { func } = this.state;
     let rol = sessionStorage.getItem('rol');
     return (
-      <Form onSubmit={saveStudent}>
+      <Form onSubmit={handleSubmit(updateMiPerfil)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>Cuenta de usuario</h3>
+            <h3>Mi Perfil</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -77,10 +75,9 @@ class StudentDetail extends Component {
                 { label: 'Telefono', field: 'telephone', id: 'telephone', type: 'phone' },
                 { label: 'Telefono Trabajo', field: 'workPhone', id: 'workPhone', type: 'phone' },
                 { label: 'Email', field: 'email', id: 'email', type: 'text' },
-                { label: 'Tipo',field: `studentType`, id: `studentType`, type: 'select', options: [{value:"REGULAR",id:"REG"},{value:"EXTENSION",id:"EXT"}].map(type => { return { key: type.value, value: type.id } }),disabled:rol!=='A' },
-                { label: 'Universidad de Origen', field: 'homeUniversity', id: 'homeUniversity', type: 'text',disabled:rol!=='A'  },
                 { label: 'Sexo',field: `sex`, id: `sex`, type: 'select', options: [{key:'MASCULINO',value:"M"}, {key:'FEMENINO',value:"F"}].map(type => { return { key: type.key, value: type.value } }),disabled:rol!=='A'  },
                 { label: 'Nacionalidad',field: `nationality`, id: `nationality`, type: 'select', options: [{key:'VENEZOLANO',value:"V"}, {key:'EXTRANGERO',value:"E"}].map(type => { return { key: type.key, value: type.value } }),disabled:rol!=='A'  },
+                { label: 'Nivel de instruccion', field: 'levelInstruction', id: 'levelInstruction', type: 'select', options: [{value:"TSU",id:"TSU"},{value:"TEC MEDIO",id:"TCM"},{value:"DOCTOR",id:"Dr"},{value:"ESPECIALISTA",id:"Esp"},{value:"INGENIERO",id:"Ing"},{value:"MAGISTER SCIENTIARUM",id:"MSc"},{value:"LICENCIADO",id:"Lic"}].map(type => { return { key: type.value, value: type.id } }) },
               ]}</RenderFields>
                 
             </Grid>
@@ -92,11 +89,7 @@ class StudentDetail extends Component {
                     <Button
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        studentId
-                          ? this.handleDialogShow('actualizar', submit)
-                          : submit('student')
-                      }
+                      onClick={() => this.handleDialogShow('actualizar', submit)}
                       disabled={!valid || pristine || submitting}
                     >
                       Guardar Cambios
@@ -107,21 +100,6 @@ class StudentDetail extends Component {
                     <Button variant="contained" onClick={goBack} className={classes.button}>
                       Cancelar
                     </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {studentId ? (
-                      <Button
-                        className={classes.button}
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handleStudentDelete)
-                        }
-                      >
-                        Borrar
-                      </Button>
-                    ) : null}
                   </Grid>
                 </Grid>
               </Grid>
@@ -134,16 +112,8 @@ class StudentDetail extends Component {
   };
 }
 
-StudentDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveStudent: func.isRequired,
-  goBack: func.isRequired,
-  studentId: number,
-  handleStudentDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+MiPerfil.propTypes = {
+
 };
 
 const studentValidation = values => {
@@ -171,20 +141,17 @@ const studentValidation = values => {
 
   if(!values.nationality) errors.nationality = " Nacionalidad Requerido"
   if(!values.sex) errors.sex = " Sexo Requerido"
-  if(!values.schoolProgram) errors.schoolProgram = "Programa academico del estudiante Requerido"
-  if(!values.studentType) errors.studentType = " Tipo Requerido"
-  if(!values.homeUniversity) errors.homeUniversity = "Universidad de origen Requerido"
 
   return errors;
 };
 
-StudentDetail = reduxForm({
+MiPerfil = reduxForm({
   form: 'student',
   validate: studentValidation,
   enableReinitialize: true,
-})(StudentDetail);
+})(MiPerfil);
 
-StudentDetail = connect(
+MiPerfil = connect(
   state => ({
     initialValues: {
       identification: state.miPerfilReducer.selectedMiPerfil.identification
@@ -214,14 +181,8 @@ StudentDetail = connect(
       workPhone: state.miPerfilReducer.selectedMiPerfil.work_phone
         ? state.miPerfilReducer.selectedMiPerfil.work_phone
         : '(   )    -    ',
-      schoolProgram: state.miPerfilReducer.selectedMiPerfil.student
-        ? state.miPerfilReducer.selectedMiPerfil.student.school_program_id
-        : '',
-      studentType: state.miPerfilReducer.selectedMiPerfil.student
-        ? state.miPerfilReducer.selectedMiPerfil.student.student_type
-        : '',
-      homeUniversity: state.miPerfilReducer.selectedMiPerfil.student
-        ? state.miPerfilReducer.selectedMiPerfil.student.home_university
+      levelInstruction:state.miPerfilReducer.selectedMiPerfil.level_instruction
+        ? state.miPerfilReducer.selectedMiPerfil.level_instruction
         : '',
       sex:state.miPerfilReducer.selectedMiPerfil.sex
         ? state.miPerfilReducer.selectedMiPerfil.sex
@@ -233,6 +194,6 @@ StudentDetail = connect(
     action: state.dialogReducer.action,
   }),
   { change, show, submit },
-)(StudentDetail);
+)(MiPerfil);
 
-export default withStyles(styles)(StudentDetail);
+export default withStyles(styles)(MiPerfil);
