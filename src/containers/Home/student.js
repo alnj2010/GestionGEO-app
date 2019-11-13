@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import StudentHome from '../../components/Home/student'
-import {
-    findStudentById,
-  } from '../../actions/student';
+
 
 export class StudentHomeContainer extends Component {
   componentDidMount = () => {
-    const { findStudentById } = this.props;
-    const id = sessionStorage.getItem('id');
-    if (id) findStudentById(id);
+
   };
   componentWillUnmount = () => {
   };
 
   render() {
     const {
-        student
     } = this.props;
 
     return (
@@ -34,7 +29,6 @@ const mS = state => ({
 });
 
 const mD = {
-    findStudentById
 };
 
 StudentHomeContainer = connect(
