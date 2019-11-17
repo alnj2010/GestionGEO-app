@@ -38,10 +38,10 @@ export const updateMiPerfil = perfil => async dispatch => {
     level_instruction:perfil.levelInstruction
   };
   return MiPerfil.update(payload)
-    .then(response => {
+    .then( () => {
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedMiPerfil: response },
+        payload: { selectedMiPerfil: payload },
       });
       show('Pefil actualizado', 'success')(dispatch);
       let value=JSON.parse(sessionStorage.getItem('user'));      
