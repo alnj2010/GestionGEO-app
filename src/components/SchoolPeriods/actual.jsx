@@ -67,13 +67,17 @@ class SchoolPeriodActual extends Component {
     if(this.props.subjects){
         this.props.subjects.forEach((subject,index) => {
         let aux=subject.schedules.map((schedule,index2) =>{
-          var startTime=schedule.start_hour.split(':');
-          var endTime=schedule.end_hour.split(':');          
+          var startTime=moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(schedule.start_hour.split(':')[0])).minutes(parseInt(schedule.start_hour.split(':')[1]))._d;
+          var endTime=moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(schedule.end_hour.split(':')[0])).minutes(schedule.end_hour.split(':')[1])._d;          
+          if(moment().day() === 0){
+            startTime=moment(startTime).add(7, 'day')._d;
+            endTime=moment(endTime).add(7, 'day')._d;
+          }       
           return {
             id: parseInt(`${index}${index2}`),
             title:subject.subject.subject_name,
-            start: moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(startTime[0])).minutes(parseInt(startTime[1]))._d,
-            end: moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(endTime[0])).minutes(endTime[1])._d,
+            start: startTime,
+            end: endTime
           }
         })
         arr=arr.concat(aux)

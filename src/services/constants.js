@@ -9,6 +9,7 @@ export const URL = {
   TEACHER:'/teachers',
   SCHOOL_PERIOD:'/schoolPeriods',
   INSCRIPTION:'/inscriptions',
+  STUDENT_INSCRIPTION:'/studentInscription',
   CONSTANCE:'/constance',
 };
 
