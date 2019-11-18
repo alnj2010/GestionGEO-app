@@ -105,6 +105,11 @@ class SchoolPeriodActual extends Component {
     const final=moment(endDate);
     const today=moment();
     let finishedPeriod=today>final;
+    const minTime = new Date();
+    minTime.setHours(7,0,0);
+    const maxTime = new Date();
+    maxTime.setHours(19,0,0);
+
     return (
     <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
@@ -151,7 +156,8 @@ class SchoolPeriodActual extends Component {
           views={allViews}
           toolbar={false}
           culture="es"
-          
+          max={maxTime}
+          min={minTime}
           localizer={localizer}
         />
         <Dialog handleAgree={func} />

@@ -11,6 +11,8 @@ const StudentInscription = (state = initialState, action) => {
       return { ...state, ...action.payload };
     case ACTIONS.CURRENT_ENROLLED_SUBJECTS:
       return { ...state, ...action.payload };
+    case ACTIONS.CLEAN_AVAILABLE_SUBJECTS:
+        return { ...state, availableSubjects: [] };
     default:
       return state;
   }

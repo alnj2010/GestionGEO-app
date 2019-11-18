@@ -6,6 +6,7 @@ import {
   Views
 } from 'react-big-calendar'
 import * as moment from 'moment';
+
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 const localizer = momentLocalizer(moment)
 const weekdays={
@@ -55,6 +56,11 @@ class StudentHome extends Component {
   render(){
     const {miPerfil, classes} = this.props;
     let allViews = Object.keys(Views).map(k => Views[k])
+    const minTime = new Date();
+    minTime.setHours(7,0,0);
+    const maxTime = new Date();
+    maxTime.setHours(19,0,0);
+
 
 
   return (
@@ -68,6 +74,9 @@ class StudentHome extends Component {
           toolbar={false}
           culture="es"
           localizer={localizer}
+          max={maxTime}
+          min={minTime}
+
         />
     </Fragment>
     

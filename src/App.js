@@ -7,6 +7,8 @@ import Menu from './components/Menu';
 import Home from './components/Home';
 import Constancia from './components/Constance';
 
+import Inscription from './containers/Inscriptions';
+
 import MiPerfil from './containers/MiPerfil';
 
 import AdminsList from './containers/Admins';
@@ -40,6 +42,8 @@ class App extends Component {
           <Route exact path="/" component={Login} />
           <Menu>
             <Switch>
+            <Route exact path="/inscripcion" component={Inscription} />
+
               <Route exact path="/home" component={Home} />
               <Route exact path="/mi-perfil/:id" component={MiPerfil} />
               <Route exact path="/constancias" component={Constancia} />

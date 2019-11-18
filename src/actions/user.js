@@ -13,7 +13,9 @@ export const login = ({ identification, password, user_type }) => async dispatch
       sessionStorage.setItem('GeoToken', response.token);
       sessionStorage.setItem('rol', response.user.user_type);
       sessionStorage.setItem('id', response.user.id);
-      sessionStorage.setItem('studentId', response.user.student.id);
+      if(response.user.user_type==='S')
+        sessionStorage.setItem('studentId', response.user.student.id);
+
       if(response.user.user_type==='A')
         sessionStorage.setItem('main', !!response.user.administrator.principal);
 

@@ -127,7 +127,7 @@ class MenuApp extends React.Component {
         roles:['A','S','T'],
       },
       {
-        link: 'home',
+        link: 'inscripcion',
         name: 'Inscripcion',
         component: Inscription,
         clicked: false,
