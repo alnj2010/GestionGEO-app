@@ -17,6 +17,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Home from '@material-ui/icons/Home';
 import Inscription from '@material-ui/icons/HowToVote';
 import Download from '@material-ui/icons/Archive';
+import Cursos from '@material-ui/icons/LibraryBooks';
 import Actual from '@material-ui/icons/AlarmAdd';
 import ListIcon from '@material-ui/icons/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -132,6 +133,13 @@ class MenuApp extends React.Component {
         component: Inscription,
         clicked: false,
         roles:['S'],
+      },
+      {
+        link: 'mis-cursos',
+        name: 'Mis Cursos',
+        component: Cursos,
+        clicked: false,
+        roles:['T'],
       },
       {
         link: 'constancias',

@@ -16,6 +16,9 @@ export const login = ({ identification, password, user_type }) => async dispatch
       if(response.user.user_type==='S')
         sessionStorage.setItem('studentId', response.user.student.id);
 
+      if(response.user.user_type==='T')
+        sessionStorage.setItem('teacherId', response.user.teacher.id);
+
       if(response.user.user_type==='A')
         sessionStorage.setItem('main', !!response.user.administrator.principal);
 

@@ -5,6 +5,10 @@ import NotFound from './components/NotFound';
 import Login from './containers/Login';
 import Menu from './components/Menu';
 import Home from './components/Home';
+
+import MisCursos from './containers/MyCourses'
+import CourseDetail from './containers/MyCourses/detail'
+
 import Constancia from './components/Constance';
 
 import Inscription from './containers/Inscriptions';
@@ -47,7 +51,10 @@ class App extends Component {
               <Route exact path="/home" component={Home} />
               <Route exact path="/mi-perfil/:id" component={MiPerfil} />
               <Route exact path="/constancias" component={Constancia} />
-
+              
+              <Route exact path="/mis-cursos" component={MisCursos} />
+              <Route exact path="/mis-cursos/curso/:id" component={CourseDetail} />
+              
               <Route exact path="/administradores/" component={AdminsList} />
               <Route exact path="/administradores/edit/:id" component={AdminDetail} />
               <Route exact path="/administradores/create" component={AdminDetail} />

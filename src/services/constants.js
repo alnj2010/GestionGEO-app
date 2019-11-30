@@ -10,6 +10,7 @@ export const URL = {
   SCHOOL_PERIOD:'/schoolPeriods',
   INSCRIPTION:'/inscriptions',
   STUDENT_INSCRIPTION:'/studentInscription',
+  TEACHER_INSCRIPTION:'/teacherInscription',
   CONSTANCE:'/constance',
 };
 
