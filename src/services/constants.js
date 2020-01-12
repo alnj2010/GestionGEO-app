@@ -12,6 +12,7 @@ export const URL = {
   STUDENT_INSCRIPTION:'/studentInscription',
   TEACHER_INSCRIPTION:'/teacherInscription',
   CONSTANCE:'/constance',
+  CHANGE_PASSWORD:'/changePassword'
 };
 
 export const protocol =

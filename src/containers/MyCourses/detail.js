@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     getEnrolledStudents,
-    updateQualifications
+    updateQualifications,
+    cleanEnrolledStudents
 } from '../../actions/myCourse';
 import CourseDetail from '../../components/MyCourses/detail';
 import { define, cleanDialog } from '../../actions/dialog';
@@ -13,7 +14,7 @@ export class courseDetailContainer extends Component {
     define('Actualizar curso');
   };
   componentWillUnmount = () => {
- 
+    this.props.cleanEnrolledStudents() 
   };
 
 
@@ -24,17 +25,19 @@ export class courseDetailContainer extends Component {
   };
 
   updateQualifications = (value) => {
-    const { match,updateQualifications } = this.props;
+    const { match,updateQualifications,getEnrolledStudents } = this.props;
     let payload={
-        teacher_id:sessionStorage.getItem('teacherId'),
-        school_period_subject_teacher_id:match.params.id,
+        teacher_id:parseInt(sessionStorage.getItem('teacherId')),
+        school_period_subject_teacher_id:parseInt(match.params.id),
         student_notes:[{
-            student_subject_id:value.id,
+            student_subject_id:parseInt(value.id),
             qualification:parseInt(value.qualification)
 
         }]
       }
-      updateQualifications(payload)
+      updateQualifications(payload).then(res=>{
+        getEnrolledStudents(match.params.id);
+      })
   };
 
 
@@ -63,6 +66,7 @@ const mS = state => ({
 const mD = {
     getEnrolledStudents,
     updateQualifications,
+    cleanEnrolledStudents,
     define,
     cleanDialog,
 };

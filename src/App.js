@@ -9,6 +9,8 @@ import Home from './components/Home';
 import MisCursos from './containers/MyCourses'
 import CourseDetail from './containers/MyCourses/detail'
 
+import ChangePassword from './containers/ChangePassword/'
+
 import Constancia from './components/Constance';
 
 import Inscription from './containers/Inscriptions';
@@ -49,6 +51,7 @@ class App extends Component {
             <Route exact path="/inscripcion" component={Inscription} />
 
               <Route exact path="/home" component={Home} />
+              <Route exact path="/cambio-clave" component={ChangePassword} />
               <Route exact path="/mi-perfil/:id" component={MiPerfil} />
               <Route exact path="/constancias" component={Constancia} />
               

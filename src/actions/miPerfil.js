@@ -53,3 +53,22 @@ export const updateMiPerfil = perfil => async dispatch => {
       return false;
     });
 };
+
+export const changePassword = data => async dispatch => {
+  const payload = {
+    id:JSON.parse(sessionStorage.getItem('user')).id,
+    old_password:data.oldPassword,
+    password:data.password, 
+    password_confirmation:data.passwordConfirmation,
+  };
+
+  return MiPerfil.changePassword(payload)
+    .then( () => {
+      show('Pefil actualizado', 'success')(dispatch);    
+      return true;
+    })
+    .catch(error => {
+      show(error, 'error')(dispatch);
+      return false;
+    });
+};

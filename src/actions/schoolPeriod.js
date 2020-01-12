@@ -73,6 +73,7 @@ export const updateSchoolPeriod = schoolPeriod => async dispatch => {
       teacher_id:subject.teacherId,
       modality:subject.modality,
       duty:subject.duty,
+      modality:"REG",
       limit:subject.limit,
       schedules:subject.schedules.map(schedule =>({
         school_period_subject_teacher_id:schedule.schoolPeriodSubjectTeacherId,

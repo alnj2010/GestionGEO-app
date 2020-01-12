@@ -12,7 +12,7 @@ const myCourseReducer = (state = initialState, action) => {
     case ACTIONS.ENROLLED_STUDENTS:
         return { ...state, ...action.payload };
     case ACTIONS.CLEAN_SELECTED_COURSE:
-      return { ...state, enrolledStudents: {} };
+      return { ...state, enrolledStudents: [] };
     default:
       return state;
   }

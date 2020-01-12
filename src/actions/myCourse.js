@@ -30,6 +30,13 @@ export const getEnrolledStudents = (id) => async dispatch => {
     });
 };
 
+export const cleanEnrolledStudents = id => async dispatch => {
+  dispatch({
+    type: ACTIONS.CLEAN_SELECTED_COURSE,
+    payload:  { enrolledStudents: [] },
+  });
+};
+
 export const updateQualifications = payload => async dispatch => {
 
     return MyCourse.updateQualifications(payload)

@@ -318,7 +318,7 @@ class MenuApp extends React.Component {
                 onClose={this.handleClose}
               >
                 <MenuItem onClick={this.handleProfile}>Mi Perfil</MenuItem>
-                <MenuItem onClick={()=>{window.location.href=`/mi-perfil`}}>Cambio de contrasena</MenuItem>
+                <MenuItem onClick={()=>{window.location.href=`/cambio-clave`}}>Cambio de contrasena</MenuItem>
                 <MenuItem onClick={this.handleLogout}>Salir</MenuItem>
               </Menu>
             </div>
