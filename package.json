@@ -24,7 +24,7 @@
     "react-select": "2.4.3",
     "react-widgets-moment": "4.0.27",
     "redux": "4.0.1",
-    "redux-form": "8.2.2",
+    "redux-form": "8.2.4",
     "redux-thunk": "2.3.0"
   },
   "scripts": {
