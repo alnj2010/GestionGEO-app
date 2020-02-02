@@ -17,7 +17,7 @@ export const URL = {
 
 export const protocol =
   window.location.host === 'localhost:3000' ? 'http' : 'https';
-export const apiUrl ="http://127.0.0.1:8000/api"
+export const apiUrl ="https://ancient-sea-70320.herokuapp.com/api"
 export const EMAIL_REGEX = /[^@]+@[^@]+\.[a-zA-Z]{2,6}/;
 
 export function headers(type) {
