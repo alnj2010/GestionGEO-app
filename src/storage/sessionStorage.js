@@ -21,7 +21,7 @@ export function setSessionTeacherId(value) {
 }
 
 export function getSessionTeacherId() {
-    sessionStorage.getItem(KEY_STORAGE.TEACHER_ID);
+    return sessionStorage.getItem(KEY_STORAGE.TEACHER_ID);
 }
 
 export function setSessionStudentId(value) {
@@ -29,7 +29,7 @@ export function setSessionStudentId(value) {
 }
 
 export function getSessionStudentId() {
-    sessionStorage.getItem(KEY_STORAGE.STUDENT_ID);
+    return sessionStorage.getItem(KEY_STORAGE.STUDENT_ID);
 }
 
 export function setSessionGeoToken(value) {
@@ -37,7 +37,7 @@ export function setSessionGeoToken(value) {
 }
 
 export function getSessionGeoToken() {
-    sessionStorage.getItem(KEY_STORAGE.GEO_TOKEN);
+    return sessionStorage.getItem(KEY_STORAGE.GEO_TOKEN);
 }
 
 export function removeSessionGeoToken() {
@@ -49,7 +49,7 @@ export function setSessionUserRol(value) {
 }
 
 export function getSessionUserRol() {
-    sessionStorage.getItem(KEY_STORAGE.USER_ROL);
+    return sessionStorage.getItem(KEY_STORAGE.USER_ROL);
 }
 
 export function setSessionUserId(value) {
@@ -57,7 +57,7 @@ export function setSessionUserId(value) {
 }
 
 export function getSessionUserId() {
-    sessionStorage.getItem(KEY_STORAGE.USER_ID);
+    return sessionStorage.getItem(KEY_STORAGE.USER_ID);
 }
 
 export function setSessionIsMainUser(value) {
@@ -65,5 +65,5 @@ export function setSessionIsMainUser(value) {
 }
 
 export function getSessionIsMainUser() {
-    sessionStorage.getItem(KEY_STORAGE.IS_MAIN_USER);
+    return sessionStorage.getItem(KEY_STORAGE.IS_MAIN_USER);
 }

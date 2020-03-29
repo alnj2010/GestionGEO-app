@@ -1,9 +1,6 @@
 import axios from 'axios';
 import { loadProgressBar } from 'axios-progress-bar';
-import {
-    getSessionGeoToken,
-    setSessionGeoToken,
-} from '../storage/sessionStorage';
+import { getSessionGeoToken } from '../storage/sessionStorage';
 
 export function headers(type) {
     let items;
@@ -20,7 +17,7 @@ const AXIOS = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
         'Content-Type': 'application/json',
-        'Organization-Key': 'G',
+        'Organization-Key': process.env.REACT_APP_ORGANIZATION_KEY,
     },
     timeout: 100000,
 });

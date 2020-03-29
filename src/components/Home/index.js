@@ -1,27 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 import StudentHomeContainer from '../../containers/Home/student';
 import TeacherHomeContainer from '../../containers/Home/teacher';
-import AdminHomeContainer from '../../containers/Home/admin';
+import AdminHome from './admin';
 
 import { getSessionUserRol } from '../../storage/sessionStorage';
 
-class Home extends Component {
-    render() {
-        const rol = getSessionUserRol();
+function Home() {
+    const rol = getSessionUserRol();
 
-        switch (rol) {
-            case 'A':
-                return <AdminHomeContainer />;
-            case 'T':
-                return <TeacherHomeContainer />;
-            case 'S':
-                return <StudentHomeContainer />;
-            default:
-                return null;
-        }
+    switch (rol) {
+        case 'A':
+            return <AdminHome />;
+        case 'T':
+            return <TeacherHomeContainer />;
+        case 'S':
+            return <StudentHomeContainer />;
+        default:
+            return null;
     }
 }
-
-Home.propTypes = {};
 
 export default Home;
