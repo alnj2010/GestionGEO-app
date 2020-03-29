@@ -1,66 +1,50 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import StudentHome from '../../components/Home/student'
-import {
-  findMiPerfil,
-} from '../../actions/miPerfil';
+import StudentHome from '../../components/Home/student';
+import { findMiPerfil } from '../../actions/miPerfil';
 
-import {
-  getCurrentEnrolledSubjects,
-} from '../../actions/studentInscription';
+import { getCurrentEnrolledSubjects } from '../../actions/studentInscription';
 
+import { getSessionStudentId } from '../../storage/sessionStorage';
 
 export class StudentHomeContainer extends Component {
-  componentDidMount = () => {
-    const {
-      getCurrentEnrolledSubjects, 
-      findMiPerfil,
-    } = this.props;
-    let id = sessionStorage.getItem('studentId');
-    getCurrentEnrolledSubjects(id)
-    findMiPerfil()
-    const weekDays=['Lunes','Martes','Miercoles','Jueves','Viernes']
-    document.querySelectorAll('.rbc-header').forEach((column,index)=>{
-      column.innerText=weekDays[index];
-    })
+    componentDidMount = () => {
+        const { getCurrentEnrolledSubjects, findMiPerfil } = this.props;
+        let id = getSessionStudentId();
+        getCurrentEnrolledSubjects(id);
+        findMiPerfil();
+        const weekDays = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+        document.querySelectorAll('.rbc-header').forEach((column, index) => {
+            column.innerText = weekDays[index];
+        });
+    };
 
-  };
-  componentWillUnmount = () => {
-  };
+    render() {
+        const { miPerfil, currentSubjects } = this.props;
 
-  render() {
-    const {
-      miPerfil,
-      currentSubjects,
-
-    } = this.props;
-
-    return (
-        <StudentHome 
-          miPerfil = {miPerfil}
-          currentSubjects = {currentSubjects}
-        />
-    );
-  }
+        return (
+            <StudentHome
+                miPerfil={miPerfil}
+                currentSubjects={currentSubjects}
+            />
+        );
+    }
 }
 
-StudentHomeContainer.propTypes = {
+StudentHomeContainer.propTypes = {};
 
-};
-
-const mS = state => ({
+const mS = (state) => ({
     miPerfil: state.miPerfilReducer.selectedMiPerfil,
-    currentSubjects: state.studentInscriptionReducer.currentEnrolledSubjects.enrolled_subjects,
+    currentSubjects:
+        state.studentInscriptionReducer.currentEnrolledSubjects
+            .enrolled_subjects,
 });
 
 const mD = {
-  findMiPerfil,
-  getCurrentEnrolledSubjects
+    findMiPerfil,
+    getCurrentEnrolledSubjects,
 };
 
-StudentHomeContainer = connect(
-  mS,
-  mD,
-)(StudentHomeContainer);
+StudentHomeContainer = connect(mS, mD)(StudentHomeContainer);
 
 export default StudentHomeContainer;

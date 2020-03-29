@@ -8,7 +8,9 @@ import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 
-const styles = (theme) => ({
+import { getSessionIsMainUser } from '../../storage/sessionStorage';
+
+const styles = () => ({
     form: {
         paddingLeft: '5%',
     },
@@ -55,7 +57,7 @@ class AdminDetail extends Component {
             admin,
         } = this.props;
         const { func } = this.state;
-        let isMain = sessionStorage.getItem('main') === 'true';
+        let isMain = getSessionIsMainUser() === 'true';
         return (
             <Form onSubmit={handleSubmit(saveAdmin)}>
                 <Grid container>
