@@ -19,7 +19,7 @@ export const MiPerfil = {
             })
             .catch((error) => {
                 if (error && error.response && error.response.data)
-                    return Promise.reject(error.response.data.message);
+                    return Promise.reject(error.response.data.error);
                 return Promise.reject(
                     'Ups! Al parecer hay un error desconocido.'
                 );
@@ -39,7 +39,7 @@ export const MiPerfil = {
             })
             .catch((error) => {
                 if (error && error.response && error.response.data)
-                    return Promise.reject(error.response.data.message);
+                    return Promise.reject(error.response.data.error);
                 return Promise.reject(
                     'Ups! Al parecer hay un error desconocido.'
                 );

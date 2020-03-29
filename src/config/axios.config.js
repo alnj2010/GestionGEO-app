@@ -31,22 +31,11 @@ AXIOS.interceptors.response.use(
     },
     (error) => {
         const {
-            config,
             response: { status },
         } = error;
-        const originalRequest = config;
 
         if (status === 401) {
-            return AXIOS.get('/auth/refresh-token', { headers: headers() })
-                .then((res) => {
-                    setSessionGeoToken(res.data.geoToken);
-                    originalRequest.headers['Authorization'] =
-                        'Bearer ' + res.data.geoToken;
-                    return axios(originalRequest);
-                })
-                .catch((error) => {
-                    Promise.reject(error);
-                });
+            Promise.reject(error);
         }
         if (status === 403) {
             window.location.href = '/';
