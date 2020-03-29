@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import MaterialTable from 'material-table';
-import { array, bool, object, func } from 'prop-types';
-import Add from '@material-ui/icons/Add';
-import { Fab, Grid } from '@material-ui/core';
-import Dialog from '../Dialog';
-import { handleExportCsv } from '../../services/constants';
+import React, { Component } from "react";
+import MaterialTable from "material-table";
+import { array, bool, object, func } from "prop-types";
+import Add from "@material-ui/icons/Add";
+import { Fab, Grid } from "@material-ui/core";
+import Dialog from "../Dialog";
+import { handleExportCsv } from "../../utils/handleExportCsv";
 
 class SchoolPeriodsList extends Component {
   constructor() {
     super();
     this.state = {
-      func: null,
+      func: null
     };
   }
   transformData = schoolPeriods => {
@@ -19,8 +19,8 @@ class SchoolPeriodsList extends Component {
         return {
           id: schoolPeriod.id,
           codSchoolPeriod: schoolPeriod.cod_school_period,
-          startDate:schoolPeriod.start_date,
-          endDate: schoolPeriod.end_date, 
+          startDate: schoolPeriod.start_date,
+          endDate: schoolPeriod.end_date
         };
       });
     return [];
@@ -34,7 +34,12 @@ class SchoolPeriodsList extends Component {
   };
 
   render = () => {
-    const { schoolPeriods, isLoading, history, handleDeleteSchoolPeriod } = this.props;
+    const {
+      schoolPeriods,
+      isLoading,
+      history,
+      handleDeleteSchoolPeriod
+    } = this.props;
     const { func } = this.state;
     return (
       <Grid container spacing={8}>
@@ -53,41 +58,41 @@ class SchoolPeriodsList extends Component {
         <Grid item xs={12}>
           <MaterialTable
             columns={[
-              { title: '#', field: 'id', hidden: true },
-              { title: 'Codigo', field: 'codSchoolPeriod' },
-              { title: 'Fecha Inicio', field: 'startDate' },
-              { title: 'Fecha Fin', field: 'endDate' },
-
-            
+              { title: "#", field: "id", hidden: true },
+              { title: "Codigo", field: "codSchoolPeriod" },
+              { title: "Fecha Inicio", field: "startDate" },
+              { title: "Fecha Fin", field: "endDate" }
             ]}
             data={this.transformData(schoolPeriods)}
             title="Periodos semestrales"
             actions={[
               {
-                icon: 'visibility',
-                tooltip: 'Ver detalles',
+                icon: "visibility",
+                tooltip: "Ver detalles",
                 onClick: (event, rowData) => {
                   history.push(`/periodo-semestral/edit/${rowData.id}`);
-                },
+                }
               },
               {
-                icon: 'delete',
-                tooltip: 'Borrar periodo semestral',
+                icon: "delete",
+                tooltip: "Borrar periodo semestral",
                 onClick: (event, rowData) => {
-                  this.handleDialogShow('eliminar', entity =>
-                    handleDeleteSchoolPeriod(rowData.id),
+                  this.handleDialogShow("eliminar", entity =>
+                    handleDeleteSchoolPeriod(rowData.id)
                   );
-                },
-              },
+                }
+              }
             ]}
             options={{
               pageSize: 10,
               search: true,
               exportButton: true,
               exportCsv: (columns, renderData) =>
-                handleExportCsv(columns, renderData, 'schoolPeriods'),
+                handleExportCsv(columns, renderData, "schoolPeriods")
             }}
-            onChangePage={()=>{window.scroll(0,0)}}
+            onChangePage={() => {
+              window.scroll(0, 0);
+            }}
             isLoading={isLoading}
           />
         </Grid>
@@ -101,7 +106,7 @@ SchoolPeriodsList.propTypes = {
   schoolPeriods: array,
   isLoading: bool.isRequired,
   history: object.isRequired,
-  handleDeleteSchoolPeriod: func.isRequired,
+  handleDeleteSchoolPeriod: func.isRequired
 };
 
 export default SchoolPeriodsList;

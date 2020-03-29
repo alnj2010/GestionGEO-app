@@ -1,30 +1,32 @@
-import React, { Component } from 'react';
-import MaterialTable from 'material-table';
-import { array, bool, object, func } from 'prop-types';
-import Add from '@material-ui/icons/Add';
-import { Fab, Grid } from '@material-ui/core';
-import Dialog from '../Dialog';
-import { handleExportCsv } from '../../services/constants';
+import React, { Component } from "react";
+import MaterialTable from "material-table";
+import { array, bool, object, func } from "prop-types";
+import Add from "@material-ui/icons/Add";
+import { Fab, Grid } from "@material-ui/core";
+import Dialog from "../Dialog";
+import { handleExportCsv } from "../../utils/handleExportCsv";
 
 class AdminsList extends Component {
   constructor() {
     super();
     this.state = {
-      func: null,
+      func: null
     };
   }
   transformData = admins => {
-    let id = sessionStorage.getItem('id');
+    let id = sessionStorage.getItem("id");
     if (admins)
-      return admins.map(admin => {
-        return {
-          id: admin.id,
-          email: admin.email,
-          firstName: admin.first_name,
-          firstSurname: admin.first_surname, 
-          rol: admin.administrator ? admin.administrator.rol: false,
-        };
-      }).filter(admin => parseInt(id) !== parseInt(admin.id) );
+      return admins
+        .map(admin => {
+          return {
+            id: admin.id,
+            email: admin.email,
+            firstName: admin.first_name,
+            firstSurname: admin.first_surname,
+            rol: admin.administrator ? admin.administrator.rol : false
+          };
+        })
+        .filter(admin => parseInt(id) !== parseInt(admin.id));
     return [];
   };
 
@@ -55,40 +57,42 @@ class AdminsList extends Component {
         <Grid item xs={12}>
           <MaterialTable
             columns={[
-              { title: '#', field: 'id', hidden: true },
-              { title: 'Nombre', field: 'firstName' },
-              { title: 'Apellido', field: 'firstSurname' },
-              { title: 'Email', field: 'email' },
-              { title: 'Rol', field: 'rol' },
+              { title: "#", field: "id", hidden: true },
+              { title: "Nombre", field: "firstName" },
+              { title: "Apellido", field: "firstSurname" },
+              { title: "Email", field: "email" },
+              { title: "Rol", field: "rol" }
             ]}
             data={this.transformData(admins)}
             title="Administradores"
             actions={[
               {
-                icon: 'visibility',
-                tooltip: 'Ver detalles',
+                icon: "visibility",
+                tooltip: "Ver detalles",
                 onClick: (event, rowData) => {
                   history.push(`/administradores/edit/${rowData.id}`);
-                },
+                }
               },
               {
-                icon: 'delete',
-                tooltip: 'Borrar admin',
+                icon: "delete",
+                tooltip: "Borrar admin",
                 onClick: (event, rowData) => {
-                  this.handleDialogShow('eliminar', entity =>
-                    handleDeleteAdmin(rowData.id),
+                  this.handleDialogShow("eliminar", entity =>
+                    handleDeleteAdmin(rowData.id)
                   );
-                },
-              },
+                }
+              }
             ]}
             options={{
               pageSize: 10,
               search: true,
               exportButton: true,
               exportCsv: (columns, renderData) =>
-                handleExportCsv(columns, renderData, 'admins'),
+                handleExportCsv(columns, renderData, "admins")
             }}
-            onChangePage={()=>{window.scroll(0,0)}}
+            onChangePage={() => {
+              window.scroll(0, 0);
+            }}
             isLoading={isLoading}
           />
         </Grid>
@@ -102,7 +106,7 @@ AdminsList.propTypes = {
   admins: array,
   isLoading: bool.isRequired,
   history: object.isRequired,
-  handleDeleteAdmin: func.isRequired,
+  handleDeleteAdmin: func.isRequired
 };
 
 export default AdminsList;

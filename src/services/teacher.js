@@ -1,94 +1,93 @@
-import AXIOS from '../config/axios.config';
-import { headers, URL } from './constants';
+import AXIOS, { headers } from "../config/axios.config";
+import { URL } from "./constants";
 
 export const Teacher = {
-
   getTeacherList() {
     return AXIOS.get(`${URL.TEACHER}`, {
-      headers: headers(),
+      headers: headers()
     })
       .then(response => {
-        if( response.status && response.status!==200){
-          let error={response:response};
-          throw error
-        };
+        if (response.status && response.status !== 200) {
+          let error = { response: response };
+          throw error;
+        }
         return response.data;
       })
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject("Ups! Al parecer hay un error desconocido.");
       });
   },
   findTeacherById(id) {
     return AXIOS.get(`${URL.TEACHER}/${id}`, {
-      headers: headers(),
+      headers: headers()
     })
       .then(response => {
-        if( response.status && response.status!==200){
-          let error={response:response};
-          throw error
-        };
+        if (response.status && response.status !== 200) {
+          let error = { response: response };
+          throw error;
+        }
         return response.data;
       })
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject("Ups! Al parecer hay un error desconocido.");
       });
   },
   update(teacher) {
     return AXIOS.put(`${URL.TEACHER}/${teacher.id}`, teacher, {
-      headers: headers(),
+      headers: headers()
     })
       .then(response => {
-        if( response.status && response.status!==200){
-          let error={response:response};
-          throw error
-        };
+        if (response.status && response.status !== 200) {
+          let error = { response: response };
+          throw error;
+        }
         return response.data;
       })
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject("Ups! Al parecer hay un error desconocido.");
       });
   },
 
   saveTeacher(teacher) {
     return AXIOS.post(`${URL.TEACHER}`, teacher, {
-      headers: headers(),
+      headers: headers()
     })
       .then(response => {
-        if( response.status && response.status!==200){
-          let error={response:response};
-          throw error
-        };
+        if (response.status && response.status !== 200) {
+          let error = { response: response };
+          throw error;
+        }
         return response.data;
       })
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject("Ups! Al parecer hay un error desconocido.");
       });
   },
   delete(teacherId) {
     return AXIOS.delete(`${URL.TEACHER}/${teacherId}`, {
-      headers: headers(),
+      headers: headers()
     })
       .then(response => {
-        if( response.status && response.status!==200){
-          let error={response:response};
-          throw error
-        };
+        if (response.status && response.status !== 200) {
+          let error = { response: response };
+          throw error;
+        }
         return response.data;
       })
       .catch(error => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.message);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject("Ups! Al parecer hay un error desconocido.");
       });
-  },
+  }
 };
 
 export default Teacher;
