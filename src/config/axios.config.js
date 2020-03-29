@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { loadProgressBar } from 'axios-progress-bar';
-import { getSessionGeoToken } from '../storage/sessionStorage';
+import {
+    getSessionGeoToken,
+    setSessionGeoToken,
+} from '../storage/sessionStorage';
 
 export function headers(type) {
     let items;
@@ -36,7 +39,7 @@ AXIOS.interceptors.response.use(
         if (status === 401) {
             return AXIOS.get('/auth/refresh-token', { headers: headers() })
                 .then((res) => {
-                    setSessionGeoToken('GeoToken', res.data.geoToken);
+                    setSessionGeoToken(res.data.geoToken);
                     originalRequest.headers['Authorization'] =
                         'Bearer ' + res.data.geoToken;
                     return axios(originalRequest);
