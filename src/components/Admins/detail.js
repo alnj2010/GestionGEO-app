@@ -5,6 +5,13 @@ import { Grid, Button } from '@material-ui/core';
 import { Form, reduxForm, change, submit, formValueSelector } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
+import {
+    COORDINATOR_ROL,
+    GENDER,
+    LEVEL_INSTRUCTION,
+    NATIONALITY,
+} from '../../services/constants';
+import { jsonToOptions } from '../../helpers';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 
@@ -133,84 +140,38 @@ class AdminDetail extends Component {
                                         field: `rol`,
                                         id: `rol`,
                                         type: 'select',
-                                        options: [
-                                            {
-                                                key: 'SECRETARIO',
-                                                value: 'SECRETARY',
-                                            },
-                                            {
-                                                key: 'COORDINADOR',
-                                                value: 'COORDINATOR',
-                                            },
-                                        ].map((type) => {
-                                            return {
-                                                key: type.key,
-                                                value: type.value,
-                                            };
-                                        }),
+                                        options: jsonToOptions(COORDINATOR_ROL),
                                     },
                                     {
                                         label: 'Sexo',
                                         field: `sex`,
                                         id: `sex`,
                                         type: 'select',
-                                        options: [
-                                            { key: 'MASCULINO', value: 'M' },
-                                            { key: 'FEMENINO', value: 'F' },
-                                        ].map((type) => {
-                                            return {
-                                                key: type.key,
-                                                value: type.value,
-                                            };
-                                        }),
+                                        options: jsonToOptions(GENDER),
                                     },
                                     {
                                         label: 'Nivel de instruccion',
                                         field: 'levelInstruction',
                                         id: 'levelInstruction',
                                         type: 'select',
-                                        options: [
-                                            { value: 'TSU', id: 'TSU' },
-                                            { value: 'TEC MEDIO', id: 'TCM' },
-                                            { value: 'DOCTOR', id: 'Dr' },
-                                            {
-                                                value: 'ESPECIALISTA',
-                                                id: 'Esp',
-                                            },
-                                            { value: 'INGENIERO', id: 'Ing' },
-                                            {
-                                                value: 'MAGISTER SCIENTIARUM',
-                                                id: 'MSc',
-                                            },
-                                            { value: 'LICENCIADO', id: 'Lic' },
-                                        ].map((type) => {
-                                            return {
-                                                key: type.value,
-                                                value: type.id,
-                                            };
-                                        }),
+                                        options: jsonToOptions(
+                                            LEVEL_INSTRUCTION
+                                        ),
                                     },
                                     {
                                         label: 'Nacionalidad',
                                         field: `nationality`,
                                         id: `nationality`,
                                         type: 'select',
-                                        options: [
-                                            { key: 'VENEZOLANO', value: 'V' },
-                                            { key: 'EXTRANGERO', value: 'E' },
-                                        ].map((type) => {
-                                            return {
-                                                key: type.key,
-                                                value: type.value,
-                                            };
-                                        }),
+                                        options: jsonToOptions(NATIONALITY),
                                     },
                                     {
                                         label: 'Coordinador principal',
                                         field: 'principal',
                                         id: 'principal',
                                         type:
-                                            isMain && rol !== 'SECRETARY'
+                                            isMain &&
+                                            rol !== COORDINATOR_ROL.SECRETARIO
                                                 ? 'switch'
                                                 : 'hidden',
                                     },
