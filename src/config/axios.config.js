@@ -24,15 +24,28 @@ const AXIOS = axios.create({
 
 AXIOS.interceptors.response.use(
     (response) => {
+        const { status } = response;
+
+        response.data.error = response.data.message
+            ? response.data.message
+            : null;
+
+        if (status === 206) {
+            return Promise.reject({ response });
+        }
         return response;
     },
     (error) => {
         const {
             response: { status },
         } = error;
+        error.response.data.error =
+            !error.response.data.error && error.response.data.message
+                ? error.response.data.message
+                : error.response.data.error;
 
         if (status === 401) {
-            Promise.reject(error);
+            return Promise.reject(error);
         }
         if (status === 403) {
             window.location.href = '/';

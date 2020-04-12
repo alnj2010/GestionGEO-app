@@ -263,7 +263,7 @@ class AdminDetail extends Component {
                                                 color="secondary"
                                                 onClick={() =>
                                                     this.handleDialogShow(
-                                                        'delete',
+                                                        'borrar',
                                                         handleAdminDelete
                                                     )
                                                 }
