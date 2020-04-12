@@ -50,3 +50,11 @@ export const TEACHER_DEDICATION = {
 };
 
 export const NATIONALITY = { VENEZOLANO: 'V', EXTRANGERO: 'E' };
+
+export const SUBJECT_TYPE = { REGULAR: 'REG', AMPLIACION: 'AMP' };
+
+export const SUBJECT_MODALITY = {
+    OBLIGATORIA: 'OB',
+    OPTATIVA: 'OP',
+    ELECTIVA: 'EL',
+};
