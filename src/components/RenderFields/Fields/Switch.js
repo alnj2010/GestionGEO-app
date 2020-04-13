@@ -10,19 +10,20 @@ const renderSwitch = ({
   label,
   meta: { touched, error },
   ...custom
-}) => (
+}) =>(
     <FormControlLabel
+        style={{marginTop:'22px'}}
         control={
-            <Switch
-            disableRipple            
+          <Switch
+            checked={input.value && !input.disabled ? true : false}
+            onChange={input.onChange}
             color="primary"
-            {...input}
-            {...custom}
+            disabled={custom.disabled}
           />
         }
         label={label}
       />
-)
+    )
 
 export default function SwitchRender(props){ 
     return( 
@@ -32,8 +33,7 @@ export default function SwitchRender(props){
         //custom props
         label={props.label}
         id={props.id}
-        //disabled={props.disabled}
-        //checked={props.checked}
+        disabled={props.disabled===undefined ? false : props.disabled}
       />      
   )
 }

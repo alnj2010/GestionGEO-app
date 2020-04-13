@@ -2,11 +2,14 @@ import { combineReducers } from 'redux';
 import snackbarReducer from './snackbar';
 import dialogReducer from './dialog';
 import adminReducer from './admin';
-import postgraduateReducer from './postgraduate';
+import schoolProgramReducer from './schoolProgram';
 import subjectReducer from './subject';
 import studentReducer from './student';
 import teacherReducer from './teacher';
+import miPerfilReducer from './miPerfil';
+import myCourseReducer from './myCourse';
 import schoolPeriodReducer from './schoolPeriod';
+import studentInscriptionReducer from './studentInscription';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
@@ -15,10 +18,13 @@ const rootReducer = combineReducers({
   adminReducer,
   teacherReducer,
   studentReducer,
-  subjectReducer, 
-  postgraduateReducer,
+  subjectReducer,
+  myCourseReducer, 
+  schoolProgramReducer,
   schoolPeriodReducer,
-  form: formReducer,
+  miPerfilReducer,
+  studentInscriptionReducer,
+  form: formReducer,  
 });
 
 export default rootReducer;

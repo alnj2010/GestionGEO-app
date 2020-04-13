@@ -1,42 +1,59 @@
-import { CsvBuilder } from 'filefy';
-
 export const URL = {
-  ADMIN: '/administrators',
-  AUTH:'/login',
-  POSTGRADUATE:'/postgraduates',
-  SUBJECT:'/subjects',
-  STUDENT:'/students',
-  TEACHER:'/teachers',
-  SCHOOL_PERIOD:'/schoolPeriods',
+    ADMIN: '/administrators',
+    AUTH: '/login',
+    SCHOOL_PROGRAM: '/schoolPrograms',
+    SUBJECT: '/subjects',
+    STUDENT: '/students',
+    TEACHER: '/teachers',
+    SCHOOL_PERIOD: '/schoolPeriods',
+    INSCRIPTION: '/inscriptions',
+    STUDENT_INSCRIPTION: '/studentInscription',
+    TEACHER_INSCRIPTION: '/teacherInscription',
+    CONSTANCE: '/constance',
+    CHANGE_PASSWORD: '/changePassword',
 };
 
-export const protocol =
-  window.location.host === 'localhost:3000' ? 'http' : 'https';
-export const apiUrl ="http://127.0.0.1:8000/api"
-export const EMAIL_REGEX = /[^@]+@[^@]+\.[a-zA-Z]{2,6}/;
+export const COORDINATOR_ROL = {
+    SECRETARIO: 'SECRETARY',
+    COORDINADOR: 'COORDINATOR',
+};
 
-export function headers(type) {
-  let items;
-  if (type === 'form') items = { 'Content-Type': 'multipart/form-data' };
-  else items = { 'Content-Type': 'application/json' };
-  const token = sessionStorage.getItem('GeoToken');
-  if (token) {
-    items.Authorization = `Bearer ${token}`;
-  }
-  return items;
-}
+export const GENDER = {
+    MASCULINO: 'M',
+    FEMENINO: 'F',
+};
 
-export function handleExportCsv(columns, renderData, fileName) {
-  const csvColumns = columns.filter(columnDef => {
-    return !columnDef.hidden && columnDef.field && columnDef.export !== false;
-  });
-  const data = renderData.map(rowData =>
-    csvColumns.map(columnDef => rowData[columnDef.field]),
-  );
+export const LEVEL_INSTRUCTION = {
+    TSU: 'TSU',
+    'TEC MEDIO': 'TCM',
+    DOCTOR: 'Dr',
+    ESPECIALISTA: 'Esp',
+    INGENIERO: 'Ing',
+    'MAGISTER SCIENTIARUM': 'MSc',
+    LICENCIADO: 'Lic',
+};
 
-  new CsvBuilder(`${fileName}.csv`)
-    .setDelimeter(',')
-    .setColumns(csvColumns.map(columnDef => columnDef.title))
-    .addRows(data)
-    .exportFile();
-}
+export const TEACHER_ROL = {
+    INSTRUCTOR: 'INS',
+    INVITADO: 'INV',
+    ASISTENTE: 'ASI',
+    AGREGADO: 'AGR',
+    TITULAR: 'TIT',
+};
+
+export const TEACHER_DEDICATION = {
+    'MEDIO-TIEMPO': 'MT',
+    CONVENCIONAL: 'CON',
+    'TIEMPO-COMPLETO': 'TC',
+    EXCLUSIVO: 'EXC',
+};
+
+export const NATIONALITY = { VENEZOLANO: 'V', EXTRANJERO: 'E' };
+
+export const SUBJECT_TYPE = { REGULAR: 'REG', AMPLIACION: 'AMP' };
+
+export const SUBJECT_MODALITY = {
+    OBLIGATORIA: 'OB',
+    OPTATIVA: 'OP',
+    ELECTIVA: 'EL',
+};

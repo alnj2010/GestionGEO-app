@@ -1,12 +1,12 @@
-import { SchoolPeriod } from '../services/schoolPeriod';
-import { show } from './snackbar';
+import { SchoolPeriod } from "../services/schoolPeriod";
+import { show } from "./snackbar";
 
 export const ACTIONS = {
-  LIST: 'schoolPeriod/list',
+  LIST: "schoolPeriod/list",
   SELECT: `schoolPeriod/select`,
   UPDATE: `schoolPeriod/update`,
   CLEAN_SELECTED_SCHOOL_PERIOD: `schoolPeriod/clean-selected`,
-  CURRENT:`schoolPeriod/current`
+  CURRENT: `schoolPeriod/current`
 };
 
 export const getList = () => async dispatch => {
@@ -16,7 +16,7 @@ export const getList = () => async dispatch => {
       return true;
     })
     .catch(error => {
-      show(error, 'error')(dispatch);
+      show(error, "error")(dispatch);
       return false;
     });
 };
@@ -26,12 +26,12 @@ export const findCurrentSchoolPeriod = () => async dispatch => {
     .then(response => {
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedSchoolPeriod: response },
+        payload: { selectedSchoolPeriod: response }
       });
       return true;
     })
     .catch(error => {
-      show(error, 'error')(dispatch);
+      show(error, "error")(dispatch);
       return false;
     });
 };
@@ -41,12 +41,12 @@ export const findSchoolPeriodById = id => async dispatch => {
     .then(response => {
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedSchoolPeriod: response },
+        payload: { selectedSchoolPeriod: response }
       });
       return true;
     })
     .catch(error => {
-      show(error, 'error')(dispatch);
+      show(error, "error")(dispatch);
       return false;
     });
 };
@@ -54,31 +54,31 @@ export const findSchoolPeriodById = id => async dispatch => {
 export const cleanSelectedSchoolPeriod = id => async dispatch => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_SCHOOL_PERIOD,
-    payload: {},
+    payload: {}
   });
 };
 
 export const updateSchoolPeriod = schoolPeriod => async dispatch => {
   const payload = {
-    id:schoolPeriod.id,
-    inscription_visible:!!schoolPeriod.inscriptionVisible,
-    end_school_period:!!schoolPeriod.endSchoolPeriod,
-    load_notes:!!schoolPeriod.loadNotes,
-    cod_school_period:schoolPeriod.codSchoolPeriod,
-    end_date:schoolPeriod.endDate,
-    start_date:schoolPeriod.startDate,
-    subjects: schoolPeriod.subjects.map(subject =>({
-
-      subject_id:subject.subjectId,
-      teacher_id:subject.teacherId,
-      duty:subject.duty,
-      limit:subject.limit,
-      schedules:subject.schedules.map(schedule =>({
-        school_period_subject_teacher_id:schedule.schoolPeriodSubjectTeacherId,
-        day:schedule.day,
-        start_hour:schedule.startHour,
-        end_hour:schedule.endHour,
-        classroom:schedule.classroom
+    id: schoolPeriod.id,
+    inscription_visible: !!schoolPeriod.inscriptionVisible,
+    end_school_period: !!schoolPeriod.endSchoolPeriod,
+    load_notes: !!schoolPeriod.loadNotes,
+    cod_school_period: schoolPeriod.codSchoolPeriod,
+    end_date: schoolPeriod.endDate,
+    start_date: schoolPeriod.startDate,
+    subjects: schoolPeriod.subjects.map(subject => ({
+      subject_id: subject.subjectId,
+      teacher_id: subject.teacherId,
+      duty: subject.duty,
+      modality: "REG",
+      limit: subject.limit,
+      schedules: subject.schedules.map(schedule => ({
+        school_period_subject_teacher_id: schedule.schoolPeriodSubjectTeacherId,
+        day: schedule.day,
+        start_hour: schedule.startHour,
+        end_hour: schedule.endHour,
+        classroom: schedule.classroom
       }))
     }))
   };
@@ -86,47 +86,46 @@ export const updateSchoolPeriod = schoolPeriod => async dispatch => {
     .then(response => {
       dispatch({
         type: ACTIONS.SELECT,
-        payload: { selectedSchoolPeriod: response },
+        payload: { selectedSchoolPeriod: response }
       });
-      show('Periodo semestral actualizado', 'success')(dispatch);
+      show("Periodo semestral actualizado", "success")(dispatch);
       return true;
     })
     .catch(error => {
-      show(error, 'error')(dispatch);
+      show(error, "error")(dispatch);
       return false;
     });
 };
 
 export const saveSchoolPeriod = schoolPeriod => async dispatch => {
   const payload = {
-    inscription_visible:false,
-    end_school_period:false,
-    load_notes:false,
-    cod_school_period:schoolPeriod.codSchoolPeriod,
-    end_date:schoolPeriod.endDate,
-    start_date:schoolPeriod.startDate,
-    subjects: schoolPeriod.subjects.map(subject =>({
-
-      subject_id:subject.subjectId,
-      teacher_id:subject.teacherId,
-      duty:subject.duty,
-      limit:subject.limit,
-      schedules:subject.schedules.map(schedule =>({
-
-        day:schedule.day,
-        start_hour:schedule.startHour,
-        end_hour:schedule.endHour,
-        classroom:schedule.classroom
+    inscription_visible: false,
+    end_school_period: false,
+    load_notes: false,
+    cod_school_period: schoolPeriod.codSchoolPeriod,
+    end_date: schoolPeriod.endDate,
+    start_date: schoolPeriod.startDate,
+    subjects: schoolPeriod.subjects.map(subject => ({
+      subject_id: subject.subjectId,
+      teacher_id: subject.teacherId,
+      modality: subject.modality,
+      duty: subject.duty,
+      limit: subject.limit,
+      schedules: subject.schedules.map(schedule => ({
+        day: schedule.day,
+        start_hour: schedule.startHour,
+        end_hour: schedule.endHour,
+        classroom: schedule.classroom
       }))
     }))
   };
   return SchoolPeriod.saveSchoolPeriod(payload)
     .then(res => {
-      show('Periodo semestral guardado', 'success')(dispatch);
+      show("Periodo semestral guardado", "success")(dispatch);
       return res.id;
     })
     .catch(error => {
-      show(error, 'error')(dispatch);
+      show(error, "error")(dispatch);
       return false;
     });
 };
@@ -134,11 +133,11 @@ export const saveSchoolPeriod = schoolPeriod => async dispatch => {
 export const deleteSchoolPeriod = schoolPeriodId => async dispatch => {
   return SchoolPeriod.delete(schoolPeriodId)
     .then(response => {
-      show('Periodo semestral eliminado', 'success')(dispatch);
+      show("Periodo semestral eliminado", "success")(dispatch);
       return true;
     })
     .catch(error => {
-      show(error, 'error')(dispatch);
+      show(error, "error")(dispatch);
       return false;
     });
 };

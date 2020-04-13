@@ -4,8 +4,11 @@ import { show } from './snackbar';
 export const ACTIONS = {
   LIST: 'student/list',
   SELECT: `student/select`,
+  AVAILABLE_SUBJECTS: `student/subjects_inscription`,
+  INSCRIBED_SCHOOL_PERIODS: `student/inscribed_school_periods`,
   UPDATE: `student/update`,
   CLEAN_SELECTED_STUDENT: `student/clean-selected`,
+  SELECTED_STUDENT_SCHOOL_PERIOD:`student/elected_student_school_period`
 };
 
 export const getList = () => async dispatch => {
@@ -54,9 +57,16 @@ export const updateStudent = student => async dispatch => {
     telephone: student.telephone, 
     work_phone: student.workPhone, 
     email:student.email,
-    postgraduate_id:student.postgraduate,
+    school_program_id:student.schoolProgram,
     student_type:student.studentType,
     home_university:student.homeUniversity,
+    sex:student.sex,
+    nationality:student.nationality,
+    is_ucv_teacher:student.isUcvTeacher,
+    is_available_final_work:student.isAvailableFinalWork,
+    repeat_approved_subject:student.repeatApprovedSubject,
+    repeat_reprobated_subject:student.repeatApprovedSubject,
+
   };
   return Student.update(payload)
     .then(response => {
@@ -84,9 +94,16 @@ export const saveStudent = student => async dispatch => {
     telephone: student.telephone, 
     work_phone: student.workPhone, 
     email:student.email,
-    postgraduate_id:student.postgraduate,
+    school_program_id:student.schoolProgram,
     student_type:student.studentType,
     home_university:student.homeUniversity,
+    sex:student.sex,
+    nationality:student.nationality,
+    is_ucv_teacher:student.isUcvTeacher,
+    is_available_final_work:student.isAvailableFinalWork,
+    repeat_approved_subject:student.repeatApprovedSubject,
+    repeat_reprobated_subject:student.repeatApprovedSubject,
+
   };
   return Student.saveStudent(payload)
     .then(res => {
@@ -109,4 +126,113 @@ export const deleteStudent = studentId => async dispatch => {
       show(error, 'error')(dispatch);
       return false;
     });
+};
+
+export const getAvailableSubjects = (studentId,schoolPeriodId) => async dispatch => {
+  return Student.getAvailableSubjects(studentId,schoolPeriodId)
+    .then(response => {
+      dispatch({
+        type: ACTIONS.AVAILABLE_SUBJECTS
+,
+        payload: { availableSubjects: response },
+      });
+    })
+    .catch(error => {
+      return error;
+    });
+};
+
+export const addStudentPeriodSchool = value => async dispatch => {
+  let payload={
+      student_id: value.studentId,
+      school_period_id: value.schoolPeriodId,
+      status:value.schoolPeriodStatus,
+      pay_ref:value.payRef,      
+      subjects: value.subjects.map(subject=>({
+        school_period_subject_teacher_id:subject.subjectId,
+        qualification:parseInt(subject.nota),
+        status:subject.status,
+      }))
+    }
+  return Student.addStudentPeriodSchool(payload)
+    .then(res => {
+      show('Inscripcion sastifactoria', 'success')(dispatch);
+      return true;
+    })
+    .catch(error => {
+      show(error, 'error')(dispatch);
+      return false;
+    });
+};
+
+export const editStudentPeriodSchool = value => async dispatch => {
+  let payload={
+      id:value.id,
+      student_id: value.studentId,
+      school_period_id: value.schoolPeriodId+'',
+      status:value.schoolPeriodStatus,
+      pay_ref:value.payRef,      
+      subjects: value.subjects.map(subject=>({
+        school_period_subject_teacher_id:subject.subjectId,
+        qualification:parseInt(subject.nota),
+        status:subject.status,
+      }))
+    }
+  return Student.editStudentPeriodSchool(payload)
+    .then(res => {
+      show('Inscripcion modificada sastifactoriamente', 'success')(dispatch);
+      return true;
+    })
+    .catch(error => {
+      show(error, 'error')(dispatch);
+      return false;
+    });
+};
+
+export const getInscribedSchoolPeriods = (studentId,idSchoolPeriod=null) => async dispatch => {
+  return Student.getInscribedSchoolPeriods(studentId)
+    .then(response => {
+      dispatch({
+        type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
+        payload: { inscribedSchoolPeriods: response },
+      });
+
+      if(idSchoolPeriod){
+        
+        let data = response.find(item => parseInt(item.id)===parseInt(idSchoolPeriod));
+        let data2 = data.inscriptions;
+        if(Array.isArray(data2))
+          data2 = data.inscriptions.find(item=>parseInt(item.student_id)===parseInt(studentId))
+          
+        let inscription = {
+          ...data2,
+          ...data,
+          idInscription:data2.id
+        }
+        dispatch({
+          type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
+          payload: { selectedStudentSchoolPeriod: inscription },
+        })
+      }
+        
+    })
+    .catch(error => {
+      return error;
+    });
+  
+};
+
+
+export const cleanSelectedInscribedSchoolPeriods = id => async dispatch => {
+  dispatch({
+    type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
+    payload: { selectedStudentSchoolPeriod: {} },
+  });
+};
+
+export const cleanSelectedInscriptionSchoolPeriods = id => async dispatch => {
+  dispatch({
+    type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
+    payload: { inscribedSchoolPeriods: [] },
+  });
 };

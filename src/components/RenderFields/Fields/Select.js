@@ -23,7 +23,7 @@ const renderSelectField = ({
   options,
   ...custom
 }) => (
-  <FormControl error={touched && error} style={{width:'100%'}}>
+  <FormControl error={touched && !!error} style={{width:'100%'}}>
     <InputLabel htmlFor={input}>{label}</InputLabel>
     <Select
       {...input}
@@ -49,6 +49,8 @@ export default function SelectField(props){
         name={props.field}
         component={renderSelectField}
         //custom props
+        onChange = {props.onchange ? (event, newValue, previousValue, name) => props.onchange(newValue) : null}
+        disabled = {props.disabled}
         label={props.label}
         id={props.id}
         options={props.options}

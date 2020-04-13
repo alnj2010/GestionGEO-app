@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControl,InputLabel,Input} from '@material-ui/core';
+import { TextField} from '@material-ui/core';
 import { Field } from 'redux-form';
 import MaskedInput from 'react-text-mask';
 
@@ -26,17 +26,20 @@ const renderPhoneField =({
     ...custom
   })=>{
     return(
-        <FormControl style={{width:'100%'}}>
-          <InputLabel htmlFor={input.name}>{label}</InputLabel>
-          <Input
+          <TextField
+            style={{width:'100%'}}
             id={input.name}
             error={touched && invalid}
+            label={label}
             helperText={touched && error}
-            inputComponent={TextMaskCustom}
+            InputProps={{
+              inputComponent: TextMaskCustom,
+            }}
+            InputLabelProps={{ shrink: true }}
             {...input}
             {...custom}
           />
-        </FormControl>)
+      )
 
 }
 
@@ -50,7 +53,7 @@ export default function Phone(props){
         id={props.id} 
         multiline
         rowsMax="4"
-        margin="normal"
+        margin="dense"
       /> 
             
   )

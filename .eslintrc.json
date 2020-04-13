@@ -1,0 +1,25 @@
+{
+    "env": {
+        "browser": true,
+        "jest": true
+    },
+    "parser": "babel-eslint",
+    "extends": ["airbnb", "prettier/react", "plugin:prettier/recommended"],
+    "plugins": ["react", "prettier"],
+    "rules": {
+        "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
+        "prettier/prettier": "error",
+        "no-underscore-dangle": [
+            2,
+            {
+                "allowAfterThis": true
+            }
+        ],
+        "no-console": [
+            "error",
+            {
+                "allow": ["warn", "error"]
+            }
+        ]
+    }
+}
