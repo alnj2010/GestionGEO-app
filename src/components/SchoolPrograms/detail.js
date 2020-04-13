@@ -110,6 +110,12 @@ class SchoolProgramDetail extends Component {
                                         min: 1,
                                     },
                                     {
+                                        label: '¿Posee examen doctoral?',
+                                        field: 'doctoralExam',
+                                        id: 'doctoralExam',
+                                        type: 'switch',
+                                    },
+                                    {
                                         label:
                                             '¿Otorga un certificado de culminación?',
                                         field: 'grantCertificate',
@@ -266,12 +272,16 @@ SchoolProgramDetail = connect(
                 .grant_certificate
                 ? state.schoolProgramReducer.selectedSchoolProgram
                       .grant_certificate
-                : '',
+                : false,
             conduciveToDegree: state.schoolProgramReducer.selectedSchoolProgram
                 .conducive_to_degree
                 ? state.schoolProgramReducer.selectedSchoolProgram
                       .conducive_to_degree
-                : '',
+                : false,
+            doctoralExam: state.schoolProgramReducer.selectedSchoolProgram
+                .doctoral_exam
+                ? state.schoolProgramReducer.selectedSchoolProgram.doctoral_exam
+                : false,
         },
         action: state.dialogReducer.action,
         numCu: selector(state, 'numCu'),

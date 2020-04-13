@@ -166,7 +166,13 @@ class AdminDetail extends Component {
                                         options: jsonToOptions(NATIONALITY),
                                     },
                                     {
-                                        label: 'Coordinador principal',
+                                        label: '¿Discapacidad?',
+                                        field: 'withDisabilities',
+                                        id: 'withDisabilities',
+                                        type: 'switch',
+                                    },
+                                    {
+                                        label: '¿Coordinador principal?',
                                         field: 'principal',
                                         id: 'principal',
                                         type:
@@ -342,6 +348,9 @@ AdminDetail = connect(
                 : '',
             principal: state.adminReducer.selectedAdmin.administrator
                 ? state.adminReducer.selectedAdmin.administrator.principal
+                : false,
+            withDisabilities: state.adminReducer.selectedAdmin
+                ? state.adminReducer.selectedAdmin.with_disabilities
                 : false,
         },
         action: state.dialogReducer.action,

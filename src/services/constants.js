@@ -42,14 +42,13 @@ export const TEACHER_ROL = {
 };
 
 export const TEACHER_DEDICATION = {
-    INVITADO: 'INV',
     'MEDIO-TIEMPO': 'MT',
     CONVENCIONAL: 'CON',
     'TIEMPO-COMPLETO': 'TC',
     EXCLUSIVO: 'EXC',
 };
 
-export const NATIONALITY = { VENEZOLANO: 'V', EXTRANGERO: 'E' };
+export const NATIONALITY = { VENEZOLANO: 'V', EXTRANJERO: 'E' };
 
 export const SUBJECT_TYPE = { REGULAR: 'REG', AMPLIACION: 'AMP' };
 

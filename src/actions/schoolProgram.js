@@ -52,6 +52,7 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
         min_duration: parseInt(schoolProgram.minDuration),
         grant_certificate: schoolProgram.grantCertificate,
         conducive_to_degree: schoolProgram.conduciveToDegree,
+        doctoral_exam: schoolProgram.doctoralExam,
     };
     return SchoolProgram.update(payload)
         .then((response) => {
@@ -77,6 +78,7 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
         min_duration: parseInt(schoolProgram.minDuration),
         grant_certificate: schoolProgram.grantCertificate,
         conducive_to_degree: schoolProgram.conduciveToDegree,
+        doctoral_exam: schoolProgram.doctoralExam,
     };
 
     return SchoolProgram.saveSchoolProgram(payload)

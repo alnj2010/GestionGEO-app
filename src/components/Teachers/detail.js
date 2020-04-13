@@ -174,6 +174,12 @@ class TeacherDetail extends Component {
                                             TEACHER_DEDICATION
                                         ),
                                     },
+                                    {
+                                        label: '¿Discapacidad?',
+                                        field: 'withDisabilities',
+                                        id: 'withDisabilities',
+                                        type: 'switch',
+                                    },
                                 ]}
                             </RenderFields>
                             {teacherType === TEACHER_ROL.INVITADO ? (
@@ -368,6 +374,9 @@ TeacherDetail = connect(
             country: state.teacherReducer.selectedTeacher.teacher
                 ? state.teacherReducer.selectedTeacher.teacher.country
                 : '',
+            withDisabilities: state.teacherReducer.selectedTeacher
+                ? state.teacherReducer.selectedTeacher.with_disabilities
+                : false,
         },
         action: state.dialogReducer.action,
         teacherType: selector(state, 'teacherType'),

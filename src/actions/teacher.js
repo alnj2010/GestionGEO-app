@@ -61,6 +61,7 @@ export const updateTeacher = (teacher) => async (dispatch) => {
         dedication: teacher.dedication,
         home_institute: teacher.homeInstitute,
         country: teacher.country,
+        with_disabilities: teacher.withDisabilities,
     };
     return Teacher.update(payload)
         .then((response) => {
@@ -95,6 +96,7 @@ export const saveTeacher = (teacher) => async (dispatch) => {
         dedication: teacher.dedication,
         home_institute: teacher.homeInstitute,
         country: teacher.country,
+        with_disabilities: teacher.withDisabilities,
     };
     return Teacher.saveTeacher(payload)
         .then((res) => {

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
-import { SUBJECT_TYPE, SUBJECT_MODALITY } from '../../services/constants';
+import { SUBJECT_MODALITY } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 import {
     Form,
@@ -158,8 +158,18 @@ class SubjectDetail extends Component {
             submitting,
             valid,
             submit,
+            isProjectSubjectSelected,
+            isFinalSubjectSelected,
         } = this.props;
         const { func } = this.state;
+        console.log(
+            'isProjectSubjectSelected',
+            !isFinalSubjectSelected && isProjectSubjectSelected
+        );
+        console.log(
+            'isFinalSubjectSelected',
+            !isProjectSubjectSelected && isFinalSubjectSelected
+        );
 
         return (
             <Form onSubmit={handleSubmit(saveSubject)}>
@@ -197,14 +207,6 @@ class SubjectDetail extends Component {
                                         min: 0,
                                     },
                                     {
-                                        label: 'Tipo de materia',
-                                        field: `subjectType`,
-                                        id: `subjectType`,
-                                        type: 'select',
-                                        options: jsonToOptions(SUBJECT_TYPE),
-                                    },
-
-                                    {
                                         label: 'Horas de laboratorio',
                                         field: 'laboratoryHours',
                                         id: 'laboratoryHours',
@@ -227,13 +229,14 @@ class SubjectDetail extends Component {
                                     },
 
                                     {
-                                        label: '¿Es materia proyecto?',
+                                        label: '¿Prela a una materia final?',
                                         field: 'isProjectSubject',
                                         id: 'isProjectSubject',
                                         type: 'switch',
                                     },
                                     {
-                                        label: '¿Es materia final?',
+                                        label:
+                                            '¿Es materia final? Ej: TEG, Tesis',
                                         field: 'isFinalSubject',
                                         id: 'isFinalSubject',
                                         type: 'switch',
@@ -342,9 +345,6 @@ const subjectValidation = (values) => {
     if (!values.uc) {
         errors.uc = 'Unidades de credito es requerido';
     }
-    if (!values.subjectType) {
-        errors.subjectType = 'Tipo requerido';
-    }
 
     if (values.schoolPrograms && values.schoolPrograms.length) {
         const schoolProgramsArrayErrors = [];
@@ -389,9 +389,6 @@ SubjectDetail = connect(
                 : '',
             uc: state.subjectReducer.selectedSubject.uc
                 ? state.subjectReducer.selectedSubject.uc
-                : '',
-            subjectType: state.subjectReducer.selectedSubject.subject_type
-                ? state.subjectReducer.selectedSubject.subject_type
                 : '',
             laboratoryHours: state.subjectReducer.selectedSubject
                 .laboratory_hours
