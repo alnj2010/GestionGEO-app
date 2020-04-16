@@ -52,8 +52,24 @@ export const NATIONALITY = { VENEZOLANO: 'V', EXTRANJERO: 'E' };
 
 export const SUBJECT_TYPE = { REGULAR: 'REG', AMPLIACION: 'AMP' };
 
+export const WEEK_DAYS = {
+    LUNES: 1,
+    MARTES: 2,
+    MIERCOLES: 3,
+    JUEVES: 4,
+    VIERNES: 5,
+    SABADO: 6,
+    DOMINGO: 7,
+};
+
 export const SUBJECT_MODALITY = {
     OBLIGATORIA: 'OB',
     OPTATIVA: 'OP',
     ELECTIVA: 'EL',
+};
+
+export const SUBJECT_PERIOD_MODALITY = {
+    REGULAR: 'REG',
+    INTENSIVO: 'INT',
+    SUFICIENCIA: 'SUF',
 };
