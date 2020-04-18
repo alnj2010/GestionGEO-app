@@ -336,12 +336,6 @@ class SchoolPeriodDetail extends Component {
                                                 'days'
                                             ),
                                         },
-                                    ]}
-                                </RenderFields>
-                            </Grid>
-                            <Grid container justify="center" item xs={12}>
-                                <RenderFields>
-                                    {[
                                         {
                                             label: 'Fecha Limite de retiro',
                                             field: 'withdrawalDeadline',
@@ -351,6 +345,13 @@ class SchoolPeriodDetail extends Component {
                                                 1,
                                                 'days'
                                             ),
+                                        },
+                                        {
+                                            label:
+                                                'Fecha en la que inicia la inscripcion',
+                                            field: 'inscriptionStartDate',
+                                            id: 'inscriptionStartDate',
+                                            type: 'date',
                                         },
                                     ]}
                                 </RenderFields>
@@ -559,6 +560,11 @@ SchoolPeriodDetail = connect(
                 ? state.schoolPeriodReducer.selectedSchoolPeriod
                       .withdrawal_deadline
                 : moment().add(1, 'days').format('YYYY-MM-DD'),
+            inscriptionStartDate: state.schoolPeriodReducer.selectedSchoolPeriod
+                .inscription_start_date
+                ? state.schoolPeriodReducer.selectedSchoolPeriod
+                      .inscription_start_date
+                : moment().subtract(1, 'days').format('YYYY-MM-DD'),
             subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
                 ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map(
                       (subj) => ({

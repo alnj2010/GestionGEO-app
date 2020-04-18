@@ -1,5 +1,10 @@
 import { User } from '../services/user';
 import { show } from './snackbar';
+import {
+    getSessionUserId,
+    getSessionUser,
+    setSessionUser,
+} from '../storage/sessionStorage';
 
 export const ACTIONS = {
     LIST: 'admin/list',
@@ -43,6 +48,7 @@ export const cleanSelectedAdmin = (id) => async (dispatch) => {
 };
 
 export const updateAdmin = (admin) => async (dispatch) => {
+    console.log(admin.id, getSessionUserId());
     const payload = {
         id: admin.id,
         first_name: admin.firstName,
@@ -68,6 +74,19 @@ export const updateAdmin = (admin) => async (dispatch) => {
                 payload: { selectedAdmin: response },
             });
             show('Administrador actualizado', 'success')(dispatch);
+            console.log();
+            if (admin.id === getSessionUserId()) {
+                let value = getSessionUser();
+                setSessionUser({
+                    ...value,
+                    ...payload,
+                    administrator: {
+                        ...value.administrator,
+                        rol: payload.rol,
+                        principal: payload.principal,
+                    },
+                });
+            }
             return true;
         })
         .catch((error) => {

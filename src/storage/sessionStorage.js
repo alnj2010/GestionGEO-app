@@ -13,7 +13,7 @@ export function setSessionUser(value) {
 }
 
 export function getSessionUser() {
-    return sessionStorage.getItem(KEY_STORAGE.USER);
+    return JSON.parse(sessionStorage.getItem(KEY_STORAGE.USER));
 }
 
 export function setSessionTeacherId(value) {

@@ -68,6 +68,7 @@ export const updateSchoolPeriod = (schoolPeriod) => async (dispatch) => {
         end_date: schoolPeriod.endDate,
         start_date: schoolPeriod.startDate,
         withdrawal_deadline: schoolPeriod.withdrawalDeadline,
+        inscription_start_date: schoolPeriod.inscriptionStartDate,
         subjects: schoolPeriod.subjects.map((subject) => ({
             subject_id: subject.subjectId,
             teacher_id: subject.teacherId,
@@ -108,6 +109,7 @@ export const saveSchoolPeriod = (schoolPeriod) => async (dispatch) => {
         end_date: schoolPeriod.endDate,
         start_date: schoolPeriod.startDate,
         withdrawal_deadline: schoolPeriod.withdrawalDeadline,
+        inscription_start_date: schoolPeriod.inscriptionStartDate,
         subjects: schoolPeriod.subjects.map((subject) => ({
             subject_id: subject.subjectId,
             teacher_id: subject.teacherId,
