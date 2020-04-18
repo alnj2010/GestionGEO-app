@@ -48,7 +48,6 @@ export const cleanSelectedAdmin = (id) => async (dispatch) => {
 };
 
 export const updateAdmin = (admin) => async (dispatch) => {
-    console.log(admin.id, getSessionUserId());
     const payload = {
         id: admin.id,
         first_name: admin.firstName,
