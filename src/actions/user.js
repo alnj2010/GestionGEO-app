@@ -14,8 +14,8 @@ export const ACTIONS = {
   LOGIN: 'user/login',
 };
 
-export const login = ({ identification, password, user_type }) => async (dispatch) => {
-  return User.login({ identification, password, user_type })
+export const login = ({ identification, password, userType }) => async (dispatch) => {
+  return User.login({ identification, password, user_type: userType })
     .then((response) => {
       setSessionUser(response.user);
       setSessionGeoToken(response.token);
@@ -32,7 +32,7 @@ export const login = ({ identification, password, user_type }) => async (dispatc
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };

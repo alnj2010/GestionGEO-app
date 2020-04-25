@@ -22,7 +22,7 @@ export const Constance = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -46,7 +46,7 @@ export const Constance = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },

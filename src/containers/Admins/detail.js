@@ -11,7 +11,7 @@ import {
 import AdminDetail from '../../components/Admins/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class AdminDetailContainer extends Component {
+class AdminDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findAdminById, define } = this.props;
     if (match.params.id) findAdminById(match.params.id);

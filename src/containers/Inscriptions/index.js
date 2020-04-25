@@ -8,7 +8,7 @@ import {
 } from '../../actions/studentInscription';
 import { getSessionStudentId } from '../../storage/sessionStorage';
 
-export class InscriptionContainer extends Component {
+class InscriptionContainer extends Component {
   componentDidMount = () => {
     const { getAvailableSubjects } = this.props;
     const id = getSessionStudentId();

@@ -2,13 +2,7 @@ import AXIOS, { headers } from '../config/axios.config';
 import { URL } from './constants';
 
 export const User = {
-  login({ identification, password, user_type }) {
-    const formData = {
-      identification,
-      password,
-      user_type,
-    };
-
+  login(formData) {
     return AXIOS.post(`${URL.AUTH}`, formData, { headers: headers() })
       .then((response) => {
         if (response.status && response.status !== 200) {
@@ -19,7 +13,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -35,7 +29,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -52,7 +46,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -69,7 +63,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -86,7 +80,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -104,7 +98,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -121,7 +115,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -138,7 +132,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -156,7 +150,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -173,7 +167,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
@@ -192,7 +186,7 @@ export const User = {
       })
       .catch((error) => {
         if (error && error.response && error.response.data)
-          return Promise.reject(error.response.data.error);
+          return Promise.reject(new Error(error.response.data.error));
         return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },

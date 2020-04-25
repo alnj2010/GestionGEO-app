@@ -16,7 +16,7 @@ export const getList = () => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -31,7 +31,7 @@ export const findAdminById = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -85,7 +85,7 @@ export const updateAdmin = (admin) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -114,7 +114,7 @@ export const saveAdmin = (admin) => async (dispatch) => {
       return res.id;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -126,7 +126,7 @@ export const deleteAdmin = (adminId) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };

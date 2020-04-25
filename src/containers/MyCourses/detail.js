@@ -9,7 +9,7 @@ import CourseDetail from '../../components/MyCourses/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionTeacherId } from '../../storage/sessionStorage';
 
-export class courseDetailContainer extends Component {
+class courseDetailContainer extends Component {
   componentDidMount = () => {
     const { match, getEnrolledStudents, define } = this.props;
     if (match.params.id) getEnrolledStudents(match.params.id);

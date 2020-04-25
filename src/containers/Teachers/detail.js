@@ -12,7 +12,7 @@ import { getList } from '../../actions/schoolProgram';
 import TeacherDetail from '../../components/Teachers/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class TeacherDetailContainer extends Component {
+class TeacherDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findTeacherByIdDispatch, defineDispatch, getListDispatch } = this.props;
     if (match.params.id) findTeacherByIdDispatch(match.params.id);

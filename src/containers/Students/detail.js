@@ -13,7 +13,7 @@ import StudentDetail from '../../components/Students/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 
-export class StudentDetailContainer extends Component {
+class StudentDetailContainer extends Component {
   componentDidMount = () => {
     const rol = getSessionUserRol();
     const { match, findStudentById, define } = this.props;

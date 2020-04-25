@@ -17,7 +17,7 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -32,7 +32,7 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -45,7 +45,7 @@ export const inscription = (value) => async (dispatch) => {
         return response;
       })
       .catch((error) => {
-        show(error, 'error')(dispatch);
+        show(error.message, 'error')(dispatch);
         return true;
       });
   }

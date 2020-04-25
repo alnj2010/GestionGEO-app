@@ -6,7 +6,7 @@ import { updateSchoolPeriod, findCurrentSchoolPeriod } from '../../actions/schoo
 import SchoolPeriodActual from '../../components/SchoolPeriods/actual';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class SchoolPeriodActualContainer extends Component {
+class SchoolPeriodActualContainer extends Component {
   componentDidMount = () => {
     const { define, findCurrentSchoolPeriod } = this.props;
     define('periodo semestral');

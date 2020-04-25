@@ -122,96 +122,99 @@ const styles = (theme) => ({
 });
 
 class MenuApp extends React.Component {
-  state = {
-    open: false,
-    anchorEl: null,
-    options: [
-      {
-        link: 'home',
-        name: 'Inicio',
-        component: Home,
-        clicked: false,
-        roles: ['A', 'S', 'T'],
-      },
-      {
-        link: 'inscripcion',
-        name: 'Inscripcion',
-        component: Inscription,
-        clicked: false,
-        roles: ['S'],
-      },
-      {
-        link: 'mis-cursos',
-        name: 'Mis Cursos',
-        component: Cursos,
-        clicked: false,
-        roles: ['T'],
-      },
-      {
-        link: 'constancias',
-        name: 'Constancias',
-        component: Download,
-        clicked: false,
-        roles: ['S', 'T'],
-      },
-      {
-        link: 'administradores',
-        name: 'Administradores',
-        component: Admin,
-        clicked: false,
-        roles: ['A'],
-      },
-      {
-        link: 'programas-academicos',
-        name: 'Programa Academicos',
-        component: SchoolProgram,
-        clicked: false,
-        roles: ['A'],
-      },
-      {
-        link: 'profesores',
-        name: 'Profesores',
-        component: Teacher,
-        clicked: false,
-        roles: ['A'],
-      },
-      {
-        link: 'estudiantes',
-        name: 'Estudiantes',
-        component: Face,
-        clicked: false,
-        roles: ['A'],
-      },
-      {
-        link: 'materias',
-        name: 'Materias',
-        component: Subject,
-        clicked: false,
-        roles: ['A'],
-      },
-      {
-        link: 'periodo-semestral',
-        name: 'Periodo Semestral',
-        component: InsertInvitation,
-        clicked: false,
-        roles: ['A'],
-        options: [
-          {
-            link: 'actual',
-            name: 'Periodo en curso',
-            component: Actual,
-            clicked: false,
-          },
-          {
-            link: 'list',
-            name: 'Periodos',
-            component: ListIcon,
-            clicked: false,
-          },
-        ],
-      },
-    ],
-  };
+  constructor() {
+    super();
+    this.state = {
+      open: false,
+      anchorEl: null,
+      options: [
+        {
+          link: 'home',
+          name: 'Inicio',
+          component: Home,
+          clicked: false,
+          roles: ['A', 'S', 'T'],
+        },
+        {
+          link: 'inscripcion',
+          name: 'Inscripcion',
+          component: Inscription,
+          clicked: false,
+          roles: ['S'],
+        },
+        {
+          link: 'mis-cursos',
+          name: 'Mis Cursos',
+          component: Cursos,
+          clicked: false,
+          roles: ['T'],
+        },
+        {
+          link: 'constancias',
+          name: 'Constancias',
+          component: Download,
+          clicked: false,
+          roles: ['S', 'T'],
+        },
+        {
+          link: 'administradores',
+          name: 'Administradores',
+          component: Admin,
+          clicked: false,
+          roles: ['A'],
+        },
+        {
+          link: 'programas-academicos',
+          name: 'Programa Academicos',
+          component: SchoolProgram,
+          clicked: false,
+          roles: ['A'],
+        },
+        {
+          link: 'profesores',
+          name: 'Profesores',
+          component: Teacher,
+          clicked: false,
+          roles: ['A'],
+        },
+        {
+          link: 'estudiantes',
+          name: 'Estudiantes',
+          component: Face,
+          clicked: false,
+          roles: ['A'],
+        },
+        {
+          link: 'materias',
+          name: 'Materias',
+          component: Subject,
+          clicked: false,
+          roles: ['A'],
+        },
+        {
+          link: 'periodo-semestral',
+          name: 'Periodo Semestral',
+          component: InsertInvitation,
+          clicked: false,
+          roles: ['A'],
+          options: [
+            {
+              link: 'actual',
+              name: 'Periodo en curso',
+              component: Actual,
+              clicked: false,
+            },
+            {
+              link: 'list',
+              name: 'Periodos',
+              component: ListIcon,
+              clicked: false,
+            },
+          ],
+        },
+      ],
+    };
+  }
 
   componentWillMount = () => {
     this.validateToken();

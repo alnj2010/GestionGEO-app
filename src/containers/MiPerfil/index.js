@@ -5,7 +5,7 @@ import { findMiPerfil, updateMiPerfil, cleanSelectedMiPerfil } from '../../actio
 import MiPerfil from '../../components/MiPerfil';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class MiPerfilContainer extends Component {
+class MiPerfilContainer extends Component {
   componentDidMount = () => {
     this.props.findMiPerfil();
     this.props.define('perfil');

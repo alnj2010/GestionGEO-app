@@ -49,7 +49,7 @@ export const updateMiPerfil = (perfil) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -68,7 +68,7 @@ export const changePassword = (data) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };

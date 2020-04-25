@@ -18,7 +18,7 @@ export const getList = () => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -33,7 +33,7 @@ export const findStudentById = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -77,7 +77,7 @@ export const updateStudent = (student) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -109,7 +109,7 @@ export const saveStudent = (student) => async (dispatch) => {
       return res.id;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -121,7 +121,7 @@ export const deleteStudent = (studentId) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -157,7 +157,7 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };
@@ -181,7 +181,7 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       return false;
     });
 };

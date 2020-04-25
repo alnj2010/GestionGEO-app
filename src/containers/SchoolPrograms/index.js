@@ -5,7 +5,7 @@ import { define, cleanDialog, show } from '../../actions/dialog';
 import { getList, deleteSchoolProgram } from '../../actions/schoolProgram';
 import SchoolProgramsList from '../../components/SchoolPrograms';
 
-export class SchoolProgramsListContainer extends Component {
+class SchoolProgramsListContainer extends Component {
   constructor() {
     super();
     this.state = {

@@ -106,8 +106,8 @@ let LoginForm = (props) => {
             <RenderFields>
               {[
                 {
-                  field: 'user_type',
-                  id: 'user_type',
+                  field: 'userType',
+                  id: 'userType',
                   type: 'select',
                   placeholder: '¿Como desea ingresar?',
                   options: rol.map((type) => {
@@ -151,8 +151,8 @@ const loginValidator = (values) => {
   if (!values.identification) {
     errors.identification = 'Cedula es requerida';
   }
-  if (!values.user_type) {
-    errors.user_type = 'Rol es requerido';
+  if (!values.userType) {
+    errors.userType = 'Rol es requerido';
   }
   if (!values.password) {
     errors.password = 'Clave es requerida';

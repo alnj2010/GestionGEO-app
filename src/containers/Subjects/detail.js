@@ -12,7 +12,7 @@ import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import SubjectDetail from '../../components/Subjects/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class SubjectDetailContainer extends Component {
+class SubjectDetailContainer extends Component {
   componentDidMount = () => {
     const {
       match,
@@ -118,4 +118,4 @@ const mD = {
   getSchoolProgramListDispatch: getSchoolProgramList,
 };
 
-export default connect(mS, mD)(SubjectDetailContainer)(SubjectDetailContainer);
+export default connect(mS, mD)(SubjectDetailContainer);

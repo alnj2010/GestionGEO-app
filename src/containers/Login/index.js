@@ -5,10 +5,10 @@ import { login } from '../../actions/user';
 import LoginForm from '../../components/Login';
 import { show, hide } from '../../actions/snackbar';
 
-export class LoginContainer extends Component {
-  handleLogin = ({ identification, password, user_type }) => {
+class LoginContainer extends Component {
+  handleLogin = ({ identification, password, userType }) => {
     const { login, history } = this.props;
-    login({ identification, password, user_type }).then((isLogged) => {
+    login({ identification, password, userType }).then((isLogged) => {
       if (isLogged) history.push('/home');
     });
   };

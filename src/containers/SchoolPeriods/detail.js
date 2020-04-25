@@ -13,7 +13,7 @@ import { getList as getTeacherList } from '../../actions/teacher';
 import SchoolPeriodDetail from '../../components/SchoolPeriods/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class SchoolPeriodDetailContainer extends Component {
+class SchoolPeriodDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSchoolPeriodById, define } = this.props;
     if (match.params.id) findSchoolPeriodById(match.params.id);

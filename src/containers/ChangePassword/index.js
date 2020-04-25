@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ChangePasswordForm from '../../components/ChangePassword';
 import { changePassword } from '../../actions/miPerfil';
 
-export class ChangePassword extends Component {
+class ChangePassword extends Component {
   componentDidMount = () => {};
 
   componentWillUnmount = () => {};

@@ -5,7 +5,7 @@ import { define, cleanDialog, show } from '../../actions/dialog';
 import { getList, deleteSubject } from '../../actions/subject';
 import SubjectsList from '../../components/Subjects';
 
-export class SubjectsListContainer extends Component {
+class SubjectsListContainer extends Component {
   constructor() {
     super();
     this.state = {

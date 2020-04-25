@@ -6,7 +6,7 @@ import {
 } from '../../actions/student';
 import StudentInscriptions from '../../components/Students/inscriptions';
 
-export class StudentInscriptionsContainer extends Component {
+class StudentInscriptionsContainer extends Component {
   constructor() {
     super();
     this.state = {

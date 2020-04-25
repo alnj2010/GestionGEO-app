@@ -11,7 +11,7 @@ import {
 import SchoolProgramDetail from '../../components/SchoolPrograms/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class SchoolProgramDetailContainer extends Component {
+class SchoolProgramDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSchoolProgramById, define } = this.props;
     if (match.params.id) findSchoolProgramById(match.params.id);

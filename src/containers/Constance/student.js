@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import StudentConstance from '../../components/Constance/student';
 import { getSessionStudentId } from '../../storage/sessionStorage';
 
-export class StudentConstanceContainer extends Component {
+class StudentConstanceContainer extends Component {
   render() {
     const id = getSessionStudentId();
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import TeacherHome from '../../components/Home/teacher';
 
-export class TeacherHomeContainer extends Component {
+class TeacherHomeContainer extends Component {
   componentDidMount = () => {};
 
   componentWillUnmount = () => {};

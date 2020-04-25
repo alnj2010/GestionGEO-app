@@ -7,7 +7,7 @@ import { getCurrentEnrolledSubjects } from '../../actions/studentInscription';
 
 import { getSessionStudentId } from '../../storage/sessionStorage';
 
-export class StudentHomeContainer extends Component {
+class StudentHomeContainer extends Component {
   componentDidMount = () => {
     const { getCurrentEnrolledSubjects, findMiPerfil } = this.props;
     const id = getSessionStudentId();

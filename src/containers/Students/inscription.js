@@ -12,7 +12,7 @@ import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 import StudentInscription from '../../components/Students/inscription';
 import { define, cleanDialog } from '../../actions/dialog';
 
-export class StudentInscriptionContainer extends Component {
+class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
     const {
       match: {
