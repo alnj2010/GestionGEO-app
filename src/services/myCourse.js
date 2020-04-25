@@ -1,23 +1,14 @@
 import AXIOS, { headers } from '../config/axios.config';
 import { URL } from './constants';
+import { handleErrorMsg, handleResponseService } from '../helpers';
 
 export const MyCourse = {
   getCourseList(id) {
     return AXIOS.get(`${URL.SCHOOL_PERIOD}/subjectsTaught?teacher_id=${id}`, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 
   getEnrolledStudents(idTeacher, idComplex) {
@@ -27,36 +18,16 @@ export const MyCourse = {
         headers: headers(),
       }
     )
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 
   updateQualifications(payload) {
     return AXIOS.post(`${URL.TEACHER_INSCRIPTION}/loadNotes`, payload, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 };
 

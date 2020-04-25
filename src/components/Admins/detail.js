@@ -6,7 +6,7 @@ import { Form, reduxForm, change, submit, formValueSelector } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import { COORDINATOR_ROL, GENDER, LEVEL_INSTRUCTION, NATIONALITY } from '../../services/constants';
-import jsonToOptions from '../../helpers';
+import { jsonToOptions } from '../../helpers';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 
@@ -135,28 +135,28 @@ class AdminDetail extends Component {
                     field: `rol`,
                     id: `rol`,
                     type: 'select',
-                    options: jsonToOptions(COORDINATOR_ROL),
+                    options: { jsonToOptions }(COORDINATOR_ROL),
                   },
                   {
                     label: 'Sexo',
                     field: `sex`,
                     id: `sex`,
                     type: 'select',
-                    options: jsonToOptions(GENDER),
+                    options: { jsonToOptions }(GENDER),
                   },
                   {
                     label: 'Nivel de instruccion',
                     field: 'levelInstruction',
                     id: 'levelInstruction',
                     type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
+                    options: { jsonToOptions }(LEVEL_INSTRUCTION),
                   },
                   {
                     label: 'Nacionalidad',
                     field: `nationality`,
                     id: `nationality`,
                     type: 'select',
-                    options: jsonToOptions(NATIONALITY),
+                    options: { jsonToOptions }(NATIONALITY),
                   },
                   {
                     label: '¿Discapacidad?',

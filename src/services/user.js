@@ -1,175 +1,76 @@
 import AXIOS, { headers } from '../config/axios.config';
 import { URL } from './constants';
+import { handleErrorMsg, handleResponseService } from '../helpers';
 
 export const User = {
   login(formData) {
     return AXIOS.post(`${URL.AUTH}`, formData, { headers: headers() })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 
   getList() {
     return AXIOS.get(`${URL.ADMIN}?join=profile`, { headers: headers() })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
   getWinnersList() {
     return AXIOS.get(`${URL.ADMIN}/leaderboard`, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
   getAdminList() {
     return AXIOS.get(`${URL.ADMIN}`, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
   findById(id) {
     return AXIOS.get(`${URL.ADMIN}?filter=id||eq||${id}&join=profile`, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 
   findAdminById(id) {
     return AXIOS.get(`${URL.ADMIN}/${id}`, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
   update(player) {
     return AXIOS.put(`${URL.ADMIN}/${player.id}`, player, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
   save(player) {
     return AXIOS.post(`${URL.ADMIN}`, player, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 
   saveAdmin(admin) {
     return AXIOS.post(`${URL.ADMIN}`, admin, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
   delete(adminId) {
     return AXIOS.delete(`${URL.ADMIN}/${adminId}`, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
   uploadPhoto(photo, id) {
     const formData = new FormData();
@@ -177,18 +78,8 @@ export const User = {
     return AXIOS.put(`${URL.ADMIN}/upload/${id}`, formData, {
       headers: headers('form'),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 };
 

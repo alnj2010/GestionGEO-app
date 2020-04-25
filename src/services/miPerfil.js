@@ -1,6 +1,7 @@
 import AXIOS, { headers } from '../config/axios.config';
 import { URL } from './constants';
 import { getSessionUser } from '../storage/sessionStorage';
+import { handleErrorMsg, handleResponseService } from '../helpers';
 
 export const MiPerfil = {
   findMiPerfil() {
@@ -10,36 +11,16 @@ export const MiPerfil = {
     return AXIOS.post(`/updateUser`, perfil, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 
   changePassword(data) {
     return AXIOS.post(`${URL.CHANGE_PASSWORD}`, data, {
       headers: headers(),
     })
-      .then((response) => {
-        if (response.status && response.status !== 200) {
-          const error = { response };
-          throw error;
-        }
-        return response.data;
-      })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
   },
 };
 

@@ -1,5 +1,6 @@
 import AXIOS, { headers } from '../config/axios.config';
 import { URL } from './constants';
+import { handleErrorMsg, handleResponseService } from '../helpers';
 
 export const Constance = {
   getStudyConstance(id) {
@@ -20,11 +21,7 @@ export const Constance = {
         link.setAttribute('download', 'Constancia_de_estudio.pdf');
         link.click();
       })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .catch(handleErrorMsg);
   },
   getStudyHistoricalConstance(id) {
     return AXIOS({
@@ -44,11 +41,7 @@ export const Constance = {
         link.setAttribute('download', 'Constancia_de_estudio.pdf');
         link.click();
       })
-      .catch((error) => {
-        if (error && error.response && error.response.data)
-          return Promise.reject(new Error(error.response.data.error));
-        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
-      });
+      .catch(handleErrorMsg);
   },
 };
 

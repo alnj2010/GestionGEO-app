@@ -11,7 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import RenderFields from '../RenderFields';
 import Dialog from '../Dialog';
 import { show } from '../../actions/dialog';
-import jsonToOptions from '../../helpers';
+import { jsonToOptions } from '../../helpers';
 import { SUBJECT_MODALITY } from '../../services/constants';
 
 const styles = (theme) => ({
@@ -101,7 +101,7 @@ class SubjectDetail extends Component {
                     id: `${schoolProgram}.type`,
                     type: 'select',
                     label: 'modalidad',
-                    options: jsonToOptions(SUBJECT_MODALITY),
+                    options: { jsonToOptions }(SUBJECT_MODALITY),
                   },
                 ]}
               </RenderFields>

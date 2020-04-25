@@ -12,7 +12,7 @@ import {
   NATIONALITY,
   TEACHER_ROL,
 } from '../../services/constants';
-import jsonToOptions from '../../helpers';
+import { jsonToOptions } from '../../helpers';
 
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
@@ -141,35 +141,35 @@ class TeacherDetail extends Component {
                     field: `teacherType`,
                     id: `teacherType`,
                     type: 'select',
-                    options: jsonToOptions(TEACHER_ROL),
+                    options: { jsonToOptions }(TEACHER_ROL),
                   },
                   {
                     label: 'Sexo',
                     field: `sex`,
                     id: `sex`,
                     type: 'select',
-                    options: jsonToOptions(GENDER),
+                    options: { jsonToOptions }(GENDER),
                   },
                   {
                     label: 'Nacionalidad',
                     field: `nationality`,
                     id: `nationality`,
                     type: 'select',
-                    options: jsonToOptions(NATIONALITY),
+                    options: { jsonToOptions }(NATIONALITY),
                   },
                   {
                     label: 'Nivel de instruccion',
                     field: 'levelInstruction',
                     id: 'levelInstruction',
                     type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
+                    options: { jsonToOptions }(LEVEL_INSTRUCTION),
                   },
                   {
                     label: 'Dedicacion',
                     field: `dedication`,
                     id: `dedication`,
                     type: 'select',
-                    options: jsonToOptions(TEACHER_DEDICATION),
+                    options: { jsonToOptions }(TEACHER_DEDICATION),
                   },
                   {
                     label: '¿Discapacidad?',
