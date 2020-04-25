@@ -16,7 +16,7 @@ export const Subject = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   findSubjectById(id) {
@@ -33,7 +33,7 @@ export const Subject = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   update(subject) {
@@ -50,7 +50,7 @@ export const Subject = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 
@@ -68,7 +68,7 @@ export const Subject = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   delete(subjectId) {
@@ -85,7 +85,7 @@ export const Subject = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 };

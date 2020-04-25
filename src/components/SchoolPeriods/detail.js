@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { WEEK_DAYS, SUBJECT_PERIOD_MODALITY } from '../../services/constants';
-import { jsonToOptions } from '../../helpers';
+import jsonToOptions from '../../helpers';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';

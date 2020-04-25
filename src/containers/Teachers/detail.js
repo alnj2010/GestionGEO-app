@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   findTeacherById,
@@ -8,31 +8,38 @@ import {
   cleanSelectedTeacher,
   saveTeacher,
 } from '../../actions/teacher';
-import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
+import { getList } from '../../actions/schoolProgram';
 import TeacherDetail from '../../components/Teachers/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
 export class TeacherDetailContainer extends Component {
   componentDidMount = () => {
-    const { match, findTeacherById, define } = this.props;
-    if (match.params.id) findTeacherById(match.params.id);
-    this.props.getSchoolProgramList();
-    define('profesor');
+    const { match, findTeacherByIdDispatch, defineDispatch, getListDispatch } = this.props;
+    if (match.params.id) findTeacherByIdDispatch(match.params.id);
+    getListDispatch();
+    defineDispatch('profesor');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanSelectedTeacher();
-    this.props.cleanDialog();
+    const { cleanSelectedTeacherDispatch, cleanDialogDispatch } = this.props;
+    cleanSelectedTeacherDispatch();
+    cleanDialogDispatch();
   };
 
   saveTeacher = (values) => {
-    const { match, updateTeacher, findTeacherById, saveTeacher, history } = this.props;
+    const {
+      match,
+      updateTeacherDispatch,
+      findTeacherByIdDispatch,
+      saveTeacherDispatch,
+      history,
+    } = this.props;
     const payload = { ...values };
-    if (match.params.id) updateTeacher({ ...payload, ...match.params });
+    if (match.params.id) updateTeacherDispatch({ ...payload, ...match.params });
     else
-      saveTeacher({ ...payload }).then((response) => {
+      saveTeacherDispatch({ ...payload }).then((response) => {
         if (response) {
-          findTeacherById(response).then((res) => history.push(`edit/${response}`));
+          findTeacherByIdDispatch(response).then(() => history.push(`edit/${response}`));
         }
       });
   };
@@ -43,8 +50,8 @@ export class TeacherDetailContainer extends Component {
   };
 
   handleTeacherDelete = () => {
-    const { deleteTeacher, history, match } = this.props;
-    deleteTeacher(match.params.id).then((res) => history.push('/profesores'));
+    const { deleteTeacherDispatch, history, match } = this.props;
+    deleteTeacherDispatch(match.params.id).then(() => history.push('/profesores'));
   };
 
   render() {
@@ -63,12 +70,31 @@ export class TeacherDetailContainer extends Component {
 }
 
 TeacherDetailContainer.propTypes = {
-  deleteTeacher: func.isRequired,
-  history: object.isRequired,
-  match: object.isRequired,
-  updateTeacher: func.isRequired,
-  findTeacherById: func.isRequired,
-  saveTeacher: func.isRequired,
+  schoolPrograms: PropTypes.shape({}).isRequired,
+
+  teacher: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+
+  findTeacherByIdDispatch: PropTypes.func.isRequired,
+  updateTeacherDispatch: PropTypes.func.isRequired,
+  saveTeacherDispatch: PropTypes.func.isRequired,
+  deleteTeacherDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  cleanSelectedTeacherDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  getListDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -77,16 +103,14 @@ const mS = (state) => ({
 });
 
 const mD = {
-  findTeacherById,
-  updateTeacher,
-  saveTeacher,
-  deleteTeacher,
-  define,
-  cleanSelectedTeacher,
-  cleanDialog,
-  getSchoolProgramList,
+  findTeacherByIdDispatch: findTeacherById,
+  updateTeacherDispatch: updateTeacher,
+  saveTeacherDispatch: saveTeacher,
+  deleteTeacherDispatch: deleteTeacher,
+  defineDispatch: define,
+  cleanSelectedTeacherDispatch: cleanSelectedTeacher,
+  cleanDialogDispatch: cleanDialog,
+  getListDispatch: getList,
 };
 
-TeacherDetailContainer = connect(mS, mD)(TeacherDetailContainer);
-
-export default TeacherDetailContainer;
+export default connect(mS, mD)(TeacherDetailContainer);

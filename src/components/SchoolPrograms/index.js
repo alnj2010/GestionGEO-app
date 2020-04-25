@@ -4,7 +4,7 @@ import { array, bool, object, func } from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
-import { handleExportCsv } from '../../utils/handleExportCsv';
+import handleExportCsv from '../../utils/handleExportCsv';
 
 class SchoolProgramsList extends Component {
   constructor() {

@@ -6,7 +6,7 @@ import { Form, reduxForm, change, submit, formValueSelector } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
 import { show } from '../../actions/dialog';
 import { COORDINATOR_ROL, GENDER, LEVEL_INSTRUCTION, NATIONALITY } from '../../services/constants';
-import { jsonToOptions } from '../../helpers';
+import jsonToOptions from '../../helpers';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 

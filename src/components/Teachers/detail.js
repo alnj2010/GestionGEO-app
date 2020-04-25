@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, change, submit, formValueSelector } from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
+import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
+import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
 import {
   TEACHER_DEDICATION,
@@ -12,7 +12,7 @@ import {
   NATIONALITY,
   TEACHER_ROL,
 } from '../../services/constants';
-import { jsonToOptions } from '../../helpers';
+import jsonToOptions from '../../helpers';
 
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
@@ -43,8 +43,9 @@ class TeacherDetail extends Component {
   }
 
   handleDialogShow = (action, func) => {
+    const { showDispatch } = this.props;
     this.setState({ func }, () => {
-      this.props.show(action);
+      showDispatch(action);
     });
   };
 
@@ -59,7 +60,7 @@ class TeacherDetail extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       teacher,
       teacherType,
     } = this.props;
@@ -212,7 +213,9 @@ class TeacherDetail extends Component {
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
-                        teacherId ? this.handleDialogShow('actualizar', submit) : submit('teacher')
+                        teacherId
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('teacher')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -250,15 +253,30 @@ class TeacherDetail extends Component {
 }
 
 TeacherDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveTeacher: func.isRequired,
-  goBack: func.isRequired,
-  teacherId: number,
-  handleTeacherDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+  classes: PropTypes.shape({
+    form: PropTypes.shape({}).isRequired,
+    buttonContainer: PropTypes.shape({}).isRequired,
+    save: PropTypes.shape({}).isRequired,
+    button: PropTypes.shape({}).isRequired,
+  }).isRequired,
+
+  teacher: PropTypes.shape({
+    first_surname: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+  }).isRequired,
+
+  teacherType: PropTypes.string.isRequired,
+  teacherId: PropTypes.number.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  handleTeacherDelete: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  saveTeacher: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
 };
 
 const teacherValidation = (values) => {
@@ -293,15 +311,15 @@ const teacherValidation = (values) => {
 
   return errors;
 };
+const selector = formValueSelector('teacher');
 
-TeacherDetail = reduxForm({
+let TeacherDetailWrapper = reduxForm({
   form: 'teacher',
   validate: teacherValidation,
   enableReinitialize: true,
 })(TeacherDetail);
-const selector = formValueSelector('teacher');
 
-TeacherDetail = connect(
+TeacherDetailWrapper = connect(
   (state) => ({
     initialValues: {
       identification: state.teacherReducer.selectedTeacher.identification
@@ -357,7 +375,7 @@ TeacherDetail = connect(
     action: state.dialogReducer.action,
     teacherType: selector(state, 'teacherType'),
   }),
-  { change, show, submit }
-)(TeacherDetail);
+  { showDispatch: show, submitDispatch: submit }
+)(TeacherDetailWrapper);
 
-export default withStyles(styles)(TeacherDetail);
+export default withStyles(styles)(TeacherDetailWrapper);

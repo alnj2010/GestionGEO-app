@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MaterialTable from 'material-table';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
-import { handleExportCsv } from '../../utils/handleExportCsv';
+import handleExportCsv from '../../utils/handleExportCsv';
 
 class StudentInscriptions extends Component {
   constructor() {

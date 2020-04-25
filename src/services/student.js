@@ -16,7 +16,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   findStudentById(id) {
@@ -33,7 +33,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   update(student) {
@@ -50,7 +50,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 
@@ -68,7 +68,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   delete(studentId) {
@@ -85,7 +85,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 
@@ -106,7 +106,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 
@@ -124,7 +124,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   editStudentPeriodSchool(payload) {
@@ -141,7 +141,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   getInscribedSchoolPeriods(studentId) {
@@ -158,7 +158,7 @@ export const Student = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 };

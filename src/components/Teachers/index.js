@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
-import { array, bool, object, func } from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
-import { handleExportCsv } from '../../utils/handleExportCsv';
+import handleExportCsv from '../../utils/handleExportCsv';
 
 class TeachersList extends Component {
   constructor() {
@@ -75,7 +75,7 @@ class TeachersList extends Component {
                 icon: 'delete',
                 tooltip: 'Borrar profesor',
                 onClick: (event, rowData) => {
-                  this.handleDialogShow('eliminar', (entity) => handleDeleteTeacher(rowData.id));
+                  this.handleDialogShow('eliminar', () => handleDeleteTeacher(rowData.id));
                 },
               },
             ]}
@@ -98,10 +98,25 @@ class TeachersList extends Component {
 }
 
 TeachersList.propTypes = {
-  teachers: array,
-  isLoading: bool.isRequired,
-  history: object.isRequired,
-  handleDeleteTeacher: func.isRequired,
+  teachers: PropTypes.PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      email: PropTypes.string.isRequired,
+      identification: PropTypes.string.isRequired,
+      first_name: PropTypes.string.isRequired,
+      first_surname: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+
+  isLoading: PropTypes.bool.isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  handleDeleteTeacher: PropTypes.func.isRequired,
+
+  show: PropTypes.func.isRequired,
 };
 
 export default TeachersList;

@@ -6,7 +6,7 @@ import { Fab, Grid } from '@material-ui/core';
 import Inscription from '@material-ui/icons/HowToVote';
 import Download from '@material-ui/icons/Archive';
 import Dialog from '../Dialog';
-import { handleExportCsv } from '../../utils/handleExportCsv';
+import handleExportCsv from '../../utils/handleExportCsv';
 import { Constance } from '../../services/constance';
 
 class StudentsList extends Component {

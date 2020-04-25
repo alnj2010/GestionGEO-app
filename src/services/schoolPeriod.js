@@ -16,7 +16,7 @@ export const SchoolPeriod = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   findSchoolPeriodById(id) {
@@ -33,7 +33,7 @@ export const SchoolPeriod = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   findCurrentSchoolPeriod() {
@@ -50,7 +50,7 @@ export const SchoolPeriod = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   update(shoolPeriod) {
@@ -68,7 +68,7 @@ export const SchoolPeriod = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 
@@ -86,7 +86,7 @@ export const SchoolPeriod = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
   delete(shoolPeriodId) {
@@ -103,7 +103,7 @@ export const SchoolPeriod = {
       .catch((error) => {
         if (error && error.response && error.response.data)
           return Promise.reject(error.response.data.error);
-        return Promise.reject('Ups! Al parecer hay un error desconocido.');
+        return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
       });
   },
 };

@@ -1,6 +1,6 @@
 import { CsvBuilder } from 'filefy';
 
-export function handleExportCsv(columns, renderData, fileName) {
+export default function handleExportCsv(columns, renderData, fileName) {
   const csvColumns = columns.filter((columnDef) => {
     return !columnDef.hidden && columnDef.field && columnDef.export !== false;
   });
