@@ -12,18 +12,20 @@ export class AdminsListContainer extends Component {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
     const { getList, define } = this.props;
     getList().then(() => this.setState({ isLoading: false }));
     define('administrador');
   };
+
   componentWillUnmount = () => {
     this.props.cleanDialog();
   };
 
-  handleDeleteAdmin = id => {
+  handleDeleteAdmin = (id) => {
     const { getList, deleteAdmin } = this.props;
-    deleteAdmin(id).then(res => getList());
+    deleteAdmin(id).then((res) => getList());
   };
 
   render() {
@@ -49,7 +51,7 @@ AdminsListContainer.propTypes = {
   deleteAdmin: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   admins: state.adminReducer.list,
 });
 
@@ -61,9 +63,6 @@ const mD = {
   show,
 };
 
-AdminsListContainer = connect(
-  mS,
-  mD,
-)(AdminsListContainer);
+AdminsListContainer = connect(mS, mD)(AdminsListContainer);
 
 export default AdminsListContainer;

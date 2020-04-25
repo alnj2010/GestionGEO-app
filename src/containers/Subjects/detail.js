@@ -11,6 +11,7 @@ import {
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import SubjectDetail from '../../components/Subjects/detail';
 import { define, cleanDialog } from '../../actions/dialog';
+
 export class SubjectDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSubjectById, define } = this.props;
@@ -18,26 +19,20 @@ export class SubjectDetailContainer extends Component {
     this.props.getSchoolProgramList();
     define('materia');
   };
+
   componentWillUnmount = () => {
     this.props.cleanSelectedSubject();
     this.props.cleanDialog();
-    
   };
 
-  saveSubject = values => {
-    const {
-      match,
-      updateSubject,
-      findSubjectById,
-      saveSubject,
-      history,
-    } = this.props;
+  saveSubject = (values) => {
+    const { match, updateSubject, findSubjectById, saveSubject, history } = this.props;
     const payload = { ...values };
     if (match.params.id) updateSubject({ ...payload, ...match.params });
     else
-      saveSubject({ ...payload }).then(response => {
+      saveSubject({ ...payload }).then((response) => {
         if (response) {
-          findSubjectById(response).then(res => history.push(`edit/${response}`));
+          findSubjectById(response).then((res) => history.push(`edit/${response}`));
         }
       });
   };
@@ -49,21 +44,17 @@ export class SubjectDetailContainer extends Component {
 
   handleSubjectDelete = () => {
     const { deleteSubject, history, match } = this.props;
-    deleteSubject(match.params.id).then(res => history.push('/materias'));
+    deleteSubject(match.params.id).then((res) => history.push('/materias'));
   };
 
-
   render() {
-    const {
-      subject,
-      schoolPrograms
-    } = this.props;
+    const { subject, schoolPrograms } = this.props;
     return (
       <SubjectDetail
         schoolPrograms={schoolPrograms}
         saveSubject={this.saveSubject}
         goBack={this.goBack}
-        subject = {subject}
+        subject={subject}
         subjectId={subject.id}
         handleSubjectDelete={this.handleSubjectDelete}
       />
@@ -80,7 +71,7 @@ SubjectDetailContainer.propTypes = {
   saveSubject: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   subject: state.subjectReducer.selectedSubject,
   schoolPrograms: state.schoolProgramReducer.list,
 });
@@ -93,12 +84,9 @@ const mD = {
   define,
   cleanSelectedSubject,
   cleanDialog,
-  getSchoolProgramList
+  getSchoolProgramList,
 };
 
-SubjectDetailContainer = connect(
-  mS,
-  mD,
-)(SubjectDetailContainer);
+SubjectDetailContainer = connect(mS, mD)(SubjectDetailContainer);
 
 export default SubjectDetailContainer;

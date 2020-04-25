@@ -6,18 +6,18 @@ import AdminHome from './admin';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 
 function Home() {
-    const rol = getSessionUserRol();
+  const rol = getSessionUserRol();
 
-    switch (rol) {
-        case 'A':
-            return <AdminHome />;
-        case 'T':
-            return <TeacherHomeContainer />;
-        case 'S':
-            return <StudentHomeContainer />;
-        default:
-            return null;
-    }
+  switch (rol) {
+    case 'A':
+      return <AdminHome />;
+    case 'T':
+      return <TeacherHomeContainer />;
+    case 'S':
+      return <StudentHomeContainer />;
+    default:
+      return null;
+  }
 }
 
 export default Home;

@@ -4,11 +4,11 @@ import StudentConstance from '../../components/Constance/student';
 import { getSessionStudentId } from '../../storage/sessionStorage';
 
 export class StudentConstanceContainer extends Component {
-    render() {
-        const id = getSessionStudentId();
+  render() {
+    const id = getSessionStudentId();
 
-        return <StudentConstance id={id} />;
-    }
+    return <StudentConstance id={id} />;
+  }
 }
 
 StudentConstanceContainer.propTypes = {};

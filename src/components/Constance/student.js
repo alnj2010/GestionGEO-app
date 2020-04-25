@@ -1,4 +1,4 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -6,18 +6,16 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import Download from '@material-ui/icons/GetApp';
-import logoConstance from '../../images/constance.png'
+import logoConstance from '../../images/constance.png';
 import { Constance } from '../../services/constance';
 
-
-
-const styles = theme => ({
-  cardContainer:{
-    display:'flex',
+const styles = (theme) => ({
+  cardContainer: {
+    display: 'flex',
   },
   card: {
     display: 'flex',
-    marginRight:10
+    marginRight: 10,
   },
   details: {
     display: 'flex',
@@ -28,9 +26,9 @@ const styles = theme => ({
   },
   cover: {
     width: 151,
-    height:130,
-    marginTop:21,
-    backgroundSize:'51%'  
+    height: 130,
+    marginTop: 21,
+    backgroundSize: '51%',
   },
   controls: {
     display: 'flex',
@@ -38,54 +36,55 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
   },
-
 });
 
-const RenderCardConstance =withStyles(styles, { withTheme: true })(({classes,title,subtitle,action})=>{
-
-  return(        
-  <Card className={classes.card}>
-    <div className={classes.details}>
-      <CardContent className={classes.content}>
-        <Typography component="h5" variant="h5">
-          {title}
-        </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
-         {subtitle}
-        </Typography>
-      </CardContent>
-      <div className={classes.controls}>
-        <IconButton aria-label="dowload" onClick={action}>
-          <Download/>
-        </IconButton>
-      </div>
-    </div>
-    <CardMedia
-      className={classes.cover}
-      image={logoConstance}
-      title="constance"
-    />
-  </Card>)
-})
+const RenderCardConstance = withStyles(styles, { withTheme: true })(
+  ({ classes, title, subtitle, action }) => {
+    return (
+      <Card className={classes.card}>
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography component="h5" variant="h5">
+              {title}
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              {subtitle}
+            </Typography>
+          </CardContent>
+          <div className={classes.controls}>
+            <IconButton aria-label="dowload" onClick={action}>
+              <Download />
+            </IconButton>
+          </div>
+        </div>
+        <CardMedia className={classes.cover} image={logoConstance} title="constance" />
+      </Card>
+    );
+  }
+);
 
 class StudentConstance extends Component {
-  render(){
-    const {classes,id} = this.props;
+  render() {
+    const { classes, id } = this.props;
     return (
       <div className={classes.cardContainer}>
-        <RenderCardConstance 
-          title={'Constancia de estudio'} 
-          subtitle={'Constancia de estudio'}
-          action={()=>{ Constance.getStudyConstance(id) }}
+        <RenderCardConstance
+          title="Constancia de estudio"
+          subtitle="Constancia de estudio"
+          action={() => {
+            Constance.getStudyConstance(id);
+          }}
         />
-         <RenderCardConstance 
-          title={'Constancia de notas'} 
-          subtitle={'Constancia de notas'}
-          action={()=>{ Constance.getStudyHistoricalConstance(id) }}
+        <RenderCardConstance
+          title="Constancia de notas"
+          subtitle="Constancia de notas"
+          action={() => {
+            Constance.getStudyHistoricalConstance(id);
+          }}
         />
-      </div>    
-)    
-  };
+      </div>
+    );
+  }
 }
 
 StudentConstance.propTypes = {};

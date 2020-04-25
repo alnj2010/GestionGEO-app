@@ -3,33 +3,33 @@ import { Form, Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import { bool, object, string, func } from 'prop-types';
 import PasswordInput from '../PasswordInput';
 import CustomizedSnackbar from '../Snackbar';
 import TextInput from '../TextInput';
-import { bool, object, string, func } from 'prop-types';
-import RenderFields from '../RenderFields'
-import logo from '../../images/icon-gestionGeo.svg'
-import backImage from '../../images/pif.jpg'
+import RenderFields from '../RenderFields';
+import logo from '../../images/icon-gestionGeo.svg';
+import backImage from '../../images/pif.jpg';
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
     paddingLeft: '30%',
     paddingTop: '10%',
     paddingRight: '30%',
     backgroundImage: `url(${backImage})`,
-    height:"100vh"
+    height: '100vh',
   },
   input: {
     width: '100%',
   },
   form: {
-    borderRadius:"10px"
+    borderRadius: '10px',
   },
   formContainer: {
     paddingLeft: '10%',
     paddingRight: '10%',
     paddingTop: '5%',
-    backgroundColor:'white'    
+    backgroundColor: 'white',
   },
   forgotPassword: {
     textAlign: 'right',
@@ -51,43 +51,34 @@ const styles = theme => ({
     fontWeight: 550,
   },
   logo: {
-    width:"60%",
-    height: "auto",
+    width: '60%',
+    height: 'auto',
   },
 });
 
-let LoginForm = props => {
-  const {
-    classes,
-    handleLogin,
-    handleSubmit,
-    pristine,
-    submitting,
-    valid,
-  } = props;
-  let rol=[{
-    key:"ESTUDIANTE",
-    value:"S"
-  },{
-    key:"ADMINISTRADOR",
-    value:"A"
-  },{
-    key:"PROFESOR",
-    value:"T"
-  }]
+let LoginForm = (props) => {
+  const { classes, handleLogin, handleSubmit, pristine, submitting, valid } = props;
+  const rol = [
+    {
+      key: 'ESTUDIANTE',
+      value: 'S',
+    },
+    {
+      key: 'ADMINISTRADOR',
+      value: 'A',
+    },
+    {
+      key: 'PROFESOR',
+      value: 'T',
+    },
+  ];
   return (
     <Form onSubmit={handleSubmit(handleLogin)}>
       <Grid container className={classes.container}>
         <Grid className={classes.form} item xs={12}>
-          <Grid
-            container
-            spacing={8}
-            className={classes.formContainer}
-            id="loginForm"
-          >
-            <Grid container item xs={12} justify="center" direction="column" alignItems="center">            
-      
-              <img src={logo} alt="GestionGEO" className={classes.logo}/>
+          <Grid container spacing={8} className={classes.formContainer} id="loginForm">
+            <Grid container item xs={12} justify="center" direction="column" alignItems="center">
+              <img src={logo} alt="GestionGEO" className={classes.logo} />
             </Grid>
 
             <Grid item xs={12}>
@@ -112,9 +103,22 @@ let LoginForm = props => {
                 inputLabel="Clave"
               />
             </Grid>
-              <RenderFields >{[
-                {field: 'user_type', id: 'user_type', type: 'select', placeholder:'¿Como desea ingresar?', options: rol.map(type => { return { key: type.key, value: type.value } }) },
-              ]}</RenderFields>
+            <RenderFields>
+              {[
+                {
+                  field: 'user_type',
+                  id: 'user_type',
+                  type: 'select',
+                  placeholder: '¿Como desea ingresar?',
+                  options: rol.map((type) => {
+                    return {
+                      key: type.key,
+                      value: type.value,
+                    };
+                  }),
+                },
+              ]}
+            </RenderFields>
 
             <Grid item xs={12}>
               <Button
@@ -142,7 +146,7 @@ LoginForm.propTypes = {
   handleLogin: func.isRequired,
 };
 
-const loginValidator = values => {
+const loginValidator = (values) => {
   const errors = {};
   if (!values.identification) {
     errors.identification = 'Cedula es requerida';

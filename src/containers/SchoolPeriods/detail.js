@@ -12,6 +12,7 @@ import { getList as getSubjectList } from '../../actions/subject';
 import { getList as getTeacherList } from '../../actions/teacher';
 import SchoolPeriodDetail from '../../components/SchoolPeriods/detail';
 import { define, cleanDialog } from '../../actions/dialog';
+
 export class SchoolPeriodDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSchoolPeriodById, define } = this.props;
@@ -20,13 +21,13 @@ export class SchoolPeriodDetailContainer extends Component {
     this.props.getTeacherList();
     define('Periodo semestral');
   };
+
   componentWillUnmount = () => {
     this.props.cleanSelectedSchoolPeriod();
     this.props.cleanDialog();
-    
   };
 
-  saveSchoolPeriod = values => {
+  saveSchoolPeriod = (values) => {
     const {
       match,
       updateSchoolPeriod,
@@ -34,14 +35,14 @@ export class SchoolPeriodDetailContainer extends Component {
       saveSchoolPeriod,
       history,
     } = this.props;
-  
-   if (match.params.id) updateSchoolPeriod({ ...values, ...match.params });
-   else
-    saveSchoolPeriod({ ...values }).then(response => {
-      if (response) {
-        findSchoolPeriodById(response).then(res => history.push(`edit/${response}`));
-      }
-    });
+
+    if (match.params.id) updateSchoolPeriod({ ...values, ...match.params });
+    else
+      saveSchoolPeriod({ ...values }).then((response) => {
+        if (response) {
+          findSchoolPeriodById(response).then((res) => history.push(`edit/${response}`));
+        }
+      });
   };
 
   goBack = () => {
@@ -51,16 +52,11 @@ export class SchoolPeriodDetailContainer extends Component {
 
   handleSchoolPeriodDelete = () => {
     const { deleteSchoolPeriod, history, match } = this.props;
-    deleteSchoolPeriod(match.params.id).then(res => history.push('/periodo-semestral'));
+    deleteSchoolPeriod(match.params.id).then((res) => history.push('/periodo-semestral'));
   };
 
-
   render() {
-    const {
-      schoolPeriod,
-      subjects,
-      teachers,
-    } = this.props;
+    const { schoolPeriod, subjects, teachers } = this.props;
     return (
       <SchoolPeriodDetail
         subjects={subjects}
@@ -84,7 +80,7 @@ SchoolPeriodDetailContainer.propTypes = {
   saveSchoolPeriod: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   schoolPeriod: state.schoolPeriodReducer.selectedSchoolPeriod,
   subjects: state.subjectReducer.list,
   teachers: state.teacherReducer.list,
@@ -102,9 +98,6 @@ const mD = {
   getTeacherList,
 };
 
-SchoolPeriodDetailContainer = connect(
-  mS,
-  mD,
-)(SchoolPeriodDetailContainer);
+SchoolPeriodDetailContainer = connect(mS, mD)(SchoolPeriodDetailContainer);
 
 export default SchoolPeriodDetailContainer;

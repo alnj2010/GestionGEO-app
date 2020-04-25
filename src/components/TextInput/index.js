@@ -15,7 +15,7 @@ class TextInput extends Component {
       meta: { touched, error },
     } = this.props;
     return (
-      <React.Fragment>
+      <>
         <TextField
           id={id}
           label={label}
@@ -26,7 +26,7 @@ class TextInput extends Component {
           {...input}
         />
         {touched && error && <p style={{ color: 'red' }}>{error}</p>}
-      </React.Fragment>
+      </>
     );
   }
 }

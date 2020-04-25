@@ -12,18 +12,20 @@ export class TeachersListContainer extends Component {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
     const { getList, define } = this.props;
     getList().then(() => this.setState({ isLoading: false }));
     define('Profesor');
   };
+
   componentWillUnmount = () => {
     this.props.cleanDialog();
   };
 
-  handleDeleteTeacher = id => {
+  handleDeleteTeacher = (id) => {
     const { getList, deleteTeacher } = this.props;
-    deleteTeacher(id).then(res => getList());
+    deleteTeacher(id).then((res) => getList());
   };
 
   render() {
@@ -49,7 +51,7 @@ TeachersListContainer.propTypes = {
   deleteTeacher: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   teachers: state.teacherReducer.list,
 });
 
@@ -61,9 +63,6 @@ const mD = {
   show,
 };
 
-TeachersListContainer = connect(
-  mS,
-  mD,
-)(TeachersListContainer);
+TeachersListContainer = connect(mS, mD)(TeachersListContainer);
 
 export default TeachersListContainer;

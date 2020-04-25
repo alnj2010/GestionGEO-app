@@ -12,8 +12,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
-import { hide } from '../../actions/snackbar';
 import { oneOf, func, node, string, object } from 'prop-types';
+import { hide } from '../../actions/snackbar';
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -22,7 +22,7 @@ const variantIcon = {
   info: InfoIcon,
 };
 
-const styles1 = theme => ({
+const styles1 = (theme) => ({
   success: {
     backgroundColor: green[600],
   },
@@ -88,7 +88,7 @@ MySnackbarContent.propTypes = {
 
 const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
 
-const styles2 = theme => ({
+const styles2 = (theme) => ({
   margin: {
     margin: theme.spacing.unit,
   },
@@ -123,11 +123,7 @@ class CustomizedSnackbars extends React.Component {
         autoHideDuration={3000}
         onClose={this.handleClose}
       >
-        <MySnackbarContentWrapper
-          onClose={this.handleClose}
-          variant={variant}
-          message={message}
-        />
+        <MySnackbarContentWrapper onClose={this.handleClose} variant={variant} message={message} />
       </Snackbar>
     );
   }
@@ -138,7 +134,7 @@ CustomizedSnackbars.propTypes = {
 };
 CustomizedSnackbars = withStyles(styles2)(CustomizedSnackbars);
 
-const mS = state => ({
+const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
   message: state.snackbarReducer.message,
   variant: state.snackbarReducer.variant,
@@ -148,9 +144,6 @@ const mD = {
   hide,
 };
 
-CustomizedSnackbars = connect(
-  mS,
-  mD,
-)(CustomizedSnackbars);
+CustomizedSnackbars = connect(mS, mD)(CustomizedSnackbars);
 
 export default withStyles(styles2)(CustomizedSnackbars);

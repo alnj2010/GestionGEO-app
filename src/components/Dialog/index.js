@@ -36,9 +36,7 @@ class AlertDialogSlide extends React.Component {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">
-          {`${action} ${entity}`}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">{`${action} ${entity}`}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Estas seguro que quieres {action} el {entity}?
@@ -56,7 +54,7 @@ class AlertDialogSlide extends React.Component {
     );
   }
 }
-const mS = state => ({
+const mS = (state) => ({
   action: state.dialogReducer.action,
   entity: state.dialogReducer.entity,
   open: state.dialogReducer.open,
@@ -67,8 +65,5 @@ const mD = {
   show,
 };
 
-AlertDialogSlide = connect(
-  mS,
-  mD,
-)(AlertDialogSlide);
+AlertDialogSlide = connect(mS, mD)(AlertDialogSlide);
 export default AlertDialogSlide;

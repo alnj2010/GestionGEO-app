@@ -12,23 +12,20 @@ export class MisCursosContainer extends Component {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
     const { getCoursesList, define } = this.props;
     getCoursesList();
     define('cursos');
   };
+
   componentWillUnmount = () => {
     this.props.cleanDialog();
   };
 
   render() {
-  const {myCourses,history} =this.props;
-    return (
-      <MyCoursesList
-        history={history}
-        myCourses={myCourses}
-      />
-    );
+    const { myCourses, history } = this.props;
+    return <MyCoursesList history={history} myCourses={myCourses} />;
   }
 }
 
@@ -38,7 +35,7 @@ MisCursosContainer.propTypes = {
   getCoursesList: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   myCourses: state.myCourseReducer.list,
 });
 
@@ -49,9 +46,6 @@ const mD = {
   show,
 };
 
-MisCursosContainer = connect(
-  mS,
-  mD,
-)(MisCursosContainer);
+MisCursosContainer = connect(mS, mD)(MisCursosContainer);
 
 export default MisCursosContainer;

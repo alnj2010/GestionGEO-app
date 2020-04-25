@@ -11,6 +11,7 @@ import {
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import TeacherDetail from '../../components/Teachers/detail';
 import { define, cleanDialog } from '../../actions/dialog';
+
 export class TeacherDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findTeacherById, define } = this.props;
@@ -18,26 +19,20 @@ export class TeacherDetailContainer extends Component {
     this.props.getSchoolProgramList();
     define('profesor');
   };
+
   componentWillUnmount = () => {
     this.props.cleanSelectedTeacher();
     this.props.cleanDialog();
-    
   };
 
-  saveTeacher = values => {
-    const {
-      match,
-      updateTeacher,
-      findTeacherById,
-      saveTeacher,
-      history,
-    } = this.props;
+  saveTeacher = (values) => {
+    const { match, updateTeacher, findTeacherById, saveTeacher, history } = this.props;
     const payload = { ...values };
     if (match.params.id) updateTeacher({ ...payload, ...match.params });
     else
-      saveTeacher({ ...payload }).then(response => {
+      saveTeacher({ ...payload }).then((response) => {
         if (response) {
-          findTeacherById(response).then(res => history.push(`edit/${response}`));
+          findTeacherById(response).then((res) => history.push(`edit/${response}`));
         }
       });
   };
@@ -49,15 +44,11 @@ export class TeacherDetailContainer extends Component {
 
   handleTeacherDelete = () => {
     const { deleteTeacher, history, match } = this.props;
-    deleteTeacher(match.params.id).then(res => history.push('/profesores'));
+    deleteTeacher(match.params.id).then((res) => history.push('/profesores'));
   };
 
-
   render() {
-    const {
-      teacher,
-      schoolPrograms
-    } = this.props;
+    const { teacher, schoolPrograms } = this.props;
     return (
       <TeacherDetail
         schoolPrograms={schoolPrograms}
@@ -80,7 +71,7 @@ TeacherDetailContainer.propTypes = {
   saveTeacher: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   teacher: state.teacherReducer.selectedTeacher,
   schoolPrograms: state.schoolProgramReducer.list,
 });
@@ -93,12 +84,9 @@ const mD = {
   define,
   cleanSelectedTeacher,
   cleanDialog,
-  getSchoolProgramList
+  getSchoolProgramList,
 };
 
-TeacherDetailContainer = connect(
-  mS,
-  mD,
-)(TeacherDetailContainer);
+TeacherDetailContainer = connect(mS, mD)(TeacherDetailContainer);
 
 export default TeacherDetailContainer;

@@ -1,7 +1,7 @@
 import { ACTIONS } from '../actions/miPerfil';
 
 const initialState = {
-    selectedMiPerfil: {},
+  selectedMiPerfil: {},
 };
 
 const miPerfilReducer = (state = initialState, action) => {

@@ -2,10 +2,10 @@ import { ACTIONS } from '../actions/student';
 
 const initialState = {
   list: [],
-  selectedStudent: {student:{}},
+  selectedStudent: { student: {} },
   availableSubjects: [],
-  inscribedSchoolPeriods:[],
-  selectedStudentSchoolPeriod:{}
+  inscribedSchoolPeriods: [],
+  selectedStudentSchoolPeriod: {},
 };
 
 const studentReducer = (state = initialState, action) => {
@@ -16,13 +16,13 @@ const studentReducer = (state = initialState, action) => {
       return { ...state, ...action.payload };
     case ACTIONS.CLEAN_SELECTED_STUDENT:
       return { ...state, selectedStudent: {} };
-      
+
     case ACTIONS.AVAILABLE_SUBJECTS:
       return { ...state, ...action.payload };
-    
+
     case ACTIONS.INSCRIBED_SCHOOL_PERIODS:
       return { ...state, ...action.payload };
-    
+
     case ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD:
       return { ...state, ...action.payload };
     default:

@@ -1,9 +1,9 @@
-import React,{ Component } from 'react';
+import React, { Component } from 'react';
 
 class TeacherConstance extends Component {
-  render(){
-    return (<h1>Teacher</h1>)    
-  };
+  render() {
+    return <h1>Teacher</h1>;
+  }
 }
 
 TeacherConstance.propTypes = {};

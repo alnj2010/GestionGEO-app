@@ -1,8 +1,8 @@
 import { ACTIONS } from '../actions/myCourse';
 
 const initialState = {
-    list: [],
-    enrolledStudents:[]
+  list: [],
+  enrolledStudents: [],
 };
 
 const myCourseReducer = (state = initialState, action) => {
@@ -10,7 +10,7 @@ const myCourseReducer = (state = initialState, action) => {
     case ACTIONS.LIST:
       return { ...state, ...action.payload };
     case ACTIONS.ENROLLED_STUDENTS:
-        return { ...state, ...action.payload };
+      return { ...state, ...action.payload };
     case ACTIONS.CLEAN_SELECTED_COURSE:
       return { ...state, enrolledStudents: [] };
     default:

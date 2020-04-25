@@ -20,8 +20,9 @@ class PasswordInput extends Component {
   }
 
   handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
+    this.setState((state) => ({ showPassword: !state.showPassword }));
   };
+
   render() {
     const {
       input,
@@ -41,10 +42,7 @@ class PasswordInput extends Component {
           endAdornment={
             <InputAdornment position="end">
               <Tooltip title={showPassword ? 'Hide' : 'Show'} placement="right">
-                <IconButton
-                  aria-label={ariaLabel}
-                  onClick={this.handleClickShowPassword}
-                >
+                <IconButton aria-label={ariaLabel} onClick={this.handleClickShowPassword}>
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </Tooltip>

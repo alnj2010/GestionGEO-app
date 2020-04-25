@@ -1,6 +1,5 @@
 import { ACTIONS } from '../actions/studentInscription';
 
-
 const initialState = {
   currentEnrolledSubjects: {},
   availableSubjects: [],
@@ -12,7 +11,7 @@ const StudentInscription = (state = initialState, action) => {
     case ACTIONS.CURRENT_ENROLLED_SUBJECTS:
       return { ...state, ...action.payload };
     case ACTIONS.CLEAN_AVAILABLE_SUBJECTS:
-        return { ...state, availableSubjects: [] };
+      return { ...state, availableSubjects: [] };
     default:
       return state;
   }

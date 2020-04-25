@@ -2,61 +2,56 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Inscription from '../../components/Inscriptions';
 import {
-    getAvailableSubjects,
-    inscription,
-    cleanAvailableSubjects,
+  getAvailableSubjects,
+  inscription,
+  cleanAvailableSubjects,
 } from '../../actions/studentInscription';
 import { getSessionStudentId } from '../../storage/sessionStorage';
 
 export class InscriptionContainer extends Component {
-    componentDidMount = () => {
-        const { getAvailableSubjects } = this.props;
-        let id = getSessionStudentId();
-        getAvailableSubjects(id);
-    };
-    componentWillUnmount = () => {
-        this.props.cleanAvailableSubjects();
-    };
+  componentDidMount = () => {
+    const { getAvailableSubjects } = this.props;
+    const id = getSessionStudentId();
+    getAvailableSubjects(id);
+  };
 
-    saveInscription = (value) => {
-        const { inscription, history } = this.props;
-        let payload = {
-            student_id: getSessionStudentId(),
-            status: 'REG',
-            subjects: value.map((subject) => ({
-                school_period_subject_teacher_id:
-                    subject.school_period_subject_teacher_id,
-            })),
-        };
-        inscription(payload).then((res) => {
-            if (res) {
-                history.replace(`/home`);
-            }
-        });
+  componentWillUnmount = () => {
+    this.props.cleanAvailableSubjects();
+  };
+
+  saveInscription = (value) => {
+    const { inscription, history } = this.props;
+    const payload = {
+      student_id: getSessionStudentId(),
+      status: 'REG',
+      subjects: value.map((subject) => ({
+        school_period_subject_teacher_id: subject.school_period_subject_teacher_id,
+      })),
     };
+    inscription(payload).then((res) => {
+      if (res) {
+        history.replace(`/home`);
+      }
+    });
+  };
 
-    render() {
-        const { subjects } = this.props;
+  render() {
+    const { subjects } = this.props;
 
-        return (
-            <Inscription
-                subjects={subjects}
-                saveInscription={this.saveInscription}
-            />
-        );
-    }
+    return <Inscription subjects={subjects} saveInscription={this.saveInscription} />;
+  }
 }
 
 InscriptionContainer.propTypes = {};
 
 const mS = (state) => ({
-    subjects: state.studentInscriptionReducer.availableSubjects,
+  subjects: state.studentInscriptionReducer.availableSubjects,
 });
 
 const mD = {
-    getAvailableSubjects,
-    inscription,
-    cleanAvailableSubjects,
+  getAvailableSubjects,
+  inscription,
+  cleanAvailableSubjects,
 };
 
 InscriptionContainer = connect(mS, mD)(InscriptionContainer);

@@ -12,18 +12,20 @@ export class SchoolProgramsListContainer extends Component {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
     const { getList, define } = this.props;
     getList().then(() => this.setState({ isLoading: false }));
     define('Programa academico');
   };
+
   componentWillUnmount = () => {
     this.props.cleanDialog();
   };
 
-  handleDeleteSchoolProgram = id => {
+  handleDeleteSchoolProgram = (id) => {
     const { getList, deleteSchoolProgram } = this.props;
-    deleteSchoolProgram(id).then(res => getList());
+    deleteSchoolProgram(id).then((res) => getList());
   };
 
   render() {
@@ -49,7 +51,7 @@ SchoolProgramsListContainer.propTypes = {
   deleteSchoolProgram: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   schoolPrograms: state.schoolProgramReducer.list,
 });
 
@@ -61,9 +63,6 @@ const mD = {
   show,
 };
 
-SchoolProgramsListContainer = connect(
-  mS,
-  mD,
-)(SchoolProgramsListContainer);
+SchoolProgramsListContainer = connect(mS, mD)(SchoolProgramsListContainer);
 
 export default SchoolProgramsListContainer;

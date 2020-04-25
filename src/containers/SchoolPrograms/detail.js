@@ -10,18 +10,20 @@ import {
 } from '../../actions/schoolProgram';
 import SchoolProgramDetail from '../../components/SchoolPrograms/detail';
 import { define, cleanDialog } from '../../actions/dialog';
+
 export class SchoolProgramDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSchoolProgramById, define } = this.props;
     if (match.params.id) findSchoolProgramById(match.params.id);
     define('programa academico');
   };
+
   componentWillUnmount = () => {
     this.props.cleanSelectedSchoolProgram();
     this.props.cleanDialog();
   };
 
-  saveSchoolProgram = values => {
+  saveSchoolProgram = (values) => {
     const {
       match,
       updateSchoolProgram,
@@ -33,10 +35,9 @@ export class SchoolProgramDetailContainer extends Component {
 
     if (match.params.id) updateSchoolProgram({ ...payload, ...match.params });
     else
-      saveSchoolProgram({ ...payload }).then(response => {
-
+      saveSchoolProgram({ ...payload }).then((response) => {
         if (response) {
-          findSchoolProgramById(response).then(res => history.push(`edit/${response}`));
+          findSchoolProgramById(response).then((res) => history.push(`edit/${response}`));
         }
       });
   };
@@ -49,14 +50,11 @@ export class SchoolProgramDetailContainer extends Component {
 
   handleSchoolProgramDelete = () => {
     const { deleteSchoolProgram, history, match } = this.props;
-    deleteSchoolProgram(match.params.id).then(res => history.push('/programas-academicos'));
+    deleteSchoolProgram(match.params.id).then((res) => history.push('/programas-academicos'));
   };
 
-
   render() {
-    const {
-      schoolProgram,
-    } = this.props;
+    const { schoolProgram } = this.props;
     return (
       <SchoolProgramDetail
         saveSchoolProgram={this.saveSchoolProgram}
@@ -78,7 +76,7 @@ SchoolProgramDetailContainer.propTypes = {
   saveSchoolProgram: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   schoolProgram: state.schoolProgramReducer.selectedSchoolProgram,
 });
 
@@ -92,9 +90,6 @@ const mD = {
   cleanDialog,
 };
 
-SchoolProgramDetailContainer = connect(
-  mS,
-  mD,
-)(SchoolProgramDetailContainer);
+SchoolProgramDetailContainer = connect(mS, mD)(SchoolProgramDetailContainer);
 
 export default SchoolProgramDetailContainer;

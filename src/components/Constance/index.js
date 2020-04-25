@@ -4,20 +4,20 @@ import TeacherConstanceContainer from '../../containers/Constance/teacher';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 
 class Constance extends Component {
-    render() {
-        const rol = getSessionUserRol();
+  render() {
+    const rol = getSessionUserRol();
 
-        switch (rol) {
-            case 'T':
-                return <TeacherConstanceContainer />;
+    switch (rol) {
+      case 'T':
+        return <TeacherConstanceContainer />;
 
-            case 'S':
-                return <StudentConstanceContainer />;
+      case 'S':
+        return <StudentConstanceContainer />;
 
-            default:
-                return null;
-        }
+      default:
+        return null;
     }
+  }
 }
 
 Constance.propTypes = {};

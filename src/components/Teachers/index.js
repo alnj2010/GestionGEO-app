@@ -1,27 +1,28 @@
-import React, { Component } from "react";
-import MaterialTable from "material-table";
-import { array, bool, object, func } from "prop-types";
-import Add from "@material-ui/icons/Add";
-import { Fab, Grid } from "@material-ui/core";
-import Dialog from "../Dialog";
-import { handleExportCsv } from "../../utils/handleExportCsv";
+import React, { Component } from 'react';
+import MaterialTable from 'material-table';
+import { array, bool, object, func } from 'prop-types';
+import Add from '@material-ui/icons/Add';
+import { Fab, Grid } from '@material-ui/core';
+import Dialog from '../Dialog';
+import { handleExportCsv } from '../../utils/handleExportCsv';
 
 class TeachersList extends Component {
   constructor() {
     super();
     this.state = {
-      func: null
+      func: null,
     };
   }
-  transformData = teachers => {
+
+  transformData = (teachers) => {
     if (teachers)
-      return teachers.map(teacher => {
+      return teachers.map((teacher) => {
         return {
           id: teacher.id,
           email: teacher.email,
           identification: teacher.identification,
           firstName: teacher.first_name,
-          firstSurname: teacher.first_surname
+          firstSurname: teacher.first_surname,
         };
       });
     return [];
@@ -29,7 +30,7 @@ class TeachersList extends Component {
 
   handleDialogShow = (action, func) => {
     const { show } = this.props;
-    this.setState({ func: func }, () => {
+    this.setState({ func }, () => {
       show(action);
     });
   };
@@ -54,38 +55,35 @@ class TeachersList extends Component {
         <Grid item xs={12}>
           <MaterialTable
             columns={[
-              { title: "#", field: "id", hidden: true },
-              { title: "Nombre", field: "firstName" },
-              { title: "Apellido", field: "firstSurname" },
-              { title: "Cedula", field: "identification" },
-              { title: "Email", field: "email" }
+              { title: '#', field: 'id', hidden: true },
+              { title: 'Nombre', field: 'firstName' },
+              { title: 'Apellido', field: 'firstSurname' },
+              { title: 'Cedula', field: 'identification' },
+              { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(teachers)}
             title="profesores"
             actions={[
               {
-                icon: "visibility",
-                tooltip: "Ver detalles",
+                icon: 'visibility',
+                tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
                   history.push(`/profesores/edit/${rowData.id}`);
-                }
+                },
               },
               {
-                icon: "delete",
-                tooltip: "Borrar profesor",
+                icon: 'delete',
+                tooltip: 'Borrar profesor',
                 onClick: (event, rowData) => {
-                  this.handleDialogShow("eliminar", entity =>
-                    handleDeleteTeacher(rowData.id)
-                  );
-                }
-              }
+                  this.handleDialogShow('eliminar', (entity) => handleDeleteTeacher(rowData.id));
+                },
+              },
             ]}
             options={{
               pageSize: 10,
               search: true,
               exportButton: true,
-              exportCsv: (columns, renderData) =>
-                handleExportCsv(columns, renderData, "teachers")
+              exportCsv: (columns, renderData) => handleExportCsv(columns, renderData, 'teachers'),
             }}
             onChangePage={() => {
               window.scroll(0, 0);
@@ -103,7 +101,7 @@ TeachersList.propTypes = {
   teachers: array,
   isLoading: bool.isRequired,
   history: object.isRequired,
-  handleDeleteTeacher: func.isRequired
+  handleDeleteTeacher: func.isRequired,
 };
 
 export default TeachersList;

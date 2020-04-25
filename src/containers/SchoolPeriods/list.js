@@ -12,19 +12,20 @@ export class SchoolPeriodsListContainer extends Component {
       isLoading: true,
     };
   }
-  componentDidMount = () => {
 
+  componentDidMount = () => {
     const { getList, define } = this.props;
     getList().then(() => this.setState({ isLoading: false }));
     define('Periodo semestral');
   };
+
   componentWillUnmount = () => {
     this.props.cleanDialog();
   };
 
-  handleDeleteSchoolPeriod = id => {
+  handleDeleteSchoolPeriod = (id) => {
     const { getList, deleteSchoolPeriod } = this.props;
-    deleteSchoolPeriod(id).then(res => getList());
+    deleteSchoolPeriod(id).then((res) => getList());
   };
 
   render() {
@@ -50,7 +51,7 @@ SchoolPeriodsListContainer.propTypes = {
   deleteSchoolPeriod: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   schoolPeriods: state.schoolPeriodReducer.list,
 });
 
@@ -62,9 +63,6 @@ const mD = {
   show,
 };
 
-SchoolPeriodsListContainer = connect(
-  mS,
-  mD,
-)(SchoolPeriodsListContainer);
+SchoolPeriodsListContainer = connect(mS, mD)(SchoolPeriodsListContainer);
 
 export default SchoolPeriodsListContainer;

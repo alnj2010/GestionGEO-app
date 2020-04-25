@@ -12,18 +12,20 @@ export class SubjectsListContainer extends Component {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
     const { getList, define } = this.props;
     getList().then(() => this.setState({ isLoading: false }));
     define('Materia');
   };
+
   componentWillUnmount = () => {
     this.props.cleanDialog();
   };
 
-  handleDeleteSubject = id => {
+  handleDeleteSubject = (id) => {
     const { getList, deleteSubject } = this.props;
-    deleteSubject(id).then(res => getList());
+    deleteSubject(id).then((res) => getList());
   };
 
   render() {
@@ -49,7 +51,7 @@ SubjectsListContainer.propTypes = {
   deleteSubject: func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   subjects: state.subjectReducer.list,
 });
 
@@ -61,9 +63,6 @@ const mD = {
   show,
 };
 
-SubjectsListContainer = connect(
-  mS,
-  mD,
-)(SubjectsListContainer);
+SubjectsListContainer = connect(mS, mD)(SubjectsListContainer);
 
 export default SubjectsListContainer;
