@@ -35,8 +35,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 import { Collapse } from '@material-ui/core';
-import { object } from 'prop-types';
-import { show, hide } from '../../actions/snackbar';
+import PropTypes from 'prop-types';
 import CustomizedSnackbar from '../Snackbar';
 import {
   removeSessionGeoToken,
@@ -134,6 +133,8 @@ class MenuApp extends React.Component {
           component: Home,
           clicked: false,
           roles: ['A', 'S', 'T'],
+          open: false,
+          options: false,
         },
         {
           link: 'inscripcion',
@@ -141,6 +142,8 @@ class MenuApp extends React.Component {
           component: Inscription,
           clicked: false,
           roles: ['S'],
+          open: false,
+          options: false,
         },
         {
           link: 'mis-cursos',
@@ -148,6 +151,8 @@ class MenuApp extends React.Component {
           component: Cursos,
           clicked: false,
           roles: ['T'],
+          open: false,
+          options: false,
         },
         {
           link: 'constancias',
@@ -155,6 +160,8 @@ class MenuApp extends React.Component {
           component: Download,
           clicked: false,
           roles: ['S', 'T'],
+          open: false,
+          options: false,
         },
         {
           link: 'administradores',
@@ -162,6 +169,8 @@ class MenuApp extends React.Component {
           component: Admin,
           clicked: false,
           roles: ['A'],
+          open: false,
+          options: false,
         },
         {
           link: 'programas-academicos',
@@ -169,6 +178,8 @@ class MenuApp extends React.Component {
           component: SchoolProgram,
           clicked: false,
           roles: ['A'],
+          open: false,
+          options: false,
         },
         {
           link: 'profesores',
@@ -176,6 +187,8 @@ class MenuApp extends React.Component {
           component: Teacher,
           clicked: false,
           roles: ['A'],
+          open: false,
+          options: false,
         },
         {
           link: 'estudiantes',
@@ -183,6 +196,8 @@ class MenuApp extends React.Component {
           component: Face,
           clicked: false,
           roles: ['A'],
+          open: false,
+          options: false,
         },
         {
           link: 'materias',
@@ -190,6 +205,8 @@ class MenuApp extends React.Component {
           component: Subject,
           clicked: false,
           roles: ['A'],
+          open: false,
+          options: false,
         },
         {
           link: 'periodo-semestral',
@@ -197,6 +214,7 @@ class MenuApp extends React.Component {
           component: InsertInvitation,
           clicked: false,
           roles: ['A'],
+          open: false,
           options: [
             {
               link: 'actual',
@@ -263,6 +281,7 @@ class MenuApp extends React.Component {
 
   handleClick = (option) => {
     const { options } = this.state;
+    const { location } = this.props;
     let changed = false;
     options.map((opt) => {
       if (opt.name === option && opt.options) {
@@ -273,14 +292,13 @@ class MenuApp extends React.Component {
     });
     if (changed) this.setState({ options });
     else {
-      const { location } = this.props;
       location.pathname = `/${option}`;
     }
   };
 
   render() {
     const { classes, theme, children } = this.props;
-    const { anchorEl, options } = this.state;
+    const { anchorEl, options, open: openOption } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
     return (
@@ -289,16 +307,16 @@ class MenuApp extends React.Component {
         <AppBar
           position="fixed"
           className={classNames(classes.appBar, {
-            [classes.appBarShift]: this.state.open,
+            [classes.appBarShift]: openOption,
           })}
         >
-          <Toolbar disableGutters={!this.state.open} className={classes.AppBarInside}>
+          <Toolbar disableGutters={!openOption} className={classes.AppBarInside}>
             <IconButton
               color="inherit"
               aria-label="Open drawer"
               onClick={this.handleDrawerOpen}
               className={classNames(classes.menuButton, {
-                [classes.hide]: this.state.open,
+                [classes.hide]: openOption,
               })}
             >
               <MenuIcon />
@@ -346,16 +364,16 @@ class MenuApp extends React.Component {
         <Drawer
           variant="permanent"
           className={classNames(classes.drawer, {
-            [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open,
+            [classes.drawerOpen]: openOption,
+            [classes.drawerClose]: !openOption,
           })}
           classes={{
             paper: classNames({
-              [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open,
+              [classes.drawerOpen]: openOption,
+              [classes.drawerClose]: !openOption,
             }),
           }}
-          open={this.state.open}
+          open={openOption}
         >
           <div className={classes.toolbar}>
             <IconButton onClick={this.handleDrawerClose}>
@@ -366,7 +384,7 @@ class MenuApp extends React.Component {
           <List>
             {options
               .filter((option) => option.roles.some((item) => item === rol))
-              .map((option, index) => (
+              .map((option) => (
                 <Fragment key={option.name}>
                   {option.options ? (
                     <ListItem
@@ -378,7 +396,7 @@ class MenuApp extends React.Component {
                         <option.component />
                       </ListItemIcon>
                       <ListItemText primary={option.name} className={classes.itemText} />
-                      {option.options ? option.open ? <ExpandLess /> : <ExpandMore /> : null}
+                      {option.options && (option.open ? <ExpandLess /> : <ExpandMore />)}
                     </ListItem>
                   ) : (
                     <Link to={`/${option.link}`} style={{ textDecoration: 'none' }}>
@@ -391,7 +409,7 @@ class MenuApp extends React.Component {
                           <option.component />
                         </ListItemIcon>
                         <ListItemText primary={option.name} className={classes.itemText} />
-                        {option.options ? option.open ? <ExpandLess /> : <ExpandMore /> : null}
+                        {option.options && (option.open ? <ExpandLess /> : <ExpandMore />)}
                       </ListItem>
                     </Link>
                   )}
@@ -439,8 +457,28 @@ class MenuApp extends React.Component {
 }
 
 MenuApp.propTypes = {
-  classes: object.isRequired,
-  theme: object.isRequired,
+  classes: PropTypes.shape({
+    root: PropTypes.string.isRequired,
+    appBar: PropTypes.string.isRequired,
+    appBarShift: PropTypes.string.isRequired,
+    menuButton: PropTypes.string.isRequired,
+    hide: PropTypes.string.isRequired,
+    drawer: PropTypes.string.isRequired,
+    drawerOpen: PropTypes.string.isRequired,
+    drawerClose: PropTypes.string.isRequired,
+    nested: PropTypes.string.isRequired,
+    toolbar: PropTypes.string.isRequired,
+    AppBarInside: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    itemText: PropTypes.string.isRequired,
+  }).isRequired,
+  theme: PropTypes.shape({
+    direction: PropTypes.string.isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+  }).isRequired,
+  children: PropTypes.shape({}).isRequired,
 };
 
 const mS = (state) => ({
@@ -448,11 +486,5 @@ const mS = (state) => ({
   message: state.snackbarReducer.message,
 });
 
-const mD = {
-  show,
-  hide,
-};
-
-MenuApp = connect(mS, mD)(MenuApp);
-MenuApp = withStyles(styles, { withTheme: true })(MenuApp);
-export default MenuApp;
+const MenuAppWrapper = withStyles(styles, { withTheme: true })(connect(mS, {})(MenuApp));
+export default MenuAppWrapper;

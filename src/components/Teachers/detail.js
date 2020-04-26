@@ -141,35 +141,35 @@ class TeacherDetail extends Component {
                     field: `teacherType`,
                     id: `teacherType`,
                     type: 'select',
-                    options: { jsonToOptions }(TEACHER_ROL),
+                    options: jsonToOptions(TEACHER_ROL),
                   },
                   {
                     label: 'Sexo',
                     field: `sex`,
                     id: `sex`,
                     type: 'select',
-                    options: { jsonToOptions }(GENDER),
+                    options: jsonToOptions(GENDER),
                   },
                   {
                     label: 'Nacionalidad',
                     field: `nationality`,
                     id: `nationality`,
                     type: 'select',
-                    options: { jsonToOptions }(NATIONALITY),
+                    options: jsonToOptions(NATIONALITY),
                   },
                   {
                     label: 'Nivel de instruccion',
                     field: 'levelInstruction',
                     id: 'levelInstruction',
                     type: 'select',
-                    options: { jsonToOptions }(LEVEL_INSTRUCTION),
+                    options: jsonToOptions(LEVEL_INSTRUCTION),
                   },
                   {
                     label: 'Dedicacion',
                     field: `dedication`,
                     id: `dedication`,
                     type: 'select',
-                    options: { jsonToOptions }(TEACHER_DEDICATION),
+                    options: jsonToOptions(TEACHER_DEDICATION),
                   },
                   {
                     label: '¿Discapacidad?',
@@ -254,10 +254,10 @@ class TeacherDetail extends Component {
 
 TeacherDetail.propTypes = {
   classes: PropTypes.shape({
-    form: PropTypes.shape({}).isRequired,
-    buttonContainer: PropTypes.shape({}).isRequired,
-    save: PropTypes.shape({}).isRequired,
-    button: PropTypes.shape({}).isRequired,
+    form: PropTypes.string.isRequired,
+    buttonContainer: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
   }).isRequired,
 
   teacher: PropTypes.shape({

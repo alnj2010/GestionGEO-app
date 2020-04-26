@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 
 import { getSessionUser } from '../../storage/sessionStorage';
 
@@ -33,45 +34,49 @@ const styles = () => ({
     flexDirection: 'column',
   },
 });
-class AdminHome extends Component {
-  render() {
-    const { classes } = this.props;
-    const {
-      level_instruction,
-      first_name,
-      second_name,
-      first_surname,
-      second_surname,
-      sex,
-      administrator: { rol, principal },
-    } = getSessionUser();
-
-    return (
-      <Grid container className={classes.welcome}>
-        <Grid item container xs={2} justify="center">
-          <Grid item className={classes.welcome__pictureContainer}>
-            <img
-              src={sex === 'M' ? imgMan : imgWomen}
-              alt="admin"
-              className={classes.welcome__picture}
-            />
-          </Grid>
-        </Grid>
-        <Grid item xs={9} className={classes.welcome__info}>
-          <Typography variant="h4" gutterBottom>
-            {`${level_instruction}. ${first_name} ${second_name || ''} ${first_surname} ${
-              second_surname || ''
-            }`}
-          </Typography>
-          <Typography variant="button" display="block" gutterBottom>
-            {`${rol} ${principal ? 'Principal' : ''}`}
-          </Typography>
+function AdminHome(props) {
+  const { classes } = props;
+  const {
+    level_instruction: levelInstruction,
+    firstName,
+    second_name: secondName,
+    first_surname: firstSurname,
+    second_surname: secondSurname,
+    sex,
+    administrator: { rol, principal },
+  } = getSessionUser();
+  return (
+    <Grid container className={classes.welcome}>
+      <Grid item container xs={2} justify="center">
+        <Grid item className={classes.welcome__pictureContainer}>
+          <img
+            src={sex === 'M' ? imgMan : imgWomen}
+            alt="admin"
+            className={classes.welcome__picture}
+          />
         </Grid>
       </Grid>
-    );
-  }
+      <Grid item xs={9} className={classes.welcome__info}>
+        <Typography variant="h4" gutterBottom>
+          {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
+            secondSurname || ''
+          }`}
+        </Typography>
+        <Typography variant="button" display="block" gutterBottom>
+          {`${rol} ${principal ? 'Principal' : ''}`}
+        </Typography>
+      </Grid>
+    </Grid>
+  );
 }
 
-AdminHome.propTypes = {};
+AdminHome.propTypes = {
+  classes: PropTypes.shape({
+    welcome: PropTypes.string.isRequired,
+    welcome__pictureContainer: PropTypes.string.isRequired,
+    welcome__picture: PropTypes.string.isRequired,
+    welcome__info: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
-export default withStyles(styles)(AdminHome);
+export default React.memo(withStyles(styles)(AdminHome));

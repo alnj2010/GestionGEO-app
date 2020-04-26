@@ -1,4 +1,4 @@
-export const { jsonToOptions } = (options) =>
+export const jsonToOptions = (options) =>
   Object.entries(options).map((entry) => {
     return {
       key: entry[0],

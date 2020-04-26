@@ -1,6 +1,6 @@
 import AXIOS, { headers } from '../config/axios.config';
 import { URL } from './constants';
-import { handleErrorMsg, handleResponseService } from '../helpers';
+import { handleErrorMsg } from '../helpers';
 
 export const Constance = {
   getStudyConstance(id) {

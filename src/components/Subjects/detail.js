@@ -101,7 +101,7 @@ class SubjectDetail extends Component {
                     id: `${schoolProgram}.type`,
                     type: 'select',
                     label: 'modalidad',
-                    options: { jsonToOptions }(SUBJECT_MODALITY),
+                    options: jsonToOptions(SUBJECT_MODALITY),
                   },
                 ]}
               </RenderFields>
@@ -278,14 +278,14 @@ class SubjectDetail extends Component {
 
 SubjectDetail.propTypes = {
   classes: PropTypes.shape({
-    fab: PropTypes.shape({}).isRequired,
-    subtitle: PropTypes.shape({}).isRequired,
-    button: PropTypes.shape({}).isRequired,
-    buttonDelete: PropTypes.shape({}).isRequired,
-    buttonDeleteContainer: PropTypes.shape({}).isRequired,
-    form: PropTypes.shape({}).isRequired,
-    buttonContainer: PropTypes.shape({}).isRequired,
-    save: PropTypes.shape({}).isRequired,
+    fab: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+    buttonDelete: PropTypes.string.isRequired,
+    buttonDeleteContainer: PropTypes.string.isRequired,
+    form: PropTypes.string.isRequired,
+    buttonContainer: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
   }).isRequired,
 
   subject: PropTypes.shape({

@@ -82,7 +82,7 @@ class SchoolPeriodDetail extends Component {
                   field: `${schedule}.day`,
                   id: `${schedule}.day`,
                   type: 'select',
-                  options: { jsonToOptions }(WEEK_DAYS),
+                  options: jsonToOptions(WEEK_DAYS),
                 },
                 {
                   label: 'Hora inicio',
@@ -175,7 +175,7 @@ class SchoolPeriodDetail extends Component {
                   field: `${subject}.modality`,
                   id: `${subject}.modality`,
                   type: 'select',
-                  options: { jsonToOptions }(SUBJECT_PERIOD_MODALITY),
+                  options: jsonToOptions(SUBJECT_PERIOD_MODALITY),
                 },
 
                 {
