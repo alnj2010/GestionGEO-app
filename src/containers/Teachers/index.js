@@ -46,7 +46,7 @@ class TeachersListContainer extends Component {
 }
 
 TeachersListContainer.propTypes = {
-  teachers: PropTypes.PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   history: PropTypes.shape({}).isRequired,
   getListDispatch: PropTypes.func.isRequired,
   deleteTeacherDispatch: PropTypes.func.isRequired,

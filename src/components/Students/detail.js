@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, change, submit } from 'redux-form';
+import { Grid, Button, Typography } from '@material-ui/core';
+import { Form, reduxForm, FieldArray, change, submit, formValueSelector } from 'redux-form';
 import { object, func, bool, number } from 'prop-types';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Fab from '@material-ui/core/Fab';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 import { getSessionUserRol } from '../../storage/sessionStorage';
+import { STUDENT_TYPE, GENDER, NATIONALITY, LEVEL_INSTRUCTION } from '../../services/constants';
+import { jsonToOptions } from '../../helpers';
 
 const styles = () => ({
   form: {
@@ -40,6 +46,76 @@ class StudentDetail extends Component {
     });
   };
 
+  unselectedSubjects = (pos) => {
+    const { subjects, subjectsSelected } = this.props;
+    return subjects.filter(
+      (item) =>
+        !subjectsSelected.some((selected, index) => selected.subjectId === item.id && pos > index)
+    );
+  };
+
+  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (
+    <>
+      {fields.map((subject, index) => (
+        <Grid container justify="center" key={index}>
+          <Grid container item xs={10}>
+            <RenderFields lineal={[6, 6]}>
+              {[
+                {
+                  field: `${subject}.subjectId`,
+                  id: `${subject}.subjectId`,
+                  type: 'select',
+                  label: 'Materia',
+                  options: this.unselectedSubjects(index).map((subject) => {
+                    return {
+                      key: subject.subject_name,
+                      value: subject.id,
+                    };
+                  }),
+                },
+                {
+                  field: `${subject}.qualification`,
+                  id: `${subject}.qualification`,
+                  type: 'number',
+                  label: 'Calificacion',
+                  min: 0,
+                  max: 20,
+                },
+              ]}
+            </RenderFields>
+          </Grid>
+          <Grid item xs={2}>
+            <IconButton
+              className={this.props.classes.button}
+              aria-label="remover"
+              color="secondary"
+              onClick={() => fields.remove(index)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+      ))}
+      <Grid container item xs={12} justify="center">
+        <Grid item xs={1}>
+          <Fab
+            color="primary"
+            aria-label="Add"
+            className={this.props.classes.fab}
+            disabled={
+              this.props.subjects &&
+              this.props.subjectsSelected &&
+              this.props.subjects.length === this.props.subjectsSelected.length
+            }
+            onClick={() => fields.push({})}
+          >
+            <AddIcon />
+          </Fab>
+        </Grid>
+      </Grid>
+    </>
+  );
+
   render = () => {
     const {
       classes,
@@ -62,7 +138,6 @@ class StudentDetail extends Component {
         <Grid container>
           <Grid item xs={12}>
             <h3>
-              {' '}
               {studentId
                 ? `Estudiante: ${student.first_surname} ${student.first_name}`
                 : 'Nuevo Estudiante'}
@@ -145,16 +220,15 @@ class StudentDetail extends Component {
                     field: `studentType`,
                     id: `studentType`,
                     type: 'select',
-                    options: [
-                      { value: 'REGULAR', id: 'REG' },
-                      { value: 'EXTENSION', id: 'EXT' },
-                    ].map((type) => {
-                      return {
-                        key: type.value,
-                        value: type.id,
-                      };
-                    }),
+                    options: jsonToOptions(STUDENT_TYPE),
                     disabled: rol !== 'A',
+                  },
+                  {
+                    label: 'Nivel de instruccion',
+                    field: 'levelInstruction',
+                    id: 'levelInstruction',
+                    type: 'select',
+                    options: jsonToOptions(LEVEL_INSTRUCTION),
                   },
                   {
                     label: 'Universidad de Origen',
@@ -168,15 +242,7 @@ class StudentDetail extends Component {
                     field: `sex`,
                     id: `sex`,
                     type: 'select',
-                    options: [
-                      { key: 'MASCULINO', value: 'M' },
-                      { key: 'FEMENINO', value: 'F' },
-                    ].map((type) => {
-                      return {
-                        key: type.key,
-                        value: type.value,
-                      };
-                    }),
+                    options: jsonToOptions(GENDER),
                     disabled: rol !== 'A',
                   },
                   {
@@ -184,16 +250,14 @@ class StudentDetail extends Component {
                     field: `nationality`,
                     id: `nationality`,
                     type: 'select',
-                    options: [
-                      { key: 'VENEZOLANO', value: 'V' },
-                      { key: 'EXTRANGERO', value: 'E' },
-                    ].map((type) => {
-                      return {
-                        key: type.key,
-                        value: type.value,
-                      };
-                    }),
+                    options: jsonToOptions(NATIONALITY),
                     disabled: rol !== 'A',
+                  },
+                  {
+                    label: '¿Discapacidad?',
+                    field: 'withDisabilities',
+                    id: 'withDisabilities',
+                    type: 'switch',
                   },
                   {
                     label: '¿Profesor de la UCV?',
@@ -222,6 +286,14 @@ class StudentDetail extends Component {
                   },
                 ]}
               </RenderFields>
+            </Grid>
+            <Grid item xs={12} className={classes.subtitle}>
+              <Typography variant="h6" gutterBottom>
+                Materias por equivalencia
+              </Typography>
+            </Grid>
+            <Grid container item xs={12}>
+              <FieldArray name="equivalences" component={this.renderSubjects} />
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -308,11 +380,31 @@ const studentValidation = (values) => {
     errors.email = 'Introduce un email valido';
   }
 
+  if (values.equivalences && values.equivalences.length) {
+    const subjectArrayErrors = [];
+    values.equivalences.forEach((subj, subjIndex) => {
+      const subjErrors = {};
+      if (!subj || !subj.subjectId) {
+        subjErrors.subjectId = '*Materia es requerido';
+        subjectArrayErrors[subjIndex] = subjErrors;
+      }
+      if (!subj || !subj.qualification) {
+        subjErrors.qualification = '*calificacion es requerido';
+        subjectArrayErrors[subjIndex] = subjErrors;
+      }
+    });
+
+    if (subjectArrayErrors.length) {
+      errors.equivalences = subjectArrayErrors;
+    }
+  }
+
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
   if (!values.schoolProgram) errors.schoolProgram = 'Programa academico del estudiante Requerido';
   if (!values.studentType) errors.studentType = ' Tipo Requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen Requerido';
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
 
   return errors;
 };
@@ -322,6 +414,7 @@ StudentDetail = reduxForm({
   validate: studentValidation,
   enableReinitialize: true,
 })(StudentDetail);
+const selector = formValueSelector('student');
 
 StudentDetail = connect(
   (state) => ({
@@ -378,8 +471,22 @@ StudentDetail = connect(
       repeatReprobatedSubject: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.repeat_reprobated_subject
         : false,
+      levelInstruction: state.studentReducer.selectedStudent.level_instruction
+        ? state.studentReducer.selectedStudent.level_instruction
+        : '',
+      equivalences: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.equivalences.map((subj) => ({
+            subjectId: subj.subject_id,
+            qualification: subj.qualification,
+          }))
+        : [],
+
+      withDisabilities: state.studentReducer.selectedStudent.with_disabilities
+        ? state.studentReducer.selectedStudent.with_disabilities
+        : false,
     },
     action: state.dialogReducer.action,
+    subjectsSelected: selector(state, 'equivalences'),
   }),
   { change, show, submit }
 )(StudentDetail);

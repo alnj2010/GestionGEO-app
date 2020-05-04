@@ -46,7 +46,7 @@ class SubjectsListContainer extends Component {
 }
 
 SubjectsListContainer.propTypes = {
-  subjects: PropTypes.PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   history: PropTypes.shape({}).isRequired,
 
   getListDispatch: PropTypes.func.isRequired,

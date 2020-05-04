@@ -8,6 +8,7 @@ import {
   cleanSelectedStudent,
   saveStudent,
 } from '../../actions/student';
+import { getList as getSubjectList } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import StudentDetail from '../../components/Students/detail';
 import { define, cleanDialog } from '../../actions/dialog';
@@ -19,6 +20,7 @@ class StudentDetailContainer extends Component {
     const { match, findStudentById, define } = this.props;
     if (match.params.id) findStudentById(match.params.id);
     this.props.getSchoolProgramList();
+    this.props.getSubjectList();
     define(rol !== 'A' ? 'perfil' : 'estudiante');
   };
 
@@ -50,13 +52,14 @@ class StudentDetailContainer extends Component {
   };
 
   render() {
-    const { student, schoolPrograms } = this.props;
+    const { student, schoolPrograms, subjects } = this.props;
     return (
       <StudentDetail
         schoolPrograms={schoolPrograms}
         saveStudent={this.saveStudent}
         goBack={this.goBack}
         studentId={student.id}
+        subjects={subjects}
         student={student}
         handleStudentDelete={this.handleStudentDelete}
       />
@@ -76,6 +79,7 @@ StudentDetailContainer.propTypes = {
 const mS = (state) => ({
   student: state.studentReducer.selectedStudent,
   schoolPrograms: state.schoolProgramReducer.list,
+  subjects: state.subjectReducer.list,
 });
 
 const mD = {
@@ -87,6 +91,7 @@ const mD = {
   cleanSelectedStudent,
   cleanDialog,
   getSchoolProgramList,
+  getSubjectList,
 };
 
 StudentDetailContainer = connect(mS, mD)(StudentDetailContainer);

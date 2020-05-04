@@ -2,7 +2,7 @@ import { ACTIONS } from '../actions/student';
 
 const initialState = {
   list: [],
-  selectedStudent: { student: {} },
+  selectedStudent: { student: { equivalences: [] } },
   availableSubjects: [],
   inscribedSchoolPeriods: [],
   selectedStudentSchoolPeriod: {},

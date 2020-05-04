@@ -98,7 +98,7 @@ class SubjectsList extends Component {
 }
 
 SubjectsList.propTypes = {
-  subjects: PropTypes.PropTypes.arrayOf(
+  subjects: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       subject_code: PropTypes.string.isRequired,

@@ -109,10 +109,9 @@ StudentInscriptionContainer.propTypes = {
     }),
   }).isRequired,
 
-  schoolPeriods: PropTypes.PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired }))
-    .isRequired,
+  schoolPeriods: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired })).isRequired,
 
-  subjects: PropTypes.PropTypes.arrayOf(
+  subjects: PropTypes.arrayOf(
     PropTypes.shape({
       school_period_subject_teacher_id: PropTypes.number.isRequired,
       data_subject: PropTypes.shape({
@@ -125,7 +124,7 @@ StudentInscriptionContainer.propTypes = {
     })
   ).isRequired,
 
-  subjectInscriptions: PropTypes.PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subjectInscriptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   location: PropTypes.shape({
     state: PropTypes.shape({

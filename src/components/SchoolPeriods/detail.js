@@ -267,7 +267,6 @@ class SchoolPeriodDetail extends Component {
         <Grid container>
           <Grid item xs={12}>
             <h3>
-              {' '}
               {schoolPeriodId
                 ? `Periodo semestral: ${schoolPeriod.cod_school_period}`
                 : 'Nuevo Periodo semestral'}

@@ -38,7 +38,7 @@ export const findStudentById = (id) => async (dispatch) => {
     });
 };
 
-export const cleanSelectedStudent = (id) => async (dispatch) => {
+export const cleanSelectedStudent = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_STUDENT,
     payload: {},
@@ -61,6 +61,12 @@ export const updateStudent = (student) => async (dispatch) => {
     student_type: student.studentType,
     home_university: student.homeUniversity,
     sex: student.sex,
+    with_disabilities: student.withDisabilities,
+    level_instruction: student.levelInstruction,
+    equivalences: student.equivalences.map((equivalence) => ({
+      subject_id: equivalence.subjectId,
+      qualification: equivalence.qualification,
+    })),
     nationality: student.nationality,
     is_ucv_teacher: student.isUcvTeacher,
     is_available_final_work: student.isAvailableFinalWork,
@@ -94,6 +100,12 @@ export const saveStudent = (student) => async (dispatch) => {
     work_phone: student.workPhone,
     email: student.email,
     school_program_id: student.schoolProgram,
+    with_disabilities: student.withDisabilities,
+    level_instruction: student.levelInstruction,
+    equivalences: student.equivalences.map((equivalence) => ({
+      subject_id: equivalence.subjectId,
+      qualification: equivalence.qualification,
+    })),
     student_type: student.studentType,
     home_university: student.homeUniversity,
     sex: student.sex,
@@ -103,6 +115,7 @@ export const saveStudent = (student) => async (dispatch) => {
     repeat_approved_subject: student.repeatApprovedSubject,
     repeat_reprobated_subject: student.repeatApprovedSubject,
   };
+
   return Student.saveStudent(payload)
     .then((res) => {
       show('Estudiante guardado', 'success')(dispatch);

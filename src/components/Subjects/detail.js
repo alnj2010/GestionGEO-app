@@ -292,12 +292,11 @@ SubjectDetail.propTypes = {
     subject_name: PropTypes.string.isRequired,
   }).isRequired,
 
-  schoolPrograms: PropTypes.PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired }))
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired }))
     .isRequired,
 
-  schoolProgramsSelected: PropTypes.PropTypes.arrayOf(
-    PropTypes.shape({ id: PropTypes.number.isRequired })
-  ).isRequired,
+  schoolProgramsSelected: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired }))
+    .isRequired,
 
   subjectId: PropTypes.number.isRequired,
   pristine: PropTypes.bool.isRequired,

@@ -98,7 +98,7 @@ class TeachersList extends Component {
 }
 
 TeachersList.propTypes = {
-  teachers: PropTypes.PropTypes.arrayOf(
+  teachers: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       email: PropTypes.string.isRequired,

@@ -1,8 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, change, submit, FieldArray, formValueSelector } from 'redux-form';
+import { Form, reduxForm, submit, FieldArray, formValueSelector } from 'redux-form';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -42,7 +43,9 @@ class StudentInscription extends Component {
 
   handleDialogShow = (action, func) => {
     this.setState({ func }, () => {
-      this.props.show(action);
+      const { showDispatch } = this.props;
+
+      showDispatch(action);
     });
   };
 
@@ -67,86 +70,88 @@ class StudentInscription extends Component {
     );
   };
 
-  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (
-    <>
-      {fields.map((subject, index) => (
-        <Grid container justify="center" key={index}>
-          <Grid container item xs={10}>
-            <RenderFields lineal>
-              {[
-                {
-                  field: `${subject}.subjectId`,
-                  id: `${subject}.subjectId`,
-                  disabled: !!this.props.idSchoolPeriod,
-                  type: 'select',
-                  label: 'Materia',
-                  options: this.unselectedSubjects(index).map((subject) => ({
-                    key: subject.subject.subject_name,
-                    value: subject.id,
-                  })),
-                },
-                {
-                  label: 'Estado Materia',
-                  field: `${subject}.status`,
-                  id: `${subject}.status`,
-                  type: 'select',
-                  options: [
-                    { key: 'CURSANDO', value: 'CUR' },
-                    { key: 'RETIRADO', value: 'RET' },
-                    { key: 'APROBADO', value: 'APR' },
-                    { key: 'REPROBADO', value: 'REP' },
-                  ].map((status) => {
-                    return {
-                      key: status.key,
-                      value: status.value,
-                    };
-                  }),
-                },
-                {
-                  label: 'Nota',
-                  field: `${subject}.nota`,
-                  id: `${subject}.nota`,
-                  type: 'number',
-                  min: 0,
-                  max: 20,
-                },
-              ]}
-            </RenderFields>
-          </Grid>
-          {this.props.idSchoolPeriod ? null : (
-            <Grid item xs={2}>
-              <IconButton
-                className={this.props.classes.buttonDelete}
-                aria-label="remover"
-                color="secondary"
-                onClick={() => fields.remove(index)}
-              >
-                <DeleteIcon />
-              </IconButton>
+  renderSubjects = ({ fields }) => {
+    const { classes, idSchoolPeriod, subjectInscriptions, subjectsSelected } = this.props;
+    return (
+      <>
+        {fields.map((subject, index) => (
+          <Grid container justify="center" key={subject.id}>
+            <Grid container item xs={10}>
+              <RenderFields lineal>
+                {[
+                  {
+                    field: `${subject}.subjectId`,
+                    id: `${subject}.subjectId`,
+                    disabled: !!idSchoolPeriod,
+                    type: 'select',
+                    label: 'Materia',
+                    options: this.unselectedSubjects(index).map((unselectedSubject) => ({
+                      key: unselectedSubject.subject.subject_name,
+                      value: unselectedSubject.id,
+                    })),
+                  },
+                  {
+                    label: 'Estado Materia',
+                    field: `${subject}.status`,
+                    id: `${subject}.status`,
+                    type: 'select',
+                    options: [
+                      { key: 'CURSANDO', value: 'CUR' },
+                      { key: 'RETIRADO', value: 'RET' },
+                      { key: 'APROBADO', value: 'APR' },
+                      { key: 'REPROBADO', value: 'REP' },
+                    ].map((status) => {
+                      return {
+                        key: status.key,
+                        value: status.value,
+                      };
+                    }),
+                  },
+                  {
+                    label: 'Nota',
+                    field: `${subject}.nota`,
+                    id: `${subject}.nota`,
+                    type: 'number',
+                    min: 0,
+                    max: 20,
+                  },
+                ]}
+              </RenderFields>
             </Grid>
-          )}
+            {idSchoolPeriod ? null : (
+              <Grid item xs={2}>
+                <IconButton
+                  className={classes.buttonDelete}
+                  aria-label="remover"
+                  color="secondary"
+                  onClick={() => fields.remove(index)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            )}
+          </Grid>
+        ))}
+        <Grid container item xs={12} justify="center">
+          <Grid item xs={1}>
+            <Fab
+              color="primary"
+              aria-label="Add"
+              className={classes.fab}
+              disabled={
+                !!idSchoolPeriod ||
+                subjectInscriptions.length === 0 ||
+                (!!subjectsSelected && subjectInscriptions.length === subjectsSelected.length)
+              }
+              onClick={() => fields.push({})}
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
         </Grid>
-      ))}
-      <Grid container item xs={12} justify="center">
-        <Grid item xs={1}>
-          <Fab
-            color="primary"
-            aria-label="Add"
-            className={this.props.classes.fab}
-            disabled={
-              !!this.props.idSchoolPeriod ||
-              this.props.subjectInscriptions.length === 0 ||
-              (!!this.props.subjectsSelected &&
-                this.props.subjectInscriptions.length === this.props.subjectsSelected.length)
-            }
-            onClick={() => fields.push({})}
-          >
-            <AddIcon />
-          </Fab>
-        </Grid>
-      </Grid>
-    </>
-  );
+      </>
+    );
+  };
 
   render = () => {
     const {
@@ -158,7 +163,7 @@ class StudentInscription extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       schoolPeriods,
       getAvailableSubjects,
       idSchoolPeriod,
@@ -242,7 +247,10 @@ class StudentInscription extends Component {
                 <h4>
                   Total de creditos inscritos:{' '}
                   <span style={{ color: '#2196f3' }}>
-                    {rolledSubjects.reduce((total, item) => total + parseInt(item.subject.uc), 0)}{' '}
+                    {rolledSubjects.reduce(
+                      (total, item) => total + parseInt(item.subject.uc, 10),
+                      0
+                    )}{' '}
                     uc
                   </span>{' '}
                 </h4>
@@ -270,7 +278,9 @@ class StudentInscription extends Component {
                       variant="contained"
                       className={`${classes.save} ${classes.button} `}
                       onClick={() =>
-                        studentId ? this.handleDialogShow('actualizar', submit) : submit('student')
+                        studentId
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('student')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -294,6 +304,58 @@ class StudentInscription extends Component {
   };
 }
 
+StudentInscription.propTypes = {
+  classes: PropTypes.shape({
+    form: PropTypes.string.isRequired,
+    buttonContainer: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
+    buttonDelete: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+    fab: PropTypes.string.isRequired,
+  }).isRequired,
+
+  schoolPeriods: PropTypes.arrayOf(
+    PropTypes.shape({
+      cod_school_period: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+
+  idSchoolPeriod: PropTypes.number.isRequired,
+
+  subjectsSelected: PropTypes.arrayOf(
+    PropTypes.shape({
+      subjectId: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  subjectInscriptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      subjectId: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+
+  subjects: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      subject_name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+
+  studentId: PropTypes.number.isRequired,
+  fullname: PropTypes.number.isRequired,
+
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  handleSubmit: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+  saveInscription: PropTypes.func.isRequired,
+  getAvailableSubjects: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+};
+
 const studentValidation = (values) => {
   const errors = {};
   if (!values.schoolPeriodId) errors.schoolPeriodId = '*Periodo semestral requerido';
@@ -314,7 +376,7 @@ const studentValidation = (values) => {
       if (!subj || !subj.nota) {
         subjErrors.nota = '*nota es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
-      } else if (parseInt(subj.nota) < 0 || parseInt(subj.nota) > 20) {
+      } else if (parseInt(subj.nota, 10) < 0 || parseInt(subj.nota, 10) > 20) {
         subjErrors.nota = '*nota debe estar entre 0 y 20';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
@@ -327,13 +389,14 @@ const studentValidation = (values) => {
   return errors;
 };
 
-StudentInscription = reduxForm({
+let StudentInscriptionWrapper = reduxForm({
   form: 'inscription',
   validate: studentValidation,
   enableReinitialize: true,
 })(StudentInscription);
+
 const selector = formValueSelector('inscription');
-StudentInscription = connect(
+StudentInscriptionWrapper = connect(
   (state) => ({
     initialValues: {
       schoolPeriodId: state.studentReducer.selectedStudentSchoolPeriod.id
@@ -357,7 +420,7 @@ StudentInscription = connect(
     schoolPeriodId: selector(state, 'schoolPeriodId'),
     subjectsSelected: selector(state, 'subjects'),
   }),
-  { change, show, submit }
-)(StudentInscription);
+  { showDispatch: show, submitDispatch: submit }
+)(StudentInscriptionWrapper);
 
-export default withStyles(styles)(StudentInscription);
+export default withStyles(styles)(StudentInscriptionWrapper);

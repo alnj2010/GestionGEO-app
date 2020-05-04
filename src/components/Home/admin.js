@@ -38,7 +38,7 @@ function AdminHome(props) {
   const { classes } = props;
   const {
     level_instruction: levelInstruction,
-    firstName,
+    first_name: firstName,
     second_name: secondName,
     first_surname: firstSurname,
     second_surname: secondSurname,
