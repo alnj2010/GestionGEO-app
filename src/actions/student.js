@@ -63,9 +63,9 @@ export const updateStudent = (student) => async (dispatch) => {
     sex: student.sex,
     with_disabilities: student.withDisabilities,
     level_instruction: student.levelInstruction,
-    equivalences: student.equivalences.map((equivalence) => ({
-      subject_id: equivalence.subjectId,
-      qualification: equivalence.qualification,
+    equivalences: student.equivalence.map((item) => ({
+      subject_id: item.subjectId,
+      qualification: item.qualification,
     })),
     nationality: student.nationality,
     is_ucv_teacher: student.isUcvTeacher,
@@ -102,9 +102,9 @@ export const saveStudent = (student) => async (dispatch) => {
     school_program_id: student.schoolProgram,
     with_disabilities: student.withDisabilities,
     level_instruction: student.levelInstruction,
-    equivalences: student.equivalences.map((equivalence) => ({
-      subject_id: equivalence.subjectId,
-      qualification: equivalence.qualification,
+    equivalences: student.equivalence.map((item) => ({
+      subject_id: item.subjectId,
+      qualification: item.qualification,
     })),
     student_type: student.studentType,
     home_university: student.homeUniversity,
@@ -129,7 +129,7 @@ export const saveStudent = (student) => async (dispatch) => {
 
 export const deleteStudent = (studentId) => async (dispatch) => {
   return Student.delete(studentId)
-    .then((response) => {
+    .then(() => {
       show('Estudiante eliminado', 'success')(dispatch);
       return true;
     })
@@ -160,12 +160,12 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
     pay_ref: value.payRef,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
-      qualification: parseInt(subject.nota),
+      qualification: parseInt(subject.nota, 10),
       status: subject.status,
     })),
   };
   return Student.addStudentPeriodSchool(payload)
-    .then((res) => {
+    .then(() => {
       show('Inscripcion sastifactoria', 'success')(dispatch);
       return true;
     })
@@ -184,12 +184,12 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
     pay_ref: value.payRef,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
-      qualification: parseInt(subject.nota),
+      qualification: parseInt(subject.nota, 10),
       status: subject.status,
     })),
   };
   return Student.editStudentPeriodSchool(payload)
-    .then((res) => {
+    .then(() => {
       show('Inscripcion modificada sastifactoriamente', 'success')(dispatch);
       return true;
     })
@@ -208,11 +208,13 @@ export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => a
       });
 
       if (idSchoolPeriod) {
-        const data = response.find((item) => parseInt(item.id) === parseInt(idSchoolPeriod));
+        const data = response.find(
+          (item) => parseInt(item.id, 10) === parseInt(idSchoolPeriod, 10)
+        );
         let data2 = data.inscriptions;
         if (Array.isArray(data2))
           data2 = data.inscriptions.find(
-            (item) => parseInt(item.student_id) === parseInt(studentId)
+            (item) => parseInt(item.student_id, 10) === parseInt(studentId, 10)
           );
 
         const inscription = {
@@ -231,14 +233,14 @@ export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => a
     });
 };
 
-export const cleanSelectedInscribedSchoolPeriods = (id) => async (dispatch) => {
+export const cleanSelectedInscribedSchoolPeriods = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
     payload: { selectedStudentSchoolPeriod: {} },
   });
 };
 
-export const cleanSelectedInscriptionSchoolPeriods = (id) => async (dispatch) => {
+export const cleanSelectedInscriptionSchoolPeriods = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
     payload: { inscribedSchoolPeriods: [] },

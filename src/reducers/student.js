@@ -2,7 +2,7 @@ import { ACTIONS } from '../actions/student';
 
 const initialState = {
   list: [],
-  selectedStudent: { student: { equivalences: [] } },
+  selectedStudent: { student: { equivalence: [] } },
   availableSubjects: [],
   inscribedSchoolPeriods: [],
   selectedStudentSchoolPeriod: {},
@@ -13,7 +13,12 @@ const studentReducer = (state = initialState, action) => {
     case ACTIONS.LIST:
       return { ...state, ...action.payload };
     case ACTIONS.SELECT:
-      return { ...state, ...action.payload };
+      const newState = { ...state, ...action.payload };
+      newState.selectedStudent.student =
+        newState.selectedStudent.student.length === 0
+          ? { equivalence: [] }
+          : newState.selectedStudent.student[0];
+      return newState;
     case ACTIONS.CLEAN_SELECTED_STUDENT:
       return { ...state, selectedStudent: {} };
 

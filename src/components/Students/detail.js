@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
-import { Form, reduxForm, FieldArray, change, submit, formValueSelector } from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
+import { Form, reduxForm, FieldArray, submit, formValueSelector } from 'redux-form';
+import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -30,6 +30,10 @@ const styles = () => ({
   button: {
     width: '100%',
   },
+  buttonDelete: {
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
 });
 
 class StudentDetail extends Component {
@@ -41,8 +45,9 @@ class StudentDetail extends Component {
   }
 
   handleDialogShow = (action, func) => {
+    const { showDispatch } = this.props;
     this.setState({ func }, () => {
-      this.props.show(action);
+      showDispatch(action);
     });
   };
 
@@ -54,67 +59,67 @@ class StudentDetail extends Component {
     );
   };
 
-  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (
-    <>
-      {fields.map((subject, index) => (
-        <Grid container justify="center" key={index}>
-          <Grid container item xs={10}>
-            <RenderFields lineal={[6, 6]}>
-              {[
-                {
-                  field: `${subject}.subjectId`,
-                  id: `${subject}.subjectId`,
-                  type: 'select',
-                  label: 'Materia',
-                  options: this.unselectedSubjects(index).map((subject) => {
-                    return {
-                      key: subject.subject_name,
-                      value: subject.id,
-                    };
-                  }),
-                },
-                {
-                  field: `${subject}.qualification`,
-                  id: `${subject}.qualification`,
-                  type: 'number',
-                  label: 'Calificacion',
-                  min: 0,
-                  max: 20,
-                },
-              ]}
-            </RenderFields>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              className={this.props.classes.button}
-              aria-label="remover"
-              color="secondary"
-              onClick={() => fields.remove(index)}
+  renderSubjects = ({ fields }) => {
+    const { classes, subjects, subjectsSelected } = this.props;
+    return (
+      <>
+        {fields.map((subject, index) => {
+          return (
+            // eslint-disable-next-line
+            <Grid container justify="center" key={index}>
+              <Grid container item xs={10}>
+                <RenderFields lineal={[6, 6]}>
+                  {[
+                    {
+                      field: `${subject}.subjectId`,
+                      id: `${subject}.subjectId`,
+                      type: 'select',
+                      label: 'Materia',
+                      options: this.unselectedSubjects(index).map((item) => {
+                        return {
+                          key: item.subject_name,
+                          value: item.id,
+                        };
+                      }),
+                    },
+                    {
+                      field: `${subject}.qualification`,
+                      id: `${subject}.qualification`,
+                      type: 'number',
+                      label: 'Calificacion',
+                      min: 0,
+                      max: 20,
+                    },
+                  ]}
+                </RenderFields>
+              </Grid>
+              <Grid item xs={1} className={classes.buttonDelete}>
+                <IconButton
+                  aria-label="remover"
+                  color="secondary"
+                  onClick={() => fields.remove(index)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            </Grid>
+          );
+        })}
+        <Grid container item xs={12} justify="center">
+          <Grid item xs={1}>
+            <Fab
+              color="primary"
+              aria-label="Add"
+              disabled={subjects && subjectsSelected && subjects.length === subjectsSelected.length}
+              onClick={() => fields.push({})}
             >
-              <DeleteIcon />
-            </IconButton>
+              <AddIcon />
+            </Fab>
           </Grid>
         </Grid>
-      ))}
-      <Grid container item xs={12} justify="center">
-        <Grid item xs={1}>
-          <Fab
-            color="primary"
-            aria-label="Add"
-            className={this.props.classes.fab}
-            disabled={
-              this.props.subjects &&
-              this.props.subjectsSelected &&
-              this.props.subjects.length === this.props.subjectsSelected.length
-            }
-            onClick={() => fields.push({})}
-          >
-            <AddIcon />
-          </Fab>
-        </Grid>
-      </Grid>
-    </>
-  );
+      </>
+    );
+  };
 
   render = () => {
     const {
@@ -127,7 +132,7 @@ class StudentDetail extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       schoolPrograms,
       student,
     } = this.props;
@@ -287,13 +292,13 @@ class StudentDetail extends Component {
                 ]}
               </RenderFields>
             </Grid>
-            <Grid item xs={12} className={classes.subtitle}>
+            <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
                 Materias por equivalencia
               </Typography>
             </Grid>
             <Grid container item xs={12}>
-              <FieldArray name="equivalences" component={this.renderSubjects} />
+              <FieldArray name="equivalence" component={this.renderSubjects} />
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -308,7 +313,9 @@ class StudentDetail extends Component {
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
-                        studentId ? this.handleDialogShow('actualizar', submit) : submit('student')
+                        studentId
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('student')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -346,15 +353,47 @@ class StudentDetail extends Component {
 }
 
 StudentDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveStudent: func.isRequired,
-  goBack: func.isRequired,
-  studentId: number,
-  handleStudentDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+  classes: PropTypes.shape({
+    form: PropTypes.string.isRequired,
+    buttonContainer: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+    buttonDelete: PropTypes.string.isRequired,
+  }).isRequired,
+
+  schoolPrograms: PropTypes.arrayOf(
+    PropTypes.shape({
+      school_program_name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
+
+  student: PropTypes.shape({
+    first_surname: PropTypes.string,
+    first_name: PropTypes.string,
+  }).isRequired,
+
+  studentId: PropTypes.number,
+
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  saveStudent: PropTypes.func.isRequired,
+  handleStudentDelete: PropTypes.func.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+};
+
+StudentDetail.defaultProps = {
+  subjectsSelected: [],
+  studentId: null,
 };
 
 const studentValidation = (values) => {
@@ -380,9 +419,9 @@ const studentValidation = (values) => {
     errors.email = 'Introduce un email valido';
   }
 
-  if (values.equivalences && values.equivalences.length) {
+  if (values.equivalence && values.equivalence.length) {
     const subjectArrayErrors = [];
-    values.equivalences.forEach((subj, subjIndex) => {
+    values.equivalence.forEach((subj, subjIndex) => {
       const subjErrors = {};
       if (!subj || !subj.subjectId) {
         subjErrors.subjectId = '*Materia es requerido';
@@ -395,7 +434,7 @@ const studentValidation = (values) => {
     });
 
     if (subjectArrayErrors.length) {
-      errors.equivalences = subjectArrayErrors;
+      errors.equivalence = subjectArrayErrors;
     }
   }
 
@@ -409,14 +448,14 @@ const studentValidation = (values) => {
   return errors;
 };
 
-StudentDetail = reduxForm({
+let StudentDetailWrapper = reduxForm({
   form: 'student',
   validate: studentValidation,
   enableReinitialize: true,
 })(StudentDetail);
 const selector = formValueSelector('student');
 
-StudentDetail = connect(
+StudentDetailWrapper = connect(
   (state) => ({
     initialValues: {
       identification: state.studentReducer.selectedStudent.identification
@@ -474,8 +513,8 @@ StudentDetail = connect(
       levelInstruction: state.studentReducer.selectedStudent.level_instruction
         ? state.studentReducer.selectedStudent.level_instruction
         : '',
-      equivalences: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.equivalences.map((subj) => ({
+      equivalence: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.equivalence.map((subj) => ({
             subjectId: subj.subject_id,
             qualification: subj.qualification,
           }))
@@ -486,9 +525,9 @@ StudentDetail = connect(
         : false,
     },
     action: state.dialogReducer.action,
-    subjectsSelected: selector(state, 'equivalences'),
+    subjectsSelected: selector(state, 'equivalence'),
   }),
-  { change, show, submit }
-)(StudentDetail);
+  { showDispatch: show, submitDispatch: submit }
+)(StudentDetailWrapper);
 
-export default withStyles(styles)(StudentDetail);
+export default withStyles(styles)(StudentDetailWrapper);

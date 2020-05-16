@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
 import * as moment from 'moment';
-import { Form, reduxForm, change, submit, FieldArray, formValueSelector, Field } from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
+import { Form, reduxForm, submit, FieldArray, formValueSelector, Field } from 'redux-form';
+import PropTypes from 'prop-types';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -33,8 +33,8 @@ const styles = (theme) => ({
     width: '100%',
   },
   buttonDelete: {
-    marginTop: 0,
-    padding: 10,
+    display: 'flex',
+    alignItems: 'flex-end',
   },
   save: {
     color: 'white',
@@ -64,184 +64,187 @@ class SchoolPeriodDetail extends Component {
     );
   };
 
-  renderSchedule = ({ fields, meta: { error, submitFailed } }) => (
-    <Grid container justify="center">
-      {fields.map((schedule, index) => (
-        <Fragment key={index}>
-          <Grid container item xs={10}>
-            <Field
-              component="input"
-              name="schoolPeriodSubjectTeacherId"
-              type="hidden"
-              style={{ height: 0 }}
-            />
-            <RenderFields lineal>
-              {[
-                {
-                  label: 'Dia',
-                  field: `${schedule}.day`,
-                  id: `${schedule}.day`,
-                  type: 'select',
-                  options: jsonToOptions(WEEK_DAYS),
-                },
-                {
-                  label: 'Hora inicio',
-                  field: `${schedule}.startHour`,
-                  id: `${schedule}.startHour`,
-                  type: 'time',
-                },
-                {
-                  label: 'Hora fin',
-                  field: `${schedule}.endHour`,
-                  id: `${schedule}.endHour`,
-                  type: 'time',
-                },
-                {
-                  label: 'Aula',
-                  field: `${schedule}.classroom`,
-                  id: `${schedule}.classroom`,
-                  type: 'text',
-                },
-              ]}
-            </RenderFields>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              className={this.props.classes.buttonDelete}
-              aria-label="remover"
-              color="secondary"
-              onClick={() => fields.remove(index)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Grid>
-        </Fragment>
-      ))}
-      <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          className={this.props.classes.buttonSchedule}
-          onClick={() =>
-            fields.push({
-              endHour: '00:00:00',
-              startHour: '00:00:00',
-            })
-          }
-        >
-          horario +
-        </Button>
-      </Grid>
-    </Grid>
-  );
-
-  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (
-    <>
-      {fields.map((subject, index) => (
-        <Grid container justify="center" key={index}>
-          <Grid container item xs={10}>
-            <RenderFields lineal={[3, 3, 2, 2, 2]}>
-              {[
-                {
-                  field: `${subject}.subjectId`,
-                  id: `${subject}.subjectId`,
-                  type: 'select',
-                  label: 'Materia',
-                  options: this.unselectedSubjects(index).map((subject) => {
-                    return {
-                      key: subject.subject_name,
-                      value: subject.id,
-                    };
-                  }),
-                },
-                {
-                  field: `${subject}.teacherId`,
-                  id: `${subject}.teacherId`,
-                  type: 'select',
-                  label: 'Profesor impartidor',
-                  options: this.props.teachers.map((teacher) => {
-                    return {
-                      key: `${teacher.first_name} ${
-                        teacher.second_name ? teacher.second_name : ''
-                      } ${teacher.first_surname} ${
-                        teacher.second_surname ? teacher.second_surname : ''
-                      }`,
-                      value: teacher.teacher.id,
-                    };
-                  }),
-                },
-                {
-                  label: 'Modalidad',
-                  field: `${subject}.modality`,
-                  id: `${subject}.modality`,
-                  type: 'select',
-                  options: jsonToOptions(SUBJECT_PERIOD_MODALITY),
-                },
-
-                {
-                  label: 'Maximo de alumnos',
-                  field: `${subject}.limit`,
-                  id: `${subject}.limit`,
-                  type: 'number',
-                  min: 0,
-                },
-                {
-                  label: 'Aranceles (Bs)',
-                  field: `${subject}.duty`,
-                  id: `${subject}.duty`,
-                  type: 'number',
-                  min: 0,
-                },
-              ]}
-            </RenderFields>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              className={this.props.classes.button}
-              aria-label="remover"
-              color="secondary"
-              onClick={() => fields.remove(index)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={10}>
-            <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
-          </Grid>
-        </Grid>
-      ))}
-      <Grid container item xs={12} justify="center">
-        <Grid item xs={1}>
-          <Fab
+  renderSchedule = ({ fields }) => {
+    const { classes } = this.props;
+    return (
+      <Grid container justify="center">
+        {fields.map((schedule, index) => (
+          // eslint-disable-next-line
+          <Fragment key={index}>
+            <Grid container item xs={10}>
+              <Field
+                component="input"
+                name="schoolPeriodSubjectTeacherId"
+                type="hidden"
+                style={{ height: 0 }}
+              />
+              <RenderFields lineal>
+                {[
+                  {
+                    label: 'Dia',
+                    field: `${schedule}.day`,
+                    id: `${schedule}.day`,
+                    type: 'select',
+                    options: jsonToOptions(WEEK_DAYS),
+                  },
+                  {
+                    label: 'Hora inicio',
+                    field: `${schedule}.startHour`,
+                    id: `${schedule}.startHour`,
+                    type: 'time',
+                  },
+                  {
+                    label: 'Hora fin',
+                    field: `${schedule}.endHour`,
+                    id: `${schedule}.endHour`,
+                    type: 'time',
+                  },
+                  {
+                    label: 'Aula',
+                    field: `${schedule}.classroom`,
+                    id: `${schedule}.classroom`,
+                    type: 'text',
+                  },
+                ]}
+              </RenderFields>
+            </Grid>
+            <Grid item xs={1} className={classes.buttonDelete}>
+              <IconButton
+                aria-label="remover"
+                color="secondary"
+                onClick={() => fields.remove(index)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+          </Fragment>
+        ))}
+        <Grid item container xs={12} justify="center">
+          <Button
+            variant="contained"
             color="primary"
-            aria-label="Add"
-            className={this.props.classes.fab}
-            disabled={
-              this.props.subjects &&
-              this.props.subjectsSelected &&
-              this.props.subjects.length === this.props.subjectsSelected.length
-            }
+            className={classes.buttonSchedule}
             onClick={() =>
               fields.push({
-                schedule: [
-                  {
-                    endHour: '00:00:00',
-                    startHour: '00:00:00',
-                  },
-                ],
+                endHour: '00:00:00',
+                startHour: '00:00:00',
               })
             }
           >
-            <AddIcon />
-          </Fab>
+            horario +
+          </Button>
         </Grid>
       </Grid>
-    </>
-  );
+    );
+  };
+
+  renderSubjects = ({ fields }) => {
+    const { teachers, classes, subjects, subjectsSelected } = this.props;
+    return (
+      <>
+        {fields.map((subject, index) => (
+          // eslint-disable-next-line
+          <Grid container justify="center" key={index}>
+            <Grid container item xs={10}>
+              <RenderFields lineal={[3, 3, 2, 2, 2]}>
+                {[
+                  {
+                    field: `${subject}.subjectId`,
+                    id: `${subject}.subjectId`,
+                    type: 'select',
+                    label: 'Materia',
+                    options: this.unselectedSubjects(index).map((item) => {
+                      return {
+                        key: item.subject_name,
+                        value: item.id,
+                      };
+                    }),
+                  },
+                  {
+                    field: `${subject}.teacherId`,
+                    id: `${subject}.teacherId`,
+                    type: 'select',
+                    label: 'Profesor impartidor',
+                    options: teachers.map((teacher) => {
+                      return {
+                        key: `${teacher.first_name} ${
+                          teacher.second_name ? teacher.second_name : ''
+                        } ${teacher.first_surname} ${
+                          teacher.second_surname ? teacher.second_surname : ''
+                        }`,
+                        value: teacher.teacher.id,
+                      };
+                    }),
+                  },
+                  {
+                    label: 'Modalidad',
+                    field: `${subject}.modality`,
+                    id: `${subject}.modality`,
+                    type: 'select',
+                    options: jsonToOptions(SUBJECT_PERIOD_MODALITY),
+                  },
+
+                  {
+                    label: 'Maximo de alumnos',
+                    field: `${subject}.limit`,
+                    id: `${subject}.limit`,
+                    type: 'number',
+                    min: 0,
+                  },
+                  {
+                    label: 'Aranceles (Bs)',
+                    field: `${subject}.duty`,
+                    id: `${subject}.duty`,
+                    type: 'number',
+                    min: 0,
+                  },
+                ]}
+              </RenderFields>
+            </Grid>
+            <Grid item xs={1} className={classes.buttonDelete}>
+              <IconButton
+                aria-label="remover"
+                color="secondary"
+                onClick={() => fields.remove(index)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={10}>
+              <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
+            </Grid>
+          </Grid>
+        ))}
+        <Grid container item xs={12} justify="center">
+          <Grid item xs={1} container justify="center">
+            <Fab
+              color="primary"
+              aria-label="Add"
+              className={classes.fab}
+              disabled={subjects && subjectsSelected && subjects.length === subjectsSelected.length}
+              onClick={() =>
+                fields.push({
+                  schedule: [
+                    {
+                      endHour: '00:00:00',
+                      startHour: '00:00:00',
+                    },
+                  ],
+                })
+              }
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
+        </Grid>
+      </>
+    );
+  };
 
   handleDialogShow = (action, func) => {
+    const { showDispatch } = this.props;
     this.setState({ func }, () => {
-      this.props.show(action);
+      showDispatch(action);
     });
   };
 
@@ -256,7 +259,7 @@ class SchoolPeriodDetail extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       startDate,
       schoolPeriod,
     } = this.props;
@@ -343,8 +346,8 @@ class SchoolPeriodDetail extends Component {
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         schoolPeriodId
-                          ? this.handleDialogShow('actualizar', submit)
-                          : submit('schoolPeriod')
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('schoolPeriod')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -382,15 +385,55 @@ class SchoolPeriodDetail extends Component {
 }
 
 SchoolPeriodDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveSchoolPeriod: func.isRequired,
-  goBack: func.isRequired,
-  schoolPeriodId: number,
-  handleSchoolPeriodDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+  classes: PropTypes.shape({
+    fab: PropTypes.string.isRequired,
+    form: PropTypes.string.isRequired,
+    buttonContainer: PropTypes.string.isRequired,
+    buttonSchedule: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+    buttonDelete: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+  }).isRequired,
+
+  teachers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string.isRequired,
+      second_name: PropTypes.string,
+
+      first_surname: PropTypes.string.isRequired,
+      second_surname: PropTypes.string,
+      teacher: PropTypes.shape({ id: PropTypes.number }).isRequired,
+    })
+  ).isRequired,
+
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
+
+  schoolPeriod: PropTypes.shape({
+    cod_school_period: PropTypes.string,
+  }).isRequired,
+
+  startDate: PropTypes.string,
+  schoolPeriodId: PropTypes.number,
+
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  saveSchoolPeriod: PropTypes.func.isRequired,
+  handleSchoolPeriodDelete: PropTypes.func.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+};
+
+SchoolPeriodDetail.defaultProps = {
+  subjectsSelected: [],
+  schoolPeriodId: null,
+  startDate: null,
 };
 
 const schoolPeriodValidation = (values) => {
@@ -475,13 +518,13 @@ const schoolPeriodValidation = (values) => {
   return errors;
 };
 
-SchoolPeriodDetail = reduxForm({
+let SchoolPeriodDetailWrapper = reduxForm({
   form: 'schoolPeriod',
   validate: schoolPeriodValidation,
   enableReinitialize: true,
 })(SchoolPeriodDetail);
 const selector = formValueSelector('schoolPeriod');
-SchoolPeriodDetail = connect(
+SchoolPeriodDetailWrapper = connect(
   (state) => ({
     initialValues: {
       codSchoolPeriod: state.schoolPeriodReducer.selectedSchoolPeriod.cod_school_period
@@ -526,7 +569,7 @@ SchoolPeriodDetail = connect(
     startDate: selector(state, 'startDate'),
     subjectsSelected: selector(state, 'subjects'),
   }),
-  { change, show, submit }
-)(SchoolPeriodDetail);
+  { showDispatch: show, submitDispatch: submit }
+)(SchoolPeriodDetailWrapper);
 
-export default withStyles(styles)(SchoolPeriodDetail);
+export default withStyles(styles)(SchoolPeriodDetailWrapper);
