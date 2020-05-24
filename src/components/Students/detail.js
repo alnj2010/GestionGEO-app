@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
-import { Form, reduxForm, FieldArray, submit, formValueSelector } from 'redux-form';
+import { Form, reduxForm, FieldArray, submit, formValueSelector, Field } from 'redux-form';
 import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
@@ -272,6 +272,18 @@ class StudentDetail extends Component {
                     disabled: rol !== 'A',
                   },
                   {
+                    label: '¿Este estudiante esta activo?',
+                    field: 'active',
+                    id: 'active',
+                    type: studentId && rol === 'A' ? 'switch' : 'hidden',
+                  },
+                  {
+                    label: '¿Ya finalizo el programa escolar?',
+                    field: 'endProgram',
+                    id: 'endProgram',
+                    type: studentId && rol === 'A' ? 'switch' : 'hidden',
+                  },
+                  {
                     label: '¿Puede Inscribir tesis?',
                     field: 'isAvailableFinalWork',
                     id: 'isAvailableFinalWork',
@@ -291,6 +303,7 @@ class StudentDetail extends Component {
                   },
                 ]}
               </RenderFields>
+              <Field component="input" name="studentId" type="hidden" style={{ height: 0 }} />
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" gutterBottom>
@@ -315,7 +328,7 @@ class StudentDetail extends Component {
                       onClick={() =>
                         studentId
                           ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('student')
+                          : submitDispatch('estudiante')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -449,11 +462,11 @@ const studentValidation = (values) => {
 };
 
 let StudentDetailWrapper = reduxForm({
-  form: 'student',
+  form: 'estudiante',
   validate: studentValidation,
   enableReinitialize: true,
 })(StudentDetail);
-const selector = formValueSelector('student');
+const selector = formValueSelector('estudiante');
 
 StudentDetailWrapper = connect(
   (state) => ({
@@ -491,6 +504,10 @@ StudentDetailWrapper = connect(
       studentType: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.student_type
         : '',
+      studentId: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.id
+        : null,
+      active: !!state.studentReducer.selectedStudent.active,
       homeUniversity: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.home_university
         : '',
@@ -499,16 +516,19 @@ StudentDetailWrapper = connect(
         ? state.studentReducer.selectedStudent.nationality
         : '',
       isUcvTeacher: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.is_ucv_teacher
+        ? !!state.studentReducer.selectedStudent.student.is_ucv_teacher
         : false,
       isAvailableFinalWork: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.is_available_final_work
+        ? !!state.studentReducer.selectedStudent.student.is_available_final_work
+        : false,
+      endProgram: state.studentReducer.selectedStudent.student
+        ? !!state.studentReducer.selectedStudent.student.end_program
         : false,
       repeatApprovedSubject: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.repeat_approved_subject
+        ? !!state.studentReducer.selectedStudent.student.repeat_approved_subject
         : false,
       repeatReprobatedSubject: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.repeat_reprobated_subject
+        ? !!state.studentReducer.selectedStudent.student.repeat_reprobated_subject
         : false,
       levelInstruction: state.studentReducer.selectedStudent.level_instruction
         ? state.studentReducer.selectedStudent.level_instruction
@@ -521,7 +541,7 @@ StudentDetailWrapper = connect(
         : [],
 
       withDisabilities: state.studentReducer.selectedStudent.with_disabilities
-        ? state.studentReducer.selectedStudent.with_disabilities
+        ? !!state.studentReducer.selectedStudent.with_disabilities
         : false,
     },
     action: state.dialogReducer.action,

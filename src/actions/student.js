@@ -48,6 +48,7 @@ export const cleanSelectedStudent = () => async (dispatch) => {
 export const updateStudent = (student) => async (dispatch) => {
   const payload = {
     id: student.id,
+    student_id: student.studentId,
     identification: student.identification,
     first_name: student.firstName,
     second_name: student.secondName,
@@ -72,6 +73,8 @@ export const updateStudent = (student) => async (dispatch) => {
     is_available_final_work: student.isAvailableFinalWork,
     repeat_approved_subject: student.repeatApprovedSubject,
     repeat_reprobated_subject: student.repeatApprovedSubject,
+    end_program: student.endProgram,
+    active: student.active,
   };
   return Student.update(payload)
     .then((response) => {
