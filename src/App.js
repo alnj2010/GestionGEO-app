@@ -28,6 +28,7 @@ import SubjectDetail from './containers/Subjects/detail';
 
 import StudentsList from './containers/Students';
 import StudentDetail from './containers/Students/detail';
+import StudentSchoolProgramDetail from './containers/Students/schoolProgram';
 import StudentInscription from './containers/Students/inscription';
 import StudentInscriptions from './containers/Students/inscriptions';
 
@@ -69,6 +70,11 @@ function App() {
 
             <Route exact path="/estudiantes/" component={StudentsList} />
             <Route exact path="/estudiantes/edit/:id" component={StudentDetail} />
+            <Route
+              exact
+              path="/estudiantes/edit/:userId/programa-academico/:studentId"
+              component={StudentSchoolProgramDetail}
+            />
             <Route exact path="/estudiantes/create" component={StudentDetail} />
             <Route exact path="/estudiantes/inscripciones/:id" component={StudentInscriptions} />
             <Route

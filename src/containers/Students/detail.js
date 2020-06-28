@@ -52,7 +52,7 @@ class StudentDetailContainer extends Component {
   };
 
   render() {
-    const { student, schoolPrograms, subjects } = this.props;
+    const { student, schoolPrograms, subjects,history } = this.props;
     return (
       <StudentDetail
         schoolPrograms={schoolPrograms}
@@ -62,6 +62,7 @@ class StudentDetailContainer extends Component {
         subjects={subjects}
         student={student}
         handleStudentDelete={this.handleStudentDelete}
+        history={history}
       />
     );
   }

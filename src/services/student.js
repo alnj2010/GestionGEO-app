@@ -25,6 +25,21 @@ export const Student = {
       .catch(handleErrorMsg);
   },
 
+  updateSchoolProgram(student, id) {
+    return AXIOS.put(`${URL.STUDENT}/${id}`, student, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+
+  deleteSchoolProgram(userId, studentId) {
+    return AXIOS.delete(`${URL.STUDENT}/${userId}?student_id=${studentId}`, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
   saveStudent(student) {
     return AXIOS.post(`${URL.STUDENT}`, student, {
       headers: headers(),

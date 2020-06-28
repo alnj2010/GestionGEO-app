@@ -8,7 +8,8 @@ export const ACTIONS = {
   INSCRIBED_SCHOOL_PERIODS: `student/inscribed_school_periods`,
   UPDATE: `student/update`,
   CLEAN_SELECTED_STUDENT: `student/clean-selected`,
-  SELECTED_STUDENT_SCHOOL_PERIOD: `student/elected_student_school_period`,
+  SELECTED_STUDENT_SCHOOL_PERIOD: `student/selected_student_school_period`,
+  SELECTED_SCHOOL_PROGRAM: `student/selected_school_program`,
 };
 
 export const getList = () => async (dispatch) => {
@@ -38,6 +39,83 @@ export const findStudentById = (id) => async (dispatch) => {
     });
 };
 
+export const loadSchoolProgram = (schoolProgram) => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
+    payload: { selectedSchoolProgram: schoolProgram },
+  });
+  return true;
+};
+
+export const cleanSchoolProgram = () => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
+    payload: { selectedSchoolProgram: {} },
+  });
+};
+
+export const updateSchoolProgram = (student) => async (dispatch) => {
+  const payload = {
+    identification: student.identification,
+    first_name: student.first_name,
+    second_name: student.second_name,
+    first_surname: student.first_surname,
+    second_surname: student.second_surname,
+    telephone: student.telephone,
+    mobile: student.mobile,
+    work_phone: student.work_phone,
+    email: student.email,
+    level_instruction: student.level_instruction,
+    active: student.active,
+    with_disabilities: student.with_disabilities,
+    sex: student.sex,
+    nationality: student.nationality,
+    student_id: student.idStudent,
+    guide_teacher_id: student.guideTeacherId,
+    student_type: student.studentType,
+    home_university: student.homeUniversity,
+    current_postgraduate: student.currentPostgraduate,
+    type_income: student.typeIncome,
+    is_ucv_teacher: student.isUcvTeacher,
+    is_available_final_work: student.isAvailableFinalWork,
+    repeat_approved_subject: student.repeatApprovedSubject,
+    repeat_reprobated_subject: student.repeatReprobatedSubject,
+    credits_granted: student.creditsGranted,
+    with_work: student.withWork,
+    end_program: student.endProgram,
+    test_period: student.testPeriod,
+    current_status: student.currentStatus,
+    equivalences: student.equivalences,
+  };
+
+  return Student.updateSchoolProgram(payload, student.idUser)
+    .then((response) => {
+      console.log(response);
+      dispatch({
+        type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
+        payload: {
+          selectedSchoolProgram: response.student.find((item) => item.id === student.idStudent),
+        },
+      });
+      show('Programa escolar de estudiante actualizado', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
+export const deleteSchoolProgram = (userId, studentId) => async (dispatch) => {
+  return Student.deleteSchoolProgram(userId, studentId)
+    .then(() => {
+      show('Programa escolar de estudiante, eliminado!', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
 export const cleanSelectedStudent = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_STUDENT,

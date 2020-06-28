@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MaterialTable from 'material-table';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
@@ -135,7 +136,9 @@ class StudentDetail extends Component {
       submitDispatch,
       schoolPrograms,
       student,
+      history,
     } = this.props;
+    console.log(history);
     const { func } = this.state;
     const rol = getSessionUserRol();
     return (
@@ -305,14 +308,19 @@ class StudentDetail extends Component {
               </RenderFields>
               <Field component="input" name="studentId" type="hidden" style={{ height: 0 }} />
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom>
-                Materias por equivalencia
-              </Typography>
-            </Grid>
-            <Grid container item xs={12}>
-              <FieldArray name="equivalence" component={this.renderSubjects} />
-            </Grid>
+            {!studentId && (
+              <>
+                <Grid item xs={12}>
+                  <Typography variant="h6" gutterBottom>
+                    Materias por equivalencia
+                  </Typography>
+                </Grid>
+                <Grid container item xs={12}>
+                  <FieldArray name="equivalence" component={this.renderSubjects} />
+                </Grid>
+              </>
+            )}
+
             <Grid container>
               <Grid item xs={12}>
                 <Grid
@@ -359,6 +367,47 @@ class StudentDetail extends Component {
             </Grid>
           </Grid>
         </Grid>
+        {studentId && (
+          <Grid container justify="center">
+            <Grid item xs={12} style={{ marginTop: '30px' }}>
+              <MaterialTable
+                title="Programas Academicos del estudiante"
+                columns={[
+                  { title: '#', field: 'id', hidden: true },
+                  { title: 'Programa Academico', field: 'schoolProgram' },
+                  { title: 'Estatus Actual', field: 'current_status' },
+                ]}
+                data={student.student.map((item) => ({
+                  ...item,
+                  schoolProgram: item.school_program.school_program_name,
+                }))}
+                actions={[
+                  {
+                    icon: 'visibility',
+                    tooltip: 'Ver programa academico',
+                    onClick: (event, rowData) => {
+                      let selectedSchoolProgram = student.student.find(
+                        (item) => (item.id = rowData.id)
+                      );
+                      history.push(
+                        `${history.location.pathname}/programa-academico/${rowData.id}`,
+                        {
+                          selectedSchoolProgram: { ...selectedSchoolProgram },
+                          selectedStudent: { ...student },
+                        }
+                      );
+                    },
+                  },
+                  {
+                    icon: 'delete',
+                    tooltip: 'Delete User',
+                    onClick: (event, rowData) => alert('You want to delete ' + rowData.name),
+                  },
+                ]}
+              />
+            </Grid>
+          </Grid>
+        )}
         <Dialog handleAgree={func} />
       </Form>
     );
@@ -533,12 +582,7 @@ StudentDetailWrapper = connect(
       levelInstruction: state.studentReducer.selectedStudent.level_instruction
         ? state.studentReducer.selectedStudent.level_instruction
         : '',
-      equivalence: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.equivalence.map((subj) => ({
-            subjectId: subj.subject_id,
-            qualification: subj.qualification,
-          }))
-        : [],
+      equivalence: [],
 
       withDisabilities: state.studentReducer.selectedStudent.with_disabilities
         ? !!state.studentReducer.selectedStudent.with_disabilities
