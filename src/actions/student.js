@@ -90,7 +90,6 @@ export const updateSchoolProgram = (student) => async (dispatch) => {
 
   return Student.updateSchoolProgram(payload, student.idUser)
     .then((response) => {
-      console.log(response);
       dispatch({
         type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
         payload: {
@@ -105,6 +104,59 @@ export const updateSchoolProgram = (student) => async (dispatch) => {
       return false;
     });
 };
+
+export const saveSchoolProgram = (student) => async (dispatch) => {
+  const payload = {
+    identification: student.identification,
+    first_name: student.first_name,
+    second_name: student.second_name,
+    first_surname: student.first_surname,
+    second_surname: student.second_surname,
+    telephone: student.telephone,
+    mobile: student.mobile,
+    work_phone: student.work_phone,
+    email: student.email,
+    level_instruction: student.level_instruction,
+    active: student.active,
+    with_disabilities: student.with_disabilities,
+    sex: student.sex,
+    nationality: student.nationality,
+    guide_teacher_id: student.guideTeacherId,
+    student_type: student.studentType,
+    school_program_id: student.schoolProgramId,
+    home_university: student.homeUniversity,
+    current_postgraduate: student.currentPostgraduate,
+    type_income: student.typeIncome,
+    is_ucv_teacher: student.isUcvTeacher,
+    is_available_final_work: student.isAvailableFinalWork,
+    repeat_approved_subject: student.repeatApprovedSubject,
+    repeat_reprobated_subject: student.repeatReprobatedSubject,
+    credits_granted: student.creditsGranted,
+    with_work: student.withWork,
+    end_program: student.endProgram,
+    test_period: student.testPeriod,
+    current_status: student.currentStatus,
+    equivalences: student.equivalences,
+  };
+
+  return Student.saveSchoolProgram(payload, student.idUser)
+    .then((response) => {
+      console.log(response);
+      /* dispatch({
+        type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
+        payload: {
+          selectedSchoolProgram: response.student.find((item) => item.id === student.idStudent),
+        },
+      }); */
+      show('Programa escolar de estudiante actualizado', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
+
 export const deleteSchoolProgram = (userId, studentId) => async (dispatch) => {
   return Student.deleteSchoolProgram(userId, studentId)
     .then(() => {
@@ -126,7 +178,6 @@ export const cleanSelectedStudent = () => async (dispatch) => {
 export const updateStudent = (student) => async (dispatch) => {
   const payload = {
     id: student.id,
-    student_id: student.studentId,
     identification: student.identification,
     first_name: student.firstName,
     second_name: student.secondName,
@@ -136,24 +187,33 @@ export const updateStudent = (student) => async (dispatch) => {
     telephone: student.telephone,
     work_phone: student.workPhone,
     email: student.email,
-    school_program_id: student.schoolProgram,
+    level_instruction: student.levelInstruction,
+    active: student.active,
+    with_disabilities: student.withDisabilities,
+    sex: student.sex,
+    nationality: student.nationality,
+    student_id: student.studentId,
+    guide_teacher_id: student.guideTeacherId,
     student_type: student.studentType,
     home_university: student.homeUniversity,
-    sex: student.sex,
-    with_disabilities: student.withDisabilities,
-    level_instruction: student.levelInstruction,
-    equivalences: student.equivalence.map((item) => ({
-      subject_id: item.subjectId,
-      qualification: item.qualification,
-    })),
-    nationality: student.nationality,
+    end_program: student.endProgram,
+    current_postgraduate: student.currentPostgraduate,
+    type_income: student.typeIncome,
     is_ucv_teacher: student.isUcvTeacher,
     is_available_final_work: student.isAvailableFinalWork,
     repeat_approved_subject: student.repeatApprovedSubject,
     repeat_reprobated_subject: student.repeatApprovedSubject,
-    end_program: student.endProgram,
-    active: student.active,
+    credits_granted: student.creditsGranted,
+    with_work: student.withWork,
+    test_period: student.testPeriod,
+    current_status: student.currentStatus,
+    //degrees:student.degrees,
+    equivalences: student.equivalence.map((item) => ({
+      subject_id: item.subject_id,
+      qualification: item.qualification,
+    })),
   };
+  console.log(payload);
   return Student.update(payload)
     .then((response) => {
       dispatch({
@@ -180,21 +240,24 @@ export const saveStudent = (student) => async (dispatch) => {
     telephone: student.telephone,
     work_phone: student.workPhone,
     email: student.email,
-    school_program_id: student.schoolProgram,
-    with_disabilities: student.withDisabilities,
     level_instruction: student.levelInstruction,
+    with_disabilities: student.withDisabilities,
+    sex: student.sex,
+    nationality: student.nationality,
+    school_program_id: student.schoolProgram,
+    //guide_teacher_id:student.guideTeacher,
+    student_type: student.studentType,
+    home_university: student.homeUniversity,
+    //current_postgraduate:student.currentPostgraduate,
+    type_income: student.typeIncome,
+    is_ucv_teacher: student.isUcvTeacher,
+    credits_granted: student.creditsGranted,
+    with_work: student.withWork,
+    //degrees:student.degrees,
     equivalences: student.equivalence.map((item) => ({
       subject_id: item.subjectId,
       qualification: item.qualification,
     })),
-    student_type: student.studentType,
-    home_university: student.homeUniversity,
-    sex: student.sex,
-    nationality: student.nationality,
-    is_ucv_teacher: student.isUcvTeacher,
-    is_available_final_work: student.isAvailableFinalWork,
-    repeat_approved_subject: student.repeatApprovedSubject,
-    repeat_reprobated_subject: student.repeatApprovedSubject,
   };
 
   return Student.saveStudent(payload)

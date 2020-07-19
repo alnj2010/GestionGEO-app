@@ -136,6 +136,7 @@ class StudentDetail extends Component {
       submitDispatch,
       schoolPrograms,
       student,
+      handleDeleteSchoolProgram,
       history,
     } = this.props;
     console.log(history);
@@ -214,7 +215,7 @@ class StudentDetail extends Component {
                     label: 'Programa academico al que pertenece',
                     field: `schoolProgram`,
                     id: `schoolProgram`,
-                    type: 'select',
+                    type: studentId ? 'hidden' : 'select',
                     options: schoolPrograms.map((post) => {
                       return {
                         key: post.school_program_name,
@@ -227,9 +228,22 @@ class StudentDetail extends Component {
                     label: 'Tipo',
                     field: `studentType`,
                     id: `studentType`,
-                    type: 'select',
+                    type: studentId ? 'hidden' : 'select',
                     options: jsonToOptions(STUDENT_TYPE),
                     disabled: rol !== 'A',
+                  },
+                  {
+                    label: 'Tipo de ingreso',
+                    field: 'typeIncome',
+                    id: 'typeIncome',
+                    type: !studentId && rol === 'A' ? 'text' : 'hidden',
+                  },
+                  {
+                    label: 'Creditos otorgados',
+                    field: 'creditsGranted',
+                    id: 'creditsGranted',
+                    type: !studentId && rol === 'A' ? 'number' : 'hidden',
+                    min: 0,
                   },
                   {
                     label: 'Nivel de instruccion',
@@ -242,7 +256,7 @@ class StudentDetail extends Component {
                     label: 'Universidad de Origen',
                     field: 'homeUniversity',
                     id: 'homeUniversity',
-                    type: 'text',
+                    type: !studentId && rol === 'A' ? 'text' : 'hidden',
                     disabled: rol !== 'A',
                   },
                   {
@@ -262,20 +276,27 @@ class StudentDetail extends Component {
                     disabled: rol !== 'A',
                   },
                   {
-                    label: '¿Discapacidad?',
+                    label: '¿Posee alguna discapacidad?',
                     field: 'withDisabilities',
                     id: 'withDisabilities',
-                    type: 'switch',
+                    type: rol === 'A' ? 'switch' : 'hidden',
                   },
                   {
                     label: '¿Profesor de la UCV?',
                     field: 'isUcvTeacher',
                     id: 'isUcvTeacher',
-                    type: 'switch',
+                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
                     disabled: rol !== 'A',
                   },
                   {
-                    label: '¿Este estudiante esta activo?',
+                    label: '¿Posee empleo actualmente?',
+                    field: 'withWork',
+                    id: 'withWork',
+                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
+                    disabled: rol !== 'A',
+                  },
+                  {
+                    label: 'Active',
                     field: 'active',
                     id: 'active',
                     type: studentId && rol === 'A' ? 'switch' : 'hidden',
@@ -284,25 +305,25 @@ class StudentDetail extends Component {
                     label: '¿Ya finalizo el programa escolar?',
                     field: 'endProgram',
                     id: 'endProgram',
-                    type: studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
                   },
                   {
                     label: '¿Puede Inscribir tesis?',
                     field: 'isAvailableFinalWork',
                     id: 'isAvailableFinalWork',
-                    type: studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
                   },
                   {
                     label: '¿Ha cursado una materia aprovada dos veces?',
                     field: 'repeatApprovedSubject',
                     id: 'repeatApprovedSubject',
-                    type: studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
                   },
                   {
                     label: '¿Ha cursado una materia ya aplazada?',
                     field: 'repeatReprobatedSubject',
                     id: 'repeatReprobatedSubject',
-                    type: studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
                   },
                 ]}
               </RenderFields>
@@ -401,7 +422,20 @@ class StudentDetail extends Component {
                   {
                     icon: 'delete',
                     tooltip: 'Delete User',
-                    onClick: (event, rowData) => alert('You want to delete ' + rowData.name),
+                    onClick: (event, rowData) => {
+                      this.handleDialogShow('eliminar', (entity) =>
+                        handleDeleteSchoolProgram(studentId, rowData.id)
+                      );
+                    },
+                  },
+                  {
+                    icon: 'add',
+                    tooltip: 'Agregar programa academico',
+                    isFreeAction: true,
+                    onClick: (event) =>
+                      history.push(`${history.location.pathname}/programa-academico/create`, {
+                        selectedStudent: { ...student },
+                      }),
                   },
                 ]}
               />
@@ -553,6 +587,12 @@ StudentDetailWrapper = connect(
       studentType: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.student_type
         : '',
+      typeIncome: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.type_income
+        : '',
+      creditsGranted: state.studentReducer.selectedStudent.student
+        ? state.studentReducer.selectedStudent.student.credits_granted
+        : 0,
       studentId: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.id
         : null,
@@ -566,6 +606,9 @@ StudentDetailWrapper = connect(
         : '',
       isUcvTeacher: state.studentReducer.selectedStudent.student
         ? !!state.studentReducer.selectedStudent.student.is_ucv_teacher
+        : false,
+      withWork: state.studentReducer.selectedStudent.student
+        ? !!state.studentReducer.selectedStudent.student.with_work
         : false,
       isAvailableFinalWork: state.studentReducer.selectedStudent.student
         ? !!state.studentReducer.selectedStudent.student.is_available_final_work

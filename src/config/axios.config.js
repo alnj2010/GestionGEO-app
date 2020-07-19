@@ -43,6 +43,7 @@ AXIOS.interceptors.response.use(
         : error.response.data.error;
 
     if (status === 401) {
+      window.location.href = '/';
       return Promise.reject(error);
     }
     if (status === 403) {

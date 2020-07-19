@@ -68,7 +68,7 @@ function RenderFields(props) {
         );
 
       default:
-        return <span key={index} />;
+        return null;
     }
   });
 }

@@ -172,7 +172,7 @@ class TeacherDetail extends Component {
                     options: jsonToOptions(TEACHER_DEDICATION),
                   },
                   {
-                    label: '¿Discapacidad?',
+                    label: '¿Posee alguna discapacidad?',
                     field: 'withDisabilities',
                     id: 'withDisabilities',
                     type: 'switch',

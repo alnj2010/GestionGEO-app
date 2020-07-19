@@ -159,7 +159,7 @@ class AdminDetail extends Component {
                     options: jsonToOptions(NATIONALITY),
                   },
                   {
-                    label: '¿Discapacidad?',
+                    label: '¿Posee alguna discapacidad?',
                     field: 'withDisabilities',
                     id: 'withDisabilities',
                     type: 'switch',

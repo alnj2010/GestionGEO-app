@@ -75,6 +75,11 @@ function App() {
               path="/estudiantes/edit/:userId/programa-academico/:studentId"
               component={StudentSchoolProgramDetail}
             />
+            <Route
+              exact
+              path="/estudiantes/edit/:userId/programa-academico/create"
+              component={StudentSchoolProgramDetail}
+            />
             <Route exact path="/estudiantes/create" component={StudentDetail} />
             <Route exact path="/estudiantes/inscripciones/:id" component={StudentInscriptions} />
             <Route

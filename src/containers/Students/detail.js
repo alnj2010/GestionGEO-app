@@ -7,6 +7,7 @@ import {
   deleteStudent,
   cleanSelectedStudent,
   saveStudent,
+  deleteSchoolProgram,
 } from '../../actions/student';
 import { getList as getSubjectList } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
@@ -30,9 +31,31 @@ class StudentDetailContainer extends Component {
   };
 
   saveStudent = (values) => {
-    const { match, updateStudent, findStudentById, saveStudent, history } = this.props;
+    const { match, updateStudent, findStudentById, saveStudent, history, student } = this.props;
     const payload = { ...values };
-    if (match.params.id) updateStudent({ ...payload, ...match.params });
+    console.log(student);
+    if (match.params.id)
+      updateStudent({
+        ...payload,
+        id: match.params.id,
+        schoolProgramId: student.student[0].school_program_id,
+        studentId: student.student[0].id,
+        studentType: student.student[0].student_type,
+        homeUniversity: student.student[0].home_university,
+        typeIncome: student.student[0].type_income,
+        isUcvTeacher: student.student[0].is_ucv_teacher,
+        isAvailableFinalWork: student.student[0].is_available_final_work,
+        repeatApprovedSubject: student.student[0].repeat_approved_subject,
+        repeatReprobatedSubject: student.student[0].repeat_reprobated_subject,
+        creditsGranted: student.student[0].credits_granted,
+        withWork: student.student[0].with_work,
+        testPeriod: student.student[0].test_period,
+        currentStatus: student.student[0].current_status,
+        equivalence: student.student[0].equivalence,
+        endProgram: student.student[0].end_program,
+        guideTeacherId: student.student[0].guide_teacher_id,
+        currentPostgraduate: student.student[0].current_postgraduate,
+      });
     else
       saveStudent({ ...payload }).then((response) => {
         if (response) {
@@ -51,8 +74,13 @@ class StudentDetailContainer extends Component {
     deleteStudent(match.params.id).then((res) => history.push('/estudiantes'));
   };
 
+  handleDeleteSchoolProgram = (userId, studentId) => {
+    const { deleteSchoolProgram, history } = this.props;
+    deleteSchoolProgram(userId, studentId).then(() => history.push('/estudiantes/edit/' + userId));
+  };
+
   render() {
-    const { student, schoolPrograms, subjects,history } = this.props;
+    const { student, schoolPrograms, subjects, history } = this.props;
     return (
       <StudentDetail
         schoolPrograms={schoolPrograms}
@@ -63,6 +91,7 @@ class StudentDetailContainer extends Component {
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}
+        handleDeleteSchoolProgram={this.handleDeleteSchoolProgram}
       />
     );
   }
@@ -93,6 +122,7 @@ const mD = {
   cleanDialog,
   getSchoolProgramList,
   getSubjectList,
+  deleteSchoolProgram,
 };
 
 StudentDetailContainer = connect(mS, mD)(StudentDetailContainer);

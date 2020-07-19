@@ -6,9 +6,11 @@ import {
   loadSchoolProgram,
   updateSchoolProgram,
   deleteSchoolProgram,
+  saveSchoolProgram,
 } from '../../actions/student';
 import { getList as getTeacherList } from '../../actions/teacher';
 import { getList as getSubjectList } from '../../actions/subject';
+import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import { define, cleanDialog } from '../../actions/dialog';
 import StudentSchoolProgram from '../../components/Students/schoolProgram';
 
@@ -22,10 +24,12 @@ class StudentSchoolProgramContainer extends Component {
       getTeacherListDispatch,
       defineDispatch,
       getSubjectListDispatch,
+      getSchoolProgramListDispatch,
     } = this.props;
     loadSchoolProgramDispatch(schoolProgram);
     getTeacherListDispatch();
     getSubjectListDispatch();
+    getSchoolProgramListDispatch();
     defineDispatch('programa academico del estudiante');
   };
 
@@ -38,16 +42,25 @@ class StudentSchoolProgramContainer extends Component {
   saveStudent = (values) => {
     const {
       updateSchoolProgramDispatch,
+      saveSchoolProgramDispatch,
       location: {
         state: { selectedStudent, selectedSchoolProgram },
       },
     } = this.props;
-    updateSchoolProgramDispatch({
-      ...selectedStudent,
-      ...values,
-      idUser: selectedStudent.id,
-      idStudent: selectedSchoolProgram.id,
-    });
+    if (!selectedSchoolProgram) {
+      saveSchoolProgramDispatch({
+        ...selectedStudent,
+        ...values,
+        idUser: selectedStudent.id,
+      });
+    } else {
+      updateSchoolProgramDispatch({
+        ...selectedStudent,
+        ...values,
+        idUser: selectedStudent.id,
+        idStudent: selectedSchoolProgram.id,
+      });
+    }
   };
 
   goBack = () => {
@@ -78,9 +91,18 @@ class StudentSchoolProgramContainer extends Component {
       },
       teachers,
       subjects,
+      allSchoolPrograms,
     } = this.props;
+
+    let schoolPrograms = allSchoolPrograms;
+    if (!schoolProgram) {
+      schoolPrograms = allSchoolPrograms.filter(
+        (y) => !selectedStudent.student.some((x) => x.school_program_id === y.id)
+      );
+    }
     return (
       <StudentSchoolProgram
+        schoolPrograms={schoolPrograms}
         subjects={subjects}
         schoolProgram={schoolProgram}
         selectedStudent={selectedStudent}
@@ -97,11 +119,15 @@ StudentSchoolProgramContainer.propTypes = {
   location: PropTypes.shape({
     state: PropTypes.shape({
       selectedSchoolProgram: PropTypes.shape({ id: PropTypes.number }),
-      selectedStudent: PropTypes.shape({ id: PropTypes.number }),
+      selectedStudent: PropTypes.shape({
+        id: PropTypes.number,
+        student: PropTypes.arrayOf(PropTypes.shape({})),
+      }),
     }),
   }).isRequired,
   teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  allSchoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({ id: PropTypes.number }),
@@ -114,14 +140,15 @@ StudentSchoolProgramContainer.propTypes = {
   defineDispatch: PropTypes.func.isRequired,
   getSubjectListDispatch: PropTypes.func.isRequired,
   updateSchoolProgramDispatch: PropTypes.func.isRequired,
-
+  saveSchoolProgramDispatch: PropTypes.func.isRequired,
+  getSchoolProgramListDispatch: PropTypes.func.isRequired,
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
-  goBack: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
   subjects: state.subjectReducer.list,
   teachers: state.teacherReducer.list,
+  allSchoolPrograms: state.schoolProgramReducer.list,
 });
 
 const mD = {
@@ -133,6 +160,8 @@ const mD = {
   defineDispatch: define,
   updateSchoolProgramDispatch: updateSchoolProgram,
   deleteSchoolProgramDispatch: deleteSchoolProgram,
+  saveSchoolProgramDispatch: saveSchoolProgram,
+  getSchoolProgramListDispatch: getSchoolProgramList,
 };
 
 const StudentSchoolProgramContainerWrapper = connect(mS, mD)(StudentSchoolProgramContainer);

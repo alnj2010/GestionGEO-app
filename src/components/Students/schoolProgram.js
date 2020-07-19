@@ -135,6 +135,7 @@ class StudentSchoolProgram extends Component {
       submitDispatch,
       teachersGuide,
       selectedStudent,
+      schoolPrograms,
     } = this.props;
     const { func } = this.state;
     const rol = getSessionUserRol();
@@ -144,7 +145,9 @@ class StudentSchoolProgram extends Component {
           <Grid item xs={12}>
             <h3>
               Estudiante: {selectedStudent.first_surname} {selectedStudent.first_name} <br />
-              Programa Academico: {schoolProgram.school_program.school_program_name}
+              {schoolProgram
+                ? `Programa Academico: ${schoolProgram.school_program.school_program_name}`
+                : `Agregar programa Academico`}
             </h3>
             <hr />
           </Grid>
@@ -152,6 +155,19 @@ class StudentSchoolProgram extends Component {
             <Grid container justify="space-between">
               <RenderFields>
                 {[
+                  {
+                    label: 'Programa academico al que pertenece',
+                    field: `schoolProgramId`,
+                    id: `schoolProgramId`,
+                    type: schoolProgram ? 'hidden' : 'select',
+                    options: schoolPrograms.map((post) => {
+                      return {
+                        key: post.school_program_name,
+                        value: post.id,
+                      };
+                    }),
+                    disabled: rol !== 'A' || schoolProgram,
+                  },
                   {
                     label: 'Postgrado actual (Externo al Postgrado de Geoquimica)',
                     field: 'currentPostgraduate',
@@ -212,7 +228,7 @@ class StudentSchoolProgram extends Component {
                   },
 
                   {
-                    label: '¿Puede Inscribir tesis?',
+                    label: '¿Puede Inscribir TEG o proyecto?',
                     field: 'isAvailableFinalWork',
                     id: 'isAvailableFinalWork',
                     type: rol === 'A' ? 'switch' : 'hidden',
@@ -225,7 +241,7 @@ class StudentSchoolProgram extends Component {
                     disabled: rol !== 'A',
                   },
                   {
-                    label: '¿with work?',
+                    label: '¿Posee empleo actualmente?',
                     field: 'withWork',
                     id: 'withWork',
                     type: 'switch',
@@ -245,10 +261,10 @@ class StudentSchoolProgram extends Component {
                     type: rol === 'A' ? 'switch' : 'hidden',
                   },
                   {
-                    label: '¿test_period?',
+                    label: '¿Esta actualmente en periodo de prueba?',
                     field: 'testPeriod',
                     id: 'testPeriod',
-                    type: 'switch',
+                    type: rol === 'A' ? 'switch' : 'hidden',
                     disabled: rol !== 'A',
                   },
                 ]}
@@ -277,7 +293,12 @@ class StudentSchoolProgram extends Component {
                     <Button
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
-                      onClick={() => this.handleDialogShow('actualizar', submitDispatch)}
+                      onClick={() =>
+                        this.handleDialogShow(
+                          schoolProgram ? 'Actualizar' : 'Agregar',
+                          submitDispatch
+                        )
+                      }
                       disabled={!valid || pristine || submitting}
                     >
                       Guardar Cambios
@@ -291,14 +312,16 @@ class StudentSchoolProgram extends Component {
                   </Grid>
 
                   <Grid item xs={12} sm={3}>
-                    <Button
-                      className={classes.button}
-                      variant="contained"
-                      color="secondary"
-                      onClick={() => this.handleDialogShow('delete', handleSchoolProgramDelete)}
-                    >
-                      Borrar
-                    </Button>
+                    {schoolProgram && (
+                      <Button
+                        className={classes.button}
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => this.handleDialogShow('delete', handleSchoolProgramDelete)}
+                      >
+                        Borrar
+                      </Button>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
@@ -320,21 +343,17 @@ StudentSchoolProgram.propTypes = {
     button: PropTypes.string.isRequired,
     buttonDelete: PropTypes.string.isRequired,
   }).isRequired,
-
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
 
-  student: PropTypes.shape({
-    first_surname: PropTypes.string,
-    first_name: PropTypes.string,
-  }).isRequired,
   selectedStudent: PropTypes.shape({
     first_surname: PropTypes.string,
     first_name: PropTypes.string,
   }).isRequired,
   schoolProgram: PropTypes.shape({
     school_program: PropTypes.shape({ school_program_name: PropTypes.string }),
-  }).isRequired,
+  }),
 
   teachersGuide: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
@@ -353,10 +372,15 @@ StudentSchoolProgram.propTypes = {
 
 StudentSchoolProgram.defaultProps = {
   subjectsSelected: [],
+  schoolProgram: null,
 };
 
-const schoolProgramValidation = () => {
+const schoolProgramValidation = (values) => {
   const errors = {};
+  if (!values.guideTeacherId) errors.guideTeacherId = 'Profesor guia es requerido';
+  if (!values.schoolProgramId) errors.schoolProgramId = 'Programa academico es requerido';
+  if (!values.studentType) errors.studentType = 'Tipo de estudiante es requerido';
+  if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen es requerido';
 
   return errors;
 };
@@ -371,42 +395,59 @@ const selector = formValueSelector('programa academico del estudiante');
 StudentSchoolProgramWrapper = connect(
   (state) => ({
     initialValues: {
-      currentPostgraduate: state.studentReducer.selectedSchoolProgram.current_postgraduate
+      currentPostgraduate: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.current_postgraduate
         : '',
-      homeUniversity: state.studentReducer.selectedSchoolProgram.home_university
+      homeUniversity: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.home_university
-        : '',
-      typeIncome: state.studentReducer.selectedSchoolProgram.type_income
+        : null,
+      typeIncome: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.type_income
         : '',
-      creditsGranted: state.studentReducer.selectedSchoolProgram.credits_granted
+      creditsGranted: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.credits_granted
         : 0,
-      currentStatus: state.studentReducer.selectedSchoolProgram.current_status
+      currentStatus: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.current_status
         : '',
-      studentType: state.studentReducer.selectedSchoolProgram.student_type
+      studentType: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.student_type
-        : '',
-      guideTeacherId: state.studentReducer.selectedSchoolProgram.guide_teacher_id
+        : null,
+      guideTeacherId: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.guide_teacher_id
-        : '',
-
-      endProgram: !!state.studentReducer.selectedSchoolProgram.end_program,
-      isAvailableFinalWork: !!state.studentReducer.selectedSchoolProgram.is_available_final_work,
-      isUcvTeacher: !!state.studentReducer.selectedSchoolProgram.is_ucv_teacher,
-      withWork: !!state.studentReducer.selectedSchoolProgram.with_work,
-      repeatApprovedSubject: !!state.studentReducer.selectedSchoolProgram.repeat_approved_subject,
-      repeatReprobatedSubject: !!state.studentReducer.selectedSchoolProgram
-        .repeat_reprobated_subject,
-      testPeriod: !!state.studentReducer.selectedSchoolProgram.test_period,
-      equivalences: state.studentReducer.selectedSchoolProgram.equivalence
-        ? state.studentReducer.selectedSchoolProgram.equivalence.map((subj) => ({
-            subject_id: subj.subject_id,
-            qualification: subj.qualification,
-          }))
-        : [],
+        : null,
+      schoolProgramId: state.studentReducer.selectedSchoolProgram
+        ? state.studentReducer.selectedSchoolProgram.school_program_id
+        : null,
+      endProgram:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.end_program,
+      isAvailableFinalWork:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.is_available_final_work,
+      isUcvTeacher:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.is_ucv_teacher,
+      withWork:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.with_work,
+      repeatApprovedSubject:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.repeat_approved_subject,
+      repeatReprobatedSubject:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.repeat_reprobated_subject,
+      testPeriod:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.test_period,
+      equivalences:
+        state.studentReducer.selectedSchoolProgram &&
+        !!state.studentReducer.selectedSchoolProgram.equivalence
+          ? state.studentReducer.selectedSchoolProgram.equivalence.map((subj) => ({
+              subject_id: subj.subject_id,
+              qualification: subj.qualification,
+            }))
+          : [],
     },
     action: state.dialogReducer.action,
     subjectsSelected: selector(state, 'equivalences'),
