@@ -100,6 +100,7 @@ class StudentSchoolProgramContainer extends Component {
         (y) => !selectedStudent.student.some((x) => x.school_program_id === y.id)
       );
     }
+    console.log(schoolProgram);
     return (
       <StudentSchoolProgram
         schoolPrograms={schoolPrograms}

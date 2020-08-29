@@ -55,6 +55,7 @@ export const cleanSchoolProgram = () => async (dispatch) => {
 };
 
 export const updateSchoolProgram = (student) => async (dispatch) => {
+  console.log('entro', student.equivalences);
   const payload = {
     identification: student.identification,
     first_name: student.first_name,

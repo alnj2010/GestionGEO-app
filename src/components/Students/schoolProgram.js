@@ -60,7 +60,7 @@ class StudentSchoolProgram extends Component {
 
   renderSubjects = ({ fields }) => {
     const { classes, subjects, subjectsSelected } = this.props;
-    console.log(subjects);
+    console.log(subjectsSelected);
     return (
       <>
         {fields.map((subject, index) => {
@@ -71,8 +71,8 @@ class StudentSchoolProgram extends Component {
                 <RenderFields lineal={[6, 6]}>
                   {[
                     {
-                      field: `${subject}.id`,
-                      id: `${subject}.id`,
+                      field: `${subject}.subject_id`,
+                      id: `${subject}.subject_id`,
                       type: 'select',
                       label: 'Materia',
                       options: this.unselectedSubjects(index).map((item) => {
@@ -220,13 +220,6 @@ class StudentSchoolProgram extends Component {
                     })),
                     disabled: rol !== 'A',
                   },
-                  {
-                    label: '¿Ha finalizado el programa academico?',
-                    field: 'endProgram',
-                    id: 'endProgram',
-                    type: rol === 'A' ? 'switch' : 'hidden',
-                  },
-
                   {
                     label: '¿Puede Inscribir TEG o proyecto?',
                     field: 'isAvailableFinalWork',
@@ -406,9 +399,6 @@ StudentSchoolProgramWrapper = connect(
       schoolProgramId: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.school_program_id
         : null,
-      endProgram: state.studentReducer.selectedSchoolProgram
-        ? !!state.studentReducer.selectedSchoolProgram.end_program
-        : false,
       isAvailableFinalWork: state.studentReducer.selectedSchoolProgram
         ? !!state.studentReducer.selectedSchoolProgram.is_available_final_work
         : false,
@@ -425,7 +415,7 @@ StudentSchoolProgramWrapper = connect(
         state.studentReducer.selectedSchoolProgram &&
         !!state.studentReducer.selectedSchoolProgram.equivalence
           ? state.studentReducer.selectedSchoolProgram.equivalence.map((subj) => ({
-              id: subj.id,
+              subject_id: subj.subject_id,
               qualification: subj.qualification,
             }))
           : [],
