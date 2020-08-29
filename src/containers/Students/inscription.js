@@ -8,6 +8,7 @@ import {
   getInscribedSchoolPeriods,
   cleanSelectedInscribedSchoolPeriods,
 } from '../../actions/student';
+
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 
 import StudentInscription from '../../components/Students/inscription';
@@ -71,6 +72,7 @@ class StudentInscriptionContainer extends Component {
         state: { inscriptedSP, fullname },
       },
     } = this.props;
+    console.log(inscriptedSP);
     return (
       <StudentInscription
         schoolPeriods={schoolPeriods.filter(

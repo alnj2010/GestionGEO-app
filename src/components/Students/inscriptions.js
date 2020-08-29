@@ -12,14 +12,14 @@ class StudentInscriptions extends Component {
     };
   }
 
-  transformData = (SchoolPeriods) => {
-    if (SchoolPeriods)
-      return SchoolPeriods.map((SchoolPeriod) => {
+  transformData = (schoolPeriods) => {
+    if (schoolPeriods)
+      return schoolPeriods.map((schoolPeriod) => {
         return {
-          id: SchoolPeriod.id,
-          code: SchoolPeriod.cod_school_period,
-          startDate: SchoolPeriod.end_date,
-          endDate: SchoolPeriod.start_date,
+          id: schoolPeriod.id,
+          code: schoolPeriod.cod_school_period,
+          startDate: schoolPeriod.end_date,
+          endDate: schoolPeriod.start_date,
         };
       });
     return [];

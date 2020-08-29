@@ -68,6 +68,13 @@ export const SUBJECT_MODALITY = {
   ELECTIVA: 'EL',
 };
 
+export const SUBJECT_STATE = {
+  CURSANDO: 'CUR',
+  RETIRADO: 'RET',
+  APROBADO: 'APR',
+  REPROBADO: 'REP',
+};
+
 export const SUBJECT_PERIOD_MODALITY = {
   REGULAR: 'REG',
   INTENSIVO: 'INT',

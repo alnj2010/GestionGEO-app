@@ -281,7 +281,7 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
     .then((response) => {
       dispatch({
         type: ACTIONS.AVAILABLE_SUBJECTS,
-        payload: { availableSubjects: response },
+        payload: { availableSubjects: response.available_subjects },
       });
     })
     .catch((error) => {
@@ -293,7 +293,6 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
   const payload = {
     student_id: value.studentId,
     school_period_id: value.schoolPeriodId,
-    status: value.schoolPeriodStatus,
     pay_ref: value.payRef,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
@@ -317,7 +316,6 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
     id: value.id,
     student_id: value.studentId,
     school_period_id: `${value.schoolPeriodId}`,
-    status: value.schoolPeriodStatus,
     pay_ref: value.payRef,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
@@ -339,26 +337,33 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
 export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => async (dispatch) => {
   return Student.getInscribedSchoolPeriods(studentId)
     .then((response) => {
+      const res = response.enrolled_subjects.map((item) => ({
+        ...item.school_period,
+        inscriptions: item.enrolled_subjects,
+      }));
       dispatch({
         type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
-        payload: { inscribedSchoolPeriods: response },
+        payload: {
+          inscribedSchoolPeriods: res,
+        },
       });
 
       if (idSchoolPeriod) {
-        const data = response.find(
-          (item) => parseInt(item.id, 10) === parseInt(idSchoolPeriod, 10)
-        );
+        console.log('entroo aca');
+        const data = res.find((item) => parseInt(item.id, 10) === parseInt(idSchoolPeriod, 10));
+        console.log(data);
         let data2 = data.inscriptions;
-        if (Array.isArray(data2))
+        /*      if (Array.isArray(data2))
           data2 = data.inscriptions.find(
             (item) => parseInt(item.student_id, 10) === parseInt(studentId, 10)
-          );
+          ); */
 
         const inscription = {
           ...data2,
           ...data,
-          idInscription: data2.id,
+          // idInscription: data2.id,
         };
+        console.log('fsdfdsfdsfdsf', inscription);
         dispatch({
           type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
           payload: { selectedStudentSchoolPeriod: inscription },

@@ -39,6 +39,7 @@ class StudentInscriptionsContainer extends Component {
         state: { fullname },
       },
     } = this.props;
+
     const { isLoading } = this.state;
     return (
       <StudentInscriptions

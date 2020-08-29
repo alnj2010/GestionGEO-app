@@ -11,6 +11,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import RenderFields from '../RenderFields';
 import Dialog from '../Dialog';
 import { show } from '../../actions/dialog';
+import { jsonToOptions } from '../../helpers';
+import { SUBJECT_STATE } from '../../services/constants';
 
 const styles = () => ({
   form: {
@@ -55,7 +57,7 @@ class StudentInscription extends Component {
       const subjectsAux = subjects.map((item) => ({
         id: item.id,
         subject: {
-          subject_name: item.subject_name,
+          name: item.name,
         },
       }));
 
@@ -85,27 +87,19 @@ class StudentInscription extends Component {
                     disabled: !!idSchoolPeriod,
                     type: 'select',
                     label: 'Materia',
-                    options: this.unselectedSubjects(index).map((unselectedSubject) => ({
-                      key: unselectedSubject.subject.subject_name,
-                      value: unselectedSubject.id,
-                    })),
+                    options: this.unselectedSubjects(index).map((unselectedSubject) => {
+                      return {
+                        key: unselectedSubject.subject.name,
+                        value: unselectedSubject.id,
+                      };
+                    }),
                   },
                   {
                     label: 'Estado Materia',
                     field: `${subject}.status`,
                     id: `${subject}.status`,
                     type: 'select',
-                    options: [
-                      { key: 'CURSANDO', value: 'CUR' },
-                      { key: 'RETIRADO', value: 'RET' },
-                      { key: 'APROBADO', value: 'APR' },
-                      { key: 'REPROBADO', value: 'REP' },
-                    ].map((status) => {
-                      return {
-                        key: status.key,
-                        value: status.value,
-                      };
-                    }),
+                    options: jsonToOptions(SUBJECT_STATE),
                   },
                   {
                     label: 'Nota',
@@ -173,7 +167,6 @@ class StudentInscription extends Component {
       subjects,
     } = this.props;
     let rolledSubjects = [];
-
     if (subjectInscriptions.length && subjectsSelected) {
       rolledSubjects = subjectInscriptions.filter((item) =>
         subjectsSelected.some((subject) => subject.subjectId === item.id)
@@ -209,28 +202,6 @@ class StudentInscription extends Component {
                       };
                     }),
                     onchange: (schoolPeriodId) => getAvailableSubjects(studentId, schoolPeriodId),
-                  },
-                  {
-                    field: `schoolPeriodStatus`,
-                    id: `schoolPeriodStatus`,
-                    type: 'select',
-                    label: 'Estado periodo semestral',
-                    options: [
-                      'RET-A',
-                      'RET-B',
-                      'DES-A',
-                      'DES-B',
-                      'INC-A',
-                      'INC-B',
-                      'REI-A',
-                      'REI-B',
-                      'REG',
-                    ].map((status) => {
-                      return {
-                        key: status,
-                        value: status,
-                      };
-                    }),
                   },
                   {
                     field: `payRef`,
@@ -337,7 +308,7 @@ StudentInscription.propTypes = {
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
-      subject_name: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
     })
   ).isRequired,
 
@@ -359,8 +330,6 @@ StudentInscription.propTypes = {
 const studentValidation = (values) => {
   const errors = {};
   if (!values.schoolPeriodId) errors.schoolPeriodId = '*Periodo semestral requerido';
-  if (!values.schoolPeriodStatus)
-    errors.schoolPeriodStatus = '*Estado del periodo semestral requerido';
   if (values.subjects && values.subjects.length) {
     const subjectArrayErrors = [];
     values.subjects.forEach((subj, subjIndex) => {
@@ -390,20 +359,17 @@ const studentValidation = (values) => {
 };
 
 let StudentInscriptionWrapper = reduxForm({
-  form: 'inscription',
+  form: 'estudiante',
   validate: studentValidation,
   enableReinitialize: true,
 })(StudentInscription);
 
-const selector = formValueSelector('inscription');
+const selector = formValueSelector('estudiante');
 StudentInscriptionWrapper = connect(
   (state) => ({
     initialValues: {
       schoolPeriodId: state.studentReducer.selectedStudentSchoolPeriod.id
         ? state.studentReducer.selectedStudentSchoolPeriod.id
-        : '',
-      schoolPeriodStatus: state.studentReducer.selectedStudentSchoolPeriod.status
-        ? state.studentReducer.selectedStudentSchoolPeriod.status
         : '',
       payRef: state.studentReducer.selectedStudentSchoolPeriod.pay_ref
         ? state.studentReducer.selectedStudentSchoolPeriod.pay_ref

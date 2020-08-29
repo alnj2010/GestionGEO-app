@@ -89,7 +89,7 @@ export const Student = {
       .catch(handleErrorMsg);
   },
   getInscribedSchoolPeriods(studentId) {
-    return AXIOS.get(`${URL.CONSTANCE}/studentHistorical?student_id=${studentId}`, {
+    return AXIOS.get(`${URL.CONSTANCE}/studentHistorical?student_id=${studentId}&data=1`, {
       headers: headers(),
     })
       .then(handleResponseService)

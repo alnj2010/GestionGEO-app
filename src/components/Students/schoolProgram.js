@@ -60,7 +60,6 @@ class StudentSchoolProgram extends Component {
 
   renderSubjects = ({ fields }) => {
     const { classes, subjects, subjectsSelected } = this.props;
-    console.log(subjectsSelected);
     return (
       <>
         {fields.map((subject, index) => {
