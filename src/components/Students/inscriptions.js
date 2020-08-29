@@ -27,6 +27,7 @@ class StudentInscriptions extends Component {
 
   render = () => {
     const { inscribedSchoolPeriods, isLoading, history, studentId, fullname } = this.props;
+
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>

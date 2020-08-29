@@ -19,9 +19,8 @@ class SubjectsList extends Component {
       return subjects.map((subject) => {
         return {
           id: subject.id,
-          subjectCode: subject.subject_code,
-          subjectName: subject.subject_name,
-          subjectType: subject.subject_type,
+          subjectCode: subject.code,
+          subjectName: subject.name,
           uc: subject.uc,
         };
       });
@@ -58,7 +57,6 @@ class SubjectsList extends Component {
               { title: '#', field: 'id', hidden: true },
               { title: 'Codigo', field: 'subjectCode' },
               { title: 'Nombre', field: 'subjectName' },
-              { title: 'Tipo', field: 'subjectType' },
               { title: 'Unidades de Credito', field: 'uc' },
             ]}
             data={this.transformData(subjects)}

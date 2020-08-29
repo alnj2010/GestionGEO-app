@@ -155,7 +155,7 @@ class SubjectDetail extends Component {
       <Form onSubmit={handleSubmit(saveSubject)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {subjectId ? `Materia: ${subject.subject_name}` : 'Nuevo Materia'}</h3>
+            <h3> {subjectId ? `Materia: ${subject.name}` : 'Nuevo Materia'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -239,7 +239,7 @@ class SubjectDetail extends Component {
                       onClick={() =>
                         subjectId
                           ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('subject')
+                          : submitDispatch('materia')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -289,7 +289,7 @@ SubjectDetail.propTypes = {
   }).isRequired,
 
   subject: PropTypes.shape({
-    subject_name: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
   }).isRequired,
 
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired }))
@@ -347,20 +347,20 @@ const subjectValidation = (values) => {
 };
 
 let SubjectDetailWrapper = reduxForm({
-  form: 'subject',
+  form: 'materia',
   validate: subjectValidation,
   enableReinitialize: true,
 })(SubjectDetail);
-const selector = formValueSelector('subject');
+const selector = formValueSelector('materia');
 
 SubjectDetailWrapper = connect(
   (state) => ({
     initialValues: {
-      subjectName: state.subjectReducer.selectedSubject.subject_name
-        ? state.subjectReducer.selectedSubject.subject_name
+      subjectName: state.subjectReducer.selectedSubject.name
+        ? state.subjectReducer.selectedSubject.name
         : '',
-      subjectCode: state.subjectReducer.selectedSubject.subject_code
-        ? state.subjectReducer.selectedSubject.subject_code
+      subjectCode: state.subjectReducer.selectedSubject.code
+        ? state.subjectReducer.selectedSubject.code
         : '',
       uc: state.subjectReducer.selectedSubject.uc ? state.subjectReducer.selectedSubject.uc : '',
       laboratoryHours: state.subjectReducer.selectedSubject.laboratory_hours
@@ -372,11 +372,11 @@ SubjectDetailWrapper = connect(
       theoreticalHours: state.subjectReducer.selectedSubject.theoretical_hours
         ? state.subjectReducer.selectedSubject.theoretical_hours
         : 0,
-      isFinalSubject: state.subjectReducer.selectedSubject['is_final_subject?']
-        ? state.subjectReducer.selectedSubject['is_final_subject?']
+      isFinalSubject: state.subjectReducer.selectedSubject.is_final_subject
+        ? state.subjectReducer.selectedSubject.is_final_subject
         : false,
-      isProjectSubject: state.subjectReducer.selectedSubject['is_Project_subject?']
-        ? state.subjectReducer.selectedSubject['is_Project_subject?']
+      isProjectSubject: state.subjectReducer.selectedSubject.is_project_subject
+        ? state.subjectReducer.selectedSubject.is_project_subject
         : false,
       schoolPrograms: state.subjectReducer.selectedSubject.school_programs
         ? state.subjectReducer.selectedSubject.school_programs.map((sp) => ({

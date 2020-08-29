@@ -54,13 +54,13 @@ class StudentSchoolProgram extends Component {
   unselectedSubjects = (pos) => {
     const { subjects, subjectsSelected } = this.props;
     return subjects.filter(
-      (item) =>
-        !subjectsSelected.some((selected, index) => selected.subject_id === item.id && pos > index)
+      (item) => !subjectsSelected.some((selected, index) => selected.id === item.id && pos > index)
     );
   };
 
   renderSubjects = ({ fields }) => {
     const { classes, subjects, subjectsSelected } = this.props;
+    console.log(subjects);
     return (
       <>
         {fields.map((subject, index) => {
@@ -71,13 +71,13 @@ class StudentSchoolProgram extends Component {
                 <RenderFields lineal={[6, 6]}>
                   {[
                     {
-                      field: `${subject}.subject_id`,
-                      id: `${subject}.subject_id`,
+                      field: `${subject}.id`,
+                      id: `${subject}.id`,
                       type: 'select',
                       label: 'Materia',
                       options: this.unselectedSubjects(index).map((item) => {
                         return {
-                          key: item.subject_name,
+                          key: item.name,
                           value: item.id,
                         };
                       }),
@@ -247,19 +247,6 @@ class StudentSchoolProgram extends Component {
                     type: 'switch',
                     disabled: rol !== 'A',
                   },
-
-                  {
-                    label: '¿Ha cursado una materia aprobada dos veces?',
-                    field: 'repeatApprovedSubject',
-                    id: 'repeatApprovedSubject',
-                    type: rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
-                    label: '¿Ha cursado una materia ya aplazada?',
-                    field: 'repeatReprobatedSubject',
-                    id: 'repeatReprobatedSubject',
-                    type: rol === 'A' ? 'switch' : 'hidden',
-                  },
                   {
                     label: '¿Esta actualmente en periodo de prueba?',
                     field: 'testPeriod',
@@ -419,32 +406,26 @@ StudentSchoolProgramWrapper = connect(
       schoolProgramId: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.school_program_id
         : null,
-      endProgram:
-        state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.end_program,
-      isAvailableFinalWork:
-        state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.is_available_final_work,
-      isUcvTeacher:
-        state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.is_ucv_teacher,
-      withWork:
-        state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.with_work,
-      repeatApprovedSubject:
-        state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.repeat_approved_subject,
-      repeatReprobatedSubject:
-        state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.repeat_reprobated_subject,
-      testPeriod:
-        state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.test_period,
+      endProgram: state.studentReducer.selectedSchoolProgram
+        ? !!state.studentReducer.selectedSchoolProgram.end_program
+        : false,
+      isAvailableFinalWork: state.studentReducer.selectedSchoolProgram
+        ? !!state.studentReducer.selectedSchoolProgram.is_available_final_work
+        : false,
+      isUcvTeacher: state.studentReducer.selectedSchoolProgram
+        ? !!state.studentReducer.selectedSchoolProgram.is_ucv_teacher
+        : false,
+      withWork: state.studentReducer.selectedSchoolProgram
+        ? !!state.studentReducer.selectedSchoolProgram.with_work
+        : false,
+      testPeriod: state.studentReducer.selectedSchoolProgram
+        ? !!state.studentReducer.selectedSchoolProgram.test_period
+        : false,
       equivalences:
         state.studentReducer.selectedSchoolProgram &&
         !!state.studentReducer.selectedSchoolProgram.equivalence
           ? state.studentReducer.selectedSchoolProgram.equivalence.map((subj) => ({
-              subject_id: subj.subject_id,
+              id: subj.id,
               qualification: subj.qualification,
             }))
           : [],

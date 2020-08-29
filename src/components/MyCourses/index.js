@@ -17,8 +17,8 @@ class SubjectsList extends Component {
       return myCourses.map((course) => {
         return {
           id: course.id,
-          courseCode: course.subject.subject_code,
-          courseName: course.subject.subject_name,
+          courseCode: course.subject.code,
+          courseName: course.subject.name,
           uc: course.subject.uc,
           enrolled: course.enrolled_students,
           limit: course.limit,

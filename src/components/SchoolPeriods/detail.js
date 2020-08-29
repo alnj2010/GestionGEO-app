@@ -155,7 +155,7 @@ class SchoolPeriodDetail extends Component {
                     label: 'Materia',
                     options: this.unselectedSubjects(index).map((item) => {
                       return {
-                        key: item.subject_name,
+                        key: item.name,
                         value: item.id,
                       };
                     }),
@@ -544,7 +544,7 @@ SchoolPeriodDetailWrapper = connect(
         : moment().subtract(1, 'days').format('YYYY-MM-DD'),
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map((subj) => ({
-            subjectId: subj.subject_id,
+            subjectId: subj.id,
             teacherId: subj.teacher_id,
             modality: subj.modality,
             limit: subj.limit,

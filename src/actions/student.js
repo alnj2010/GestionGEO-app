@@ -78,11 +78,8 @@ export const updateSchoolProgram = (student) => async (dispatch) => {
     type_income: student.typeIncome,
     is_ucv_teacher: student.isUcvTeacher,
     is_available_final_work: student.isAvailableFinalWork,
-    repeat_approved_subject: student.repeatApprovedSubject,
-    repeat_reprobated_subject: student.repeatReprobatedSubject,
     credits_granted: student.creditsGranted,
     with_work: student.withWork,
-    end_program: student.endProgram,
     test_period: student.testPeriod,
     current_status: student.currentStatus,
     equivalences: student.equivalences,
@@ -129,15 +126,13 @@ export const saveSchoolProgram = (student) => async (dispatch) => {
     type_income: student.typeIncome,
     is_ucv_teacher: student.isUcvTeacher,
     is_available_final_work: student.isAvailableFinalWork,
-    repeat_approved_subject: student.repeatApprovedSubject,
-    repeat_reprobated_subject: student.repeatReprobatedSubject,
     credits_granted: student.creditsGranted,
     with_work: student.withWork,
-    end_program: student.endProgram,
     test_period: student.testPeriod,
     current_status: student.currentStatus,
     equivalences: student.equivalences,
   };
+  console.log(payload);
 
   return Student.saveSchoolProgram(payload, student.idUser)
     .then((response) => {
@@ -196,13 +191,10 @@ export const updateStudent = (student) => async (dispatch) => {
     guide_teacher_id: student.guideTeacherId,
     student_type: student.studentType,
     home_university: student.homeUniversity,
-    end_program: student.endProgram,
     current_postgraduate: student.currentPostgraduate,
     type_income: student.typeIncome,
     is_ucv_teacher: student.isUcvTeacher,
     is_available_final_work: student.isAvailableFinalWork,
-    repeat_approved_subject: student.repeatApprovedSubject,
-    repeat_reprobated_subject: student.repeatApprovedSubject,
     credits_granted: student.creditsGranted,
     with_work: student.withWork,
     test_period: student.testPeriod,

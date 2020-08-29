@@ -38,7 +38,7 @@ class SchoolPeriodActualContainer extends Component {
       endDate: payload.end_date,
       startDate: payload.start_date,
       subjects: payload.subjects.map((subject) => ({
-        subjectId: subject.subject_id,
+        subjectId: subject.id,
         teacherId: subject.teacher_id,
         duty: subject.duty,
         limit: subject.limit,

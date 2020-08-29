@@ -74,7 +74,7 @@ class SchoolPeriodActual extends Component {
           }
           return {
             id: parseInt(`${index}${index2}`),
-            title: subject.subject.subject_name,
+            title: subject.subject.name,
             start: startTime,
             end: endTime,
           };

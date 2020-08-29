@@ -40,6 +40,11 @@ class SubjectDetailContainer extends Component {
       history,
     } = this.props;
     const payload = { ...values };
+
+    payload.schoolPrograms = payload.schoolPrograms.map((sp) => ({
+      ...sp,
+      school_program_id: sp.id,
+    }));
     if (match.params.id) updateSubjectDispatch({ ...payload, ...match.params });
     else
       saveSubjectDispatch({ ...payload }).then((response) => {

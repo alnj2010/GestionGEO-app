@@ -15,6 +15,10 @@ import RenderFields from '../RenderFields';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 import { STUDENT_TYPE, GENDER, NATIONALITY, LEVEL_INSTRUCTION } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
+import Inscription from '@material-ui/icons/HowToVote';
+import Download from '@material-ui/icons/Archive';
+import School from '@material-ui/icons/School';
+import { Constance } from '../../services/constance';
 
 const styles = () => ({
   form: {
@@ -78,7 +82,7 @@ class StudentDetail extends Component {
                       label: 'Materia',
                       options: this.unselectedSubjects(index).map((item) => {
                         return {
-                          key: item.subject_name,
+                          key: item.name,
                           value: item.id,
                         };
                       }),
@@ -302,27 +306,9 @@ class StudentDetail extends Component {
                     type: studentId && rol === 'A' ? 'switch' : 'hidden',
                   },
                   {
-                    label: '¿Ya finalizo el programa escolar?',
-                    field: 'endProgram',
-                    id: 'endProgram',
-                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
                     label: '¿Puede Inscribir tesis?',
                     field: 'isAvailableFinalWork',
                     id: 'isAvailableFinalWork',
-                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
-                    label: '¿Ha cursado una materia aprovada dos veces?',
-                    field: 'repeatApprovedSubject',
-                    id: 'repeatApprovedSubject',
-                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
-                    label: '¿Ha cursado una materia ya aplazada?',
-                    field: 'repeatReprobatedSubject',
-                    id: 'repeatReprobatedSubject',
                     type: !studentId && rol === 'A' ? 'switch' : 'hidden',
                   },
                 ]}
@@ -417,6 +403,24 @@ class StudentDetail extends Component {
                           selectedStudent: { ...student },
                         }
                       );
+                    },
+                  },
+
+                  {
+                    icon: Inscription,
+                    tooltip: 'Inscribir',
+                    onClick: (event, rowData) =>
+                      history.push(`/estudiantes/inscripciones/${studentId}`, {
+                        fullname: `${student.first_name} ${student.second_name || ''} ${
+                          student.first_surname
+                        } ${student.second_surname || ''}`,
+                      }),
+                  },
+                  {
+                    icon: Download,
+                    tooltip: 'Constancia de estudio',
+                    onClick: (event, rowData) => {
+                      Constance.getStudyConstance(rowData.studentId);
                     },
                   },
                   {
@@ -612,15 +616,6 @@ StudentDetailWrapper = connect(
         : false,
       isAvailableFinalWork: state.studentReducer.selectedStudent.student
         ? !!state.studentReducer.selectedStudent.student.is_available_final_work
-        : false,
-      endProgram: state.studentReducer.selectedStudent.student
-        ? !!state.studentReducer.selectedStudent.student.end_program
-        : false,
-      repeatApprovedSubject: state.studentReducer.selectedStudent.student
-        ? !!state.studentReducer.selectedStudent.student.repeat_approved_subject
-        : false,
-      repeatReprobatedSubject: state.studentReducer.selectedStudent.student
-        ? !!state.studentReducer.selectedStudent.student.repeat_reprobated_subject
         : false,
       levelInstruction: state.studentReducer.selectedStudent.level_instruction
         ? state.studentReducer.selectedStudent.level_instruction

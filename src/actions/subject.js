@@ -46,13 +46,13 @@ export const updateSubject = (subject) => async (dispatch) => {
   const payload = {
     id: subject.id,
     uc: subject.uc,
-    subject_code: subject.subjectCode,
-    subject_name: subject.subjectName,
+    code: subject.subjectCode,
+    name: subject.subjectName,
     laboratory_hours: subject.laboratoryHours,
     practical_hours: subject.practicalHours,
     theoretical_hours: subject.theoreticalHours,
-    'is_final_subject?': subject.isFinalSubject,
-    'is_Project_subject?': subject.isProjectSubject,
+    is_final_subject: subject.isFinalSubject,
+    is_project_subject: subject.isProjectSubject,
     school_programs: subject.schoolPrograms,
   };
   return Subject.update(payload)
@@ -73,13 +73,13 @@ export const updateSubject = (subject) => async (dispatch) => {
 export const saveSubject = (subject) => async (dispatch) => {
   const payload = {
     uc: subject.uc,
-    subject_code: subject.subjectCode,
-    subject_name: subject.subjectName,
+    code: subject.subjectCode,
+    name: subject.subjectName,
     laboratory_hours: subject.laboratoryHours,
     practical_hours: subject.practicalHours,
     theoretical_hours: subject.theoreticalHours,
-    'is_final_subject?': subject.isFinalSubject,
-    'is_Project_subject?': subject.isProjectSubject,
+    is_final_subject: subject.isFinalSubject,
+    is_project_subject: subject.isProjectSubject,
     school_programs: subject.schoolPrograms,
   };
   return Subject.saveSubject(payload)

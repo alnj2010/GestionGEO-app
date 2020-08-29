@@ -45,15 +45,14 @@ class StudentDetailContainer extends Component {
         typeIncome: student.student[0].type_income,
         isUcvTeacher: student.student[0].is_ucv_teacher,
         isAvailableFinalWork: student.student[0].is_available_final_work,
-        repeatApprovedSubject: student.student[0].repeat_approved_subject,
-        repeatReprobatedSubject: student.student[0].repeat_reprobated_subject,
         creditsGranted: student.student[0].credits_granted,
         withWork: student.student[0].with_work,
         testPeriod: student.student[0].test_period,
         currentStatus: student.student[0].current_status,
         equivalence: student.student[0].equivalence,
-        endProgram: student.student[0].end_program,
-        guideTeacherId: student.student[0].guide_teacher_id,
+        guideTeacherId: student.student[0].guide_teacher_id
+          ? student.student[0].guide_teacher_id
+          : undefined,
         currentPostgraduate: student.student[0].current_postgraduate,
       });
     else

@@ -3,12 +3,8 @@ import MaterialTable from 'material-table';
 import { array, bool, object, func } from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
-import Inscription from '@material-ui/icons/HowToVote';
-import Download from '@material-ui/icons/Archive';
-import School from '@material-ui/icons/School';
 import Dialog from '../Dialog';
 import handleExportCsv from '../../utils/handleExportCsv';
-import { Constance } from '../../services/constance';
 
 class StudentsList extends Component {
   constructor() {
@@ -96,29 +92,6 @@ class StudentsList extends Component {
                   this.handleDialogShow('eliminar', (entity) => handleDeleteStudent(rowData.id));
                 },
               },
-              {
-                icon: School,
-                tooltip: 'Programas Academicos',
-                onClick: (event, rowData) =>
-                  history.push(`/estudiantes/programas-academicos/${rowData.id}`, {
-                    fullname: `${rowData.firstName} ${rowData.secondName} ${rowData.firstSurname} ${rowData.secondSurname}`,
-                  }),
-              },
-              // {
-              //   icon: Download,
-              //   tooltip: 'Constancia de estudio',
-              //   onClick: (event, rowData) => {
-              //     Constance.getStudyConstance(rowData.studentId);
-              //   },
-              // },
-              // {
-              //   icon: Inscription,
-              //   tooltip: 'Inscribir',
-              //   onClick: (event, rowData) =>
-              //     history.push(`/estudiantes/inscripciones/${rowData.studentId}`, {
-              //       fullname: `${rowData.firstName} ${rowData.secondName} ${rowData.firstSurname} ${rowData.secondSurname}`,
-              //     }),
-              // },
             ]}
             options={{
               pageSize: 10,
