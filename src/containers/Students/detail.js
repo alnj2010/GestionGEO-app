@@ -80,6 +80,7 @@ class StudentDetailContainer extends Component {
 
   render() {
     const { student, schoolPrograms, subjects, history } = this.props;
+    console.log(student);
     return (
       <StudentDetail
         schoolPrograms={schoolPrograms}

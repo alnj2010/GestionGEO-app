@@ -69,23 +69,29 @@ export const updateSchoolPeriod = (schoolPeriod) => async (dispatch) => {
     start_date: schoolPeriod.startDate,
     withdrawal_deadline: schoolPeriod.withdrawalDeadline,
     inscription_start_date: schoolPeriod.inscriptionStartDate,
-    subjects: schoolPeriod.subjects.map((subject) => ({
-      subject_id: subject.subjectId,
-      teacher_id: subject.teacherId,
-      duty: subject.duty,
-      modality: 'REG',
-      limit: subject.limit,
-      schedules: subject.schedules.map((schedule) => ({
-        school_period_subject_teacher_id: schedule.schoolPeriodSubjectTeacherId,
-        day: schedule.day,
-        start_hour: schedule.startHour,
-        end_hour: schedule.endHour,
-        classroom: schedule.classroom,
-      })),
-    })),
+    project_duty: schoolPeriod.projectDuty,
+    final_work_duty: schoolPeriod.finalWorkDuty,
+    subjects: schoolPeriod.subjects
+      ? schoolPeriod.subjects.map((subject) => ({
+          subject_id: subject.subjectId,
+          teacher_id: subject.teacherId,
+          duty: subject.duty,
+          modality: 'REG',
+          limit: subject.limit,
+          schedules: subject.schedules
+            ? subject.schedules.map((schedule) => ({
+                day: schedule.day,
+                start_hour: schedule.startHour,
+                end_hour: schedule.endHour,
+                classroom: schedule.classroom,
+              }))
+            : undefined,
+        }))
+      : undefined,
   };
   return SchoolPeriod.update(payload)
     .then((response) => {
+      console.log('responseeeeeeee', response);
       dispatch({
         type: ACTIONS.SELECT,
         payload: { selectedSchoolPeriod: response },
@@ -109,19 +115,25 @@ export const saveSchoolPeriod = (schoolPeriod) => async (dispatch) => {
     start_date: schoolPeriod.startDate,
     withdrawal_deadline: schoolPeriod.withdrawalDeadline,
     inscription_start_date: schoolPeriod.inscriptionStartDate,
-    subjects: schoolPeriod.subjects.map((subject) => ({
-      subject_id: subject.subjectId,
-      teacher_id: subject.teacherId,
-      modality: subject.modality,
-      duty: subject.duty,
-      limit: subject.limit,
-      schedules: subject.schedules.map((schedule) => ({
-        day: schedule.day,
-        start_hour: schedule.startHour,
-        end_hour: schedule.endHour,
-        classroom: schedule.classroom,
-      })),
-    })),
+    project_duty: schoolPeriod.projectDuty,
+    final_work_duty: schoolPeriod.finalWorkDuty,
+    subjects: schoolPeriod.subjects
+      ? schoolPeriod.subjects.map((subject) => ({
+          subject_id: subject.subjectId,
+          teacher_id: subject.teacherId,
+          modality: subject.modality,
+          duty: subject.duty,
+          limit: subject.limit,
+          schedules: subject.schedules
+            ? subject.schedules.map((schedule) => ({
+                day: schedule.day,
+                start_hour: schedule.startHour,
+                end_hour: schedule.endHour,
+                classroom: schedule.classroom,
+              }))
+            : undefined,
+        }))
+      : undefined,
   };
   return SchoolPeriod.saveSchoolPeriod(payload)
     .then((res) => {

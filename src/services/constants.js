@@ -81,6 +81,13 @@ export const SUBJECT_PERIOD_MODALITY = {
   SUFICIENCIA: 'SUF',
 };
 
+export const FINANCING_TYPE = {
+  EXONERADO: 'EXO',
+  FUNDACION: 'FUN',
+  'FINANCIAMIENTO PROPIO': 'SFI',
+  'BECA ESCOLAR': 'ScS',
+};
+
 export const STUDENT_TYPE = {
   REGULAR: 'REG',
   EXTENSION: 'EXT',

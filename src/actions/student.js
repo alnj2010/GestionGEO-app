@@ -285,7 +285,8 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
       });
     })
     .catch((error) => {
-      return error;
+      show(error.message, 'error')(dispatch);
+      return false;
     });
 };
 
@@ -294,6 +295,9 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
     student_id: value.studentId,
     school_period_id: value.schoolPeriodId,
     pay_ref: value.payRef,
+    financing: value.financing,
+    financing_description: value.financingDescription,
+    amount_paid: value.amountPaid,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
       qualification: parseInt(subject.nota, 10),
@@ -312,11 +316,15 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
 };
 
 export const editStudentPeriodSchool = (value) => async (dispatch) => {
+  console.log('asdsadsad', value);
   const payload = {
     id: value.id,
     student_id: value.studentId,
     school_period_id: `${value.schoolPeriodId}`,
     pay_ref: value.payRef,
+    financing: value.financing,
+    financing_description: value.financingDescription,
+    amount_paid: value.amountPaid,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
       qualification: parseInt(subject.nota, 10),
@@ -337,10 +345,7 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
 export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => async (dispatch) => {
   return Student.getInscribedSchoolPeriods(studentId)
     .then((response) => {
-      const res = response.enrolled_subjects.map((item) => ({
-        ...item.school_period,
-        inscriptions: item.enrolled_subjects,
-      }));
+      const res = response.enrolled_subjects;
       dispatch({
         type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
         payload: {
@@ -349,24 +354,12 @@ export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => a
       });
 
       if (idSchoolPeriod) {
-        console.log('entroo aca');
-        const data = res.find((item) => parseInt(item.id, 10) === parseInt(idSchoolPeriod, 10));
-        console.log(data);
-        let data2 = data.inscriptions;
-        /*      if (Array.isArray(data2))
-          data2 = data.inscriptions.find(
-            (item) => parseInt(item.student_id, 10) === parseInt(studentId, 10)
-          ); */
-
-        const inscription = {
-          ...data2,
-          ...data,
-          // idInscription: data2.id,
-        };
-        console.log('fsdfdsfdsfdsf', inscription);
+        const data = res.find(
+          (item) => parseInt(item.school_period.id, 10) === parseInt(idSchoolPeriod, 10)
+        );
         dispatch({
           type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
-          payload: { selectedStudentSchoolPeriod: inscription },
+          payload: { selectedStudentSchoolPeriod: data },
         });
       }
     })

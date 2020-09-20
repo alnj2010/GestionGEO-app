@@ -72,7 +72,6 @@ class StudentInscriptionContainer extends Component {
         state: { inscriptedSP, fullname },
       },
     } = this.props;
-    console.log(inscriptedSP);
     return (
       <StudentInscription
         schoolPeriods={schoolPeriods.filter(
@@ -89,7 +88,7 @@ class StudentInscriptionContainer extends Component {
           subjects
             ? subjects.map((item) => ({
                 id: item.school_period_subject_teacher_id,
-                subject_name: item.data_subject.subject.subject_name,
+                subject_name: item.data_subject.subject.name,
                 duty: item.data_subject.duty,
                 subject: { uc: item.data_subject.subject.uc },
               }))
@@ -149,7 +148,7 @@ StudentInscriptionContainer.propTypes = {
 
 const mS = (state) => ({
   subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
-  idInscription: state.studentReducer.selectedStudentSchoolPeriod.idInscription,
+  idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
   schoolPeriods: state.schoolPeriodReducer.list,
   subjectInscriptions: state.studentReducer.availableSubjects,
 });

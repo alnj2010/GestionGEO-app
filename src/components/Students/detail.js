@@ -410,7 +410,7 @@ class StudentDetail extends Component {
                     icon: Inscription,
                     tooltip: 'Inscribir',
                     onClick: (event, rowData) =>
-                      history.push(`/estudiantes/inscripciones/${studentId}`, {
+                      history.push(`/estudiantes/inscripciones/${rowData.id}`, {
                         fullname: `${student.first_name} ${student.second_name || ''} ${
                           student.first_surname
                         } ${student.second_surname || ''}`,

@@ -16,10 +16,10 @@ class StudentInscriptions extends Component {
     if (schoolPeriods)
       return schoolPeriods.map((schoolPeriod) => {
         return {
-          id: schoolPeriod.id,
-          code: schoolPeriod.cod_school_period,
-          startDate: schoolPeriod.end_date,
-          endDate: schoolPeriod.start_date,
+          id: schoolPeriod.school_period_id,
+          code: schoolPeriod.school_period.cod_school_period,
+          startDate: schoolPeriod.school_period.end_date,
+          endDate: schoolPeriod.school_period.start_date,
         };
       });
     return [];
@@ -27,6 +27,7 @@ class StudentInscriptions extends Component {
 
   render = () => {
     const { inscribedSchoolPeriods, isLoading, history, studentId, fullname } = this.props;
+    console.log(inscribedSchoolPeriods, 'inscribedSchoolPeriods');
 
     return (
       <Grid container spacing={8}>

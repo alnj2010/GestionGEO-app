@@ -140,6 +140,7 @@ class SchoolPeriodDetail extends Component {
 
   renderSubjects = ({ fields }) => {
     const { teachers, classes, subjects, subjectsSelected } = this.props;
+    console.log(subjects);
     return (
       <>
         {fields.map((subject, index) => (
@@ -319,6 +320,20 @@ class SchoolPeriodDetail extends Component {
                       id: 'inscriptionStartDate',
                       type: 'date',
                     },
+                    {
+                      label: 'Aranceles para el proyecto',
+                      field: `projectDuty`,
+                      id: `projectDuty`,
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'Aranceles para el trabajo final',
+                      field: `finalWorkDuty`,
+                      id: `finalWorkDuty`,
+                      type: 'number',
+                      min: 0,
+                    },
                   ]}
                 </RenderFields>
               </Grid>
@@ -347,7 +362,7 @@ class SchoolPeriodDetail extends Component {
                       onClick={() =>
                         schoolPeriodId
                           ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('schoolPeriod')
+                          : submitDispatch('Periodo semestral')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -519,11 +534,11 @@ const schoolPeriodValidation = (values) => {
 };
 
 let SchoolPeriodDetailWrapper = reduxForm({
-  form: 'schoolPeriod',
+  form: 'Periodo semestral',
   validate: schoolPeriodValidation,
   enableReinitialize: true,
 })(SchoolPeriodDetail);
-const selector = formValueSelector('schoolPeriod');
+const selector = formValueSelector('Periodo semestral');
 SchoolPeriodDetailWrapper = connect(
   (state) => ({
     initialValues: {
@@ -542,9 +557,15 @@ SchoolPeriodDetailWrapper = connect(
       inscriptionStartDate: state.schoolPeriodReducer.selectedSchoolPeriod.inscription_start_date
         ? state.schoolPeriodReducer.selectedSchoolPeriod.inscription_start_date
         : moment().subtract(1, 'days').format('YYYY-MM-DD'),
+      projectDuty: state.schoolPeriodReducer.selectedSchoolPeriod.project_duty
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.project_duty
+        : 0,
+      finalWorkDuty: state.schoolPeriodReducer.selectedSchoolPeriod.final_work_duty
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.final_work_duty
+        : 0,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map((subj) => ({
-            subjectId: subj.id,
+            subjectId: subj.subject_id,
             teacherId: subj.teacher_id,
             modality: subj.modality,
             limit: subj.limit,

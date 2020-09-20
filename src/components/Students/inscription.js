@@ -12,7 +12,7 @@ import RenderFields from '../RenderFields';
 import Dialog from '../Dialog';
 import { show } from '../../actions/dialog';
 import { jsonToOptions } from '../../helpers';
-import { SUBJECT_STATE } from '../../services/constants';
+import { SUBJECT_STATE, FINANCING_TYPE } from '../../services/constants';
 
 const styles = () => ({
   form: {
@@ -57,10 +57,9 @@ class StudentInscription extends Component {
       const subjectsAux = subjects.map((item) => ({
         id: item.id,
         subject: {
-          name: item.name,
+          name: item.subject_name,
         },
       }));
-
       return subjectsAux.filter(
         (item) =>
           !subjectsSelected.some((selected, index) => selected.subjectId === item.id && pos > index)
@@ -208,6 +207,26 @@ class StudentInscription extends Component {
                     id: `payRef`,
                     type: 'text',
                     label: 'Referencia de pago',
+                  },
+                  {
+                    label: 'Financiamiento',
+                    field: 'financing',
+                    id: 'financing',
+                    type: 'select',
+                    options: jsonToOptions(FINANCING_TYPE),
+                  },
+                  {
+                    field: `financingDescription`,
+                    id: `financingDescription`,
+                    type: 'text',
+                    label: 'Descripcion del financiamiento',
+                  },
+                  {
+                    field: `amountPaid`,
+                    id: `amountPaid`,
+                    type: 'number',
+                    min: 0,
+                    label: 'Cantidad cancelada (bs)',
                   },
                 ]}
               </RenderFields>
@@ -368,12 +387,22 @@ const selector = formValueSelector('estudiante');
 StudentInscriptionWrapper = connect(
   (state) => ({
     initialValues: {
-      schoolPeriodId: state.studentReducer.selectedStudentSchoolPeriod.id
-        ? state.studentReducer.selectedStudentSchoolPeriod.id
+      schoolPeriodId: state.studentReducer.selectedStudentSchoolPeriod.school_period
+        ? state.studentReducer.selectedStudentSchoolPeriod.school_period.id
         : '',
       payRef: state.studentReducer.selectedStudentSchoolPeriod.pay_ref
         ? state.studentReducer.selectedStudentSchoolPeriod.pay_ref
         : '',
+
+      financing: state.studentReducer.selectedStudentSchoolPeriod.financing
+        ? state.studentReducer.selectedStudentSchoolPeriod.financing
+        : undefined,
+      financingDescription: state.studentReducer.selectedStudentSchoolPeriod.financing_description
+        ? state.studentReducer.selectedStudentSchoolPeriod.financing_description
+        : '',
+      amountPaid: state.studentReducer.selectedStudentSchoolPeriod.amount_paid
+        ? state.studentReducer.selectedStudentSchoolPeriod.amount_paid
+        : 0,
       subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects
         ? state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects.map((subject) => ({
             subjectId: subject.school_period_subject_teacher_id,

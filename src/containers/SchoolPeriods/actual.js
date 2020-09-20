@@ -35,6 +35,9 @@ class SchoolPeriodActualContainer extends Component {
       endSchoolPeriod: payload.end_school_period,
       loadNotes: payload.load_notes,
       codSchoolPeriod: payload.cod_school_period,
+      inscriptionStartDate: payload.inscription_start_date,
+      projectDuty: payload.project_duty,
+      finalWorkDuty: payload.final_work_duty,
       endDate: payload.end_date,
       startDate: payload.start_date,
       subjects: payload.subjects.map((subject) => ({
