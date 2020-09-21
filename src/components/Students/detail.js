@@ -9,8 +9,11 @@ import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import Menu from '@material-ui/core/Menu';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputBase from '@material-ui/core/InputBase';
 import Fab from '@material-ui/core/Fab';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -21,7 +24,6 @@ import { jsonToOptions } from '../../helpers';
 import Inscription from '@material-ui/icons/HowToVote';
 import Download from '@material-ui/icons/Archive';
 import School from '@material-ui/icons/School';
-import { Constance } from '../../services/constance';
 
 const styles = () => ({
   form: {
@@ -49,7 +51,6 @@ class StudentDetail extends Component {
     super();
     this.state = {
       func: null,
-      anchorsEl: {},
     };
   }
 
@@ -146,6 +147,7 @@ class StudentDetail extends Component {
       student,
       handleDeleteSchoolProgram,
       history,
+      getStudentConstance,
     } = this.props;
     console.log(history);
     const { func } = this.state;
@@ -389,8 +391,7 @@ class StudentDetail extends Component {
                       action: { id, onClick },
                       data,
                     } = props;
-                    const { anchorsEl } = this.state;
-                    console.log(data.id, anchorsEl);
+                    console.log(data);
                     switch (id) {
                       case 'edit':
                         return (
@@ -409,40 +410,27 @@ class StudentDetail extends Component {
                       case 'constances':
                         return (
                           <div>
-                            <button
-                              type="button"
-                              aria-controls={`constance-menu${data.id}`}
-                              aria-haspopup="true"
-                              onClick={(event) =>
-                                this.setState((prevState) => {
-                                  const newAnchorsEl = { ...prevState.anchorsEl };
-                                  newAnchorsEl[data.id] = event;
-                                  return { anchorsEl: newAnchorsEl };
-                                })
-                              }
-                            >
-                              constance
-                            </button>
-                            <Menu
-                              id={`constance-menu${data.id}`}
-                              anchorEl={
-                                anchorsEl[data.id] === undefined ? anchorsEl[data.id] : null
-                              }
-                              keepMounted
-                              open={Boolean(anchorsEl[data.id])}
-                              onClose={() =>
-                                this.setState((prevState) => {
-                                  const newAnchorsEl = { ...prevState.anchorsEl };
-                                  newAnchorsEl[data.id] = null;
-                                  return { anchorsEl: newAnchorsEl };
-                                })
-                              }
-                            >
-                              <MenuItem>Constacia{data.id} 1</MenuItem>
-                              <MenuItem>Constacia{data.id} 2</MenuItem>
-                              <MenuItem>Constacia{data.id} 3</MenuItem>
-                              <MenuItem>Constacia{data.id} 4</MenuItem>
-                            </Menu>
+                            <FormControl>
+                              <InputLabel
+                                htmlFor={`select-contance-${data.id}-label`}
+                                style={{ top: 0, transform: 'none' }}
+                              >
+                                <Download />
+                              </InputLabel>
+                              <Select
+                                labelId={`select-contance-${data.id}-label`}
+                                id={`select-contance-${data.id}`}
+                                input={<InputBase />}
+                                onChange={(event) =>
+                                  getStudentConstance(data.id, event.target.value)
+                                }
+                              >
+                                <MenuItem value="study">Constancia de estudio</MenuItem>
+                                <MenuItem value="inscription">Constancia de inscripcion</MenuItem>
+                                <MenuItem value="academicLoad">Historial Academico</MenuItem>
+                                <MenuItem value="studentHistorical">Carga Academica</MenuItem>
+                              </Select>
+                            </FormControl>
                           </div>
                         );
                       case 'delete':
@@ -507,9 +495,6 @@ class StudentDetail extends Component {
                     id: 'constances',
                     icon: Download,
                     tooltip: 'Constancia de estudio',
-                    onClick: (event, rowData) => {
-                      Constance.getStudyConstance(rowData.studentId);
-                    },
                   },
                   {
                     id: 'delete',

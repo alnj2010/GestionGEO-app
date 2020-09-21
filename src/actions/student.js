@@ -1,4 +1,6 @@
 import { Student } from '../services/student';
+import { Constance } from '../services/constance';
+
 import { show } from './snackbar';
 
 export const ACTIONS = {
@@ -290,6 +292,17 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
     });
 };
 
+export const getStudentConstance = (studentId, type) => async (dispatch) => {
+  return Constance.getStudentConstance(studentId, type)
+    .then(() => {
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
+
 export const addStudentPeriodSchool = (value) => async (dispatch) => {
   const payload = {
     student_id: value.studentId,
@@ -364,6 +377,7 @@ export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => a
       }
     })
     .catch((error) => {
+      show(error.message, 'error')(dispatch);
       return error;
     });
 };

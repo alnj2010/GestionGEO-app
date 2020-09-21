@@ -7,7 +7,7 @@ export const jsonToOptions = (options) =>
   });
 
 export const handleErrorMsg = (error) => {
-  if (error && error.response && error.response.data)
+  if (error && error.response && error.response.data && error.response.data.error)
     return Promise.reject(new Error(error.response.data.error));
   return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));
 };

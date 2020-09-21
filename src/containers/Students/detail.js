@@ -8,6 +8,7 @@ import {
   cleanSelectedStudent,
   saveStudent,
   deleteSchoolProgram,
+  getStudentConstance,
 } from '../../actions/student';
 import { getList as getSubjectList } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
@@ -79,7 +80,7 @@ class StudentDetailContainer extends Component {
   };
 
   render() {
-    const { student, schoolPrograms, subjects, history } = this.props;
+    const { student, schoolPrograms, subjects, history, getStudentConstance } = this.props;
     console.log(student);
     return (
       <StudentDetail
@@ -91,6 +92,7 @@ class StudentDetailContainer extends Component {
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}
+        getStudentConstance={getStudentConstance}
         handleDeleteSchoolProgram={this.handleDeleteSchoolProgram}
       />
     );
@@ -123,6 +125,7 @@ const mD = {
   getSchoolProgramList,
   getSubjectList,
   deleteSchoolProgram,
+  getStudentConstance,
 };
 
 StudentDetailContainer = connect(mS, mD)(StudentDetailContainer);
