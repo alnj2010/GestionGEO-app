@@ -8,6 +8,9 @@ import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Fab from '@material-ui/core/Fab';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -46,6 +49,7 @@ class StudentDetail extends Component {
     super();
     this.state = {
       func: null,
+      anchorsEl: {},
     };
   }
 
@@ -379,6 +383,87 @@ class StudentDetail extends Component {
             <Grid item xs={12} style={{ marginTop: '30px' }}>
               <MaterialTable
                 title="Programas Academicos del estudiante"
+                components={{
+                  Action: (props) => {
+                    const {
+                      action: { id, onClick },
+                      data,
+                    } = props;
+                    const { anchorsEl } = this.state;
+                    console.log(data.id, anchorsEl);
+                    switch (id) {
+                      case 'edit':
+                        return (
+                          <EditIcon
+                            style={{ cursor: 'pointer', marginLeft: '30px' }}
+                            onClick={(event) => onClick(event, data)}
+                          />
+                        );
+                      case 'inscription':
+                        return (
+                          <Inscription
+                            style={{ cursor: 'pointer' }}
+                            onClick={(event) => onClick(event, data)}
+                          />
+                        );
+                      case 'constances':
+                        return (
+                          <div>
+                            <button
+                              type="button"
+                              aria-controls={`constance-menu${data.id}`}
+                              aria-haspopup="true"
+                              onClick={(event) =>
+                                this.setState((prevState) => {
+                                  const newAnchorsEl = { ...prevState.anchorsEl };
+                                  newAnchorsEl[data.id] = event;
+                                  return { anchorsEl: newAnchorsEl };
+                                })
+                              }
+                            >
+                              constance
+                            </button>
+                            <Menu
+                              id={`constance-menu${data.id}`}
+                              anchorEl={
+                                anchorsEl[data.id] === undefined ? anchorsEl[data.id] : null
+                              }
+                              keepMounted
+                              open={Boolean(anchorsEl[data.id])}
+                              onClose={() =>
+                                this.setState((prevState) => {
+                                  const newAnchorsEl = { ...prevState.anchorsEl };
+                                  newAnchorsEl[data.id] = null;
+                                  return { anchorsEl: newAnchorsEl };
+                                })
+                              }
+                            >
+                              <MenuItem>Constacia{data.id} 1</MenuItem>
+                              <MenuItem>Constacia{data.id} 2</MenuItem>
+                              <MenuItem>Constacia{data.id} 3</MenuItem>
+                              <MenuItem>Constacia{data.id} 4</MenuItem>
+                            </Menu>
+                          </div>
+                        );
+                      case 'delete':
+                        return (
+                          <DeleteIcon
+                            style={{ cursor: 'pointer' }}
+                            onClick={(event) => onClick(event, data)}
+                          />
+                        );
+                      case 'add':
+                        return (
+                          <AddIcon
+                            style={{ cursor: 'pointer' }}
+                            onClick={(event) => onClick(event, data)}
+                          />
+                        );
+                      default:
+                        return 'x';
+                    }
+                  },
+                }}
                 columns={[
                   { title: '#', field: 'id', hidden: true },
                   { title: 'Programa Academico', field: 'schoolProgram' },
@@ -390,10 +475,11 @@ class StudentDetail extends Component {
                 }))}
                 actions={[
                   {
+                    id: 'edit',
                     icon: 'visibility',
                     tooltip: 'Ver programa academico',
                     onClick: (event, rowData) => {
-                      let selectedSchoolProgram = student.student.find(
+                      const selectedSchoolProgram = student.student.find(
                         (item) => (item.id = rowData.id)
                       );
                       history.push(
@@ -407,6 +493,7 @@ class StudentDetail extends Component {
                   },
 
                   {
+                    id: 'inscription',
                     icon: Inscription,
                     tooltip: 'Inscribir',
                     onClick: (event, rowData) =>
@@ -417,6 +504,7 @@ class StudentDetail extends Component {
                       }),
                   },
                   {
+                    id: 'constances',
                     icon: Download,
                     tooltip: 'Constancia de estudio',
                     onClick: (event, rowData) => {
@@ -424,6 +512,7 @@ class StudentDetail extends Component {
                     },
                   },
                   {
+                    id: 'delete',
                     icon: 'delete',
                     tooltip: 'Delete User',
                     onClick: (event, rowData) => {
@@ -433,6 +522,7 @@ class StudentDetail extends Component {
                     },
                   },
                   {
+                    id: 'add',
                     icon: 'add',
                     tooltip: 'Agregar programa academico',
                     isFreeAction: true,
