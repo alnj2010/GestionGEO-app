@@ -10,7 +10,8 @@ import {
   GENDER,
   LEVEL_INSTRUCTION,
   NATIONALITY,
-  TEACHER_ROL,
+  TEACHER_CATEGORY,
+  TEACHER_TYPE,
 } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 
@@ -141,7 +142,14 @@ class TeacherDetail extends Component {
                     field: `teacherType`,
                     id: `teacherType`,
                     type: 'select',
-                    options: jsonToOptions(TEACHER_ROL),
+                    options: jsonToOptions(TEACHER_TYPE),
+                  },
+                  {
+                    label: 'Categoria',
+                    field: `category`,
+                    id: `category`,
+                    type: 'select',
+                    options: jsonToOptions(TEACHER_CATEGORY),
                   },
                   {
                     label: 'Sexo',
@@ -177,9 +185,15 @@ class TeacherDetail extends Component {
                     id: 'withDisabilities',
                     type: 'switch',
                   },
+                  {
+                    label: '¿Usuario activo?',
+                    field: 'active',
+                    id: 'active',
+                    type: teacherId ? 'switch' : 'hidden',
+                  },
                 ]}
               </RenderFields>
-              {teacherType === TEACHER_ROL.INVITADO ? (
+              {teacherType === TEACHER_CATEGORY.INVITADO ? (
                 <RenderFields>
                   {[
                     {
@@ -215,7 +229,7 @@ class TeacherDetail extends Component {
                       onClick={() =>
                         teacherId
                           ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('teacher')
+                          : submitDispatch('profesor')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -311,10 +325,10 @@ const teacherValidation = (values) => {
 
   return errors;
 };
-const selector = formValueSelector('teacher');
+const selector = formValueSelector('profesor');
 
 let TeacherDetailWrapper = reduxForm({
-  form: 'teacher',
+  form: 'profesor',
   validate: teacherValidation,
   enableReinitialize: true,
 })(TeacherDetail);
@@ -352,6 +366,9 @@ TeacherDetailWrapper = connect(
       teacherType: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.teacher_type
         : '',
+      category: state.teacherReducer.selectedTeacher.teacher
+        ? state.teacherReducer.selectedTeacher.teacher.category
+        : '',
       nationality: state.teacherReducer.selectedTeacher.nationality
         ? state.teacherReducer.selectedTeacher.nationality
         : '',
@@ -371,6 +388,7 @@ TeacherDetailWrapper = connect(
       withDisabilities: state.teacherReducer.selectedTeacher
         ? state.teacherReducer.selectedTeacher.with_disabilities
         : false,
+      active: !!state.teacherReducer.selectedTeacher.active,
     },
     action: state.dialogReducer.action,
     teacherType: selector(state, 'teacherType'),

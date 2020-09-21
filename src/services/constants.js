@@ -33,7 +33,7 @@ export const LEVEL_INSTRUCTION = {
   LICENCIADO: 'Lic',
 };
 
-export const TEACHER_ROL = {
+export const TEACHER_CATEGORY = {
   INSTRUCTOR: 'INS',
   INVITADO: 'INV',
   ASISTENTE: 'ASI',
@@ -46,6 +46,12 @@ export const TEACHER_DEDICATION = {
   CONVENCIONAL: 'CON',
   'TIEMPO-COMPLETO': 'TC',
   EXCLUSIVO: 'EXC',
+};
+
+export const TEACHER_TYPE = {
+  CONTRATADO: 'CON',
+  JUBILADO: 'JUB',
+  REGULAR: 'REG',
 };
 
 export const NATIONALITY = { VENEZOLANO: 'V', EXTRANJERO: 'E' };

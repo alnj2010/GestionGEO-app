@@ -35,7 +35,7 @@ export const findTeacherById = (id) => async (dispatch) => {
     });
 };
 
-export const cleanSelectedTeacher = (id) => async (dispatch) => {
+export const cleanSelectedTeacher = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_TEACHER,
     payload: {},
@@ -55,6 +55,7 @@ export const updateTeacher = (teacher) => async (dispatch) => {
     work_phone: teacher.workPhone,
     email: teacher.email,
     teacher_type: teacher.teacherType,
+    category: teacher.category,
     nationality: teacher.nationality,
     sex: teacher.sex,
     level_instruction: teacher.levelInstruction,
@@ -62,6 +63,7 @@ export const updateTeacher = (teacher) => async (dispatch) => {
     home_institute: teacher.homeInstitute,
     country: teacher.country,
     with_disabilities: teacher.withDisabilities,
+    active: teacher.active,
   };
   return Teacher.update(payload)
     .then((response) => {
@@ -97,6 +99,8 @@ export const saveTeacher = (teacher) => async (dispatch) => {
     home_institute: teacher.homeInstitute,
     country: teacher.country,
     with_disabilities: teacher.withDisabilities,
+    category: teacher.category,
+    active: teacher.active,
   };
   return Teacher.saveTeacher(payload)
     .then((res) => {
@@ -111,7 +115,7 @@ export const saveTeacher = (teacher) => async (dispatch) => {
 
 export const deleteTeacher = (teacherId) => async (dispatch) => {
   return Teacher.delete(teacherId)
-    .then((response) => {
+    .then(() => {
       show('Profesor eliminado', 'success')(dispatch);
       return true;
     })
