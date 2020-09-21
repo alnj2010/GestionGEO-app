@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   findAdminById,
@@ -13,25 +13,32 @@ import { define, cleanDialog } from '../../actions/dialog';
 
 class AdminDetailContainer extends Component {
   componentDidMount = () => {
-    const { match, findAdminById, define } = this.props;
-    if (match.params.id) findAdminById(match.params.id);
-    define('administrador');
+    const { match, findAdminByIdDispatch, defineDispatch } = this.props;
+    if (match.params.id) findAdminByIdDispatch(match.params.id);
+    defineDispatch('administrador');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanSelectedAdmin();
-    this.props.cleanDialog();
+    const { cleanSelectedAdminDispatch, cleanDialogDispatch } = this.props;
+    cleanSelectedAdminDispatch();
+    cleanDialogDispatch();
   };
 
   saveAdmin = (values) => {
-    const { match, updateAdmin, findAdminById, saveAdmin, history } = this.props;
+    const {
+      match,
+      updateAdminDispatch,
+      findAdminByIdDispatch,
+      saveAdminDispatch,
+      history,
+    } = this.props;
     const payload = { ...values };
 
-    if (match.params.id) updateAdmin({ ...payload, ...match.params });
+    if (match.params.id) updateAdminDispatch({ ...payload, ...match.params });
     else
-      saveAdmin({ ...payload }).then((response) => {
+      saveAdminDispatch({ ...payload }).then((response) => {
         if (response) {
-          findAdminById(response).then((res) => history.push(`edit/${response}`));
+          findAdminByIdDispatch(response).then(() => history.push(`edit/${response}`));
         }
       });
   };
@@ -42,8 +49,8 @@ class AdminDetailContainer extends Component {
   };
 
   handleAdminDelete = () => {
-    const { deleteAdmin, history, match } = this.props;
-    deleteAdmin(match.params.id).then((res) => history.push('/administradores'));
+    const { deleteAdminDispatch, history, match } = this.props;
+    deleteAdminDispatch(match.params.id).then(() => history.push('/administradores'));
   };
 
   render() {
@@ -61,12 +68,30 @@ class AdminDetailContainer extends Component {
 }
 
 AdminDetailContainer.propTypes = {
-  deleteAdmin: func.isRequired,
-  history: object.isRequired,
-  match: object.isRequired,
-  updateAdmin: func.isRequired,
-  findAdminById: func.isRequired,
-  saveAdmin: func.isRequired,
+  admin: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+
+  schoolPrograms: PropTypes.shape({}).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+
+  updateAdminDispatch: PropTypes.func.isRequired,
+  findAdminByIdDispatch: PropTypes.func.isRequired,
+  saveAdminDispatch: PropTypes.func.isRequired,
+  deleteAdminDispatch: PropTypes.func.isRequired,
+  cleanSelectedAdminDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -74,15 +99,13 @@ const mS = (state) => ({
 });
 
 const mD = {
-  findAdminById,
-  updateAdmin,
-  saveAdmin,
-  deleteAdmin,
-  define,
-  cleanSelectedAdmin,
-  cleanDialog,
+  findAdminByIdDispatch: findAdminById,
+  updateAdminDispatch: updateAdmin,
+  saveAdminDispatch: saveAdmin,
+  deleteAdminDispatch: deleteAdmin,
+  defineDispatch: define,
+  cleanSelectedAdminDispatch: cleanSelectedAdmin,
+  cleanDialogDispatch: cleanDialog,
 };
 
-AdminDetailContainer = connect(mS, mD)(AdminDetailContainer);
-
-export default AdminDetailContainer;
+export default connect(mS, mD)(AdminDetailContainer);

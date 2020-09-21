@@ -306,7 +306,7 @@ class StudentDetail extends Component {
                     disabled: rol !== 'A',
                   },
                   {
-                    label: 'Active',
+                    label: '¿Usuario activo?',
                     field: 'active',
                     id: 'active',
                     type: studentId && rol === 'A' ? 'switch' : 'hidden',

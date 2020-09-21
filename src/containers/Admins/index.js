@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
 import { getList, deleteAdmin } from '../../actions/admin';
@@ -14,22 +14,23 @@ class AdminsListContainer extends Component {
   }
 
   componentDidMount = () => {
-    const { getList, define } = this.props;
-    getList().then(() => this.setState({ isLoading: false }));
-    define('administrador');
+    const { getListDispatch, defineDispatch } = this.props;
+    getListDispatch().then(() => this.setState({ isLoading: false }));
+    defineDispatch('administrador');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanDialog();
+    const { cleanDialogDispatch } = this.props;
+    cleanDialogDispatch();
   };
 
   handleDeleteAdmin = (id) => {
-    const { getList, deleteAdmin } = this.props;
-    deleteAdmin(id).then((res) => getList());
+    const { getListDispatch, deleteAdminDispatch } = this.props;
+    deleteAdminDispatch(id).then(() => getListDispatch());
   };
 
   render() {
-    const { admins, history, show } = this.props;
+    const { admins, history, showDispatch } = this.props;
     const { isLoading } = this.state;
     return (
       <AdminsList
@@ -38,17 +39,21 @@ class AdminsListContainer extends Component {
         history={history}
         handleAdminDetail={this.handleAdminDetail}
         handleDeleteAdmin={this.handleDeleteAdmin}
-        show={show}
+        show={showDispatch}
       />
     );
   }
 }
 
 AdminsListContainer.propTypes = {
-  admins: array,
-  history: object.isRequired,
-  getList: func.isRequired,
-  deleteAdmin: func.isRequired,
+  admins: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  history: PropTypes.shape({}).isRequired,
+
+  getListDispatch: PropTypes.func.isRequired,
+  deleteAdminDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -56,13 +61,11 @@ const mS = (state) => ({
 });
 
 const mD = {
-  getList,
-  deleteAdmin,
-  cleanDialog,
-  define,
-  show,
+  getListDispatch: getList,
+  deleteAdminDispatch: deleteAdmin,
+  cleanDialogDispatch: cleanDialog,
+  defineDispatch: define,
+  showDispatch: show,
 };
 
-AdminsListContainer = connect(mS, mD)(AdminsListContainer);
-
-export default AdminsListContainer;
+export default connect(mS, mD)(AdminsListContainer);

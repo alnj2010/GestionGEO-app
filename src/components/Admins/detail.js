@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, change, submit, formValueSelector } from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
+import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
+import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
 import { COORDINATOR_ROL, GENDER, LEVEL_INSTRUCTION, NATIONALITY } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
@@ -39,7 +39,8 @@ class AdminDetail extends Component {
 
   handleDialogShow = (action, func) => {
     this.setState({ func }, () => {
-      this.props.show(action);
+      const { showDispatch } = this.props;
+      showDispatch(action);
     });
   };
 
@@ -54,7 +55,7 @@ class AdminDetail extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       rol,
       admin,
     } = this.props;
@@ -170,6 +171,12 @@ class AdminDetail extends Component {
                     id: 'principal',
                     type: isMain && rol !== COORDINATOR_ROL.SECRETARIO ? 'switch' : 'hidden',
                   },
+                  {
+                    label: '¿Usuario activo?',
+                    field: 'active',
+                    id: 'active',
+                    type: adminId ? 'switch' : 'hidden',
+                  },
                 ]}
               </RenderFields>
             </Grid>
@@ -186,7 +193,9 @@ class AdminDetail extends Component {
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
-                        adminId ? this.handleDialogShow('actualizar', submit) : submit('admin')
+                        adminId
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('administrador')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -224,15 +233,30 @@ class AdminDetail extends Component {
 }
 
 AdminDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveAdmin: func.isRequired,
-  goBack: func.isRequired,
-  adminId: number,
-  handleAdminDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+  classes: PropTypes.shape({
+    form: PropTypes.string.isRequired,
+    buttonContainer: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+  }).isRequired,
+
+  admin: PropTypes.shape({
+    first_surname: PropTypes.string.isRequired,
+    first_name: PropTypes.string.isRequired,
+  }).isRequired,
+  rol: PropTypes.string.isRequired,
+
+  adminId: PropTypes.number.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  saveAdmin: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+  handleAdminDelete: PropTypes.func.isRequired,
 };
 
 const adminValidation = (values) => {
@@ -269,14 +293,14 @@ const adminValidation = (values) => {
   return errors;
 };
 
-AdminDetail = reduxForm({
-  form: 'admin',
+let AdminDetailWrapper = reduxForm({
+  form: 'administrador',
   validate: adminValidation,
   enableReinitialize: true,
 })(AdminDetail);
-const selector = formValueSelector('admin');
+const selector = formValueSelector('administrador');
 
-AdminDetail = connect(
+AdminDetailWrapper = connect(
   (state) => ({
     initialValues: {
       firstName: state.adminReducer.selectedAdmin.first_name
@@ -320,11 +344,12 @@ AdminDetail = connect(
       withDisabilities: state.adminReducer.selectedAdmin
         ? state.adminReducer.selectedAdmin.with_disabilities
         : false,
+      active: !!state.adminReducer.selectedAdmin.active,
     },
     action: state.dialogReducer.action,
     rol: selector(state, 'rol'),
   }),
-  { change, show, submit }
-)(AdminDetail);
+  { showDispatch: show, submitDispatch: submit }
+)(AdminDetailWrapper);
 
-export default withStyles(styles)(AdminDetail);
+export default withStyles(styles)(AdminDetailWrapper);

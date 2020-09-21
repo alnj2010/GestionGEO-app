@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
-import { array, bool, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
@@ -28,7 +28,7 @@ class AdminsList extends Component {
             rol: admin.administrator ? admin.administrator.rol : false,
           };
         })
-        .filter((admin) => parseInt(id) !== parseInt(admin.id));
+        .filter((admin) => parseInt(id, 10) !== parseInt(admin.id, 10));
     return [];
   };
 
@@ -79,7 +79,7 @@ class AdminsList extends Component {
                 icon: 'delete',
                 tooltip: 'Borrar admin',
                 onClick: (event, rowData) => {
-                  this.handleDialogShow('eliminar', (entity) => handleDeleteAdmin(rowData.id));
+                  this.handleDialogShow('eliminar', () => handleDeleteAdmin(rowData.id));
                 },
               },
             ]}
@@ -102,10 +102,16 @@ class AdminsList extends Component {
 }
 
 AdminsList.propTypes = {
-  admins: array,
-  isLoading: bool.isRequired,
-  history: object.isRequired,
-  handleDeleteAdmin: func.isRequired,
+  admins: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  isLoading: PropTypes.bool.isRequired,
+
+  show: PropTypes.func.isRequired,
+  handleDeleteAdmin: PropTypes.func.isRequired,
 };
 
 export default AdminsList;
