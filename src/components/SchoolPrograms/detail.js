@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, change, submit, formValueSelector } from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
+import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
+import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 
-const styles = (theme) => ({
+const styles = () => ({
   form: {
     paddingLeft: '5%',
   },
@@ -35,7 +35,8 @@ class SchoolProgramDetail extends Component {
 
   handleDialogShow = (action, func) => {
     this.setState({ func }, () => {
-      this.props.show(action);
+      const { showDispatch } = this.props;
+      showDispatch(action);
     });
   };
 
@@ -50,7 +51,7 @@ class SchoolProgramDetail extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       schoolProgram,
       numCu,
     } = this.props;
@@ -142,8 +143,8 @@ class SchoolProgramDetail extends Component {
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         schoolProgramId
-                          ? this.handleDialogShow('actualizar', submit)
-                          : submit('schoolProgram')
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('programa academico')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -181,15 +182,32 @@ class SchoolProgramDetail extends Component {
 }
 
 SchoolProgramDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveSchoolProgram: func.isRequired,
-  goBack: func.isRequired,
-  schoolProgramId: number,
-  handleSchoolProgramDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+  classes: PropTypes.shape({
+    form: PropTypes.string.isRequired,
+    buttonContainer: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
+    button: PropTypes.string.isRequired,
+  }).isRequired,
+
+  subject: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+
+  schoolProgram: PropTypes.shape({ school_program_name: PropTypes.string.isRequired }).isRequired,
+
+  numCu: PropTypes.number.isRequired,
+
+  schoolProgramId: PropTypes.number.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  saveSchoolProgram: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+  handleSchoolProgramDelete: PropTypes.func.isRequired,
 };
 
 const schoolProgramValidation = (values) => {
@@ -221,14 +239,14 @@ const schoolProgramValidation = (values) => {
 
   return errors;
 };
-const selector = formValueSelector('schoolProgram');
-SchoolProgramDetail = reduxForm({
-  form: 'schoolProgram',
+const selector = formValueSelector('programa academico');
+let SchoolProgramDetailWrapper = reduxForm({
+  form: 'programa academico',
   validate: schoolProgramValidation,
   enableReinitialize: true,
 })(SchoolProgramDetail);
 
-SchoolProgramDetail = connect(
+SchoolProgramDetailWrapper = connect(
   (state) => ({
     initialValues: {
       schoolProgramName: state.schoolProgramReducer.selectedSchoolProgram.school_program_name
@@ -259,7 +277,7 @@ SchoolProgramDetail = connect(
     action: state.dialogReducer.action,
     numCu: selector(state, 'numCu'),
   }),
-  { change, show, submit }
-)(SchoolProgramDetail);
+  { showDispatch: show, submitDispatch: submit }
+)(SchoolProgramDetailWrapper);
 
-export default withStyles(styles)(SchoolProgramDetail);
+export default withStyles(styles)(SchoolProgramDetailWrapper);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   findSchoolProgramById,
@@ -13,31 +13,32 @@ import { define, cleanDialog } from '../../actions/dialog';
 
 class SchoolProgramDetailContainer extends Component {
   componentDidMount = () => {
-    const { match, findSchoolProgramById, define } = this.props;
-    if (match.params.id) findSchoolProgramById(match.params.id);
-    define('programa academico');
+    const { match, findSchoolProgramByIdDispatch, defineDispatch } = this.props;
+    if (match.params.id) findSchoolProgramByIdDispatch(match.params.id);
+    defineDispatch('programa academico');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanSelectedSchoolProgram();
-    this.props.cleanDialog();
+    const { cleanSelectedSchoolProgramDispatch, cleanDialogDispatch } = this.props;
+    cleanSelectedSchoolProgramDispatch();
+    cleanDialogDispatch();
   };
 
   saveSchoolProgram = (values) => {
     const {
       match,
-      updateSchoolProgram,
-      findSchoolProgramById,
-      saveSchoolProgram,
+      updateSchoolProgramDispatch,
+      findSchoolProgramByIdDispatch,
+      saveSchoolProgramDispatch,
       history,
     } = this.props;
     const payload = { ...values };
 
-    if (match.params.id) updateSchoolProgram({ ...payload, ...match.params });
+    if (match.params.id) updateSchoolProgramDispatch({ ...payload, ...match.params });
     else
-      saveSchoolProgram({ ...payload }).then((response) => {
+      saveSchoolProgramDispatch({ ...payload }).then((response) => {
         if (response) {
-          findSchoolProgramById(response).then((res) => history.push(`edit/${response}`));
+          findSchoolProgramByIdDispatch(response).then(() => history.push(`edit/${response}`));
         }
       });
   };
@@ -49,8 +50,8 @@ class SchoolProgramDetailContainer extends Component {
   };
 
   handleSchoolProgramDelete = () => {
-    const { deleteSchoolProgram, history, match } = this.props;
-    deleteSchoolProgram(match.params.id).then((res) => history.push('/programas-academicos'));
+    const { deleteSchoolProgramDispatch, history, match } = this.props;
+    deleteSchoolProgramDispatch(match.params.id).then(() => history.push('/programas-academicos'));
   };
 
   render() {
@@ -68,12 +69,28 @@ class SchoolProgramDetailContainer extends Component {
 }
 
 SchoolProgramDetailContainer.propTypes = {
-  deleteSchoolProgram: func.isRequired,
-  history: object.isRequired,
-  match: object.isRequired,
-  updateSchoolProgram: func.isRequired,
-  findSchoolProgramById: func.isRequired,
-  saveSchoolProgram: func.isRequired,
+  schoolProgram: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+
+  findSchoolProgramByIdDispatch: PropTypes.func.isRequired,
+  updateSchoolProgramDispatch: PropTypes.func.isRequired,
+  saveSchoolProgramDispatch: PropTypes.func.isRequired,
+  deleteSchoolProgramDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  cleanSelectedSchoolProgramDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -81,15 +98,13 @@ const mS = (state) => ({
 });
 
 const mD = {
-  findSchoolProgramById,
-  updateSchoolProgram,
-  saveSchoolProgram,
-  deleteSchoolProgram,
-  define,
-  cleanSelectedSchoolProgram,
-  cleanDialog,
+  findSchoolProgramByIdDispatch: findSchoolProgramById,
+  updateSchoolProgramDispatch: updateSchoolProgram,
+  saveSchoolProgramDispatch: saveSchoolProgram,
+  deleteSchoolProgramDispatch: deleteSchoolProgram,
+  defineDispatch: define,
+  cleanSelectedSchoolProgramDispatch: cleanSelectedSchoolProgram,
+  cleanDialogDispatch: cleanDialog,
 };
 
-SchoolProgramDetailContainer = connect(mS, mD)(SchoolProgramDetailContainer);
-
-export default SchoolProgramDetailContainer;
+export default connect(mS, mD)(SchoolProgramDetailContainer);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
-import { array, bool, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
@@ -71,9 +71,7 @@ class SchoolProgramsList extends Component {
                 icon: 'delete',
                 tooltip: 'Borrar programa academico',
                 onClick: (event, rowData) => {
-                  this.handleDialogShow('eliminar', (entity) =>
-                    handleDeleteSchoolProgram(rowData.id)
-                  );
+                  this.handleDialogShow('eliminar', () => handleDeleteSchoolProgram(rowData.id));
                 },
               },
             ]}
@@ -97,10 +95,16 @@ class SchoolProgramsList extends Component {
 }
 
 SchoolProgramsList.propTypes = {
-  schoolPrograms: array,
-  isLoading: bool.isRequired,
-  history: object.isRequired,
-  handleDeleteSchoolProgram: func.isRequired,
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  isLoading: PropTypes.bool.isRequired,
+
+  show: PropTypes.func.isRequired,
+  handleDeleteSchoolProgram: PropTypes.func.isRequired,
 };
 
 export default SchoolProgramsList;
