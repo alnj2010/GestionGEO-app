@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   findStudentById,
@@ -19,24 +19,37 @@ import { getSessionUserRol } from '../../storage/sessionStorage';
 class StudentDetailContainer extends Component {
   componentDidMount = () => {
     const rol = getSessionUserRol();
-    const { match, findStudentById, define } = this.props;
-    if (match.params.id) findStudentById(match.params.id);
-    this.props.getSchoolProgramList();
-    this.props.getSubjectList();
-    define(rol !== 'A' ? 'perfil' : 'estudiante');
+    const {
+      match,
+      findStudentByIdDispatch,
+      defineDispatch,
+      getSchoolProgramListDispatch,
+      getSubjectListDispatch,
+    } = this.props;
+    if (match.params.id) findStudentByIdDispatch(match.params.id);
+    getSchoolProgramListDispatch();
+    getSubjectListDispatch();
+    defineDispatch(rol !== 'A' ? 'perfil' : 'estudiante');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanSelectedStudent();
-    this.props.cleanDialog();
+    const { cleanSelectedStudentDispatch, cleanDialogDispatch } = this.props;
+    cleanSelectedStudentDispatch();
+    cleanDialogDispatch();
   };
 
   saveStudent = (values) => {
-    const { match, updateStudent, findStudentById, saveStudent, history, student } = this.props;
+    const {
+      match,
+      updateStudentDispatch,
+      findStudentByIdDispatch,
+      saveStudentDispatch,
+      history,
+      student,
+    } = this.props;
     const payload = { ...values };
-    console.log(student);
     if (match.params.id)
-      updateStudent({
+      updateStudentDispatch({
         ...payload,
         id: match.params.id,
         schoolProgramId: student.student[0].school_program_id,
@@ -57,9 +70,9 @@ class StudentDetailContainer extends Component {
         currentPostgraduate: student.student[0].current_postgraduate,
       });
     else
-      saveStudent({ ...payload }).then((response) => {
+      saveStudentDispatch({ ...payload }).then((response) => {
         if (response) {
-          findStudentById(response).then((res) => history.push(`edit/${response}`));
+          findStudentByIdDispatch(response).then(() => history.push(`edit/${response}`));
         }
       });
   };
@@ -70,18 +83,19 @@ class StudentDetailContainer extends Component {
   };
 
   handleStudentDelete = () => {
-    const { deleteStudent, history, match } = this.props;
-    deleteStudent(match.params.id).then((res) => history.push('/estudiantes'));
+    const { deleteStudentDispatch, history, match } = this.props;
+    deleteStudentDispatch(match.params.id).then(() => history.push('/estudiantes'));
   };
 
   handleDeleteSchoolProgram = (userId, studentId) => {
-    const { deleteSchoolProgram, history } = this.props;
-    deleteSchoolProgram(userId, studentId).then(() => history.push('/estudiantes/edit/' + userId));
+    const { deleteSchoolProgramDispatch, history } = this.props;
+    deleteSchoolProgramDispatch(userId, studentId).then(() =>
+      history.push(`/estudiantes/edit/${userId}`)
+    );
   };
 
   render() {
-    const { student, schoolPrograms, subjects, history, getStudentConstance } = this.props;
-    console.log(student);
+    const { student, schoolPrograms, subjects, history, getStudentConstanceDispatch } = this.props;
     return (
       <StudentDetail
         schoolPrograms={schoolPrograms}
@@ -92,7 +106,7 @@ class StudentDetailContainer extends Component {
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}
-        getStudentConstance={getStudentConstance}
+        getStudentConstance={getStudentConstanceDispatch}
         handleDeleteSchoolProgram={this.handleDeleteSchoolProgram}
       />
     );
@@ -100,12 +114,53 @@ class StudentDetailContainer extends Component {
 }
 
 StudentDetailContainer.propTypes = {
-  deleteStudent: func.isRequired,
-  history: object.isRequired,
-  match: object.isRequired,
-  updateStudent: func.isRequired,
-  findStudentById: func.isRequired,
-  saveStudent: func.isRequired,
+  student: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    student: PropTypes.arrayOf(
+      PropTypes.shape({
+        school_program_id: PropTypes.number.isRequired,
+        id: PropTypes.number.isRequired,
+        student_type: PropTypes.string.isRequired,
+        home_university: PropTypes.string.isRequired,
+        type_income: PropTypes.string.isRequired,
+        is_ucv_teacher: PropTypes.bool.isRequired,
+        is_available_final_work: PropTypes.bool.isRequired,
+        credits_granted: PropTypes.number.isRequired,
+        with_work: PropTypes.bool.isRequired,
+        test_period: PropTypes.bool.isRequired,
+        current_status: PropTypes.string.isRequired,
+        equivalence: PropTypes.arrayOf(PropTypes.shape({})),
+        guide_teacher_id: PropTypes.number.isRequired,
+        current_postgraduate: PropTypes.string.isRequired,
+      })
+    ),
+  }).isRequired,
+
+  schoolPrograms: PropTypes.shape({}).isRequired,
+  subjects: PropTypes.shape({}).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+
+  findStudentByIdDispatch: PropTypes.func.isRequired,
+  updateStudentDispatch: PropTypes.func.isRequired,
+  saveStudentDispatch: PropTypes.func.isRequired,
+  deleteStudentDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  cleanSelectedStudentDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  getSchoolProgramListDispatch: PropTypes.func.isRequired,
+  getSubjectListDispatch: PropTypes.func.isRequired,
+  deleteSchoolProgramDispatch: PropTypes.func.isRequired,
+  getStudentConstanceDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -115,19 +170,17 @@ const mS = (state) => ({
 });
 
 const mD = {
-  findStudentById,
-  updateStudent,
-  saveStudent,
-  deleteStudent,
-  define,
-  cleanSelectedStudent,
-  cleanDialog,
-  getSchoolProgramList,
-  getSubjectList,
-  deleteSchoolProgram,
-  getStudentConstance,
+  findStudentByIdDispatch: findStudentById,
+  updateStudentDispatch: updateStudent,
+  saveStudentDispatch: saveStudent,
+  deleteStudentDispatch: deleteStudent,
+  defineDispatch: define,
+  cleanSelectedStudentDispatch: cleanSelectedStudent,
+  cleanDialogDispatch: cleanDialog,
+  getSchoolProgramListDispatch: getSchoolProgramList,
+  getSubjectListDispatch: getSubjectList,
+  deleteSchoolProgramDispatch: deleteSchoolProgram,
+  getStudentConstanceDispatch: getStudentConstance,
 };
 
-StudentDetailContainer = connect(mS, mD)(StudentDetailContainer);
-
-export default StudentDetailContainer;
+export default connect(mS, mD)(StudentDetailContainer);

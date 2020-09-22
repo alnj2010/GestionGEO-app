@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import handleExportCsv from '../../utils/handleExportCsv';
 
 class StudentInscriptions extends Component {
-  constructor() {
-    super();
-    this.state = {
-      func: null,
-    };
-  }
-
   transformData = (schoolPeriods) => {
     if (schoolPeriods)
       return schoolPeriods.map((schoolPeriod) => {
@@ -27,8 +21,6 @@ class StudentInscriptions extends Component {
 
   render = () => {
     const { inscribedSchoolPeriods, isLoading, history, studentId, fullname } = this.props;
-    console.log(inscribedSchoolPeriods, 'inscribedSchoolPeriods');
-
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -86,5 +78,16 @@ class StudentInscriptions extends Component {
     );
   };
 }
+StudentInscriptions.propTypes = {
+  inscribedSchoolPeriods: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
+  studentId: PropTypes.number.isRequired,
+  fullname: PropTypes.string.isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  isLoading: PropTypes.bool.isRequired,
+};
 export default StudentInscriptions;

@@ -15,15 +15,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputBase from '@material-ui/core/InputBase';
 import Fab from '@material-ui/core/Fab';
+import Download from '@material-ui/icons/Archive';
+import Inscription from '@material-ui/icons/HowToVote';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 import { STUDENT_TYPE, GENDER, NATIONALITY, LEVEL_INSTRUCTION } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
-import Inscription from '@material-ui/icons/HowToVote';
-import Download from '@material-ui/icons/Archive';
-import School from '@material-ui/icons/School';
 
 const styles = () => ({
   form: {
@@ -149,7 +148,6 @@ class StudentDetail extends Component {
       history,
       getStudentConstance,
     } = this.props;
-    console.log(history);
     const { func } = this.state;
     const rol = getSessionUserRol();
     return (
@@ -391,7 +389,6 @@ class StudentDetail extends Component {
                       action: { id, onClick },
                       data,
                     } = props;
-                    console.log(data);
                     switch (id) {
                       case 'edit':
                         return (
@@ -466,9 +463,9 @@ class StudentDetail extends Component {
                     id: 'edit',
                     icon: 'visibility',
                     tooltip: 'Ver programa academico',
-                    onClick: (event, rowData) => {
+                    onClick: (_, rowData) => {
                       const selectedSchoolProgram = student.student.find(
-                        (item) => (item.id = rowData.id)
+                        (item) => item.id === rowData.id
                       );
                       history.push(
                         `${history.location.pathname}/programa-academico/${rowData.id}`,
@@ -501,7 +498,7 @@ class StudentDetail extends Component {
                     icon: 'delete',
                     tooltip: 'Delete User',
                     onClick: (event, rowData) => {
-                      this.handleDialogShow('eliminar', (entity) =>
+                      this.handleDialogShow('eliminar', () =>
                         handleDeleteSchoolProgram(studentId, rowData.id)
                       );
                     },
@@ -511,7 +508,7 @@ class StudentDetail extends Component {
                     icon: 'add',
                     tooltip: 'Agregar programa academico',
                     isFreeAction: true,
-                    onClick: (event) =>
+                    onClick: () =>
                       history.push(`${history.location.pathname}/programa-academico/create`, {
                         selectedStudent: { ...student },
                       }),
@@ -549,9 +546,19 @@ StudentDetail.propTypes = {
   student: PropTypes.shape({
     first_surname: PropTypes.string,
     first_name: PropTypes.string,
+    second_name: PropTypes.string,
+    second_surname: PropTypes.string,
+    student: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
 
   studentId: PropTypes.number,
+
+  handleDeleteSchoolProgram: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    location: PropTypes.shape({ pathname: PropTypes.string }),
+  }).isRequired,
+  getStudentConstance: PropTypes.func.isRequired,
 
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   getInscribedSchoolPeriods,
@@ -16,16 +17,17 @@ class StudentInscriptionsContainer extends Component {
 
   componentDidMount = () => {
     const {
-      getInscribedSchoolPeriods,
+      getInscribedSchoolPeriodsDispatch,
       match: {
         params: { id },
       },
     } = this.props;
-    getInscribedSchoolPeriods(id).then(() => this.setState({ isLoading: false }));
+    getInscribedSchoolPeriodsDispatch(id).then(() => this.setState({ isLoading: false }));
   };
 
   componentWillUnmount = () => {
-    this.props.cleanSelectedInscriptionSchoolPeriods();
+    const { cleanSelectedInscriptionSchoolPeriodsDispatch } = this.props;
+    cleanSelectedInscriptionSchoolPeriodsDispatch();
   };
 
   render() {
@@ -52,16 +54,32 @@ class StudentInscriptionsContainer extends Component {
     );
   }
 }
+StudentInscriptionsContainer.propTypes = {
+  inscribedSchoolPeriods: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
+  history: PropTypes.shape({}).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      fullname: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+
+  cleanSelectedInscriptionSchoolPeriodsDispatch: PropTypes.func.isRequired,
+  getInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
+};
 const mS = (state) => ({
   inscribedSchoolPeriods: state.studentReducer.inscribedSchoolPeriods,
 });
 
 const mD = {
-  getInscribedSchoolPeriods,
-  cleanSelectedInscriptionSchoolPeriods,
+  getInscribedSchoolPeriodsDispatch: getInscribedSchoolPeriods,
+  cleanSelectedInscriptionSchoolPeriodsDispatch: cleanSelectedInscriptionSchoolPeriods,
 };
 
-StudentInscriptionsContainer = connect(mS, mD)(StudentInscriptionsContainer);
-
-export default StudentInscriptionsContainer;
+export default connect(mS, mD)(StudentInscriptionsContainer);

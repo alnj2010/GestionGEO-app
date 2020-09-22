@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
-import { array, bool, object, func } from 'prop-types';
+import { PropTypes } from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
@@ -89,7 +89,7 @@ class StudentsList extends Component {
                 icon: 'delete',
                 tooltip: 'Borrar estudiante',
                 onClick: (event, rowData) => {
-                  this.handleDialogShow('eliminar', (entity) => handleDeleteStudent(rowData.id));
+                  this.handleDialogShow('eliminar', () => handleDeleteStudent(rowData.id));
                 },
               },
             ]}
@@ -112,10 +112,16 @@ class StudentsList extends Component {
 }
 
 StudentsList.propTypes = {
-  students: array,
-  isLoading: bool.isRequired,
-  history: object.isRequired,
-  handleDeleteStudent: func.isRequired,
+  students: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+
+  isLoading: PropTypes.bool.isRequired,
+
+  show: PropTypes.func.isRequired,
+  handleDeleteStudent: PropTypes.func.isRequired,
 };
 
 export default StudentsList;

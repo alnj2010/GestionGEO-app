@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array, object, func } from 'prop-types';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
 import { getList, deleteStudent } from '../../actions/student';
@@ -14,22 +14,23 @@ class StudentsListContainer extends Component {
   }
 
   componentDidMount = () => {
-    const { getList, define } = this.props;
-    getList().then(() => this.setState({ isLoading: false }));
-    define('Estudiante');
+    const { getListDispatch, defineDispatch } = this.props;
+    getListDispatch().then(() => this.setState({ isLoading: false }));
+    defineDispatch('Estudiante');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanDialog();
+    const { cleanDialogDispatch } = this.props;
+    cleanDialogDispatch();
   };
 
   handleDeleteStudent = (id) => {
-    const { getList, deleteStudent } = this.props;
-    deleteStudent(id).then((res) => getList());
+    const { getListDispatch, deleteStudentDispatch } = this.props;
+    deleteStudentDispatch(id).then(() => getListDispatch());
   };
 
   render() {
-    const { students, history, show } = this.props;
+    const { students, history, showDispatch } = this.props;
     const { isLoading } = this.state;
     return (
       <StudentsList
@@ -38,17 +39,21 @@ class StudentsListContainer extends Component {
         history={history}
         handleStudentDetail={this.handleStudentDetail}
         handleDeleteStudent={this.handleDeleteStudent}
-        show={show}
+        show={showDispatch}
       />
     );
   }
 }
 
 StudentsListContainer.propTypes = {
-  students: array,
-  history: object.isRequired,
-  getList: func.isRequired,
-  deleteStudent: func.isRequired,
+  students: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  history: PropTypes.shape({}).isRequired,
+
+  getListDispatch: PropTypes.func.isRequired,
+  deleteStudentDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -56,13 +61,11 @@ const mS = (state) => ({
 });
 
 const mD = {
-  getList,
-  deleteStudent,
-  cleanDialog,
-  define,
-  show,
+  getListDispatch: getList,
+  deleteStudentDispatch: deleteStudent,
+  cleanDialogDispatch: cleanDialog,
+  defineDispatch: define,
+  showDispatch: show,
 };
 
-StudentsListContainer = connect(mS, mD)(StudentsListContainer);
-
-export default StudentsListContainer;
+export default connect(mS, mD)(StudentsListContainer);
