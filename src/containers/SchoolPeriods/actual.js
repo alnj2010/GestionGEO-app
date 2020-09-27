@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import { updateSchoolPeriod, findCurrentSchoolPeriod } from '../../actions/schoolPeriod';
@@ -8,27 +8,30 @@ import { define, cleanDialog } from '../../actions/dialog';
 
 class SchoolPeriodActualContainer extends Component {
   componentDidMount = () => {
-    const { define, findCurrentSchoolPeriod } = this.props;
-    define('periodo semestral');
-    findCurrentSchoolPeriod();
+    const { defineDispatch, findCurrentSchoolPeriodDispatch } = this.props;
+    defineDispatch('periodo semestral');
+    findCurrentSchoolPeriodDispatch();
     const weekDays = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
     document.querySelectorAll('.rbc-header').forEach((column, index) => {
+      // eslint-disable-next-line no-param-reassign
       column.innerText = weekDays[index];
     });
   };
 
   componentWillUnmount = () => {
-    this.props.cleanDialog();
+    const { cleanDialogDispatch } = this.props;
+    cleanDialogDispatch();
   };
 
   saveSchoolPeriod = (values) => {
-    const { updateSchoolPeriod, schoolPeriodActual } = this.props;
-    values = {
+    const { updateSchoolPeriodDispatch, schoolPeriodActual } = this.props;
+
+    const val = {
       end_date: values.endDate,
       inscription_visible: values.incriptionVisible,
       load_notes: values.loadNotes,
     };
-    let payload = { ...schoolPeriodActual, ...values };
+    let payload = { ...schoolPeriodActual, ...val };
     payload = {
       id: payload.id,
       inscriptionVisible: payload.inscription_visible,
@@ -54,17 +57,17 @@ class SchoolPeriodActualContainer extends Component {
         })),
       })),
     };
-    updateSchoolPeriod(payload);
+    updateSchoolPeriodDispatch(payload);
   };
 
   render() {
     const {
-      schoolPeriodActual: { start_date, end_date, subjects },
+      schoolPeriodActual: { start_date: startDate, end_date: endDate, subjects, message },
     } = this.props;
-    return !this.props.schoolPeriodActual.message ? (
+    return !message ? (
       <SchoolPeriodActual
-        startDate={start_date}
-        endDate={end_date}
+        startDate={startDate}
+        endDate={endDate}
         saveSchoolPeriod={this.saveSchoolPeriod}
         subjects={subjects}
       />
@@ -77,8 +80,17 @@ class SchoolPeriodActualContainer extends Component {
 }
 
 SchoolPeriodActualContainer.propTypes = {
-  history: object.isRequired,
-  updateSchoolPeriod: func.isRequired,
+  history: PropTypes.shape({}).isRequired,
+  schoolPeriodActual: PropTypes.shape({
+    message: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+    subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  }).isRequired,
+  updateSchoolPeriodDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  findCurrentSchoolPeriodDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -86,12 +98,10 @@ const mS = (state) => ({
 });
 
 const mD = {
-  updateSchoolPeriod,
-  define,
-  cleanDialog,
-  findCurrentSchoolPeriod,
+  updateSchoolPeriodDispatch: updateSchoolPeriod,
+  defineDispatch: define,
+  cleanDialogDispatch: cleanDialog,
+  findCurrentSchoolPeriodDispatch: findCurrentSchoolPeriod,
 };
 
-SchoolPeriodActualContainer = connect(mS, mD)(SchoolPeriodActualContainer);
-
-export default SchoolPeriodActualContainer;
+export default connect(mS, mD)(SchoolPeriodActualContainer);

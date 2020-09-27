@@ -140,7 +140,6 @@ class SchoolPeriodDetail extends Component {
 
   renderSubjects = ({ fields }) => {
     const { teachers, classes, subjects, subjectsSelected } = this.props;
-    console.log(subjects);
     return (
       <>
         {fields.map((subject, index) => (

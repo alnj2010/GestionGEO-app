@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
 import * as moment from 'moment';
-import { Form, reduxForm, change, submit } from 'redux-form';
-import { object, func, bool } from 'prop-types';
+import { Form, reduxForm, submit } from 'redux-form';
+import PropTypes from 'prop-types';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -50,30 +50,37 @@ class SchoolPeriodActual extends Component {
 
   handleDialogShow = (action, func) => {
     this.setState({ func }, () => {
-      this.props.show(action);
+      const { showDispatch } = this.props;
+      showDispatch(action);
     });
   };
 
   transformData = () => {
+    const { subjects } = this.props;
     let arr = [];
 
-    if (this.props.subjects) {
-      this.props.subjects.forEach((subject, index) => {
+    if (subjects) {
+      subjects.forEach((subject, index) => {
         const aux = subject.schedules.map((schedule, index2) => {
+          // eslint-disable-next-line no-underscore-dangle
           let startTime = moment()
             .isoWeekday(weekdays[schedule.day])
-            .hours(parseInt(schedule.start_hour.split(':')[0]))
-            .minutes(parseInt(schedule.start_hour.split(':')[1]))._d;
+            .hours(parseInt(schedule.start_hour.split(':')[0], 10))
+            .minutes(parseInt(schedule.start_hour.split(':')[1], 10))._d;
+
+          // eslint-disable-next-line no-underscore-dangle
           let endTime = moment()
             .isoWeekday(weekdays[schedule.day])
-            .hours(parseInt(schedule.end_hour.split(':')[0]))
+            .hours(parseInt(schedule.end_hour.split(':')[0], 10))
             .minutes(schedule.end_hour.split(':')[1])._d;
           if (moment().day() === 0) {
+            // eslint-disable-next-line no-underscore-dangle
             startTime = moment(startTime).add(7, 'day')._d;
+            // eslint-disable-next-line no-underscore-dangle
             endTime = moment(endTime).add(7, 'day')._d;
           }
           return {
-            id: parseInt(`${index}${index2}`),
+            id: parseInt(`${index}${index2}`, 10),
             title: subject.subject.name,
             start: startTime,
             end: endTime,
@@ -95,7 +102,7 @@ class SchoolPeriodActual extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       endDate,
     } = this.props;
     const allViews = Object.keys(Views).map((k) => Views[k]);
@@ -160,8 +167,8 @@ class SchoolPeriodActual extends Component {
                       className={classes.save}
                       onClick={() =>
                         schoolPeriodId
-                          ? this.handleDialogShow('actualizar', submit)
-                          : submit('schoolPeriod')
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('schoolPeriod')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -191,20 +198,31 @@ class SchoolPeriodActual extends Component {
 }
 
 SchoolPeriodActual.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveSchoolPeriod: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  schoolPeriodId: PropTypes.number.isRequired,
+  endDate: PropTypes.string.isRequired,
+  classes: PropTypes.PropTypes.shape({
+    buttonContainer: PropTypes.string.isRequired,
+    save: PropTypes.string.isRequired,
+    calendar: PropTypes.string.isRequired,
+    form: PropTypes.string.isRequired,
+  }).isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  saveSchoolPeriod: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  submitDispatch: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
 };
 
-SchoolPeriodActual = reduxForm({
+let SchoolPeriodActualWrapper = reduxForm({
   form: 'schoolPeriodActual',
   enableReinitialize: true,
 })(SchoolPeriodActual);
 
-SchoolPeriodActual = connect(
+SchoolPeriodActualWrapper = connect(
   (state) => ({
     initialValues: {
       startDate: state.schoolPeriodReducer.selectedSchoolPeriod.start_date
@@ -218,7 +236,7 @@ SchoolPeriodActual = connect(
     },
     action: state.dialogReducer.action,
   }),
-  { change, show, submit }
-)(SchoolPeriodActual);
+  { showDispatch: show, submitDispatch: submit }
+)(SchoolPeriodActualWrapper);
 
-export default withStyles(styles)(SchoolPeriodActual);
+export default withStyles(styles)(SchoolPeriodActualWrapper);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   findSchoolPeriodById,
@@ -15,32 +15,38 @@ import { define, cleanDialog } from '../../actions/dialog';
 
 class SchoolPeriodDetailContainer extends Component {
   componentDidMount = () => {
-    const { match, findSchoolPeriodById, define } = this.props;
-    if (match.params.id) findSchoolPeriodById(match.params.id);
-    this.props.getSubjectList();
-    this.props.getTeacherList();
-    define('Periodo semestral');
+    const {
+      match,
+      findSchoolPeriodByIdDispatch,
+      defineDispatch,
+      getSubjectListDispatch,
+      getTeacherListDispatch,
+    } = this.props;
+    if (match.params.id) findSchoolPeriodByIdDispatch(match.params.id);
+    getSubjectListDispatch();
+    getTeacherListDispatch();
+    defineDispatch('Periodo semestral');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanSelectedSchoolPeriod();
-    this.props.cleanDialog();
+    const { cleanSelectedSchoolPeriodDispatch, cleanDialogDispatch } = this.props;
+    cleanSelectedSchoolPeriodDispatch();
+    cleanDialogDispatch();
   };
 
   saveSchoolPeriod = (values) => {
     const {
       match,
-      updateSchoolPeriod,
-      findSchoolPeriodById,
-      saveSchoolPeriod,
+      updateSchoolPeriodDispatch,
+      findSchoolPeriodByIdDispatch,
+      saveSchoolPeriodDispatch,
       history,
     } = this.props;
-    console.log(values);
-    if (match.params.id) updateSchoolPeriod({ ...values, ...match.params });
+    if (match.params.id) updateSchoolPeriodDispatch({ ...values, ...match.params });
     else
-      saveSchoolPeriod({ ...values }).then((response) => {
+      saveSchoolPeriodDispatch({ ...values }).then((response) => {
         if (response) {
-          findSchoolPeriodById(response).then((res) => history.push(`edit/${response}`));
+          findSchoolPeriodByIdDispatch(response).then(() => history.push(`edit/${response}`));
         }
       });
   };
@@ -51,8 +57,8 @@ class SchoolPeriodDetailContainer extends Component {
   };
 
   handleSchoolPeriodDelete = () => {
-    const { deleteSchoolPeriod, history, match } = this.props;
-    deleteSchoolPeriod(match.params.id).then((res) => history.push('/periodo-semestral'));
+    const { deleteSchoolPeriodDispatch, history, match } = this.props;
+    deleteSchoolPeriodDispatch(match.params.id).then(() => history.push('/periodo-semestral'));
   };
 
   render() {
@@ -72,12 +78,33 @@ class SchoolPeriodDetailContainer extends Component {
 }
 
 SchoolPeriodDetailContainer.propTypes = {
-  deleteSchoolPeriod: func.isRequired,
-  history: object.isRequired,
-  match: object.isRequired,
-  updateSchoolPeriod: func.isRequired,
-  findSchoolPeriodById: func.isRequired,
-  saveSchoolPeriod: func.isRequired,
+  schoolPeriod: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
+
+  findSchoolPeriodByIdDispatch: PropTypes.func.isRequired,
+  updateSchoolPeriodDispatch: PropTypes.func.isRequired,
+  saveSchoolPeriodDispatch: PropTypes.func.isRequired,
+  deleteSchoolPeriodDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  cleanSelectedSchoolPeriodDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  getSubjectListDispatch: PropTypes.func.isRequired,
+  getTeacherListDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -87,17 +114,15 @@ const mS = (state) => ({
 });
 
 const mD = {
-  findSchoolPeriodById,
-  updateSchoolPeriod,
-  saveSchoolPeriod,
-  deleteSchoolPeriod,
-  define,
-  cleanSelectedSchoolPeriod,
-  cleanDialog,
-  getSubjectList,
-  getTeacherList,
+  findSchoolPeriodByIdDispatch: findSchoolPeriodById,
+  updateSchoolPeriodDispatch: updateSchoolPeriod,
+  saveSchoolPeriodDispatch: saveSchoolPeriod,
+  deleteSchoolPeriodDispatch: deleteSchoolPeriod,
+  defineDispatch: define,
+  cleanSelectedSchoolPeriodDispatch: cleanSelectedSchoolPeriod,
+  cleanDialogDispatch: cleanDialog,
+  getSubjectListDispatch: getSubjectList,
+  getTeacherListDispatch: getTeacherList,
 };
 
-SchoolPeriodDetailContainer = connect(mS, mD)(SchoolPeriodDetailContainer);
-
-export default SchoolPeriodDetailContainer;
+export default connect(mS, mD)(SchoolPeriodDetailContainer);
