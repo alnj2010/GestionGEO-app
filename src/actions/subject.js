@@ -3,6 +3,7 @@ import { show } from './snackbar';
 
 export const ACTIONS = {
   LIST: 'subject/list',
+  LISTBYSCHOOLPROGRAM: 'subject/listBySchoolProgram',
   SELECT: `subject/select`,
   UPDATE: `subject/update`,
   CLEAN_SELECTED_SUBJECT: `subject/clean-selected`,
@@ -15,6 +16,18 @@ export const getList = () => async (dispatch) => {
       return true;
     })
     .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
+export const getSubjectBySchoolProgram = (id) => async (dispatch) => {
+  return Subject.getSubjectBySchoolProgram(id)
+    .then((response) => {
+      dispatch({ type: ACTIONS.LISTBYSCHOOLPROGRAM, payload: { listBySchoolPeriod: response } });
+      return true;
+    })
+    .catch((error) => {
+      dispatch({ type: ACTIONS.LISTBYSCHOOLPROGRAM, payload: { listBySchoolPeriod: [] } });
       show(error.message, 'error')(dispatch);
       return false;
     });
@@ -35,7 +48,7 @@ export const findSubjectById = (id) => async (dispatch) => {
     });
 };
 
-export const cleanSelectedSubject = (id) => async (dispatch) => {
+export const cleanSelectedSubject = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_SUBJECT,
     payload: {},
@@ -95,7 +108,7 @@ export const saveSubject = (subject) => async (dispatch) => {
 
 export const deleteSubject = (subjectId) => async (dispatch) => {
   return Subject.delete(subjectId)
-    .then((response) => {
+    .then(() => {
       show('Materia eliminada', 'success')(dispatch);
       return true;
     })

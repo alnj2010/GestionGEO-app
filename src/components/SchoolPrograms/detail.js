@@ -86,7 +86,7 @@ class SchoolProgramDetail extends Component {
                     min: 0,
                   },
                   {
-                    label: 'Duracion (Años)',
+                    label: 'Duracion (Semestres)',
                     field: 'duration',
                     id: 'duration',
                     type: 'number',

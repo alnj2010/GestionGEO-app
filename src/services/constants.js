@@ -3,6 +3,7 @@ export const URL = {
   AUTH: '/login',
   SCHOOL_PROGRAM: '/schoolPrograms',
   SUBJECT: '/subjects',
+  SUBJECTBYSCHOOLPROGRAM: '/subjectsBySchoolProgram',
   STUDENT: '/students',
   TEACHER: '/teachers',
   SCHOOL_PERIOD: '/schoolPeriods',
@@ -52,6 +53,7 @@ export const TEACHER_TYPE = {
   CONTRATADO: 'CON',
   JUBILADO: 'JUB',
   REGULAR: 'REG',
+  OTRO: 'OTH',
 };
 
 export const NATIONALITY = { VENEZOLANO: 'V', EXTRANJERO: 'E' };

@@ -10,7 +10,8 @@ import {
   deleteSchoolProgram,
   getStudentConstance,
 } from '../../actions/student';
-import { getList as getSubjectList } from '../../actions/subject';
+import { getList as getTeacherList } from '../../actions/teacher';
+import { getSubjectBySchoolProgram } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import StudentDetail from '../../components/Students/detail';
 import { define, cleanDialog } from '../../actions/dialog';
@@ -24,11 +25,11 @@ class StudentDetailContainer extends Component {
       findStudentByIdDispatch,
       defineDispatch,
       getSchoolProgramListDispatch,
-      getSubjectListDispatch,
+      getTeacherListDispatch,
     } = this.props;
     if (match.params.id) findStudentByIdDispatch(match.params.id);
     getSchoolProgramListDispatch();
-    getSubjectListDispatch();
+    getTeacherListDispatch();
     defineDispatch(rol !== 'A' ? 'perfil' : 'estudiante');
   };
 
@@ -95,14 +96,24 @@ class StudentDetailContainer extends Component {
   };
 
   render() {
-    const { student, schoolPrograms, subjects, history, getStudentConstanceDispatch } = this.props;
+    const {
+      student,
+      schoolPrograms,
+      history,
+      getStudentConstanceDispatch,
+      listBySchoolPeriod,
+      getSubjectBySchoolProgramDispatch,
+      teachers,
+    } = this.props;
     return (
       <StudentDetail
         schoolPrograms={schoolPrograms}
+        teachersGuide={teachers}
         saveStudent={this.saveStudent}
         goBack={this.goBack}
+        listBySchoolPeriod={listBySchoolPeriod}
+        getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}
         studentId={student.id}
-        subjects={subjects}
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}
@@ -136,9 +147,9 @@ StudentDetailContainer.propTypes = {
     ),
   }).isRequired,
 
-  schoolPrograms: PropTypes.shape({}).isRequired,
-  subjects: PropTypes.shape({}).isRequired,
-
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  listBySchoolPeriod: PropTypes.shape({}).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
@@ -149,7 +160,7 @@ StudentDetailContainer.propTypes = {
       id: PropTypes.number.isRequired,
     }),
   }).isRequired,
-
+  getSubjectBySchoolProgramDispatch: PropTypes.func.isRequired,
   findStudentByIdDispatch: PropTypes.func.isRequired,
   updateStudentDispatch: PropTypes.func.isRequired,
   saveStudentDispatch: PropTypes.func.isRequired,
@@ -158,15 +169,16 @@ StudentDetailContainer.propTypes = {
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   getSchoolProgramListDispatch: PropTypes.func.isRequired,
-  getSubjectListDispatch: PropTypes.func.isRequired,
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
   getStudentConstanceDispatch: PropTypes.func.isRequired,
+  getTeacherListDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
   student: state.studentReducer.selectedStudent,
+  teachers: state.teacherReducer.list,
   schoolPrograms: state.schoolProgramReducer.list,
-  subjects: state.subjectReducer.list,
+  listBySchoolPeriod: state.subjectReducer.listBySchoolPeriod,
 });
 
 const mD = {
@@ -177,8 +189,9 @@ const mD = {
   defineDispatch: define,
   cleanSelectedStudentDispatch: cleanSelectedStudent,
   cleanDialogDispatch: cleanDialog,
+  getSubjectBySchoolProgramDispatch: getSubjectBySchoolProgram,
+  getTeacherListDispatch: getTeacherList,
   getSchoolProgramListDispatch: getSchoolProgramList,
-  getSubjectListDispatch: getSubjectList,
   deleteSchoolProgramDispatch: deleteSchoolProgram,
   getStudentConstanceDispatch: getStudentConstance,
 };

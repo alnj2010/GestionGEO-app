@@ -10,6 +10,13 @@ export const Subject = {
       .then(handleResponseService)
       .catch(handleErrorMsg);
   },
+  getSubjectBySchoolProgram(idSchoolProgram) {
+    return AXIOS.get(`${URL.SUBJECTBYSCHOOLPROGRAM}/${idSchoolProgram}`, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
   findSubjectById(id) {
     return AXIOS.get(`${URL.SUBJECT}/${id}`, {
       headers: headers(),

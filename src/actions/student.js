@@ -57,7 +57,6 @@ export const cleanSchoolProgram = () => async (dispatch) => {
 };
 
 export const updateSchoolProgram = (student) => async (dispatch) => {
-  console.log('entro', student.equivalences);
   const payload = {
     identification: student.identification,
     first_name: student.first_name,
@@ -135,11 +134,9 @@ export const saveSchoolProgram = (student) => async (dispatch) => {
     current_status: student.currentStatus,
     equivalences: student.equivalences,
   };
-  console.log(payload);
 
   return Student.saveSchoolProgram(payload, student.idUser)
     .then((response) => {
-      console.log(response);
       /* dispatch({
         type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
         payload: {
@@ -202,13 +199,14 @@ export const updateStudent = (student) => async (dispatch) => {
     with_work: student.withWork,
     test_period: student.testPeriod,
     current_status: student.currentStatus,
-    //degrees:student.degrees,
-    equivalences: student.equivalence.map((item) => ({
-      subject_id: item.subject_id,
-      qualification: item.qualification,
-    })),
+    // degrees:student.degrees,
+    equivalences: student.equivalence.length
+      ? student.equivalence.map((item) => ({
+          subject_id: item.subjectId,
+          qualification: item.qualification,
+        }))
+      : undefined,
   };
-  console.log(payload);
   return Student.update(payload)
     .then((response) => {
       dispatch({
@@ -240,19 +238,21 @@ export const saveStudent = (student) => async (dispatch) => {
     sex: student.sex,
     nationality: student.nationality,
     school_program_id: student.schoolProgram,
-    //guide_teacher_id:student.guideTeacher,
+    guide_teacher_id: student.guideTeacherId,
     student_type: student.studentType,
     home_university: student.homeUniversity,
-    //current_postgraduate:student.currentPostgraduate,
+    // current_postgraduate:student.currentPostgraduate,
     type_income: student.typeIncome,
     is_ucv_teacher: student.isUcvTeacher,
     credits_granted: student.creditsGranted,
     with_work: student.withWork,
-    //degrees:student.degrees,
-    equivalences: student.equivalence.map((item) => ({
-      subject_id: item.subjectId,
-      qualification: item.qualification,
-    })),
+    // degrees:student.degrees,
+    equivalences: student.equivalence.length
+      ? student.equivalence.map((item) => ({
+          subject_id: item.subjectId,
+          qualification: item.qualification,
+        }))
+      : undefined,
   };
 
   return Student.saveStudent(payload)
@@ -329,7 +329,6 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
 };
 
 export const editStudentPeriodSchool = (value) => async (dispatch) => {
-  console.log('asdsadsad', value);
   const payload = {
     id: value.id,
     student_id: value.studentId,

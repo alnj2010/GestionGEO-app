@@ -53,6 +53,14 @@ class StudentDetail extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { schoolProgramSelected, getSubjectBySchoolProgram } = this.props;
+    const { schoolProgramSelected: oldSchoolProgramSelected } = prevProps;
+    if (schoolProgramSelected && schoolProgramSelected !== oldSchoolProgramSelected) {
+      getSubjectBySchoolProgram(schoolProgramSelected);
+    }
+  }
+
   handleDialogShow = (action, func) => {
     const { showDispatch } = this.props;
     this.setState({ func }, () => {
@@ -61,7 +69,7 @@ class StudentDetail extends Component {
   };
 
   unselectedSubjects = (pos) => {
-    const { subjects, subjectsSelected } = this.props;
+    const { listBySchoolPeriod: subjects, subjectsSelected } = this.props;
     return subjects.filter(
       (item) =>
         !subjectsSelected.some((selected, index) => selected.subjectId === item.id && pos > index)
@@ -69,7 +77,7 @@ class StudentDetail extends Component {
   };
 
   renderSubjects = ({ fields }) => {
-    const { classes, subjects, subjectsSelected } = this.props;
+    const { classes, listBySchoolPeriod: subjects, subjectsSelected } = this.props;
     return (
       <>
         {fields.map((subject, index) => {
@@ -147,6 +155,7 @@ class StudentDetail extends Component {
       handleDeleteSchoolProgram,
       history,
       getStudentConstance,
+      teachersGuide,
     } = this.props;
     const { func } = this.state;
     const rol = getSessionUserRol();
@@ -265,6 +274,17 @@ class StudentDetail extends Component {
                     field: 'homeUniversity',
                     id: 'homeUniversity',
                     type: !studentId && rol === 'A' ? 'text' : 'hidden',
+                    disabled: rol !== 'A',
+                  },
+                  {
+                    label: 'Profesor Guia',
+                    field: `guideTeacherId`,
+                    id: `guideTeacherId`,
+                    type: !studentId && rol === 'A' ? 'select' : 'hidden',
+                    options: teachersGuide.map((item) => ({
+                      key: `${item.first_name} ${item.first_surname}`,
+                      value: item.id,
+                    })),
                     disabled: rol !== 'A',
                   },
                   {
@@ -539,8 +559,10 @@ StudentDetail.propTypes = {
       id: PropTypes.number.isRequired,
     })
   ).isRequired,
-
-  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  teachersGuide: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  getSubjectBySchoolProgram: PropTypes.func.isRequired,
+  listBySchoolPeriod: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  schoolProgramSelected: PropTypes.number.isRequired,
   subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
 
   student: PropTypes.shape({
@@ -709,6 +731,7 @@ StudentDetailWrapper = connect(
         : false,
     },
     action: state.dialogReducer.action,
+    schoolProgramSelected: selector(state, 'schoolProgram'),
     subjectsSelected: selector(state, 'equivalence'),
   }),
   { showDispatch: show, submitDispatch: submit }
