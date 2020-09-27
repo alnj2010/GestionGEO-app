@@ -400,24 +400,24 @@ class SchoolPeriodDetail extends Component {
 
 SchoolPeriodDetail.propTypes = {
   classes: PropTypes.shape({
-    fab: PropTypes.string.isRequired,
-    form: PropTypes.string.isRequired,
-    buttonContainer: PropTypes.string.isRequired,
-    buttonSchedule: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
-    buttonDelete: PropTypes.string.isRequired,
-    save: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
+    fab: PropTypes.string,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    buttonSchedule: PropTypes.string,
+    button: PropTypes.string,
+    buttonDelete: PropTypes.string,
+    save: PropTypes.string,
+    subtitle: PropTypes.string,
   }).isRequired,
 
   teachers: PropTypes.arrayOf(
     PropTypes.shape({
-      first_name: PropTypes.string.isRequired,
+      first_name: PropTypes.string,
       second_name: PropTypes.string,
 
-      first_surname: PropTypes.string.isRequired,
+      first_surname: PropTypes.string,
       second_surname: PropTypes.string,
-      teacher: PropTypes.shape({ id: PropTypes.number }).isRequired,
+      teacher: PropTypes.shape({ id: PropTypes.string }).isRequired,
     })
   ).isRequired,
 

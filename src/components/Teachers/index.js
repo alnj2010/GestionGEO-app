@@ -100,18 +100,18 @@ class TeachersList extends Component {
 TeachersList.propTypes = {
   teachers: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      email: PropTypes.string.isRequired,
-      identification: PropTypes.string.isRequired,
-      first_name: PropTypes.string.isRequired,
-      first_surname: PropTypes.string.isRequired,
+      id: PropTypes.string,
+      email: PropTypes.string,
+      identification: PropTypes.string,
+      first_name: PropTypes.string,
+      first_surname: PropTypes.string,
     })
   ).isRequired,
 
   isLoading: PropTypes.bool.isRequired,
 
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }).isRequired,
 
   handleDeleteTeacher: PropTypes.func.isRequired,

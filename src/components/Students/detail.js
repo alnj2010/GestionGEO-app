@@ -546,17 +546,17 @@ class StudentDetail extends Component {
 
 StudentDetail.propTypes = {
   classes: PropTypes.shape({
-    form: PropTypes.string.isRequired,
-    buttonContainer: PropTypes.string.isRequired,
-    save: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
-    buttonDelete: PropTypes.string.isRequired,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+    button: PropTypes.string,
+    buttonDelete: PropTypes.string,
   }).isRequired,
 
   schoolPrograms: PropTypes.arrayOf(
     PropTypes.shape({
-      school_program_name: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
+      school_program_name: PropTypes.string,
+      id: PropTypes.string,
     })
   ).isRequired,
   teachersGuide: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -577,7 +577,7 @@ StudentDetail.propTypes = {
 
   handleDeleteSchoolProgram: PropTypes.func.isRequired,
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
     location: PropTypes.shape({ pathname: PropTypes.string }),
   }).isRequired,
   getStudentConstance: PropTypes.func.isRequired,

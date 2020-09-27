@@ -126,23 +126,23 @@ class StudentDetailContainer extends Component {
 
 StudentDetailContainer.propTypes = {
   student: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     student: PropTypes.arrayOf(
       PropTypes.shape({
-        school_program_id: PropTypes.number.isRequired,
-        id: PropTypes.number.isRequired,
-        student_type: PropTypes.string.isRequired,
-        home_university: PropTypes.string.isRequired,
-        type_income: PropTypes.string.isRequired,
-        is_ucv_teacher: PropTypes.bool.isRequired,
-        is_available_final_work: PropTypes.bool.isRequired,
-        credits_granted: PropTypes.number.isRequired,
-        with_work: PropTypes.bool.isRequired,
-        test_period: PropTypes.bool.isRequired,
-        current_status: PropTypes.string.isRequired,
+        school_program_id: PropTypes.number,
+        id: PropTypes.string,
+        student_type: PropTypes.string,
+        home_university: PropTypes.string,
+        type_income: PropTypes.string,
+        is_ucv_teacher: PropTypes.bool,
+        is_available_final_work: PropTypes.bool,
+        credits_granted: PropTypes.number,
+        with_work: PropTypes.bool,
+        test_period: PropTypes.bool,
+        current_status: PropTypes.string,
         equivalence: PropTypes.arrayOf(PropTypes.shape({})),
-        guide_teacher_id: PropTypes.number.isRequired,
-        current_postgraduate: PropTypes.string.isRequired,
+        guide_teacher_id: PropTypes.number,
+        current_postgraduate: PropTypes.string,
       })
     ),
   }).isRequired,
@@ -151,13 +151,13 @@ StudentDetailContainer.propTypes = {
   teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   listBySchoolPeriod: PropTypes.shape({}).isRequired,
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired,
+    push: PropTypes.func,
+    goBack: PropTypes.func,
   }).isRequired,
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string,
     }),
   }).isRequired,
   getSubjectBySchoolProgramDispatch: PropTypes.func.isRequired,

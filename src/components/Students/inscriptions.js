@@ -85,7 +85,7 @@ StudentInscriptions.propTypes = {
   fullname: PropTypes.string.isRequired,
 
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }).isRequired,
 
   isLoading: PropTypes.bool.isRequired,

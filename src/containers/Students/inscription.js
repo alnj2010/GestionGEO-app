@@ -105,22 +105,22 @@ class StudentInscriptionContainer extends Component {
 StudentInscriptionContainer.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      idSchoolPeriod: PropTypes.number.isRequired,
+      id: PropTypes.string,
+      idSchoolPeriod: PropTypes.number,
     }),
   }).isRequired,
 
-  schoolPeriods: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired })).isRequired,
+  schoolPeriods: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string })).isRequired,
 
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      school_period_subject_teacher_id: PropTypes.number.isRequired,
+      school_period_subject_teacher_id: PropTypes.number,
       data_subject: PropTypes.shape({
         subject: PropTypes.shape({
-          subject_name: PropTypes.string.isRequired,
-          uc: PropTypes.number.isRequired,
+          subject_name: PropTypes.string,
+          uc: PropTypes.number,
         }),
-        duty: PropTypes.number.isRequired,
+        duty: PropTypes.number,
       }),
     })
   ).isRequired,
@@ -129,14 +129,14 @@ StudentInscriptionContainer.propTypes = {
 
   location: PropTypes.shape({
     state: PropTypes.shape({
-      inscriptedSP: PropTypes.string.isRequired,
-      fullname: PropTypes.string.isRequired,
+      inscriptedSP: PropTypes.string,
+      fullname: PropTypes.string,
     }),
   }).isRequired,
 
   idInscription: PropTypes.number.isRequired,
   defineDispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({ goBack: PropTypes.func.isRequired }).isRequired,
+  history: PropTypes.shape({ goBack: PropTypes.func }).isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   getSchoolPeriodsListDispatch: PropTypes.func.isRequired,
   getAvailableSubjectsDispatch: PropTypes.func.isRequired,

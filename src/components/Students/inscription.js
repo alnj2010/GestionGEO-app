@@ -296,18 +296,18 @@ class StudentInscription extends Component {
 
 StudentInscription.propTypes = {
   classes: PropTypes.shape({
-    form: PropTypes.string.isRequired,
-    buttonContainer: PropTypes.string.isRequired,
-    save: PropTypes.string.isRequired,
-    buttonDelete: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
-    fab: PropTypes.string.isRequired,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+    buttonDelete: PropTypes.string,
+    button: PropTypes.string,
+    fab: PropTypes.string,
   }).isRequired,
 
   schoolPeriods: PropTypes.arrayOf(
     PropTypes.shape({
-      cod_school_period: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
+      cod_school_period: PropTypes.string,
+      id: PropTypes.string,
     })
   ).isRequired,
 
@@ -315,19 +315,19 @@ StudentInscription.propTypes = {
 
   subjectsSelected: PropTypes.arrayOf(
     PropTypes.shape({
-      subjectId: PropTypes.number.isRequired,
+      subjectId: PropTypes.number,
     })
   ).isRequired,
   subjectInscriptions: PropTypes.arrayOf(
     PropTypes.shape({
-      subjectId: PropTypes.number.isRequired,
+      subjectId: PropTypes.number,
     })
   ).isRequired,
 
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
+      id: PropTypes.string,
+      name: PropTypes.string,
     })
   ).isRequired,
 

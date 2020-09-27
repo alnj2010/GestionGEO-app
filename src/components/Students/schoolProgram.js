@@ -316,11 +316,11 @@ class StudentSchoolProgram extends Component {
 
 StudentSchoolProgram.propTypes = {
   classes: PropTypes.shape({
-    form: PropTypes.string.isRequired,
-    buttonContainer: PropTypes.string.isRequired,
-    save: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
-    buttonDelete: PropTypes.string.isRequired,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+    button: PropTypes.string,
+    buttonDelete: PropTypes.string,
   }).isRequired,
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

@@ -72,10 +72,10 @@ function AdminHome(props) {
 
 AdminHome.propTypes = {
   classes: PropTypes.shape({
-    welcome: PropTypes.string.isRequired,
-    welcome__pictureContainer: PropTypes.string.isRequired,
-    welcome__picture: PropTypes.string.isRequired,
-    welcome__info: PropTypes.string.isRequired,
+    welcome: PropTypes.string,
+    welcome__pictureContainer: PropTypes.string,
+    welcome__picture: PropTypes.string,
+    welcome__info: PropTypes.string,
   }).isRequired,
 };
 

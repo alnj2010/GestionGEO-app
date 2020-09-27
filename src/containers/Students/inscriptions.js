@@ -60,13 +60,13 @@ StudentInscriptionsContainer.propTypes = {
   history: PropTypes.shape({}).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string,
     }),
   }).isRequired,
 
   location: PropTypes.shape({
     state: PropTypes.shape({
-      fullname: PropTypes.string.isRequired,
+      fullname: PropTypes.string,
     }),
   }).isRequired,
 

@@ -98,16 +98,16 @@ class SubjectsList extends Component {
 SubjectsList.propTypes = {
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      subject_code: PropTypes.string.isRequired,
-      subject_name: PropTypes.string.isRequired,
-      subject_type: PropTypes.string.isRequired,
-      uc: PropTypes.number.isRequired,
+      id: PropTypes.string,
+      subject_code: PropTypes.string,
+      subject_name: PropTypes.string,
+      subject_type: PropTypes.string,
+      uc: PropTypes.number,
     })
   ).isRequired,
 
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }).isRequired,
 
   isLoading: PropTypes.bool.isRequired,

@@ -85,7 +85,7 @@ SchoolPeriodActualContainer.propTypes = {
     message: PropTypes.string,
     start_date: PropTypes.string,
     end_date: PropTypes.string,
-    subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    subjects: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
   updateSchoolPeriodDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,

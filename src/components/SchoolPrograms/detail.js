@@ -183,17 +183,17 @@ class SchoolProgramDetail extends Component {
 
 SchoolProgramDetail.propTypes = {
   classes: PropTypes.shape({
-    form: PropTypes.string.isRequired,
-    buttonContainer: PropTypes.string.isRequired,
-    save: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+    button: PropTypes.string,
   }).isRequired,
 
   subject: PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
   }).isRequired,
 
-  schoolProgram: PropTypes.shape({ school_program_name: PropTypes.string.isRequired }).isRequired,
+  schoolProgram: PropTypes.shape({ school_program_name: PropTypes.string }).isRequired,
 
   numCu: PropTypes.number.isRequired,
 

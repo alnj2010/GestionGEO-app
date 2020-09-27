@@ -278,25 +278,23 @@ class SubjectDetail extends Component {
 
 SubjectDetail.propTypes = {
   classes: PropTypes.shape({
-    fab: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
-    buttonDelete: PropTypes.string.isRequired,
-    buttonDeleteContainer: PropTypes.string.isRequired,
-    form: PropTypes.string.isRequired,
-    buttonContainer: PropTypes.string.isRequired,
-    save: PropTypes.string.isRequired,
+    fab: PropTypes.string,
+    subtitle: PropTypes.string,
+    button: PropTypes.string,
+    buttonDelete: PropTypes.string,
+    buttonDeleteContainer: PropTypes.string,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
   }).isRequired,
 
   subject: PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
   }).isRequired,
 
-  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired }))
-    .isRequired,
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string })).isRequired,
 
-  schoolProgramsSelected: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number.isRequired }))
-    .isRequired,
+  schoolProgramsSelected: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string })).isRequired,
 
   subjectId: PropTypes.number.isRequired,
   pristine: PropTypes.bool.isRequired,

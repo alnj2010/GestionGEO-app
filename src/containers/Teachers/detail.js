@@ -73,17 +73,17 @@ TeacherDetailContainer.propTypes = {
   schoolPrograms: PropTypes.shape({}).isRequired,
 
   teacher: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string,
   }).isRequired,
 
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-    goBack: PropTypes.func.isRequired,
+    push: PropTypes.func,
+    goBack: PropTypes.func,
   }).isRequired,
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.string,
     }),
   }).isRequired,
 

@@ -268,15 +268,15 @@ class TeacherDetail extends Component {
 
 TeacherDetail.propTypes = {
   classes: PropTypes.shape({
-    form: PropTypes.string.isRequired,
-    buttonContainer: PropTypes.string.isRequired,
-    save: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+    button: PropTypes.string,
   }).isRequired,
 
   teacher: PropTypes.shape({
-    first_surname: PropTypes.string.isRequired,
-    first_name: PropTypes.string.isRequired,
+    first_surname: PropTypes.string,
+    first_name: PropTypes.string,
   }).isRequired,
 
   teacherType: PropTypes.string.isRequired,

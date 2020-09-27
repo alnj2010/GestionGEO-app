@@ -98,7 +98,7 @@ SchoolProgramsList.propTypes = {
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }).isRequired,
 
   isLoading: PropTypes.bool.isRequired,
