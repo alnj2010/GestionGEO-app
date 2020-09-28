@@ -12,13 +12,7 @@ import RenderFields from '../RenderFields';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
-const weekdays = {
-  Lunes: 1,
-  Martes: 2,
-  Miercoles: 3,
-  Jueves: 4,
-  Viernes: 5,
-};
+
 const styles = () => ({
   pdf: {
     backgroundColor: 'red',
@@ -64,13 +58,13 @@ class SchoolPeriodActual extends Component {
         const aux = subject.schedules.map((schedule, index2) => {
           // eslint-disable-next-line no-underscore-dangle
           let startTime = moment()
-            .isoWeekday(weekdays[schedule.day])
+            .isoWeekday(parseInt(schedule.day, 10))
             .hours(parseInt(schedule.start_hour.split(':')[0], 10))
             .minutes(parseInt(schedule.start_hour.split(':')[1], 10))._d;
 
           // eslint-disable-next-line no-underscore-dangle
           let endTime = moment()
-            .isoWeekday(weekdays[schedule.day])
+            .isoWeekday(parseInt(schedule.day, 10))
             .hours(parseInt(schedule.end_hour.split(':')[0], 10))
             .minutes(schedule.end_hour.split(':')[1])._d;
           if (moment().day() === 0) {
@@ -79,6 +73,7 @@ class SchoolPeriodActual extends Component {
             // eslint-disable-next-line no-underscore-dangle
             endTime = moment(endTime).add(7, 'day')._d;
           }
+
           return {
             id: parseInt(`${index}${index2}`, 10),
             title: subject.subject.name,
