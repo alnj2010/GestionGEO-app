@@ -59,7 +59,7 @@ export const TEACHER_TYPE = {
 export const NATIONALITY = { VENEZOLANO: 'V', EXTRANJERO: 'E' };
 
 export const SUBJECT_TYPE = { REGULAR: 'REG', AMPLIACION: 'AMP' };
-
+export const WEEKDAYS = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
 export const WEEK_DAYS = {
   LUNES: 1,
   MARTES: 2,

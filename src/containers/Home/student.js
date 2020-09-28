@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import StudentHome from '../../components/Home/student';
 import { findMiPerfil } from '../../actions/miPerfil';
@@ -6,16 +7,17 @@ import { findMiPerfil } from '../../actions/miPerfil';
 import { getCurrentEnrolledSubjects } from '../../actions/studentInscription';
 
 import { getSessionStudentId } from '../../storage/sessionStorage';
+import { WEEKDAYS } from '../../services/constants';
 
 class StudentHomeContainer extends Component {
   componentDidMount = () => {
-    const { getCurrentEnrolledSubjects, findMiPerfil } = this.props;
+    const { getCurrentEnrolledSubjectsDispatch, findMiPerfilDispatch } = this.props;
     const id = getSessionStudentId();
-    getCurrentEnrolledSubjects(id);
-    findMiPerfil();
-    const weekDays = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
+    getCurrentEnrolledSubjectsDispatch(id);
+    findMiPerfilDispatch();
     document.querySelectorAll('.rbc-header').forEach((column, index) => {
-      column.innerText = weekDays[index];
+      // eslint-disable-next-line no-param-reassign
+      column.innerText = WEEKDAYS[index];
     });
   };
 
@@ -26,7 +28,15 @@ class StudentHomeContainer extends Component {
   }
 }
 
-StudentHomeContainer.propTypes = {};
+StudentHomeContainer.propTypes = {
+  miPerfil: PropTypes.shape({
+    id: PropTypes.string,
+  }).isRequired,
+  currentSubjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  findMiPerfilDispatch: PropTypes.func.isRequired,
+  getCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
+};
 
 const mS = (state) => ({
   miPerfil: state.miPerfilReducer.selectedMiPerfil,
@@ -34,10 +44,8 @@ const mS = (state) => ({
 });
 
 const mD = {
-  findMiPerfil,
-  getCurrentEnrolledSubjects,
+  findMiPerfilDispatch: findMiPerfil,
+  getCurrentEnrolledSubjectsDispatch: getCurrentEnrolledSubjects,
 };
 
-StudentHomeContainer = connect(mS, mD)(StudentHomeContainer);
-
-export default StudentHomeContainer;
+export default connect(mS, mD)(StudentHomeContainer);

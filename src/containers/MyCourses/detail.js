@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   getEnrolledStudents,
   updateQualifications,
@@ -9,15 +10,17 @@ import CourseDetail from '../../components/MyCourses/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionTeacherId } from '../../storage/sessionStorage';
 
-class courseDetailContainer extends Component {
+class CourseDetailContainer extends Component {
   componentDidMount = () => {
-    const { match, getEnrolledStudents, define } = this.props;
-    if (match.params.id) getEnrolledStudents(match.params.id);
-    define('Actualizar curso');
+    const { match, getEnrolledStudentsDispatch, defineDispatch } = this.props;
+    if (match.params.id) getEnrolledStudentsDispatch(match.params.id);
+    defineDispatch('Actualizar curso');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanEnrolledStudents();
+    const { cleanEnrolledStudentsDispatch, cleanDialogDispatch } = this.props;
+    cleanEnrolledStudentsDispatch();
+    cleanDialogDispatch();
   };
 
   goBack = () => {
@@ -27,19 +30,19 @@ class courseDetailContainer extends Component {
   };
 
   updateQualifications = (value) => {
-    const { match, updateQualifications, getEnrolledStudents } = this.props;
+    const { match, updateQualificationsDispatch, getEnrolledStudentsDispatch } = this.props;
     const payload = {
-      teacher_id: parseInt(getSessionTeacherId()),
-      school_period_subject_teacher_id: parseInt(match.params.id),
+      teacher_id: parseInt(getSessionTeacherId(), 10),
+      school_period_subject_teacher_id: parseInt(match.params.id, 10),
       student_notes: [
         {
-          student_subject_id: parseInt(value.id),
-          qualification: parseInt(value.qualification),
+          student_subject_id: parseInt(value.id, 10),
+          qualification: parseInt(value.qualification, 10),
         },
       ],
     };
-    updateQualifications(payload).then((res) => {
-      getEnrolledStudents(match.params.id);
+    updateQualificationsDispatch(payload).then(() => {
+      getEnrolledStudentsDispatch(match.params.id);
     });
   };
 
@@ -55,20 +58,34 @@ class courseDetailContainer extends Component {
   }
 }
 
-courseDetailContainer.propTypes = {};
+CourseDetailContainer.propTypes = {
+  students: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
+  getEnrolledStudentsDispatch: PropTypes.func.isRequired,
+  updateQualificationsDispatch: PropTypes.func.isRequired,
+  cleanEnrolledStudentsDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+};
 
 const mS = (state) => ({
   students: state.myCourseReducer.enrolledStudents,
 });
 
 const mD = {
-  getEnrolledStudents,
-  updateQualifications,
-  cleanEnrolledStudents,
-  define,
-  cleanDialog,
+  getEnrolledStudentsDispatch: getEnrolledStudents,
+  updateQualificationsDispatch: updateQualifications,
+  cleanEnrolledStudentsDispatch: cleanEnrolledStudents,
+  defineDispatch: define,
+  cleanDialogDispatch: cleanDialog,
 };
 
-courseDetailContainer = connect(mS, mD)(courseDetailContainer);
-
-export default courseDetailContainer;
+export default connect(mS, mD)(CourseDetailContainer);

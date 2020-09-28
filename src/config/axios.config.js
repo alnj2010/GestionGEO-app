@@ -29,6 +29,7 @@ AXIOS.interceptors.response.use(
     response.data.error = response.data.message ? response.data.message : null;
 
     if (status === 206) {
+      // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject({ response });
     }
     return response;
@@ -37,6 +38,7 @@ AXIOS.interceptors.response.use(
     const {
       response: { status },
     } = error;
+    // eslint-disable-next-line no-param-reassign
     error.response.data.error =
       !error.response.data.error && error.response.data.message
         ? error.response.data.message

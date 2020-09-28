@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import * as moment from 'moment';
@@ -6,13 +7,7 @@ import * as moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
-const weekdays = {
-  Lunes: 1,
-  Martes: 2,
-  Miercoles: 3,
-  Jueves: 4,
-  Viernes: 5,
-};
+
 const styles = () => ({
   calendar: {
     height: '100vh',
@@ -22,26 +17,31 @@ const styles = () => ({
 
 class StudentHome extends Component {
   transformData = () => {
+    const { currentSubjects } = this.props;
     let arr = [];
 
-    if (this.props.currentSubjects) {
-      this.props.currentSubjects.forEach((subject, index) => {
+    if (currentSubjects) {
+      currentSubjects.forEach((subject, index) => {
         const aux = subject.data_subject.schedules.map((schedule, index2) => {
+          // eslint-disable-next-line no-underscore-dangle
           let startTime = moment()
-            .isoWeekday(weekdays[schedule.day])
-            .hours(parseInt(schedule.start_hour.split(':')[0]))
-            .minutes(parseInt(schedule.start_hour.split(':')[1]))._d;
+            .isoWeekday(parseInt(schedule.day, 10))
+            .hours(parseInt(schedule.start_hour.split(':')[0], 10))
+            .minutes(parseInt(schedule.start_hour.split(':')[1], 10))._d;
+          // eslint-disable-next-line no-underscore-dangle
           let endTime = moment()
-            .isoWeekday(weekdays[schedule.day])
-            .hours(parseInt(schedule.end_hour.split(':')[0]))
-            .minutes(schedule.end_hour.split(':')[1])._d;
+            .isoWeekday(parseInt(schedule.day, 10))
+            .hours(parseInt(schedule.end_hour.split(':')[0], 10))
+            .minutes(schedule.end_hour.split(':')[1], 10)._d;
           if (moment().day() === 0) {
+            // eslint-disable-next-line no-underscore-dangle
             startTime = moment(startTime).add(7, 'day')._d;
+            // eslint-disable-next-line no-underscore-dangle
             endTime = moment(endTime).add(7, 'day')._d;
           }
 
           return {
-            id: parseInt(`${index}${index2}`),
+            id: parseInt(`${index}${index2}`, 10),
             title: subject.data_subject.subject.subject_name,
             start: startTime,
             end: endTime,
@@ -81,6 +81,15 @@ class StudentHome extends Component {
   }
 }
 
-StudentHome.propTypes = {};
+StudentHome.propTypes = {
+  miPerfil: PropTypes.shape({
+    first_name: PropTypes.string,
+    first_surname: PropTypes.string,
+  }).isRequired,
+  classes: PropTypes.shape({
+    calendar: PropTypes.string,
+  }).isRequired,
+  currentSubjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
 
 export default withStyles(styles)(StudentHome);

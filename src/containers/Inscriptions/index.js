@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Inscription from '../../components/Inscriptions';
 import {
   getAvailableSubjects,
@@ -10,17 +11,18 @@ import { getSessionStudentId } from '../../storage/sessionStorage';
 
 class InscriptionContainer extends Component {
   componentDidMount = () => {
-    const { getAvailableSubjects } = this.props;
+    const { getAvailableSubjectsDispatch } = this.props;
     const id = getSessionStudentId();
-    getAvailableSubjects(id);
+    getAvailableSubjectsDispatch(id);
   };
 
   componentWillUnmount = () => {
-    this.props.cleanAvailableSubjects();
+    const { cleanAvailableSubjectsDispatch } = this.props;
+    cleanAvailableSubjectsDispatch();
   };
 
   saveInscription = (value) => {
-    const { inscription, history } = this.props;
+    const { inscriptionDispatch, history } = this.props;
     const payload = {
       student_id: getSessionStudentId(),
       status: 'REG',
@@ -28,7 +30,7 @@ class InscriptionContainer extends Component {
         school_period_subject_teacher_id: subject.school_period_subject_teacher_id,
       })),
     };
-    inscription(payload).then((res) => {
+    inscriptionDispatch(payload).then((res) => {
       if (res) {
         history.replace(`/home`);
       }
@@ -42,18 +44,27 @@ class InscriptionContainer extends Component {
   }
 }
 
-InscriptionContainer.propTypes = {};
+InscriptionContainer.propTypes = {
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
+
+  getAvailableSubjectsDispatch: PropTypes.func.isRequired,
+  inscriptionDispatch: PropTypes.func.isRequired,
+  cleanAvailableSubjectsDispatch: PropTypes.func.isRequired,
+};
 
 const mS = (state) => ({
   subjects: state.studentInscriptionReducer.availableSubjects,
 });
 
 const mD = {
-  getAvailableSubjects,
-  inscription,
-  cleanAvailableSubjects,
+  getAvailableSubjectsDispatch: getAvailableSubjects,
+  inscriptionDispatch: inscription,
+  cleanAvailableSubjectsDispatch: cleanAvailableSubjects,
 };
 
-InscriptionContainer = connect(mS, mD)(InscriptionContainer);
-
-export default InscriptionContainer;
+export default connect(mS, mD)(InscriptionContainer);

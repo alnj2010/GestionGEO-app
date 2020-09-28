@@ -5,16 +5,16 @@ import Typography from '@material-ui/core/Typography';
 import { updateSchoolPeriod, findCurrentSchoolPeriod } from '../../actions/schoolPeriod';
 import SchoolPeriodActual from '../../components/SchoolPeriods/actual';
 import { define, cleanDialog } from '../../actions/dialog';
+import { WEEKDAYS } from '../../services/constants';
 
 class SchoolPeriodActualContainer extends Component {
   componentDidMount = () => {
     const { defineDispatch, findCurrentSchoolPeriodDispatch } = this.props;
     defineDispatch('periodo semestral');
     findCurrentSchoolPeriodDispatch();
-    const weekDays = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
     document.querySelectorAll('.rbc-header').forEach((column, index) => {
       // eslint-disable-next-line no-param-reassign
-      column.innerText = weekDays[index];
+      column.innerText = WEEKDAYS[index];
     });
   };
 

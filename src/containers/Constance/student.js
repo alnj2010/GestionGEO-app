@@ -1,20 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import StudentConstance from '../../components/Constance/student';
 import { getSessionStudentId } from '../../storage/sessionStorage';
 
-class StudentConstanceContainer extends Component {
-  render() {
-    const id = getSessionStudentId();
+function StudentConstanceContainer() {
+  const id = getSessionStudentId();
 
-    return <StudentConstance id={id} />;
-  }
+  return <StudentConstance id={id} />;
 }
 
 StudentConstanceContainer.propTypes = {};
-const mS = (state) => ({});
+const mS = () => ({});
 
 const mD = {};
-StudentConstanceContainer = connect(mS, mD)(StudentConstanceContainer);
 
-export default StudentConstanceContainer;
+export default connect(mS, mD)(StudentConstanceContainer);

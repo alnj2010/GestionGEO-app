@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
-import { array, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { define, cleanDialog, show } from '../../actions/dialog';
+import { define, cleanDialog } from '../../actions/dialog';
 import { getCoursesList } from '../../actions/myCourse';
 import MyCoursesList from '../../components/MyCourses';
 
 class MisCursosContainer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isLoading: true,
-    };
-  }
-
   componentDidMount = () => {
-    const { getCoursesList, define } = this.props;
-    getCoursesList();
-    define('cursos');
+    const { getCoursesListDispatch, defineDispatch } = this.props;
+    getCoursesListDispatch();
+    defineDispatch('cursos');
   };
 
   componentWillUnmount = () => {
-    this.props.cleanDialog();
+    const { cleanDialogDispatch } = this.props;
+    cleanDialogDispatch();
   };
 
   render() {
@@ -30,9 +24,18 @@ class MisCursosContainer extends Component {
 }
 
 MisCursosContainer.propTypes = {
-  myCourses: array,
-  history: object.isRequired,
-  getCoursesList: func.isRequired,
+  myCourses: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+    })
+  ).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+
+  getCoursesListDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -40,12 +43,9 @@ const mS = (state) => ({
 });
 
 const mD = {
-  getCoursesList,
-  cleanDialog,
-  define,
-  show,
+  getCoursesListDispatch: getCoursesList,
+  cleanDialogDispatch: cleanDialog,
+  defineDispatch: define,
 };
 
-MisCursosContainer = connect(mS, mD)(MisCursosContainer);
-
-export default MisCursosContainer;
+export default connect(mS, mD)(MisCursosContainer);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ChangePasswordForm from '../../components/ChangePassword';
 import { changePassword } from '../../actions/miPerfil';
@@ -9,9 +10,9 @@ class ChangePassword extends Component {
   componentWillUnmount = () => {};
 
   savePassword = (payload) => {
-    const { changePassword } = this.props;
+    const { changePasswordDispatch } = this.props;
 
-    changePassword(payload);
+    changePasswordDispatch(payload);
   };
 
   render() {
@@ -22,14 +23,14 @@ class ChangePassword extends Component {
   }
 }
 
-ChangePassword.propTypes = {};
-
-const mS = (state) => ({});
-
-const mD = {
-  changePassword,
+ChangePassword.propTypes = {
+  changePasswordDispatch: PropTypes.func.isRequired,
 };
 
-ChangePassword = connect(mS, mD)(ChangePassword);
+const mS = () => ({});
 
-export default ChangePassword;
+const mD = {
+  changePasswordDispatch: changePassword,
+};
+
+export default connect(mS, mD)(ChangePassword);

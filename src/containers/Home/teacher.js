@@ -17,10 +17,8 @@ class TeacherHomeContainer extends Component {
 
 TeacherHomeContainer.propTypes = {};
 
-const mS = (state) => ({});
+const mS = () => ({});
 
 const mD = {};
 
-TeacherHomeContainer = connect(mS, mD)(TeacherHomeContainer);
-
-export default TeacherHomeContainer;
+export default connect(mS, mD)(TeacherHomeContainer);

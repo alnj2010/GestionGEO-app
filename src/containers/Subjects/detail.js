@@ -84,7 +84,7 @@ SubjectDetailContainer.propTypes = {
     id: PropTypes.string,
   }).isRequired,
 
-  schoolPrograms: PropTypes.shape({}).isRequired,
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   history: PropTypes.shape({
     push: PropTypes.func,
