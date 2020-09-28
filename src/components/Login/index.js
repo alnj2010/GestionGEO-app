@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form, Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { bool, object, string, func } from 'prop-types';
 import PasswordInput from '../PasswordInput';
 import CustomizedSnackbar from '../Snackbar';
 import TextInput from '../TextInput';
@@ -11,7 +11,7 @@ import RenderFields from '../RenderFields';
 import logo from '../../images/icon-gestionGeo.svg';
 import backImage from '../../images/pif.jpg';
 
-const styles = (theme) => ({
+const styles = () => ({
   container: {
     paddingLeft: '30%',
     paddingTop: '10%',
@@ -140,10 +140,20 @@ let LoginForm = (props) => {
 };
 
 LoginForm.propTypes = {
-  classes: object.isRequired,
-  showMenssageFloat: bool.isRequired,
-  menssageFloat: string,
-  handleLogin: func.isRequired,
+  classes: PropTypes.shape({
+    form: PropTypes.string,
+    save: PropTypes.string,
+    loginButton: PropTypes.string,
+    input: PropTypes.string,
+    container: PropTypes.string,
+    formContainer: PropTypes.string,
+    logo: PropTypes.string,
+  }).isRequired,
+  handleLogin: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 const loginValidator = (values) => {

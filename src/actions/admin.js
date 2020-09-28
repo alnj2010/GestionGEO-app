@@ -36,7 +36,7 @@ export const findAdminById = (id) => async (dispatch) => {
     });
 };
 
-export const cleanSelectedAdmin = (id) => async (dispatch) => {
+export const cleanSelectedAdmin = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_ADMIN,
     payload: {},
@@ -70,7 +70,6 @@ export const updateAdmin = (admin) => async (dispatch) => {
         payload: { selectedAdmin: response },
       });
       show('Administrador actualizado', 'success')(dispatch);
-      console.log();
       if (admin.id === getSessionUserId()) {
         const value = getSessionUser();
         setSessionUser({

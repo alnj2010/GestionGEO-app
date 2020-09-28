@@ -1,22 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import StudentConstanceContainer from '../../containers/Constance/student';
 import TeacherConstanceContainer from '../../containers/Constance/teacher';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 
-class Constance extends Component {
-  render() {
-    const rol = getSessionUserRol();
+function Constance() {
+  const rol = getSessionUserRol();
 
-    switch (rol) {
-      case 'T':
-        return <TeacherConstanceContainer />;
+  switch (rol) {
+    case 'T':
+      return <TeacherConstanceContainer />;
 
-      case 'S':
-        return <StudentConstanceContainer />;
+    case 'S':
+      return <StudentConstanceContainer />;
 
-      default:
-        return null;
-    }
+    default:
+      return null;
   }
 }
 

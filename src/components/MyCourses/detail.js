@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
 
-const styles = (theme) => ({
+const styles = () => ({
   form: {
     paddingLeft: '5%',
   },
@@ -20,13 +21,6 @@ const styles = (theme) => ({
 });
 
 class SchoolProgramDetail extends Component {
-  constructor() {
-    super();
-    this.state = {
-      func: null,
-    };
-  }
-
   transformData = (students) => {
     if (students)
       return students.map((student) => {
@@ -65,8 +59,8 @@ class SchoolProgramDetail extends Component {
         ]}
         data={this.transformData(students)}
         editable={{
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
+          onRowUpdate: (newData) =>
+            new Promise((resolve) => {
               updateQualifications(newData);
               resolve();
             }),
@@ -76,6 +70,9 @@ class SchoolProgramDetail extends Component {
   };
 }
 
-SchoolProgramDetail.propTypes = {};
+SchoolProgramDetail.propTypes = {
+  students: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  updateQualifications: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(SchoolProgramDetail);

@@ -136,7 +136,7 @@ export const saveSchoolProgram = (student) => async (dispatch) => {
   };
 
   return Student.saveSchoolProgram(payload, student.idUser)
-    .then((response) => {
+    .then(() => {
       /* dispatch({
         type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
         payload: {

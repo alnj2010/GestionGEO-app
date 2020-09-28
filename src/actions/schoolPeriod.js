@@ -51,7 +51,7 @@ export const findSchoolPeriodById = (id) => async (dispatch) => {
     });
 };
 
-export const cleanSelectedSchoolPeriod = (id) => async (dispatch) => {
+export const cleanSelectedSchoolPeriod = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_SCHOOL_PERIOD,
     payload: {},
@@ -91,7 +91,6 @@ export const updateSchoolPeriod = (schoolPeriod) => async (dispatch) => {
   };
   return SchoolPeriod.update(payload)
     .then((response) => {
-      console.log('responseeeeeeee', response);
       dispatch({
         type: ACTIONS.SELECT,
         payload: { selectedSchoolPeriod: response },
@@ -148,7 +147,7 @@ export const saveSchoolPeriod = (schoolPeriod) => async (dispatch) => {
 
 export const deleteSchoolPeriod = (schoolPeriodId) => async (dispatch) => {
   return SchoolPeriod.delete(schoolPeriodId)
-    .then((response) => {
+    .then(() => {
       show('Periodo semestral eliminado', 'success')(dispatch);
       return true;
     })

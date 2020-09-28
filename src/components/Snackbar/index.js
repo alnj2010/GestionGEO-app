@@ -12,7 +12,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
-import { oneOf, func, node, string, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { hide } from '../../actions/snackbar';
 
 const variantIcon = {
@@ -79,11 +79,16 @@ function MySnackbarContent(props) {
 }
 
 MySnackbarContent.propTypes = {
-  classes: object.isRequired,
-  className: string,
-  message: node,
-  onClose: func,
-  variant: oneOf(['success', 'warning', 'error', 'info']).isRequired,
+  classes: PropTypes.shape({
+    message: PropTypes.string,
+    icon: PropTypes.string,
+    iconVariant: PropTypes.string,
+    close: PropTypes.string,
+  }).isRequired,
+  message: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+  variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 };
 
 const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
@@ -94,45 +99,34 @@ const styles2 = (theme) => ({
   },
 });
 
-class CustomizedSnackbars extends React.Component {
-  state = {
-    open: false,
-  };
-
-  handleClick = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = (event, reason) => {
+function CustomizedSnackbars({ variant, message, showMessage, hideDispatch }) {
+  const handleClose = (_, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-
-    this.props.hide();
+    hideDispatch();
   };
-
-  render() {
-    const { variant, message, showMessage } = this.props;
-    return (
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={showMessage}
-        autoHideDuration={3000}
-        onClose={this.handleClose}
-      >
-        <MySnackbarContentWrapper onClose={this.handleClose} variant={variant} message={message} />
-      </Snackbar>
-    );
-  }
+  return (
+    <Snackbar
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={showMessage}
+      autoHideDuration={3000}
+      onClose={handleClose}
+    >
+      <MySnackbarContentWrapper onClose={handleClose} variant={variant} message={message} />
+    </Snackbar>
+  );
 }
 
 CustomizedSnackbars.propTypes = {
-  classes: object.isRequired,
+  variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
+  message: PropTypes.string.isRequired,
+  showMessage: PropTypes.func.isRequired,
+  hideDispatch: PropTypes.func.isRequired,
 };
-CustomizedSnackbars = withStyles(styles2)(CustomizedSnackbars);
 
 const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
@@ -141,9 +135,9 @@ const mS = (state) => ({
 });
 
 const mD = {
-  hide,
+  hideDispatch: hide,
 };
+let CustomizedSnackbarsWrapper = withStyles(styles2)(CustomizedSnackbars);
+CustomizedSnackbarsWrapper = connect(mS, mD)(CustomizedSnackbarsWrapper);
 
-CustomizedSnackbars = connect(mS, mD)(CustomizedSnackbars);
-
-export default withStyles(styles2)(CustomizedSnackbars);
+export default withStyles(styles2)(CustomizedSnackbarsWrapper);

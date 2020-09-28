@@ -15,7 +15,7 @@ export const findMiPerfil = () => (dispatch) => {
   return true;
 };
 
-export const cleanSelectedMiPerfil = (id) => async (dispatch) => {
+export const cleanSelectedMiPerfil = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_PERFIL,
     payload: {},

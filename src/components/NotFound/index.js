@@ -1,13 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 const NotFound = ({ history, location }) => (
   <div>
     <h3>
-      Oops seems you are lost? <code>{location.pathname}</code>
+      Ruta no encontrada <code>{location.pathname}</code>
     </h3>
-    <button onClick={history.goBack}>Go back</button>
+    <button type="button" onClick={history.goBack}>
+      Go back
+    </button>
   </div>
 );
+NotFound.propTypes = {
+  history: PropTypes.shape({
+    goBack: PropTypes.func,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
+};
 
 export default withRouter(NotFound);

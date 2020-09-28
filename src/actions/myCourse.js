@@ -34,7 +34,7 @@ export const getEnrolledStudents = (id) => async (dispatch) => {
     });
 };
 
-export const cleanEnrolledStudents = (id) => async (dispatch) => {
+export const cleanEnrolledStudents = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_COURSE,
     payload: { enrolledStudents: [] },
@@ -43,7 +43,7 @@ export const cleanEnrolledStudents = (id) => async (dispatch) => {
 
 export const updateQualifications = (payload) => async (dispatch) => {
   return MyCourse.updateQualifications(payload)
-    .then((response) => {
+    .then(() => {
       show('nota actualizada', 'success')(dispatch);
       return true;
     })

@@ -35,7 +35,7 @@ export const findSchoolProgramById = (id) => async (dispatch) => {
     });
 };
 
-export const cleanSelectedSchoolProgram = (id) => async (dispatch) => {
+export const cleanSelectedSchoolProgram = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_SELECTED_SCHOOL_PROGRAM,
     payload: {},
@@ -46,10 +46,10 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
   const payload = {
     id: schoolProgram.id,
     school_program_name: schoolProgram.schoolProgramName,
-    num_cu: parseInt(schoolProgram.numCu),
-    duration: parseInt(schoolProgram.duration),
-    min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork),
-    min_duration: parseInt(schoolProgram.minDuration),
+    num_cu: parseInt(schoolProgram.numCu, 10),
+    duration: parseInt(schoolProgram.duration, 10),
+    min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
+    min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,
     conducive_to_degree: schoolProgram.conduciveToDegree,
     doctoral_exam: schoolProgram.doctoralExam,
@@ -72,10 +72,10 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
 export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
   const payload = {
     school_program_name: schoolProgram.schoolProgramName,
-    num_cu: parseInt(schoolProgram.numCu),
-    duration: parseInt(schoolProgram.duration),
-    min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork),
-    min_duration: parseInt(schoolProgram.minDuration),
+    num_cu: parseInt(schoolProgram.numCu, 10),
+    duration: parseInt(schoolProgram.duration, 10),
+    min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
+    min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,
     conducive_to_degree: schoolProgram.conduciveToDegree,
     doctoral_exam: schoolProgram.doctoralExam,
@@ -94,7 +94,7 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
 
 export const deleteSchoolProgram = (schoolProgramId) => async (dispatch) => {
   return SchoolProgram.delete(schoolProgramId)
-    .then((response) => {
+    .then(() => {
       show('Programa academico eliminado', 'success')(dispatch);
       return true;
     })

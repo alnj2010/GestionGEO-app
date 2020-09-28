@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import { hide, show } from '../../actions/dialog';
+import { hide } from '../../actions/dialog';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -15,14 +16,14 @@ function Transition(props) {
 
 class AlertDialogSlide extends React.Component {
   handleClose = () => {
-    const { hide, handleAgree, entity } = this.props;
+    const { hideDispatch, handleAgree, entity } = this.props;
     handleAgree(entity);
-    hide();
+    hideDispatch();
   };
 
   handleExit = () => {
-    const { hide } = this.props;
-    hide();
+    const { hideDispatch } = this.props;
+    hideDispatch();
   };
 
   render() {
@@ -54,6 +55,13 @@ class AlertDialogSlide extends React.Component {
     );
   }
 }
+AlertDialogSlide.propTypes = {
+  entity: PropTypes.string.isRequired,
+  action: PropTypes.string.isRequired,
+  open: PropTypes.string.isRequired,
+  handleAgree: PropTypes.func.isRequired,
+  hideDispatch: PropTypes.func.isRequired,
+};
 const mS = (state) => ({
   action: state.dialogReducer.action,
   entity: state.dialogReducer.entity,
@@ -61,9 +69,7 @@ const mS = (state) => ({
 });
 
 const mD = {
-  hide,
-  show,
+  hideDispatch: hide,
 };
 
-AlertDialogSlide = connect(mS, mD)(AlertDialogSlide);
-export default AlertDialogSlide;
+export default connect(mS, mD)(AlertDialogSlide);

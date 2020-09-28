@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -63,30 +64,32 @@ const RenderCardConstance = withStyles(styles, { withTheme: true })(
   }
 );
 
-class StudentConstance extends Component {
-  render() {
-    const { classes, id } = this.props;
-    return (
-      <div className={classes.cardContainer}>
-        <RenderCardConstance
-          title="Constancia de estudio"
-          subtitle="Constancia de estudio"
-          action={() => {
-            Constance.getStudyConstance(id);
-          }}
-        />
-        <RenderCardConstance
-          title="Constancia de notas"
-          subtitle="Constancia de notas"
-          action={() => {
-            Constance.getStudyHistoricalConstance(id);
-          }}
-        />
-      </div>
-    );
-  }
+function StudentConstance({ classes, id }) {
+  return (
+    <div className={classes.cardContainer}>
+      <RenderCardConstance
+        title="Constancia de estudio"
+        subtitle="Constancia de estudio"
+        action={() => {
+          Constance.getStudyConstance(id);
+        }}
+      />
+      <RenderCardConstance
+        title="Constancia de notas"
+        subtitle="Constancia de notas"
+        action={() => {
+          Constance.getStudyHistoricalConstance(id);
+        }}
+      />
+    </div>
+  );
 }
 
-StudentConstance.propTypes = {};
+StudentConstance.propTypes = {
+  classes: PropTypes.shape({
+    cardContainer: PropTypes.string,
+  }).isRequired,
+  id: PropTypes.string.isRequired,
+};
 
 export default withStyles(styles, { withTheme: true })(StudentConstance);

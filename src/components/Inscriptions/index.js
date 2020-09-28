@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 
 import { Grid, Fab } from '@material-ui/core';
@@ -21,7 +22,7 @@ class Inscription extends Component {
 
   render() {
     const { subjects, saveInscription } = this.props;
-    let enrolledSubjects = [];
+    const enrolledSubjects = [];
     return (
       <Grid container>
         <Grid item xs={12}>
@@ -39,7 +40,7 @@ class Inscription extends Component {
               { title: 'Unidades de credito', field: 'uc' },
               { title: 'Inscritos', field: 'enrolled_students' },
             ]}
-            onSelectionChange={(row) => (enrolledSubjects = row)}
+            onSelectionChange={() => enrolledSubjects}
             data={this.transformData(subjects)}
             options={{
               selection: true,
@@ -62,6 +63,9 @@ class Inscription extends Component {
   }
 }
 
-Inscription.propTypes = {};
+Inscription.propTypes = {
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  saveInscription: PropTypes.func.isRequired,
+};
 
 export default Inscription;

@@ -20,6 +20,7 @@ function RenderFields(props) {
     switch (input.type) {
       case 'text':
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <Grid key={index} item xs={movil} sm={desktop[index]}>
             <Text {...input} />
           </Grid>
@@ -27,6 +28,7 @@ function RenderFields(props) {
       case 'select':
         return (
           <Grid
+            // eslint-disable-next-line react/no-array-index-key
             key={index}
             item
             xs={movil}
@@ -38,30 +40,35 @@ function RenderFields(props) {
         );
       case 'phone':
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <Grid key={index} item xs={movil} sm={desktop[index]} style={{ paddingTop: 16 }}>
             <Phone {...input} />
           </Grid>
         );
       case 'number':
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <Grid key={index} item xs={movil} sm={desktop[index]}>
             <Number {...input} />
           </Grid>
         );
       case 'date':
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <Grid key={index} item xs={movil} sm={desktop[index]}>
             <Date {...input} />
           </Grid>
         );
       case 'time':
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <Grid key={index} item xs={movil} sm={desktop[index]} style={{ paddingTop: 16 }}>
             <Time {...input} />
           </Grid>
         );
       case 'switch':
         return (
+          // eslint-disable-next-line react/no-array-index-key
           <Grid key={index} item xs={movil} sm={desktop[index]}>
             <Switch {...input} />
           </Grid>

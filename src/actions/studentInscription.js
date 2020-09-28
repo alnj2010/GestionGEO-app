@@ -53,7 +53,7 @@ export const inscription = (value) => async (dispatch) => {
   return false;
 };
 
-export const cleanAvailableSubjects = (id) => async (dispatch) => {
+export const cleanAvailableSubjects = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_AVAILABLE_SUBJECTS,
     payload: { availableSubjects: {} },

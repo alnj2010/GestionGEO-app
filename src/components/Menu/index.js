@@ -275,8 +275,8 @@ class MenuApp extends React.Component {
   validateToken = () => {
     if (!getSessionGeoToken()) {
       window.location.href = '/';
-      return false;
     }
+    return false;
   };
 
   handleClick = (option) => {
@@ -286,6 +286,7 @@ class MenuApp extends React.Component {
     options.map((opt) => {
       if (opt.name === option && opt.options) {
         changed = true;
+        // eslint-disable-next-line no-param-reassign
         opt.open = !opt.open;
       }
       return opt;

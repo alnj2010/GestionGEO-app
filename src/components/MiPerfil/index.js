@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, change, submit } from 'redux-form';
+import { Form, reduxForm, submit } from 'redux-form';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
+import { jsonToOptions } from '../../helpers';
+import { GENDER, NATIONALITY, LEVEL_INSTRUCTION } from '../../services/constants';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 
 const styles = () => ({
@@ -34,8 +37,9 @@ class MiPerfil extends Component {
   }
 
   handleDialogShow = (action, func) => {
+    const { showDispatch } = this.props;
     this.setState({ func }, () => {
-      this.props.show(action);
+      showDispatch(action);
     });
   };
 
@@ -48,7 +52,7 @@ class MiPerfil extends Component {
       submitting,
       valid,
       handleSubmit,
-      submit,
+      submitDispatch,
     } = this.props;
     const { func } = this.state;
     const rol = getSessionUserRol();
@@ -122,15 +126,7 @@ class MiPerfil extends Component {
                     field: `sex`,
                     id: `sex`,
                     type: 'select',
-                    options: [
-                      { key: 'MASCULINO', value: 'M' },
-                      { key: 'FEMENINO', value: 'F' },
-                    ].map((type) => {
-                      return {
-                        key: type.key,
-                        value: type.value,
-                      };
-                    }),
+                    options: jsonToOptions(GENDER),
                     disabled: rol !== 'A',
                   },
                   {
@@ -138,15 +134,7 @@ class MiPerfil extends Component {
                     field: `nationality`,
                     id: `nationality`,
                     type: 'select',
-                    options: [
-                      { key: 'VENEZOLANO', value: 'V' },
-                      { key: 'EXTRANGERO', value: 'E' },
-                    ].map((type) => {
-                      return {
-                        key: type.key,
-                        value: type.value,
-                      };
-                    }),
+                    options: jsonToOptions(NATIONALITY),
                     disabled: rol !== 'A',
                   },
                   {
@@ -154,26 +142,7 @@ class MiPerfil extends Component {
                     field: 'levelInstruction',
                     id: 'levelInstruction',
                     type: 'select',
-                    options: [
-                      { value: 'TSU', id: 'TSU' },
-                      { value: 'TEC MEDIO', id: 'TCM' },
-                      { value: 'DOCTOR', id: 'Dr' },
-                      {
-                        value: 'ESPECIALISTA',
-                        id: 'Esp',
-                      },
-                      { value: 'INGENIERO', id: 'Ing' },
-                      {
-                        value: 'MAGISTER SCIENTIARUM',
-                        id: 'MSc',
-                      },
-                      { value: 'LICENCIADO', id: 'Lic' },
-                    ].map((type) => {
-                      return {
-                        key: type.value,
-                        value: type.id,
-                      };
-                    }),
+                    options: jsonToOptions(LEVEL_INSTRUCTION),
                   },
                 ]}
               </RenderFields>
@@ -190,7 +159,7 @@ class MiPerfil extends Component {
                     <Button
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
-                      onClick={() => this.handleDialogShow('actualizar', submit)}
+                      onClick={() => this.handleDialogShow('actualizar', submitDispatch)}
                       disabled={!valid || pristine || submitting}
                     >
                       Guardar Cambios
@@ -213,7 +182,23 @@ class MiPerfil extends Component {
   };
 }
 
-MiPerfil.propTypes = {};
+MiPerfil.propTypes = {
+  classes: PropTypes.shape({
+    button: PropTypes.string,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+  }).isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  updateMiPerfil: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+};
 
 const studentValidation = (values) => {
   const errors = {};
@@ -244,13 +229,13 @@ const studentValidation = (values) => {
   return errors;
 };
 
-MiPerfil = reduxForm({
+let MiPerfilWrapper = reduxForm({
   form: 'student',
   validate: studentValidation,
   enableReinitialize: true,
 })(MiPerfil);
 
-MiPerfil = connect(
+MiPerfilWrapper = connect(
   (state) => ({
     initialValues: {
       identification: state.miPerfilReducer.selectedMiPerfil.identification
@@ -292,7 +277,7 @@ MiPerfil = connect(
     },
     action: state.dialogReducer.action,
   }),
-  { change, show, submit }
-)(MiPerfil);
+  { showDispatch: show, submitDispatch: submit }
+)(MiPerfilWrapper);
 
-export default withStyles(styles)(MiPerfil);
+export default withStyles(styles)(MiPerfilWrapper);

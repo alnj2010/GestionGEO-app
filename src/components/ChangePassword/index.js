@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, change, submit } from 'redux-form';
+import { Form, reduxForm, submit } from 'redux-form';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 
-const styles = (theme) => ({
+const styles = () => ({
   form: {
     paddingLeft: '5%',
   },
@@ -33,8 +34,9 @@ class ChangePassword extends Component {
   }
 
   handleDialogShow = (action, func) => {
+    const { showDispatch } = this.props;
     this.setState({ func }, () => {
-      this.props.show(action);
+      showDispatch(action);
     });
   };
 
@@ -48,7 +50,7 @@ class ChangePassword extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
     } = this.props;
     const { func } = this.state;
     return (
@@ -97,8 +99,8 @@ class ChangePassword extends Component {
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         changePasswordId
-                          ? this.handleDialogShow('actualizar', submit)
-                          : submit('changePassword')
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('changePassword')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -121,6 +123,30 @@ class ChangePassword extends Component {
     );
   };
 }
+ChangePassword.propTypes = {
+  classes: PropTypes.shape({
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+    button: PropTypes.string,
+  }).isRequired,
+
+  admin: PropTypes.shape({
+    first_surname: PropTypes.string,
+    first_name: PropTypes.string,
+  }).isRequired,
+
+  changePasswordId: PropTypes.number.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  savePassword: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+};
 const changePasswordValidation = (values) => {
   const errors = {};
 
@@ -140,18 +166,18 @@ const changePasswordValidation = (values) => {
   return errors;
 };
 
-ChangePassword = reduxForm({
+let ChangePasswordWrapper = reduxForm({
   form: 'changePassword',
   validate: changePasswordValidation,
   enableReinitialize: true,
 })(ChangePassword);
 
-ChangePassword = connect(
+ChangePasswordWrapper = connect(
   (state) => ({
     initialValues: {},
     action: state.dialogReducer.action,
   }),
-  { change, show, submit }
-)(ChangePassword);
+  { showDispatch: show, submitDispatch: submit }
+)(ChangePasswordWrapper);
 
-export default withStyles(styles)(ChangePassword);
+export default withStyles(styles)(ChangePasswordWrapper);

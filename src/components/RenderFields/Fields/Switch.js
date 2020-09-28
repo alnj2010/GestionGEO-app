@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormControlLabel, Switch } from '@material-ui/core';
 import { Field } from 'redux-form';
 
-const renderSwitch = ({ input, label, meta: { touched, error }, ...custom }) => (
+const renderSwitch = ({ input, label, ...custom }) => (
   <FormControlLabel
     style={{ marginTop: '22px' }}
     control={
@@ -17,15 +18,31 @@ const renderSwitch = ({ input, label, meta: { touched, error }, ...custom }) => 
   />
 );
 
-export default function SwitchRender(props) {
+renderSwitch.propTypes = {
+  label: PropTypes.string.isRequired,
+  input: PropTypes.shape({
+    value: PropTypes.string,
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func,
+  }).isRequired,
+};
+
+export default function SwitchRender({ field, label, id, disabled }) {
   return (
     <Field
-      name={props.field}
+      name={field}
       component={renderSwitch}
       // custom props
-      label={props.label}
-      id={props.id}
-      disabled={props.disabled === undefined ? false : props.disabled}
+      label={label}
+      id={id}
+      disabled={disabled === undefined ? false : disabled}
     />
   );
 }
+
+SwitchRender.propTypes = {
+  field: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
+};

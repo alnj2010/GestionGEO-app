@@ -1,11 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import { Field } from 'redux-form';
 import MaskedInput from 'react-text-mask';
 
-const TextMaskCustom = (props) => {
-  const { inputRef, ...other } = props;
-
+const TextMaskCustom = ({ inputRef, ...other }) => {
   return (
     <MaskedInput
       {...other}
@@ -17,6 +16,9 @@ const TextMaskCustom = (props) => {
       showMask
     />
   );
+};
+TextMaskCustom.propTypes = {
+  inputRef: PropTypes.func.isRequired,
 };
 
 const renderPhoneField = ({ label, input, meta: { touched, invalid, error }, ...custom }) => {
@@ -37,17 +39,34 @@ const renderPhoneField = ({ label, input, meta: { touched, invalid, error }, ...
   );
 };
 
-export default function Phone(props) {
+renderPhoneField.propTypes = {
+  label: PropTypes.string.isRequired,
+  input: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+    invalid: PropTypes.bool,
+  }).isRequired,
+};
+
+export default function Phone({ field, label, id }) {
   return (
     <Field
-      name={props.field}
+      name={field}
       component={renderPhoneField}
       // custom props
-      label={props.label}
-      id={props.id}
+      label={label}
+      id={id}
       multiline
       rowsMax="4"
       margin="dense"
     />
   );
 }
+Phone.propTypes = {
+  field: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+};

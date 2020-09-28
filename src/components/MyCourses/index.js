@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
-import { array, bool, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 
@@ -77,10 +77,13 @@ class SubjectsList extends Component {
 }
 
 SubjectsList.propTypes = {
-  myCourses: array,
-  isLoading: bool.isRequired,
-  history: object.isRequired,
-  handleDeleteSubject: func.isRequired,
+  myCourses: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+
+  show: PropTypes.func.isRequired,
 };
 
 export default SubjectsList;

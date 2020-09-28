@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   FormControl,
   InputLabel,
@@ -9,7 +10,6 @@ import {
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { string, object } from 'prop-types';
 
 class PasswordInput extends Component {
   constructor(props) {
@@ -56,10 +56,14 @@ class PasswordInput extends Component {
   }
 }
 PasswordInput.propTypes = {
-  input: object.isRequired,
-  className: string,
-  id: string.isRequired,
-  ariaLabel: string.isRequired,
-  inputLabel: string.isRequired,
+  input: PropTypes.shape({}).isRequired,
+  className: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  inputLabel: PropTypes.string.isRequired,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+  }).isRequired,
 };
 export default PasswordInput;

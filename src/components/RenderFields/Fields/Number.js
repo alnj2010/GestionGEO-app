@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import { Field } from 'redux-form';
 
@@ -16,18 +17,38 @@ const renderTextField = ({ label, input, meta: { touched, invalid, error }, ...c
   />
 );
 
-export default function Number(props) {
+renderTextField.propTypes = {
+  label: PropTypes.string.isRequired,
+  input: PropTypes.shape({
+    name: PropTypes.string,
+  }).isRequired,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.shape({}),
+    invalid: PropTypes.bool,
+  }).isRequired,
+};
+
+export default function Number({ field, disabled, label, id, min, max }) {
   return (
     <Field
-      name={props.field}
+      name={field}
       component={renderTextField}
       // custom props
-      disabled={props.disabled}
-      label={props.label}
-      id={props.id}
-      min={props.min}
-      max={props.max}
+      disabled={disabled}
+      label={label}
+      id={id}
+      min={min}
+      max={max}
       margin="normal"
     />
   );
 }
+Number.propTypes = {
+  field: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  min: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+};
