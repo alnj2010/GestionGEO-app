@@ -81,7 +81,7 @@ class SubjectDetailContainer extends Component {
 
 SubjectDetailContainer.propTypes = {
   subject: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.any,
   }).isRequired,
 
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -93,7 +93,7 @@ SubjectDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
     }),
   }).isRequired,
 

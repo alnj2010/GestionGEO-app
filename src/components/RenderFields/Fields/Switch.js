@@ -21,7 +21,7 @@ const renderSwitch = ({ input, label, ...custom }) => (
 renderSwitch.propTypes = {
   label: PropTypes.string.isRequired,
   input: PropTypes.shape({
-    value: PropTypes.string,
+    value: PropTypes.any,
     disabled: PropTypes.bool,
     onChange: PropTypes.func,
   }).isRequired,
@@ -43,6 +43,10 @@ export default function SwitchRender({ field, label, id, disabled }) {
 SwitchRender.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
+  disabled: PropTypes.bool,
+};
+SwitchRender.defaultProps = {
+  disabled: false,
 };

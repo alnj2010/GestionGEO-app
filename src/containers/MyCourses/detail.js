@@ -62,7 +62,7 @@ CourseDetailContainer.propTypes = {
   students: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
     }),
   }).isRequired,
   history: PropTypes.shape({

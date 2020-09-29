@@ -24,7 +24,7 @@ renderTextField.propTypes = {
   }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
-    error: PropTypes.shape({}),
+    error: PropTypes.string,
     invalid: PropTypes.bool,
   }).isRequired,
 };
@@ -47,8 +47,16 @@ export default function Number({ field, disabled, label, id, min, max }) {
 Number.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  min: PropTypes.number.isRequired,
-  max: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
+  disabled: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  min: PropTypes.any,
+  // eslint-disable-next-line react/forbid-prop-types
+  max: PropTypes.any,
+};
+Number.defaultProps = {
+  disabled: false,
+  min: 0,
+  max: Number.POSITIVE_INFINITY,
 };

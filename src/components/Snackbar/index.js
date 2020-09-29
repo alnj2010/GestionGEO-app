@@ -86,11 +86,13 @@ MySnackbarContent.propTypes = {
     close: PropTypes.string,
   }).isRequired,
   message: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 };
-
+MySnackbarContent.defaultProps = {
+  className: null,
+};
 const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
 
 const styles2 = (theme) => ({
@@ -124,7 +126,7 @@ function CustomizedSnackbars({ variant, message, showMessage, hideDispatch }) {
 CustomizedSnackbars.propTypes = {
   variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
   message: PropTypes.string.isRequired,
-  showMessage: PropTypes.func.isRequired,
+  showMessage: PropTypes.bool.isRequired,
   hideDispatch: PropTypes.func.isRequired,
 };
 

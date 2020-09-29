@@ -136,7 +136,8 @@ ChangePassword.propTypes = {
     first_name: PropTypes.string,
   }).isRequired,
 
-  changePasswordId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  changePasswordId: PropTypes.any.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,

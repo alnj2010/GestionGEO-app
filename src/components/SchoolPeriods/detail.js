@@ -417,7 +417,7 @@ SchoolPeriodDetail.propTypes = {
 
       first_surname: PropTypes.string,
       second_surname: PropTypes.string,
-      teacher: PropTypes.shape({ id: PropTypes.string }).isRequired,
+      teacher: PropTypes.shape({ id: PropTypes.any }).isRequired,
     })
   ).isRequired,
 
@@ -429,7 +429,9 @@ SchoolPeriodDetail.propTypes = {
   }).isRequired,
 
   startDate: PropTypes.string,
-  schoolPeriodId: PropTypes.number,
+
+  // eslint-disable-next-line react/forbid-prop-types
+  schoolPeriodId: PropTypes.any,
 
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,

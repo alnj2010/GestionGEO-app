@@ -89,7 +89,8 @@ StudentConstance.propTypes = {
   classes: PropTypes.shape({
     cardContainer: PropTypes.string,
   }).isRequired,
-  id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(StudentConstance);

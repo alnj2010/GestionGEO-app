@@ -105,16 +105,16 @@ class StudentInscriptionContainer extends Component {
 StudentInscriptionContainer.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
       idSchoolPeriod: PropTypes.number,
     }),
   }).isRequired,
 
-  schoolPeriods: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string })).isRequired,
+  schoolPeriods: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any })).isRequired,
 
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      school_period_subject_teacher_id: PropTypes.number,
+      school_period_subject_teacher_id: PropTypes.any,
       data_subject: PropTypes.shape({
         subject: PropTypes.shape({
           subject_name: PropTypes.string,

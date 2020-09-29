@@ -46,7 +46,7 @@ renderPhoneField.propTypes = {
   }).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
-    error: PropTypes.shape({}),
+    error: PropTypes.string,
     invalid: PropTypes.bool,
   }).isRequired,
 };
@@ -68,5 +68,7 @@ export default function Phone({ field, label, id }) {
 Phone.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
 };
+Phone.defaultProps = {};

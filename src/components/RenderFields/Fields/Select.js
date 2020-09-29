@@ -43,7 +43,7 @@ renderSelectField.propTypes = {
   options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
-    error: PropTypes.shape({}),
+    error: PropTypes.string,
   }).isRequired,
 };
 
@@ -65,8 +65,13 @@ export default function SelectField({ field, onchange, disabled, label, id, opti
 SelectField.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  onchange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  options: PropTypes.shape({}).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
+  onchange: PropTypes.func,
+  disabled: PropTypes.bool,
+  options: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
+SelectField.defaultProps = {
+  disabled: false,
+  onchange: null,
 };

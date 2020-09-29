@@ -126,11 +126,11 @@ class StudentDetailContainer extends Component {
 
 StudentDetailContainer.propTypes = {
   student: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.any.isRequired,
     student: PropTypes.arrayOf(
       PropTypes.shape({
-        school_program_id: PropTypes.number,
-        id: PropTypes.string,
+        school_program_id: PropTypes.any,
+        id: PropTypes.any,
         student_type: PropTypes.string,
         home_university: PropTypes.string,
         type_income: PropTypes.string,
@@ -141,7 +141,7 @@ StudentDetailContainer.propTypes = {
         test_period: PropTypes.bool,
         current_status: PropTypes.string,
         equivalence: PropTypes.arrayOf(PropTypes.shape({})),
-        guide_teacher_id: PropTypes.number,
+        guide_teacher_id: PropTypes.any,
         current_postgraduate: PropTypes.string,
       })
     ),
@@ -157,7 +157,7 @@ StudentDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
     }),
   }).isRequired,
   getSubjectBySchoolProgramDispatch: PropTypes.func.isRequired,

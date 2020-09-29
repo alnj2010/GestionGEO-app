@@ -33,7 +33,8 @@ TextInput.propTypes = {
   input: PropTypes.shape({}).isRequired,
   meta: PropTypes.shape({ touched: PropTypes.bool, error: PropTypes.string }).isRequired,
   className: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
   label: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   margin: PropTypes.string.isRequired,

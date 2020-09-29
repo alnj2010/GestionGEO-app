@@ -244,9 +244,10 @@ AdminDetail.propTypes = {
     first_surname: PropTypes.string,
     first_name: PropTypes.string,
   }).isRequired,
-  rol: PropTypes.string.isRequired,
+  rol: PropTypes.string,
 
-  adminId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  adminId: PropTypes.any,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
@@ -257,6 +258,11 @@ AdminDetail.propTypes = {
   saveAdmin: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
   handleAdminDelete: PropTypes.func.isRequired,
+};
+
+AdminDetail.defaultProps = {
+  rol: null,
+  adminId: null,
 };
 
 const adminValidation = (values) => {

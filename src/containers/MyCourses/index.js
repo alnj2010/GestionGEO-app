@@ -26,7 +26,7 @@ class MisCursosContainer extends Component {
 MisCursosContainer.propTypes = {
   myCourses: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
     })
   ).isRequired,
   history: PropTypes.shape({

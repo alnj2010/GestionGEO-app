@@ -44,7 +44,11 @@ export default function Date({ field, label, id, minDate, disabled }) {
 Date.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
+  disabled: PropTypes.bool,
   minDate: PropTypes.string.isRequired,
+};
+Date.defaultProps = {
+  disabled: false,
 };

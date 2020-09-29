@@ -292,11 +292,12 @@ SubjectDetail.propTypes = {
     name: PropTypes.string,
   }).isRequired,
 
-  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string })).isRequired,
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any })).isRequired,
 
-  schoolProgramsSelected: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string })).isRequired,
+  schoolProgramsSelected: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any })).isRequired,
 
-  subjectId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  subjectId: PropTypes.any.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,

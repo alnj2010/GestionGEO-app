@@ -69,7 +69,7 @@ class AdminDetailContainer extends Component {
 
 AdminDetailContainer.propTypes = {
   admin: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.any,
   }).isRequired,
 
   history: PropTypes.shape({
@@ -79,7 +79,7 @@ AdminDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
     }),
   }).isRequired,
 

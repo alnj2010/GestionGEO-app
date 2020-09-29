@@ -70,10 +70,10 @@ class TeacherDetailContainer extends Component {
 }
 
 TeacherDetailContainer.propTypes = {
-  schoolPrograms: PropTypes.shape({}).isRequired,
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   teacher: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.any,
   }).isRequired,
 
   history: PropTypes.shape({
@@ -83,7 +83,7 @@ TeacherDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
     }),
   }).isRequired,
 

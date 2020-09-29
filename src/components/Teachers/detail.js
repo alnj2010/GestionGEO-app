@@ -277,10 +277,11 @@ TeacherDetail.propTypes = {
   teacher: PropTypes.shape({
     first_surname: PropTypes.string,
     first_name: PropTypes.string,
-  }).isRequired,
+  }),
 
-  teacherType: PropTypes.string.isRequired,
-  teacherId: PropTypes.number.isRequired,
+  teacherType: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  teacherId: PropTypes.any,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
@@ -291,6 +292,11 @@ TeacherDetail.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   saveTeacher: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
+};
+TeacherDetail.defaultProps = {
+  teacherId: null,
+  teacher: null,
+  teacherType: null,
 };
 
 const teacherValidation = (values) => {

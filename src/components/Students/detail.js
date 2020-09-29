@@ -556,7 +556,7 @@ StudentDetail.propTypes = {
   schoolPrograms: PropTypes.arrayOf(
     PropTypes.shape({
       school_program_name: PropTypes.string,
-      id: PropTypes.string,
+      id: PropTypes.any,
     })
   ).isRequired,
   teachersGuide: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -573,7 +573,8 @@ StudentDetail.propTypes = {
     student: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
 
-  studentId: PropTypes.number,
+  // eslint-disable-next-line react/forbid-prop-types
+  studentId: PropTypes.any,
 
   handleDeleteSchoolProgram: PropTypes.func.isRequired,
   history: PropTypes.shape({

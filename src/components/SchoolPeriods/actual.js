@@ -194,7 +194,8 @@ class SchoolPeriodActual extends Component {
 
 SchoolPeriodActual.propTypes = {
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  schoolPeriodId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  schoolPeriodId: PropTypes.any.isRequired,
   endDate: PropTypes.string.isRequired,
   classes: PropTypes.PropTypes.shape({
     buttonContainer: PropTypes.string,

@@ -47,5 +47,7 @@ export default function Time(props) {
 Time.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
 };
+Time.defaultProps = {};

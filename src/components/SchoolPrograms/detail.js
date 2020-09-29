@@ -189,15 +189,13 @@ SchoolProgramDetail.propTypes = {
     button: PropTypes.string,
   }).isRequired,
 
-  subject: PropTypes.shape({
-    name: PropTypes.string,
-  }).isRequired,
+  schoolProgram: PropTypes.shape({ school_program_name: PropTypes.string }),
 
-  schoolProgram: PropTypes.shape({ school_program_name: PropTypes.string }).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  numCu: PropTypes.any,
 
-  numCu: PropTypes.number.isRequired,
-
-  schoolProgramId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  schoolProgramId: PropTypes.any,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
@@ -208,6 +206,11 @@ SchoolProgramDetail.propTypes = {
   saveSchoolProgram: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
   handleSchoolProgramDelete: PropTypes.func.isRequired,
+};
+SchoolProgramDetail.defaultProps = {
+  schoolProgram: null,
+  numCu: null,
+  schoolProgramId: null,
 };
 
 const schoolProgramValidation = (values) => {

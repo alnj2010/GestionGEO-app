@@ -58,9 +58,13 @@ class AlertDialogSlide extends React.Component {
 AlertDialogSlide.propTypes = {
   entity: PropTypes.string.isRequired,
   action: PropTypes.string.isRequired,
-  open: PropTypes.string.isRequired,
-  handleAgree: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  handleAgree: PropTypes.func,
   hideDispatch: PropTypes.func.isRequired,
+};
+
+AlertDialogSlide.defaultProps = {
+  handleAgree: () => null,
 };
 const mS = (state) => ({
   action: state.dialogReducer.action,

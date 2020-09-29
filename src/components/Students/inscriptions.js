@@ -81,7 +81,8 @@ class StudentInscriptions extends Component {
 StudentInscriptions.propTypes = {
   inscribedSchoolPeriods: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
-  studentId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  studentId: PropTypes.any.isRequired,
   fullname: PropTypes.string.isRequired,
 
   history: PropTypes.shape({

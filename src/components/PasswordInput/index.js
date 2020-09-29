@@ -58,12 +58,13 @@ class PasswordInput extends Component {
 PasswordInput.propTypes = {
   input: PropTypes.shape({}).isRequired,
   className: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.any.isRequired,
   ariaLabel: PropTypes.string.isRequired,
   inputLabel: PropTypes.string.isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
-    error: PropTypes.shape({}),
+    error: PropTypes.string,
   }).isRequired,
 };
 export default PasswordInput;

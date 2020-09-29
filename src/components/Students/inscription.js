@@ -307,7 +307,7 @@ StudentInscription.propTypes = {
   schoolPeriods: PropTypes.arrayOf(
     PropTypes.shape({
       cod_school_period: PropTypes.string,
-      id: PropTypes.string,
+      id: PropTypes.any,
     })
   ).isRequired,
 
@@ -315,23 +315,24 @@ StudentInscription.propTypes = {
 
   subjectsSelected: PropTypes.arrayOf(
     PropTypes.shape({
-      subjectId: PropTypes.number,
+      subjectId: PropTypes.any,
     })
   ).isRequired,
   subjectInscriptions: PropTypes.arrayOf(
     PropTypes.shape({
-      subjectId: PropTypes.number,
+      subjectId: PropTypes.any,
     })
   ).isRequired,
 
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string,
+      id: PropTypes.any,
       name: PropTypes.string,
     })
   ).isRequired,
 
-  studentId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  studentId: PropTypes.any.isRequired,
   fullname: PropTypes.number.isRequired,
 
   pristine: PropTypes.bool.isRequired,
