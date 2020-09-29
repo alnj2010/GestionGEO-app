@@ -35,6 +35,11 @@ class SubjectsListContainer extends Component {
     return (
       <SubjectsList
         subjects={subjects}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         handleSubjectDetail={this.handleSubjectDetail}

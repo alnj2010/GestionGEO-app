@@ -1,27 +1,48 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login } from '../../actions/user';
 import LoginForm from '../../components/Login';
+import {
+  setSessionStudentId,
+  setSessionUser,
+  getSessionUser,
+  removeSessionGeoToken,
+} from '../../storage/sessionStorage';
 
-class LoginContainer extends Component {
-  handleLogin = ({ identification, password, userType }) => {
-    const { loginDispatch, history } = this.props;
+function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
+  const [studentsTypes, setStudentsType] = useState(null);
+  const handleLogin = ({ identification, password, userType }) => {
     loginDispatch({ identification, password, userType }).then((isLogged) => {
-      if (isLogged) history.push('/home');
+      if (userType === 'S') {
+        setStudentsType(isLogged);
+      } else if (isLogged) {
+        history.push('/home');
+      }
     });
   };
+  const setStudent = (student) => {
+    const user = getSessionUser();
+    user.student = student;
+    setSessionUser(user);
+    setSessionStudentId(student.id);
+    history.push('/home');
+  };
 
-  render() {
-    const { showSnackbar, message } = this.props;
-    return (
-      <LoginForm
-        showMenssageFloat={showSnackbar}
-        menssageFloat={message}
-        handleLogin={this.handleLogin}
-      />
-    );
-  }
+  const handleCloseSetStudent = () => {
+    setStudentsType(null);
+    removeSessionGeoToken();
+  };
+  return (
+    <LoginForm
+      showMenssageFloat={showSnackbar}
+      menssageFloat={message}
+      handleLogin={handleLogin}
+      studentsTypes={studentsTypes}
+      handleSetStudent={setStudent}
+      handleCloseSetStudent={handleCloseSetStudent}
+    />
+  );
 }
 
 LoginContainer.propTypes = {

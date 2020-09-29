@@ -35,6 +35,11 @@ class TeachersListContainer extends Component {
     return (
       <TeachersList
         teachers={teachers}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         handleTeacherDetail={this.handleTeacherDetail}

@@ -4,6 +4,14 @@ import { Form, Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import PersonIcon from '@material-ui/icons/LocalLibrary';
 import PasswordInput from '../PasswordInput';
 import CustomizedSnackbar from '../Snackbar';
 import TextInput from '../TextInput';
@@ -59,7 +67,17 @@ const styles = () => ({
 });
 
 let LoginForm = (props) => {
-  const { classes, handleLogin, handleSubmit, pristine, submitting, valid } = props;
+  const {
+    classes,
+    handleLogin,
+    handleSubmit,
+    pristine,
+    submitting,
+    valid,
+    studentsTypes,
+    handleSetStudent,
+    handleCloseSetStudent,
+  } = props;
 
   return (
     <Form onSubmit={handleSubmit(handleLogin)}>
@@ -119,6 +137,27 @@ let LoginForm = (props) => {
         </Grid>
       </Grid>
       <CustomizedSnackbar />
+      {studentsTypes && (
+        <Dialog
+          onClose={handleCloseSetStudent}
+          aria-labelledby="simple-dialog-title"
+          open={studentsTypes}
+        >
+          <DialogTitle id="simple-dialog-title">Seleccione el programa academico</DialogTitle>
+          <List>
+            {studentsTypes.map((student) => (
+              <ListItem button onClick={() => handleSetStudent(student)} key={student}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <PersonIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={student.school_program.school_program_name} />
+              </ListItem>
+            ))}
+          </List>
+        </Dialog>
+      )}
     </Form>
   );
 };
@@ -133,11 +172,18 @@ LoginForm.propTypes = {
     formContainer: PropTypes.string,
     logo: PropTypes.string,
   }).isRequired,
+  studentsTypes: PropTypes.arrayOf(PropTypes.shape({})),
+  handleSetStudent: PropTypes.func.isRequired,
+  handleCloseSetStudent: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
+};
+
+LoginForm.defaultProps = {
+  studentsTypes: null,
 };
 
 const loginValidator = (values) => {

@@ -35,6 +35,11 @@ class SchoolPeriodsListContainer extends Component {
     return (
       <SchoolPeriodsList
         schoolPeriods={schoolPeriods}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         handleSchoolPeriodDetail={this.handleSchoolPeriodDetail}

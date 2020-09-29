@@ -42,6 +42,12 @@ export function getSessionGeoToken() {
 
 export function removeSessionGeoToken() {
   sessionStorage.removeItem(KEY_STORAGE.GEO_TOKEN);
+  sessionStorage.removeItem(KEY_STORAGE.USER_ROL);
+  sessionStorage.removeItem(KEY_STORAGE.USER_ID);
+  sessionStorage.removeItem(KEY_STORAGE.STUDENT_ID);
+  sessionStorage.removeItem(KEY_STORAGE.TEACHER_ID);
+  sessionStorage.removeItem(KEY_STORAGE.IS_MAIN_USER);
+  sessionStorage.removeItem(KEY_STORAGE.USER);
 }
 
 export function setSessionUserRol(value) {

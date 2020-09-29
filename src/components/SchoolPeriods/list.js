@@ -87,6 +87,11 @@ class SchoolPeriodsList extends Component {
             onChangePage={() => {
               window.scroll(0, 0);
             }}
+            localization={{
+              header: {
+                actions: 'Acciones',
+              },
+            }}
             isLoading={isLoading}
           />
         </Grid>

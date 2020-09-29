@@ -355,7 +355,7 @@ class MenuApp extends React.Component {
                     window.location.href = `/cambio-clave`;
                   }}
                 >
-                  Cambio de contrasena
+                  Cambio de contraseña
                 </MenuItem>
                 <MenuItem onClick={this.handleLogout}>Salir</MenuItem>
               </Menu>

@@ -35,6 +35,11 @@ class StudentsListContainer extends Component {
     return (
       <StudentsList
         students={students}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         handleStudentDetail={this.handleStudentDetail}

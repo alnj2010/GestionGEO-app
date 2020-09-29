@@ -35,6 +35,11 @@ class AdminsListContainer extends Component {
     return (
       <AdminsList
         admins={admins}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         handleAdminDetail={this.handleAdminDetail}

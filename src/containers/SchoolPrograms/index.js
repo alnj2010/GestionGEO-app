@@ -35,6 +35,11 @@ class SchoolProgramsListContainer extends Component {
     return (
       <SchoolProgramsList
         schoolPrograms={schoolPrograms}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         handleSchoolProgramDetail={this.handleSchoolProgramDetail}

@@ -47,6 +47,11 @@ class StudentInscriptionsContainer extends Component {
       <StudentInscriptions
         inscribedSchoolPeriods={inscribedSchoolPeriods}
         studentId={id}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         fullname={fullname}

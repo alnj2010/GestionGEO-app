@@ -57,7 +57,7 @@ class ChangePassword extends Component {
       <Form onSubmit={handleSubmit(savePassword)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>Cambio de contrasena</h3>
+            <h3>Cambio de contraseña</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -71,13 +71,13 @@ class ChangePassword extends Component {
                     type: 'text',
                   },
                   {
-                    label: 'Nueva contrasena',
+                    label: 'Nueva contraseña',
                     field: 'password',
                     id: 'password',
                     type: 'text',
                   },
                   {
-                    label: 'Confirmacion de contrasena',
+                    label: 'Confirmacion de contraseña',
                     field: 'passwordConfirmation',
                     id: 'passwordConfirmation',
                     type: 'text',
@@ -159,7 +159,7 @@ const changePasswordValidation = (values) => {
     values.password &&
     values.passwordConfirmation !== values.password
   )
-    errors.passwordConfirmation = 'La contrasena de confirmacion no coincide';
+    errors.passwordConfirmation = 'La contraseña de confirmacion no coincide';
 
   return errors;
 };
