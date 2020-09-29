@@ -58,6 +58,11 @@ class SchoolProgramDetail extends Component {
           { title: 'Estado', field: 'status', editable: 'never' },
         ]}
         data={this.transformData(students)}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         editable={{
           onRowUpdate: (newData) =>
             new Promise((resolve) => {

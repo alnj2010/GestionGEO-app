@@ -42,6 +42,11 @@ class Inscription extends Component {
             ]}
             onSelectionChange={() => enrolledSubjects}
             data={this.transformData(subjects)}
+            localization={{
+              header: {
+                actions: 'Acciones',
+              },
+            }}
             options={{
               selection: true,
             }}

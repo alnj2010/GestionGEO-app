@@ -230,7 +230,7 @@ const studentValidation = (values) => {
 };
 
 let MiPerfilWrapper = reduxForm({
-  form: 'student',
+  form: 'perfil',
   validate: studentValidation,
   enableReinitialize: true,
 })(MiPerfil);

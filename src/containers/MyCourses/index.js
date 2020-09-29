@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { define, cleanDialog } from '../../actions/dialog';
+import { define, cleanDialog, show } from '../../actions/dialog';
 import { getCoursesList } from '../../actions/myCourse';
 import MyCoursesList from '../../components/MyCourses';
 
@@ -18,8 +18,8 @@ class MisCursosContainer extends Component {
   };
 
   render() {
-    const { myCourses, history } = this.props;
-    return <MyCoursesList history={history} myCourses={myCourses} />;
+    const { myCourses, history, showDispatch } = this.props;
+    return <MyCoursesList history={history} myCourses={myCourses} show={showDispatch} />;
   }
 }
 
@@ -36,6 +36,7 @@ MisCursosContainer.propTypes = {
   getCoursesListDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -46,6 +47,7 @@ const mD = {
   getCoursesListDispatch: getCoursesList,
   cleanDialogDispatch: cleanDialog,
   defineDispatch: define,
+  showDispatch: show,
 };
 
 export default connect(mS, mD)(MisCursosContainer);

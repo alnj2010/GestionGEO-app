@@ -16,14 +16,12 @@ export const ACTIONS = {
 export const login = ({ identification, password, userType }) => async (dispatch) => {
   return User.login({ identification, password, user_type: userType })
     .then((response) => {
-      console.log(response);
       setSessionGeoToken(response.token);
       setSessionUser(response.user);
       setSessionUserRol(response.user.user_type);
       setSessionUserId(response.user.id);
       if (response.user.user_type === 'S') {
         return response.user.student;
-        //setSessionStudentId(response.user.student.id);
       }
 
       if (response.user.user_type === 'T') setSessionTeacherId(response.user.teacher.id);

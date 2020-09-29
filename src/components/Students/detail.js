@@ -481,6 +481,11 @@ class StudentDetail extends Component {
                   ...item,
                   schoolProgram: item.school_program.school_program_name,
                 }))}
+                localization={{
+                  header: {
+                    actions: 'Acciones',
+                  },
+                }}
                 actions={[
                   {
                     id: 'edit',

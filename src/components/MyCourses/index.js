@@ -60,6 +60,11 @@ class SubjectsList extends Component {
                 },
               },
             ]}
+            localization={{
+              header: {
+                actions: 'Acciones',
+              },
+            }}
             options={{
               pageSize: 10,
               search: true,

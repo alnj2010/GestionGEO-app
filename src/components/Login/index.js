@@ -141,7 +141,7 @@ let LoginForm = (props) => {
         <Dialog
           onClose={handleCloseSetStudent}
           aria-labelledby="simple-dialog-title"
-          open={studentsTypes}
+          open={!!studentsTypes}
         >
           <DialogTitle id="simple-dialog-title">Seleccione el programa academico</DialogTitle>
           <List>

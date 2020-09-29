@@ -89,7 +89,10 @@ StudentHome.propTypes = {
   classes: PropTypes.shape({
     calendar: PropTypes.string,
   }).isRequired,
-  currentSubjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  currentSubjects: PropTypes.arrayOf(PropTypes.shape({})),
+};
+StudentHome.defaultProps = {
+  currentSubjects: null,
 };
 
 export default withStyles(styles)(StudentHome);

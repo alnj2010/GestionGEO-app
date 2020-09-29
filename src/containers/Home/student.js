@@ -32,10 +32,13 @@ StudentHomeContainer.propTypes = {
   miPerfil: PropTypes.shape({
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }).isRequired,
-  currentSubjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  currentSubjects: PropTypes.arrayOf(PropTypes.shape({})),
 
   findMiPerfilDispatch: PropTypes.func.isRequired,
   getCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
+};
+StudentHomeContainer.defaultProps = {
+  currentSubjects: null,
 };
 
 const mS = (state) => ({
