@@ -164,7 +164,7 @@ class SchoolProgramDetail extends Component {
                         className={classes.button}
                         variant="contained"
                         color="secondary"
-                        onClick={() => this.handleDialogShow('delete', handleSchoolProgramDelete)}
+                        onClick={() => this.handleDialogShow('borrar', handleSchoolProgramDelete)}
                       >
                         Borrar
                       </Button>

@@ -387,7 +387,7 @@ class StudentDetail extends Component {
                         className={classes.button}
                         variant="contained"
                         color="secondary"
-                        onClick={() => this.handleDialogShow('delete', handleStudentDelete)}
+                        onClick={() => this.handleDialogShow('borrar', handleStudentDelete)}
                       >
                         Borrar
                       </Button>

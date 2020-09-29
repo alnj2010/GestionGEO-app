@@ -381,7 +381,7 @@ class SchoolPeriodDetail extends Component {
                         className={classes.button}
                         variant="contained"
                         color="secondary"
-                        onClick={() => this.handleDialogShow('delete', handleSchoolPeriodDelete)}
+                        onClick={() => this.handleDialogShow('borrar', handleSchoolPeriodDelete)}
                       >
                         Borrar
                       </Button>

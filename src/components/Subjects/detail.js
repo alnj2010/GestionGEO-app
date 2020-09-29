@@ -260,7 +260,7 @@ class SubjectDetail extends Component {
                         className={classes.button}
                         variant="contained"
                         color="secondary"
-                        onClick={() => this.handleDialogShow('delete', handleSubjectDelete)}
+                        onClick={() => this.handleDialogShow('borrar', handleSubjectDelete)}
                       >
                         Borrar
                       </Button>
