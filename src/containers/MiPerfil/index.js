@@ -43,7 +43,7 @@ class MiPerfilContainer extends Component {
 
 MiPerfilContainer.propTypes = {
   miPerfil: PropTypes.shape({
-    id: PropTypes.any,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -52,7 +52,7 @@ MiPerfilContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
 

@@ -82,7 +82,7 @@ StudentInscriptions.propTypes = {
   inscribedSchoolPeriods: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   // eslint-disable-next-line react/forbid-prop-types
-  studentId: PropTypes.any.isRequired,
+  studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   fullname: PropTypes.string.isRequired,
 
   history: PropTypes.shape({

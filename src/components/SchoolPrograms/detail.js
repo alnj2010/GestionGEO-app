@@ -192,10 +192,10 @@ SchoolProgramDetail.propTypes = {
   schoolProgram: PropTypes.shape({ school_program_name: PropTypes.string }),
 
   // eslint-disable-next-line react/forbid-prop-types
-  numCu: PropTypes.any,
+  numCu: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   // eslint-disable-next-line react/forbid-prop-types
-  schoolProgramId: PropTypes.any,
+  schoolProgramId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,

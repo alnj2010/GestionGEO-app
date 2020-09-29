@@ -81,7 +81,7 @@ class SubjectDetailContainer extends Component {
 
 SubjectDetailContainer.propTypes = {
   subject: PropTypes.shape({
-    id: PropTypes.any,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }).isRequired,
 
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -93,7 +93,7 @@ SubjectDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
 
@@ -106,7 +106,7 @@ SubjectDetailContainer.propTypes = {
   cleanDialogDispatch: PropTypes.func.isRequired,
   getSchoolProgramListDispatch: PropTypes.func.isRequired,
 };
-
+SubjectDetailContainer.defaultProps = {};
 const mS = (state) => ({
   subject: state.subjectReducer.selectedSubject,
   schoolPrograms: state.schoolProgramReducer.list,

@@ -193,10 +193,10 @@ class SchoolPeriodActual extends Component {
 }
 
 SchoolPeriodActual.propTypes = {
-  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subjects: PropTypes.arrayOf(PropTypes.shape({})),
   // eslint-disable-next-line react/forbid-prop-types
-  schoolPeriodId: PropTypes.any.isRequired,
-  endDate: PropTypes.string.isRequired,
+  schoolPeriodId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  endDate: PropTypes.string,
   classes: PropTypes.PropTypes.shape({
     buttonContainer: PropTypes.string,
     save: PropTypes.string,
@@ -211,6 +211,11 @@ SchoolPeriodActual.propTypes = {
 
   submitDispatch: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
+};
+SchoolPeriodActual.defaultProps = {
+  subjects: null,
+  schoolPeriodId: null,
+  endDate: null,
 };
 
 let SchoolPeriodActualWrapper = reduxForm({

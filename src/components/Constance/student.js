@@ -90,7 +90,7 @@ StudentConstance.propTypes = {
     cardContainer: PropTypes.string,
   }).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  id: PropTypes.any.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(StudentConstance);

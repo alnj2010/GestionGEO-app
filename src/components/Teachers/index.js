@@ -100,7 +100,7 @@ class TeachersList extends Component {
 TeachersList.propTypes = {
   teachers: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       email: PropTypes.string,
       identification: PropTypes.string,
       first_name: PropTypes.string,

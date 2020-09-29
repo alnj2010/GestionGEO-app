@@ -73,7 +73,7 @@ TeacherDetailContainer.propTypes = {
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   teacher: PropTypes.shape({
-    id: PropTypes.any,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }).isRequired,
 
   history: PropTypes.shape({
@@ -83,7 +83,7 @@ TeacherDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
 

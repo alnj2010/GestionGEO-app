@@ -79,7 +79,7 @@ class SchoolPeriodDetailContainer extends Component {
 
 SchoolPeriodDetailContainer.propTypes = {
   schoolPeriod: PropTypes.shape({
-    id: PropTypes.any,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }).isRequired,
 
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -92,7 +92,7 @@ SchoolPeriodDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
 

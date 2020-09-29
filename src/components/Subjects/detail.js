@@ -74,7 +74,8 @@ class SubjectDetail extends Component {
     return (
       <Grid container item>
         {fields.map((schoolProgram, index) => (
-          <Fragment key={schoolProgram.id}>
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={index}>
             <Grid item xs={5}>
               <RenderFields>
                 {[
@@ -292,12 +293,16 @@ SubjectDetail.propTypes = {
     name: PropTypes.string,
   }).isRequired,
 
-  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any })).isRequired,
+  schoolPrograms: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) })
+  ).isRequired,
 
-  schoolProgramsSelected: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any })).isRequired,
+  schoolProgramsSelected: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) })
+  ),
 
   // eslint-disable-next-line react/forbid-prop-types
-  subjectId: PropTypes.any.isRequired,
+  subjectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
@@ -309,7 +314,10 @@ SubjectDetail.propTypes = {
   goBack: PropTypes.func.isRequired,
   handleSubjectDelete: PropTypes.func.isRequired,
 };
-
+SubjectDetail.defaultProps = {
+  schoolProgramsSelected: [],
+  subjectId: null,
+};
 const subjectValidation = (values) => {
   const errors = {};
   if (!values.subjectCode) {

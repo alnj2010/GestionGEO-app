@@ -10,6 +10,8 @@ import TextInput from '../TextInput';
 import RenderFields from '../RenderFields';
 import logo from '../../images/icon-gestionGeo.svg';
 import backImage from '../../images/pif.jpg';
+import { USER_ROL } from '../../services/constants';
+import { jsonToOptions } from '../../helpers';
 
 const styles = () => ({
   container: {
@@ -58,20 +60,7 @@ const styles = () => ({
 
 let LoginForm = (props) => {
   const { classes, handleLogin, handleSubmit, pristine, submitting, valid } = props;
-  const rol = [
-    {
-      key: 'ESTUDIANTE',
-      value: 'S',
-    },
-    {
-      key: 'ADMINISTRADOR',
-      value: 'A',
-    },
-    {
-      key: 'PROFESOR',
-      value: 'T',
-    },
-  ];
+
   return (
     <Form onSubmit={handleSubmit(handleLogin)}>
       <Grid container className={classes.container}>
@@ -109,13 +98,8 @@ let LoginForm = (props) => {
                   field: 'userType',
                   id: 'userType',
                   type: 'select',
-                  placeholder: '¿Como desea ingresar?',
-                  options: rol.map((type) => {
-                    return {
-                      key: type.key,
-                      value: type.value,
-                    };
-                  }),
+                  label: '¿Como desea ingresar?',
+                  options: jsonToOptions(USER_ROL),
                 },
               ]}
             </RenderFields>

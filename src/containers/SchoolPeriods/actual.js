@@ -92,6 +92,7 @@ SchoolPeriodActualContainer.propTypes = {
   cleanDialogDispatch: PropTypes.func.isRequired,
   findCurrentSchoolPeriodDispatch: PropTypes.func.isRequired,
 };
+SchoolPeriodActualContainer.defaultProps = {};
 
 const mS = (state) => ({
   schoolPeriodActual: state.schoolPeriodReducer.selectedSchoolPeriod,

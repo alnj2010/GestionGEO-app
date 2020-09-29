@@ -281,7 +281,7 @@ TeacherDetail.propTypes = {
 
   teacherType: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
-  teacherId: PropTypes.any,
+  teacherId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,

@@ -76,7 +76,8 @@ class StudentInscription extends Component {
     return (
       <>
         {fields.map((subject, index) => (
-          <Grid container justify="center" key={subject.id}>
+          // eslint-disable-next-line react/no-array-index-key
+          <Grid container justify="center" key={index}>
             <Grid container item xs={10}>
               <RenderFields lineal>
                 {[
@@ -307,33 +308,33 @@ StudentInscription.propTypes = {
   schoolPeriods: PropTypes.arrayOf(
     PropTypes.shape({
       cod_school_period: PropTypes.string,
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
   ).isRequired,
 
-  idSchoolPeriod: PropTypes.number.isRequired,
+  idSchoolPeriod: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   subjectsSelected: PropTypes.arrayOf(
     PropTypes.shape({
-      subjectId: PropTypes.any,
+      subjectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
-  ).isRequired,
+  ),
   subjectInscriptions: PropTypes.arrayOf(
     PropTypes.shape({
-      subjectId: PropTypes.any,
+      subjectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
   ).isRequired,
 
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       name: PropTypes.string,
     })
   ).isRequired,
 
   // eslint-disable-next-line react/forbid-prop-types
-  studentId: PropTypes.any.isRequired,
-  fullname: PropTypes.number.isRequired,
+  studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  fullname: PropTypes.string.isRequired,
 
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
@@ -345,6 +346,10 @@ StudentInscription.propTypes = {
   getAvailableSubjects: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
   submitDispatch: PropTypes.func.isRequired,
+};
+StudentInscription.defaultProps = {
+  subjectsSelected: [],
+  idSchoolPeriod: null,
 };
 
 const studentValidation = (values) => {

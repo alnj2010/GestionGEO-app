@@ -10,21 +10,27 @@ class ChangePassword extends Component {
   componentWillUnmount = () => {};
 
   savePassword = (payload) => {
-    const { changePasswordDispatch } = this.props;
+    const { changePasswordDispatch, history } = this.props;
 
-    changePasswordDispatch(payload);
+    changePasswordDispatch(payload).then(() => history.goBack());
+  };
+
+  goBack = () => {
+    const { history } = this.props;
+    history.goBack();
   };
 
   render() {
     // const {
     // } = this.props;
 
-    return <ChangePasswordForm savePassword={this.savePassword} />;
+    return <ChangePasswordForm savePassword={this.savePassword} goBack={this.goBack} />;
   }
 }
 
 ChangePassword.propTypes = {
   changePasswordDispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({ goBack: PropTypes.func }).isRequired,
 };
 
 const mS = () => ({});

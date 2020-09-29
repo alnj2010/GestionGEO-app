@@ -98,7 +98,7 @@ class SubjectsList extends Component {
 SubjectsList.propTypes = {
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       subject_code: PropTypes.string,
       subject_name: PropTypes.string,
       subject_type: PropTypes.string,

@@ -126,11 +126,11 @@ class StudentDetailContainer extends Component {
 
 StudentDetailContainer.propTypes = {
   student: PropTypes.shape({
-    id: PropTypes.any.isRequired,
-    student: PropTypes.arrayOf(
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    student: PropTypes.oneOfType([
       PropTypes.shape({
-        school_program_id: PropTypes.any,
-        id: PropTypes.any,
+        school_program_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         student_type: PropTypes.string,
         home_university: PropTypes.string,
         type_income: PropTypes.string,
@@ -141,15 +141,16 @@ StudentDetailContainer.propTypes = {
         test_period: PropTypes.bool,
         current_status: PropTypes.string,
         equivalence: PropTypes.arrayOf(PropTypes.shape({})),
-        guide_teacher_id: PropTypes.any,
+        guide_teacher_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         current_postgraduate: PropTypes.string,
-      })
-    ),
+      }),
+      PropTypes.arrayOf(PropTypes.shape({})),
+    ]),
   }).isRequired,
 
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  listBySchoolPeriod: PropTypes.shape({}).isRequired,
+  listBySchoolPeriod: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
     goBack: PropTypes.func,
@@ -157,7 +158,7 @@ StudentDetailContainer.propTypes = {
 
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
   getSubjectBySchoolProgramDispatch: PropTypes.func.isRequired,
@@ -172,6 +173,12 @@ StudentDetailContainer.propTypes = {
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
   getStudentConstanceDispatch: PropTypes.func.isRequired,
   getTeacherListDispatch: PropTypes.func.isRequired,
+};
+
+StudentDetailContainer.defaultProps = {
+  /* teacherId: null,
+  teacher: null,
+  teacherType: null, */
 };
 
 const mS = (state) => ({

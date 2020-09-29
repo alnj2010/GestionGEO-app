@@ -118,9 +118,11 @@ class StudentSchoolProgramContainer extends Component {
 StudentSchoolProgramContainer.propTypes = {
   location: PropTypes.shape({
     state: PropTypes.shape({
-      selectedSchoolProgram: PropTypes.shape({ id: PropTypes.any }),
+      selectedSchoolProgram: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      }),
       selectedStudent: PropTypes.shape({
-        id: PropTypes.any,
+        id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         student: PropTypes.arrayOf(PropTypes.shape({})),
       }),
     }),
@@ -130,7 +132,7 @@ StudentSchoolProgramContainer.propTypes = {
   allSchoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
-    params: PropTypes.shape({ id: PropTypes.any }),
+    params: PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) }),
   }).isRequired,
 
   loadSchoolProgramDispatch: PropTypes.func.isRequired,

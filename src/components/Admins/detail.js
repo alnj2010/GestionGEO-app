@@ -247,7 +247,7 @@ AdminDetail.propTypes = {
   rol: PropTypes.string,
 
   // eslint-disable-next-line react/forbid-prop-types
-  adminId: PropTypes.any,
+  adminId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,

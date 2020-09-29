@@ -59,7 +59,7 @@ PasswordInput.propTypes = {
   input: PropTypes.shape({}).isRequired,
   className: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  id: PropTypes.any.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   ariaLabel: PropTypes.string.isRequired,
   inputLabel: PropTypes.string.isRequired,
   meta: PropTypes.shape({

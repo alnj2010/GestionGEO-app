@@ -105,16 +105,18 @@ class StudentInscriptionContainer extends Component {
 StudentInscriptionContainer.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.any,
-      idSchoolPeriod: PropTypes.number,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      idSchoolPeriod: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
 
-  schoolPeriods: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.any })).isRequired,
+  schoolPeriods: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) })
+  ).isRequired,
 
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
-      school_period_subject_teacher_id: PropTypes.any,
+      school_period_subject_teacher_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       data_subject: PropTypes.shape({
         subject: PropTypes.shape({
           subject_name: PropTypes.string,
@@ -123,18 +125,18 @@ StudentInscriptionContainer.propTypes = {
         duty: PropTypes.number,
       }),
     })
-  ).isRequired,
+  ),
 
   subjectInscriptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   location: PropTypes.shape({
     state: PropTypes.shape({
-      inscriptedSP: PropTypes.string,
+      inscriptedSP: PropTypes.arrayOf(PropTypes.shape({})),
       fullname: PropTypes.string,
     }),
   }).isRequired,
 
-  idInscription: PropTypes.number.isRequired,
+  idInscription: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   defineDispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func }).isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
@@ -144,6 +146,11 @@ StudentInscriptionContainer.propTypes = {
   cleanSelectedInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
   addStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
   editStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
+};
+
+StudentInscriptionContainer.defaultProps = {
+  subjects: [],
+  idInscription: null,
 };
 
 const mS = (state) => ({

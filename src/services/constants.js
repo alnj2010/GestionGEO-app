@@ -14,6 +14,12 @@ export const URL = {
   CHANGE_PASSWORD: '/changePassword',
 };
 
+export const USER_ROL = {
+  ESTUDIANTE: 'S',
+  ADMINISTRADOR: 'A',
+  PROFESOR: 'T',
+};
+
 export const COORDINATOR_ROL = {
   SECRETARIO: 'SECRETARY',
   COORDINADOR: 'COORDINATOR',

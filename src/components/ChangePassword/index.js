@@ -131,13 +131,7 @@ ChangePassword.propTypes = {
     button: PropTypes.string,
   }).isRequired,
 
-  admin: PropTypes.shape({
-    first_surname: PropTypes.string,
-    first_name: PropTypes.string,
-  }).isRequired,
-
-  // eslint-disable-next-line react/forbid-prop-types
-  changePasswordId: PropTypes.any.isRequired,
+  changePasswordId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
@@ -147,6 +141,9 @@ ChangePassword.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   savePassword: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
+};
+ChangePassword.defaultProps = {
+  changePasswordId: null,
 };
 const changePasswordValidation = (values) => {
   const errors = {};

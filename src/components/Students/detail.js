@@ -435,14 +435,17 @@ class StudentDetail extends Component {
                                 <Download />
                               </InputLabel>
                               <Select
-                                labelId={`select-contance-${data.id}-label`}
+                                label={`select-contance-${data.id}-label`}
                                 id={`select-contance-${data.id}`}
                                 input={<InputBase />}
+                                value=""
                                 onChange={(event) =>
                                   getStudentConstance(data.id, event.target.value)
                                 }
                               >
-                                <MenuItem value="study">Constancia de estudio</MenuItem>
+                                <MenuItem defaultChecked value="study">
+                                  Constancia de estudio
+                                </MenuItem>
                                 <MenuItem value="inscription">Constancia de inscripcion</MenuItem>
                                 <MenuItem value="academicLoad">Historial Academico</MenuItem>
                                 <MenuItem value="studentHistorical">Carga Academica</MenuItem>
@@ -501,7 +504,7 @@ class StudentDetail extends Component {
                     id: 'inscription',
                     icon: Inscription,
                     tooltip: 'Inscribir',
-                    onClick: (event, rowData) =>
+                    onClick: (_, rowData) =>
                       history.push(`/estudiantes/inscripciones/${rowData.id}`, {
                         fullname: `${student.first_name} ${student.second_name || ''} ${
                           student.first_surname
@@ -512,12 +515,13 @@ class StudentDetail extends Component {
                     id: 'constances',
                     icon: Download,
                     tooltip: 'Constancia de estudio',
+                    onClick: () => null,
                   },
                   {
                     id: 'delete',
                     icon: 'delete',
                     tooltip: 'Delete User',
-                    onClick: (event, rowData) => {
+                    onClick: (_, rowData) => {
                       this.handleDialogShow('eliminar', () =>
                         handleDeleteSchoolProgram(studentId, rowData.id)
                       );
@@ -556,13 +560,13 @@ StudentDetail.propTypes = {
   schoolPrograms: PropTypes.arrayOf(
     PropTypes.shape({
       school_program_name: PropTypes.string,
-      id: PropTypes.any,
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
   ).isRequired,
   teachersGuide: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   getSubjectBySchoolProgram: PropTypes.func.isRequired,
   listBySchoolPeriod: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  schoolProgramSelected: PropTypes.number.isRequired,
+  schoolProgramSelected: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
 
   student: PropTypes.shape({
@@ -570,11 +574,11 @@ StudentDetail.propTypes = {
     first_name: PropTypes.string,
     second_name: PropTypes.string,
     second_surname: PropTypes.string,
-    student: PropTypes.arrayOf(PropTypes.shape({})),
+    student: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.arrayOf(PropTypes.shape({}))]),
   }).isRequired,
 
   // eslint-disable-next-line react/forbid-prop-types
-  studentId: PropTypes.any,
+  studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   handleDeleteSchoolProgram: PropTypes.func.isRequired,
   history: PropTypes.shape({
@@ -599,6 +603,7 @@ StudentDetail.propTypes = {
 StudentDetail.defaultProps = {
   subjectsSelected: [],
   studentId: null,
+  schoolProgramSelected: null,
 };
 
 const studentValidation = (values) => {

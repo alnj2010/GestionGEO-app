@@ -46,7 +46,7 @@ Text.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  id: PropTypes.any.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   disabled: PropTypes.bool,
 };
 Text.defaultProps = {

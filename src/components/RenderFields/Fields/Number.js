@@ -48,12 +48,12 @@ Number.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
-  id: PropTypes.any.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   disabled: PropTypes.bool,
   // eslint-disable-next-line react/forbid-prop-types
-  min: PropTypes.any,
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   // eslint-disable-next-line react/forbid-prop-types
-  max: PropTypes.any,
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 Number.defaultProps = {
   disabled: false,

@@ -30,7 +30,7 @@ class StudentHomeContainer extends Component {
 
 StudentHomeContainer.propTypes = {
   miPerfil: PropTypes.shape({
-    id: PropTypes.any,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }).isRequired,
   currentSubjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
