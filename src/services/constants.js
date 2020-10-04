@@ -13,6 +13,7 @@ export const URL = {
   CONSTANCE: '/constance',
   CHANGE_PASSWORD: '/changePassword',
 };
+export const DURATION_TOAST = 3000;
 
 export const USER_ROL = {
   ESTUDIANTE: 'S',
@@ -42,17 +43,18 @@ export const LEVEL_INSTRUCTION = {
 
 export const TEACHER_CATEGORY = {
   INSTRUCTOR: 'INS',
-  INVITADO: 'INV',
   ASISTENTE: 'ASI',
   AGREGADO: 'AGR',
+  ASOCIADO: 'ASO',
   TITULAR: 'TIT',
+  INVITADO: 'INV',
 };
 
 export const TEACHER_DEDICATION = {
-  'MEDIO-TIEMPO': 'MT',
-  CONVENCIONAL: 'CON',
-  'TIEMPO-COMPLETO': 'TC',
+  'MEDIO TIEMPO': 'MT',
+  'TIEMPO CONVENCIONAL': 'TC',
   EXCLUSIVO: 'EXC',
+  'TIEMPO COMPLETO': 'TCO',
 };
 
 export const TEACHER_TYPE = {

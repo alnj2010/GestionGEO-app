@@ -14,6 +14,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { hide } from '../../actions/snackbar';
+import { DURATION_TOAST } from '../../services/constants';
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -115,7 +116,7 @@ function CustomizedSnackbars({ variant, message, showMessage, hideDispatch }) {
         horizontal: 'right',
       }}
       open={showMessage}
-      autoHideDuration={3000}
+      autoHideDuration={DURATION_TOAST}
       onClose={handleClose}
     >
       <MySnackbarContentWrapper onClose={handleClose} variant={variant} message={message} />

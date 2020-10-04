@@ -68,19 +68,19 @@ class ChangePassword extends Component {
                     label: 'Contrasena Actual',
                     field: 'oldPassword',
                     id: 'oldPassword',
-                    type: 'text',
+                    type: 'password',
                   },
                   {
                     label: 'Nueva contraseña',
                     field: 'password',
                     id: 'password',
-                    type: 'text',
+                    type: 'password',
                   },
                   {
                     label: 'Confirmacion de contraseña',
                     field: 'passwordConfirmation',
                     id: 'passwordConfirmation',
-                    type: 'text',
+                    type: 'password',
                   },
                 ]}
               </RenderFields>

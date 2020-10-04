@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
+import Password from './Fields/Password';
 import Text from './Fields/Text';
 import Date from './Fields/Date';
 import Time from './Fields/Time';
@@ -23,6 +24,13 @@ function RenderFields(props) {
           // eslint-disable-next-line react/no-array-index-key
           <Grid key={index} item xs={movil} sm={desktop[index]}>
             <Text {...input} />
+          </Grid>
+        );
+      case 'password':
+        return (
+          // eslint-disable-next-line react/no-array-index-key
+          <Grid key={index} item xs={movil} sm={desktop[index]}>
+            <Password {...input} />
           </Grid>
         );
       case 'select':

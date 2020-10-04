@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 export const jsonToOptions = (options) =>
   Object.entries(options).map((entry) => {
     return {
@@ -5,6 +6,19 @@ export const jsonToOptions = (options) =>
       value: entry[1],
     };
   });
+
+export const reverseJson = (json) => {
+  const reverse = {};
+  // eslint-disable-next-line guard-for-in
+  // eslint-disable-next-line no-restricted-syntax
+  // eslint-disable-next-line guard-for-in
+  // eslint-disable-next-line no-restricted-syntax
+  // eslint-disable-next-line guard-for-in
+  for (const p in json) {
+    reverse[json[p]] = p;
+  }
+  return reverse;
+};
 
 export const handleErrorMsg = (error) => {
   if (error && error.response && error.response.data) {

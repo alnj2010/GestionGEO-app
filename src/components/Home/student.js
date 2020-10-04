@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import * as moment from 'moment';
-
+import { getSessionUserRol } from '../../storage/sessionStorage';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import PresentationHome from './PresentationHome';
 
 const localizer = momentLocalizer(moment);
 
@@ -56,6 +57,15 @@ class StudentHome extends Component {
 
   render() {
     const { miPerfil, classes } = this.props;
+    const {
+      level_instruction: levelInstruction,
+      first_name: firstName,
+      second_name: secondName,
+      first_surname: firstSurname,
+      second_surname: secondSurname,
+      sex,
+    } = miPerfil;
+    const userRol = getSessionUserRol();
     const allViews = Object.keys(Views).map((k) => Views[k]);
     const minTime = new Date();
     minTime.setHours(7, 0, 0);
@@ -64,7 +74,15 @@ class StudentHome extends Component {
 
     return (
       <>
-        <h1>Bienvenido {`${miPerfil.first_name} ${miPerfil.first_surname}`}</h1>
+        <PresentationHome
+          levelInstruction={levelInstruction}
+          firstName={firstName}
+          secondName={secondName}
+          firstSurname={firstSurname}
+          secondSurname={secondSurname}
+          sex={sex}
+          userRol={userRol}
+        />
         <Calendar
           className={classes.calendar}
           events={this.transformData()}
@@ -85,6 +103,10 @@ StudentHome.propTypes = {
   miPerfil: PropTypes.shape({
     first_name: PropTypes.string,
     first_surname: PropTypes.string,
+    level_instruction: PropTypes.string,
+    second_name: PropTypes.string,
+    second_surname: PropTypes.string,
+    sex: PropTypes.string,
   }).isRequired,
   classes: PropTypes.shape({
     calendar: PropTypes.string,

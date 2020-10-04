@@ -12,7 +12,9 @@ class ChangePassword extends Component {
   savePassword = (payload) => {
     const { changePasswordDispatch, history } = this.props;
 
-    changePasswordDispatch(payload).then(() => history.goBack());
+    changePasswordDispatch(payload)
+      .then(() => history.goBack())
+      .catch((err) => console.warn(err));
   };
 
   goBack = () => {

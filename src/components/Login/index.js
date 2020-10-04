@@ -21,24 +21,32 @@ import backImage from '../../images/pif.jpg';
 import { USER_ROL } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 
-const styles = () => ({
+const styles = (theme) => ({
   container: {
-    paddingLeft: '30%',
-    paddingTop: '10%',
-    paddingRight: '30%',
-    backgroundImage: `url(${backImage})`,
     height: '100vh',
+    background: `url(${backImage})`,
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+    backgroundSize: 'cover',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0',
+      height: '0',
+    },
   },
   input: {
     width: '100%',
   },
   form: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: '10px',
   },
   formContainer: {
-    paddingLeft: '10%',
-    paddingRight: '10%',
-    paddingTop: '5%',
+    width: '550px',
+    padding: '1% 5%',
+    margin: ' 0 auto',
     backgroundColor: 'white',
   },
   forgotPassword: {
@@ -145,8 +153,9 @@ let LoginForm = (props) => {
         >
           <DialogTitle id="simple-dialog-title">Seleccione el programa academico</DialogTitle>
           <List>
-            {studentsTypes.map((student) => (
-              <ListItem button onClick={() => handleSetStudent(student)} key={student}>
+            {studentsTypes.map((student, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <ListItem button onClick={() => handleSetStudent(student)} key={index}>
                 <ListItemAvatar>
                   <Avatar>
                     <PersonIcon />
