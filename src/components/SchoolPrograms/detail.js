@@ -220,19 +220,19 @@ const schoolProgramValidation = (values) => {
     errors.schoolProgramName = 'Nombre del Programa academico es requerido';
   }
 
-  if (!values.numCu) {
+  if (!values.numCu && values.conduciveToDegree) {
     errors.numCu = 'Unidades de credito es requerido';
   }
 
-  if (!values.duration) {
+  if (!values.duration && values.conduciveToDegree) {
     errors.duration = 'Duracion es requerido';
   }
 
-  if (!values.minNumCuFinalWork) {
+  if (!values.minNumCuFinalWork && values.conduciveToDegree) {
     errors.minNumCuFinalWork = 'Minimo de UC para TEG es requerido';
   }
 
-  if (!values.minDuration) {
+  if (!values.minDuration && values.conduciveToDegree) {
     errors.minDuration = 'Minimo de semestres es requerido';
   }
 
