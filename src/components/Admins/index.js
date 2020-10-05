@@ -3,7 +3,16 @@ import MaterialTable from 'material-table';
 import PropTypes from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputBase from '@material-ui/core/InputBase';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Download from '@material-ui/icons/Archive';
+import Visibility from '@material-ui/icons/Visibility';
 import Dialog from '../Dialog';
+import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
 import handleExportCsv from '../../utils/handleExportCsv';
 import { getSessionUserId } from '../../storage/sessionStorage';
 
@@ -40,7 +49,7 @@ class AdminsList extends Component {
   };
 
   render = () => {
-    const { admins, isLoading, history, handleDeleteAdmin } = this.props;
+    const { admins, isLoading, history, handleDeleteAdmin, getConstance } = this.props;
     const { func } = this.state;
     return (
       <Grid container spacing={8}>
@@ -67,8 +76,63 @@ class AdminsList extends Component {
             ]}
             data={this.transformData(admins)}
             title="Administradores"
+            components={{
+              Action: (props) => {
+                const {
+                  action: { id, onClick },
+                  data,
+                } = props;
+                switch (id) {
+                  case 'visibility':
+                    return (
+                      <Visibility
+                        style={{ cursor: 'pointer', marginLeft: '30px' }}
+                        onClick={(event) => onClick(event, data)}
+                      />
+                    );
+                  case 'constances':
+                    return (
+                      <div>
+                        <FormControl>
+                          <InputLabel
+                            htmlFor={`select-contance-${data.id}-label`}
+                            style={{ top: 0, transform: 'none' }}
+                          >
+                            <Download />
+                          </InputLabel>
+                          <Select
+                            label={`select-contance-${data.id}-label`}
+                            id={`select-contance-${data.id}`}
+                            input={<InputBase />}
+                            value=""
+                            onChange={(event) =>
+                              getConstance(data.id, USER_INSTANCE.A, event.target.value)
+                            }
+                          >
+                            {CONSTANCES.A.map(({ name, constanceType }) => (
+                              <MenuItem key={constanceType} value={constanceType}>
+                                {name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </div>
+                    );
+                  case 'delete':
+                    return (
+                      <DeleteIcon
+                        style={{ cursor: 'pointer' }}
+                        onClick={(event) => onClick(event, data)}
+                      />
+                    );
+                  default:
+                    return 'x';
+                }
+              },
+            }}
             actions={[
               {
+                id: 'visibility',
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
@@ -76,7 +140,13 @@ class AdminsList extends Component {
                 },
               },
               {
+                id: 'constances',
+                icon: Download,
+                onClick: () => null,
+              },
+              {
                 icon: 'delete',
+                id: 'delete',
                 tooltip: 'Borrar admin',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', () => handleDeleteAdmin(rowData.id));
@@ -114,7 +184,7 @@ AdminsList.propTypes = {
   }).isRequired,
 
   isLoading: PropTypes.bool.isRequired,
-
+  getConstance: PropTypes.func.isRequired,
   show: PropTypes.func.isRequired,
   handleDeleteAdmin: PropTypes.func.isRequired,
 };

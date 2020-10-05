@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
 import { getList, deleteAdmin } from '../../actions/admin';
+import { getConstance } from '../../actions/student';
 import AdminsList from '../../components/Admins';
 
 class AdminsListContainer extends Component {
@@ -30,7 +31,7 @@ class AdminsListContainer extends Component {
   };
 
   render() {
-    const { admins, history, showDispatch } = this.props;
+    const { admins, history, showDispatch, getConstanceDispatch } = this.props;
     const { isLoading } = this.state;
     return (
       <AdminsList
@@ -40,6 +41,7 @@ class AdminsListContainer extends Component {
             actions: 'Acciones',
           },
         }}
+        getConstance={getConstanceDispatch}
         isLoading={isLoading}
         history={history}
         handleAdminDetail={this.handleAdminDetail}
@@ -55,6 +57,7 @@ AdminsListContainer.propTypes = {
   history: PropTypes.shape({}).isRequired,
 
   getListDispatch: PropTypes.func.isRequired,
+  getConstanceDispatch: PropTypes.func.isRequired,
   deleteAdminDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
@@ -67,6 +70,7 @@ const mS = (state) => ({
 
 const mD = {
   getListDispatch: getList,
+  getConstanceDispatch: getConstance,
   deleteAdminDispatch: deleteAdmin,
   cleanDialogDispatch: cleanDialog,
   defineDispatch: define,

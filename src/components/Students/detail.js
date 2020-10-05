@@ -21,7 +21,14 @@ import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 import { getSessionUserRol } from '../../storage/sessionStorage';
-import { STUDENT_TYPE, GENDER, NATIONALITY, LEVEL_INSTRUCTION } from '../../services/constants';
+import {
+  STUDENT_TYPE,
+  GENDER,
+  NATIONALITY,
+  LEVEL_INSTRUCTION,
+  CONSTANCES,
+  USER_INSTANCE,
+} from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 
 const styles = () => ({
@@ -440,15 +447,14 @@ class StudentDetail extends Component {
                                 input={<InputBase />}
                                 value=""
                                 onChange={(event) =>
-                                  getConstance(data.id, 'student', event.target.value)
+                                  getConstance(data.id, USER_INSTANCE.S, event.target.value)
                                 }
                               >
-                                <MenuItem defaultChecked value="study">
-                                  Constancia de estudio
-                                </MenuItem>
-                                <MenuItem value="inscription">Constancia de inscripcion</MenuItem>
-                                <MenuItem value="studentHistorical">Historial Academico</MenuItem>
-                                <MenuItem value="academicLoad">Carga Academica</MenuItem>
+                                {CONSTANCES.S.map(({ name, constanceType }) => (
+                                  <MenuItem key={constanceType} value={constanceType}>
+                                    {name}
+                                  </MenuItem>
+                                ))}
                               </Select>
                             </FormControl>
                           </div>
@@ -519,7 +525,6 @@ class StudentDetail extends Component {
                   {
                     id: 'constances',
                     icon: Download,
-                    tooltip: 'Constancia de estudio',
                     onClick: () => null,
                   },
                   {
