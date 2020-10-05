@@ -292,8 +292,8 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
     });
 };
 
-export const getStudentConstance = (studentId, type) => async (dispatch) => {
-  return Constance.getStudentConstance(studentId, type)
+export const getConstance = (studentId, userType, constanceType) => async (dispatch) => {
+  return Constance.getConstance(studentId, userType, constanceType)
     .then(() => {
       return true;
     })

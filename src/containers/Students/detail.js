@@ -8,7 +8,7 @@ import {
   cleanSelectedStudent,
   saveStudent,
   deleteSchoolProgram,
-  getStudentConstance,
+  getConstance,
 } from '../../actions/student';
 import { getList as getTeacherList } from '../../actions/teacher';
 import { getSubjectBySchoolProgram } from '../../actions/subject';
@@ -100,7 +100,7 @@ class StudentDetailContainer extends Component {
       student,
       schoolPrograms,
       history,
-      getStudentConstanceDispatch,
+      getConstanceDispatch,
       listBySchoolPeriod,
       getSubjectBySchoolProgramDispatch,
       teachers,
@@ -117,7 +117,7 @@ class StudentDetailContainer extends Component {
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}
-        getStudentConstance={getStudentConstanceDispatch}
+        getConstance={getConstanceDispatch}
         handleDeleteSchoolProgram={this.handleDeleteSchoolProgram}
       />
     );
@@ -171,7 +171,7 @@ StudentDetailContainer.propTypes = {
   cleanDialogDispatch: PropTypes.func.isRequired,
   getSchoolProgramListDispatch: PropTypes.func.isRequired,
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
-  getStudentConstanceDispatch: PropTypes.func.isRequired,
+  getConstanceDispatch: PropTypes.func.isRequired,
   getTeacherListDispatch: PropTypes.func.isRequired,
 };
 
@@ -200,7 +200,7 @@ const mD = {
   getTeacherListDispatch: getTeacherList,
   getSchoolProgramListDispatch: getSchoolProgramList,
   deleteSchoolProgramDispatch: deleteSchoolProgram,
-  getStudentConstanceDispatch: getStudentConstance,
+  getConstanceDispatch: getConstance,
 };
 
 export default connect(mS, mD)(StudentDetailContainer);

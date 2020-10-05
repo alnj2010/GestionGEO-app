@@ -15,6 +15,27 @@ export const URL = {
 };
 export const DURATION_TOAST = 3000;
 
+export const CONSTANCES = {
+  A: [
+    {
+      name: 'Constancia trabajo',
+      userType: 'administrator',
+      constanceType: 'workAdministrator',
+    },
+  ],
+  S: [
+    { name: 'Constancia estudio', userType: 'student', constanceType: 'study' },
+    { name: 'Constancia inscripción', userType: 'student', constanceType: 'inscription' },
+    { name: 'Historial Academico', userType: 'student', constanceType: 'studentHistorical' },
+    { name: 'Carga Academica', userType: 'student', constanceType: 'academicLoad' },
+  ],
+  T: [{ name: 'Constancia trabajo', userType: 'teacher', constanceType: 'workTeacher' }],
+};
+export const USER_INSTANCE = {
+  A: 'administrator',
+  S: 'student',
+  T: 'teacher',
+};
 export const USER_ROL = {
   ESTUDIANTE: 'S',
   ADMINISTRADOR: 'A',

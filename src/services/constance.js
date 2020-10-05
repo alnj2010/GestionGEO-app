@@ -3,9 +3,9 @@ import { URL } from './constants';
 import { handleErrorMsg } from '../helpers';
 
 export const Constance = {
-  getStudentConstance(id, type) {
+  getConstance(id, userType, constanceType) {
     return AXIOS({
-      url: `${URL.CONSTANCE}/${type}?student_id=${id}`,
+      url: `${URL.CONSTANCE}/${constanceType}?${userType}_id=${id}`,
       method: 'GET',
       headers: headers('pdf'),
       responseType: 'blob', // important

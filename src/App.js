@@ -11,8 +11,6 @@ import CourseDetail from './containers/MyCourses/detail';
 
 import ChangePassword from './containers/ChangePassword';
 
-import Constancia from './components/Constance';
-
 import Inscription from './containers/Inscriptions';
 
 import MiPerfil from './containers/MiPerfil';
@@ -54,8 +52,6 @@ function App() {
                 <Route exact path="/home" component={Home} />
                 <Route exact path="/cambio-clave" component={ChangePassword} />
                 <Route exact path="/mi-perfil/:id" component={MiPerfil} />
-                <Route exact path="/constancias" component={Constancia} />
-
                 <Route exact path="/mis-cursos" component={MisCursos} />
                 <Route exact path="/mis-cursos/curso/:id" component={CourseDetail} />
 

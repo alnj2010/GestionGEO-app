@@ -154,7 +154,7 @@ class StudentDetail extends Component {
       student,
       handleDeleteSchoolProgram,
       history,
-      getStudentConstance,
+      getConstance,
       teachersGuide,
     } = this.props;
     const { func } = this.state;
@@ -440,15 +440,15 @@ class StudentDetail extends Component {
                                 input={<InputBase />}
                                 value=""
                                 onChange={(event) =>
-                                  getStudentConstance(data.id, event.target.value)
+                                  getConstance(data.id, 'student', event.target.value)
                                 }
                               >
                                 <MenuItem defaultChecked value="study">
                                   Constancia de estudio
                                 </MenuItem>
                                 <MenuItem value="inscription">Constancia de inscripcion</MenuItem>
-                                <MenuItem value="academicLoad">Historial Academico</MenuItem>
-                                <MenuItem value="studentHistorical">Carga Academica</MenuItem>
+                                <MenuItem value="studentHistorical">Historial Academico</MenuItem>
+                                <MenuItem value="academicLoad">Carga Academica</MenuItem>
                               </Select>
                             </FormControl>
                           </div>
@@ -590,7 +590,7 @@ StudentDetail.propTypes = {
     push: PropTypes.func,
     location: PropTypes.shape({ pathname: PropTypes.string }),
   }).isRequired,
-  getStudentConstance: PropTypes.func.isRequired,
+  getConstance: PropTypes.func.isRequired,
 
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,

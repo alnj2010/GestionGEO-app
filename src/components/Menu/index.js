@@ -37,12 +37,15 @@ import Menu from '@material-ui/core/Menu';
 import { Collapse } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import CustomizedSnackbar from '../Snackbar';
+import { getConstance } from '../../actions/student';
 import {
   removeSessionGeoToken,
   getSessionUserRol,
   getSessionUserId,
   getSessionGeoToken,
+  getSessionUser,
 } from '../../storage/sessionStorage';
+import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
 
 const drawerWidth = 240;
 
@@ -124,6 +127,7 @@ class MenuApp extends React.Component {
   constructor() {
     super();
     this.state = {
+      openDownload: false,
       open: false,
       anchorEl: null,
       options: [
@@ -151,15 +155,6 @@ class MenuApp extends React.Component {
           component: Cursos,
           clicked: false,
           roles: ['T'],
-          open: false,
-          options: false,
-        },
-        {
-          link: 'constancias',
-          name: 'Constancias',
-          component: Download,
-          clicked: false,
-          roles: ['S', 'T'],
           open: false,
           options: false,
         },
@@ -250,6 +245,12 @@ class MenuApp extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleOpenDownload = () => {
+    this.setState((state) => {
+      return { openDownload: !state.openDownload };
+    });
+  };
+
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
@@ -303,11 +304,12 @@ class MenuApp extends React.Component {
   };
 
   render() {
-    const { classes, theme, children, history } = this.props;
-    const { anchorEl, options, open: openOption } = this.state;
+    const { classes, theme, children, history, getConstanceDispatch } = this.props;
+    const { anchorEl, options, open: openOption, openDownload } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
-
+    const userSession = getSessionUser();
+    const userId = userSession ? userSession[USER_INSTANCE[rol]].id : null;
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -451,6 +453,35 @@ class MenuApp extends React.Component {
                   ) : null}
                 </Fragment>
               ))}
+            {userSession ? (
+              <>
+                <ListItem button onClick={this.handleOpenDownload}>
+                  <ListItemIcon>
+                    <Download />
+                  </ListItemIcon>
+                  <ListItemText primary="Descargas" className={classes.itemText} />
+                  {openDownload ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+
+                <Collapse in={openDownload} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    {CONSTANCES[rol].map(({ name, userType, constanceType }) => (
+                      <ListItem
+                        button
+                        key={name}
+                        onClick={() => getConstanceDispatch(userId, userType, constanceType)}
+                        className={classes.nested}
+                      >
+                        <ListItemIcon>
+                          <div style={{ width: '10px' }} />
+                        </ListItemIcon>
+                        <ListItemText primary={name} className={classes.itemText} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Collapse>
+              </>
+            ) : null}
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -491,12 +522,15 @@ MenuApp.propTypes = {
     pathname: PropTypes.string,
   }).isRequired,
   children: PropTypes.shape({}).isRequired,
+  getConstanceDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
   message: state.snackbarReducer.message,
 });
-
-const MenuAppWrapper = withStyles(styles, { withTheme: true })(connect(mS, {})(MenuApp));
+const mD = {
+  getConstanceDispatch: getConstance,
+};
+const MenuAppWrapper = withStyles(styles, { withTheme: true })(connect(mS, mD)(MenuApp));
 export default MenuAppWrapper;
