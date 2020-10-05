@@ -65,7 +65,7 @@ class ChangePassword extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Contrasena Actual',
+                    label: 'Contraseña Actual',
                     field: 'oldPassword',
                     id: 'oldPassword',
                     type: 'password',

@@ -260,21 +260,26 @@ class MenuApp extends React.Component {
   };
 
   handleProfile = () => {
+    const { history } = this.props;
     const rol = getSessionUserRol();
     const id = getSessionUserId();
     switch (rol) {
       case 'A':
-        window.location.href = `/administradores/edit/${id}`;
+        this.handleClose();
+        history.push(`/administradores/edit/${id}`);
         break;
       default:
-        window.location.href = `/mi-perfil/${id}`;
+        this.handleClose();
+        history.push(`/mi-perfil/${id}`);
         break;
     }
   };
 
   validateToken = () => {
+    const { history } = this.props;
     if (!getSessionGeoToken()) {
-      window.location.href = '/';
+      this.handleClose();
+      history.push('/');
     }
     return false;
   };
@@ -298,10 +303,11 @@ class MenuApp extends React.Component {
   };
 
   render() {
-    const { classes, theme, children } = this.props;
+    const { classes, theme, children, history } = this.props;
     const { anchorEl, options, open: openOption } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -352,7 +358,8 @@ class MenuApp extends React.Component {
                 <MenuItem onClick={this.handleProfile}>Mi Perfil</MenuItem>
                 <MenuItem
                   onClick={() => {
-                    window.location.href = `/cambio-clave`;
+                    this.handleClose();
+                    history.push(`/cambio-clave`);
                   }}
                 >
                   Cambio de contraseña
@@ -473,6 +480,10 @@ MenuApp.propTypes = {
     content: PropTypes.string,
     itemText: PropTypes.string,
   }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+
   theme: PropTypes.shape({
     direction: PropTypes.string,
   }).isRequired,
