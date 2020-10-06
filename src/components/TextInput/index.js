@@ -1,41 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { string } from 'prop-types';
 
-class TextInput extends Component {
-  render() {
-    const {
-      input,
-      className,
-      id,
-      label,
-      placeholder,
-      margin,
-      type,
-      meta: { touched, error },
-    } = this.props;
-    return (
-      <React.Fragment>
-        <TextField
-          id={id}
-          label={label}
-          placeholder={placeholder}
-          margin={margin}
-          type={type}
-          className={className}
-          {...input}
-        />
-        {touched && error && <p style={{ color: 'red' }}>{error}</p>}
-      </React.Fragment>
-    );
-  }
+function TextInput(props) {
+  const {
+    input,
+    className,
+    id,
+    label,
+    placeholder,
+    margin,
+    type,
+    meta: { touched, error },
+  } = props;
+  return (
+    <>
+      <TextField
+        id={id}
+        label={label}
+        placeholder={placeholder}
+        margin={margin}
+        type={type}
+        className={className}
+        {...input}
+      />
+      {touched && error && <p style={{ color: 'red' }}>{error}</p>}
+    </>
+  );
 }
+
 TextInput.propTypes = {
-  className: string,
-  id: string.isRequired,
-  label: string,
-  placeholder: string,
-  margin: string,
-  type: string.isRequired,
+  input: PropTypes.shape({}).isRequired,
+  meta: PropTypes.shape({ touched: PropTypes.bool, error: PropTypes.string }).isRequired,
+  className: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  label: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  margin: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 export default TextInput;

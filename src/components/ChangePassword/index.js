@@ -1,40 +1,42 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
-import { Grid, Button } from "@material-ui/core";
-import { Form, reduxForm, change, submit } from "redux-form";
-import { show } from "../../actions/dialog";
-import Dialog from "../Dialog";
-import RenderFields from "../RenderFields";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import { Grid, Button } from '@material-ui/core';
+import { Form, reduxForm, submit } from 'redux-form';
+import { show } from '../../actions/dialog';
+import Dialog from '../Dialog';
+import RenderFields from '../RenderFields';
 
-const styles = theme => ({
+const styles = () => ({
   form: {
-    paddingLeft: "5%"
+    paddingLeft: '5%',
   },
-  buttonContainer: { paddingTop: "2%" },
+  buttonContainer: { paddingTop: '2%' },
   save: {
-    color: "white",
-    backgroundColor: "#61A956",
-    "&:hover": {
-      backgroundColor: "rgb(78, 127, 71)"
-    }
+    color: 'white',
+    backgroundColor: '#61A956',
+    '&:hover': {
+      backgroundColor: 'rgb(78, 127, 71)',
+    },
   },
   button: {
-    width: "100%"
-  }
+    width: '100%',
+  },
 });
 
 class ChangePassword extends Component {
   constructor() {
     super();
     this.state = {
-      func: null
+      func: null,
     };
   }
 
   handleDialogShow = (action, func) => {
-    this.setState({ func: func }, () => {
-      this.props.show(action);
+    const { showDispatch } = this.props;
+    this.setState({ func }, () => {
+      showDispatch(action);
     });
   };
 
@@ -48,14 +50,14 @@ class ChangePassword extends Component {
       pristine,
       submitting,
       valid,
-      submit
+      submitDispatch,
     } = this.props;
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(savePassword)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>Cambio de contrasena</h3>
+            <h3>Cambio de contraseña</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -63,23 +65,23 @@ class ChangePassword extends Component {
               <RenderFields>
                 {[
                   {
-                    label: "Contrasena Actual",
-                    field: "oldPassword",
-                    id: "oldPassword",
-                    type: "text"
+                    label: 'Contraseña Actual',
+                    field: 'oldPassword',
+                    id: 'oldPassword',
+                    type: 'password',
                   },
                   {
-                    label: "Nueva contrasena",
-                    field: "password",
-                    id: "password",
-                    type: "text"
+                    label: 'Nueva contraseña',
+                    field: 'password',
+                    id: 'password',
+                    type: 'password',
                   },
                   {
-                    label: "Confirmacion de contrasena",
-                    field: "passwordConfirmation",
-                    id: "passwordConfirmation",
-                    type: "text"
-                  }
+                    label: 'Confirmacion de contraseña',
+                    field: 'passwordConfirmation',
+                    id: 'passwordConfirmation',
+                    type: 'password',
+                  },
                 ]}
               </RenderFields>
             </Grid>
@@ -97,8 +99,8 @@ class ChangePassword extends Component {
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         changePasswordId
-                          ? this.handleDialogShow("actualizar", submit)
-                          : submit("changePassword")
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('changePassword')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -107,11 +109,7 @@ class ChangePassword extends Component {
                   </Grid>
 
                   <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      onClick={goBack}
-                      className={classes.button}
-                    >
+                    <Button variant="contained" onClick={goBack} className={classes.button}>
                       Cancelar
                     </Button>
                   </Grid>
@@ -125,38 +123,59 @@ class ChangePassword extends Component {
     );
   };
 }
-const changePasswordValidation = values => {
+ChangePassword.propTypes = {
+  classes: PropTypes.shape({
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    save: PropTypes.string,
+    button: PropTypes.string,
+  }).isRequired,
+
+  changePasswordId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  savePassword: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
+};
+ChangePassword.defaultProps = {
+  changePasswordId: null,
+};
+const changePasswordValidation = (values) => {
   const errors = {};
 
-  if (!values.oldPassword) errors.oldPassword = "Campo Requerido";
+  if (!values.oldPassword) errors.oldPassword = 'Campo Requerido';
 
-  if (!values.password) errors.password = "Campo Requerido";
+  if (!values.password) errors.password = 'Campo Requerido';
 
-  if (!values.passwordConfirmation)
-    errors.passwordConfirmation = "Campo Requerido";
+  if (!values.passwordConfirmation) errors.passwordConfirmation = 'Campo Requerido';
 
   if (
     values.passwordConfirmation &&
     values.password &&
     values.passwordConfirmation !== values.password
   )
-    errors.passwordConfirmation = "La contrasena de confirmacion no coincide";
+    errors.passwordConfirmation = 'La contraseña de confirmacion no coincide';
 
   return errors;
 };
 
-ChangePassword = reduxForm({
-  form: "changePassword",
+let ChangePasswordWrapper = reduxForm({
+  form: 'changePassword',
   validate: changePasswordValidation,
-  enableReinitialize: true
+  enableReinitialize: true,
 })(ChangePassword);
 
-ChangePassword = connect(
-  state => ({
+ChangePasswordWrapper = connect(
+  (state) => ({
     initialValues: {},
-    action: state.dialogReducer.action
+    action: state.dialogReducer.action,
   }),
-  { change, show, submit }
-)(ChangePassword);
+  { showDispatch: show, submitDispatch: submit }
+)(ChangePasswordWrapper);
 
-export default withStyles(styles)(ChangePassword);
+export default withStyles(styles)(ChangePasswordWrapper);

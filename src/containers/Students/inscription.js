@@ -1,43 +1,57 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
-getAvailableSubjects,
-addStudentPeriodSchool,
-editStudentPeriodSchool,
-getInscribedSchoolPeriods,
-cleanSelectedInscribedSchoolPeriods
+  getAvailableSubjects,
+  addStudentPeriodSchool,
+  editStudentPeriodSchool,
+  getInscribedSchoolPeriods,
+  cleanSelectedInscribedSchoolPeriods,
 } from '../../actions/student';
+
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 
 import StudentInscription from '../../components/Students/inscription';
 import { define, cleanDialog } from '../../actions/dialog';
-export class StudentInscriptionContainer extends Component {
+
+class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
-    const { 
-      match:{params:{id,idSchoolPeriod}}, 
-      define 
+    const {
+      match: {
+        params: { id, idSchoolPeriod },
+      },
+      defineDispatch,
+      getSchoolPeriodsListDispatch,
+      getInscribedSchoolPeriodsDispatch,
     } = this.props;
-    this.props.getSchoolPeriodsList();
-    this.props.getInscribedSchoolPeriods(id,idSchoolPeriod)
-    define('estudiante');
-  };
-  componentWillUnmount = () => {
-    this.props.cleanSelectedInscribedSchoolPeriods();
-    this.props.cleanDialog();
-    
+    getSchoolPeriodsListDispatch();
+    getInscribedSchoolPeriodsDispatch(id, idSchoolPeriod);
+    defineDispatch('estudiante');
   };
 
-  saveInscription = values => {
-    const{
-      addStudentPeriodSchool,
-      editStudentPeriodSchool,
+  componentWillUnmount = () => {
+    const { cleanSelectedInscribedSchoolPeriodsDispatch, cleanDialogDispatch } = this.props;
+    cleanSelectedInscribedSchoolPeriodsDispatch();
+    cleanDialogDispatch();
+  };
+
+  saveInscription = (values) => {
+    const {
+      addStudentPeriodSchoolDispatch,
+      editStudentPeriodSchoolDispatch,
       idInscription,
-      match:{params:{id,idSchoolPeriod}},
-    }=this.props
-    if(!idSchoolPeriod)
-      addStudentPeriodSchool({ ...values, studentId:id }).then(res=>this.goBack());
+      match: {
+        params: { id, idSchoolPeriod },
+      },
+    } = this.props;
+    if (!idSchoolPeriod)
+      addStudentPeriodSchoolDispatch({ ...values, studentId: id }).then(() => this.goBack());
     else
-      editStudentPeriodSchool({...values, studentId:id,id:idInscription })
+      editStudentPeriodSchoolDispatch({
+        ...values,
+        studentId: id,
+        id: idInscription,
+      });
   };
 
   goBack = () => {
@@ -49,20 +63,38 @@ export class StudentInscriptionContainer extends Component {
     const {
       schoolPeriods,
       subjects,
-      match:{params:{id,idSchoolPeriod}},
-      getAvailableSubjects,
+      match: {
+        params: { id, idSchoolPeriod },
+      },
+      getAvailableSubjectsDispatch,
       subjectInscriptions,
-      location:{state:{inscriptedSP, fullname }}
+      location: {
+        state: { inscriptedSP, fullname },
+      },
     } = this.props;
     return (
       <StudentInscription
-        schoolPeriods={ schoolPeriods.filter(sp => !inscriptedSP.some(isp=>isp.id===sp.id  && parseInt(isp.id)!==parseInt(idSchoolPeriod) )) }
+        schoolPeriods={schoolPeriods.filter(
+          (sp) =>
+            !inscriptedSP.some(
+              (isp) => isp.id === sp.id && parseInt(isp.id, 10) !== parseInt(idSchoolPeriod, 10)
+            )
+        )}
         saveInscription={this.saveInscription}
         goBack={this.goBack}
         studentId={id}
         idSchoolPeriod={idSchoolPeriod}
-        subjects={subjects?subjects.map(item =>({id:item.school_period_subject_teacher_id,subject_name:item.data_subject.subject.subject_name,duty:item.data_subject.duty,subject:{uc:item.data_subject.subject.uc}}) ): []}
-        getAvailableSubjects={getAvailableSubjects}
+        subjects={
+          subjects
+            ? subjects.map((item) => ({
+                id: item.school_period_subject_teacher_id,
+                subject_name: item.data_subject.subject.name,
+                duty: item.data_subject.duty,
+                subject: { uc: item.data_subject.subject.uc },
+              }))
+            : []
+        }
+        getAvailableSubjects={getAvailableSubjectsDispatch}
         subjectInscriptions={subjectInscriptions}
         fullname={fullname}
       />
@@ -70,29 +102,73 @@ export class StudentInscriptionContainer extends Component {
   }
 }
 
+StudentInscriptionContainer.propTypes = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      idSchoolPeriod: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    }),
+  }).isRequired,
 
-const mS = state => ({
+  schoolPeriods: PropTypes.arrayOf(
+    PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) })
+  ).isRequired,
+
+  subjects: PropTypes.arrayOf(
+    PropTypes.shape({
+      school_period_subject_teacher_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      data_subject: PropTypes.shape({
+        subject: PropTypes.shape({
+          subject_name: PropTypes.string,
+          uc: PropTypes.number,
+        }),
+        duty: PropTypes.number,
+      }),
+    })
+  ),
+
+  subjectInscriptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      inscriptedSP: PropTypes.arrayOf(PropTypes.shape({})),
+      fullname: PropTypes.string,
+    }),
+  }).isRequired,
+
+  idInscription: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  defineDispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({ goBack: PropTypes.func }).isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  getSchoolPeriodsListDispatch: PropTypes.func.isRequired,
+  getAvailableSubjectsDispatch: PropTypes.func.isRequired,
+  getInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
+  cleanSelectedInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
+  addStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
+  editStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
+};
+
+StudentInscriptionContainer.defaultProps = {
+  subjects: [],
+  idInscription: null,
+};
+
+const mS = (state) => ({
   subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
-  idInscription:state.studentReducer.selectedStudentSchoolPeriod.idInscription,
+  idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
   schoolPeriods: state.schoolPeriodReducer.list,
   subjectInscriptions: state.studentReducer.availableSubjects,
-  
 });
 
 const mD = {
-  define,
-  cleanDialog,
-  getSchoolPeriodsList,
-  getAvailableSubjects,
-  getInscribedSchoolPeriods,
-  cleanSelectedInscribedSchoolPeriods,
-  addStudentPeriodSchool,
-  editStudentPeriodSchool
+  defineDispatch: define,
+  cleanDialogDispatch: cleanDialog,
+  getSchoolPeriodsListDispatch: getSchoolPeriodsList,
+  getAvailableSubjectsDispatch: getAvailableSubjects,
+  getInscribedSchoolPeriodsDispatch: getInscribedSchoolPeriods,
+  cleanSelectedInscribedSchoolPeriodsDispatch: cleanSelectedInscribedSchoolPeriods,
+  addStudentPeriodSchoolDispatch: addStudentPeriodSchool,
+  editStudentPeriodSchoolDispatch: editStudentPeriodSchool,
 };
 
-StudentInscriptionContainer = connect(
-  mS,
-  mD,
-)(StudentInscriptionContainer);
-
-export default StudentInscriptionContainer;
+export default connect(mS, mD)(StudentInscriptionContainer);

@@ -1,69 +1,80 @@
 import React, { Component } from 'react';
-import { array, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
 import { getList, deleteAdmin } from '../../actions/admin';
+import { getConstance } from '../../actions/student';
 import AdminsList from '../../components/Admins';
 
-export class AdminsListContainer extends Component {
+class AdminsListContainer extends Component {
   constructor() {
     super();
     this.state = {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
-    const { getList, define } = this.props;
-    getList().then(() => this.setState({ isLoading: false }));
-    define('administrador');
-  };
-  componentWillUnmount = () => {
-    this.props.cleanDialog();
+    const { getListDispatch, defineDispatch } = this.props;
+    getListDispatch().then(() => this.setState({ isLoading: false }));
+    defineDispatch('administrador');
   };
 
-  handleDeleteAdmin = id => {
-    const { getList, deleteAdmin } = this.props;
-    deleteAdmin(id).then(res => getList());
+  componentWillUnmount = () => {
+    const { cleanDialogDispatch } = this.props;
+    cleanDialogDispatch();
+  };
+
+  handleDeleteAdmin = (id) => {
+    const { getListDispatch, deleteAdminDispatch } = this.props;
+    deleteAdminDispatch(id).then(() => getListDispatch());
   };
 
   render() {
-    const { admins, history, show } = this.props;
+    const { admins, history, showDispatch, getConstanceDispatch } = this.props;
     const { isLoading } = this.state;
     return (
       <AdminsList
         admins={admins}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
+        getConstance={getConstanceDispatch}
         isLoading={isLoading}
         history={history}
         handleAdminDetail={this.handleAdminDetail}
         handleDeleteAdmin={this.handleDeleteAdmin}
-        show={show}
+        show={showDispatch}
       />
     );
   }
 }
 
 AdminsListContainer.propTypes = {
-  admins: array,
-  history: object.isRequired,
-  getList: func.isRequired,
-  deleteAdmin: func.isRequired,
+  admins: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  history: PropTypes.shape({}).isRequired,
+
+  getListDispatch: PropTypes.func.isRequired,
+  getConstanceDispatch: PropTypes.func.isRequired,
+  deleteAdminDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   admins: state.adminReducer.list,
 });
 
 const mD = {
-  getList,
-  deleteAdmin,
-  cleanDialog,
-  define,
-  show,
+  getListDispatch: getList,
+  getConstanceDispatch: getConstance,
+  deleteAdminDispatch: deleteAdmin,
+  cleanDialogDispatch: cleanDialog,
+  defineDispatch: define,
+  showDispatch: show,
 };
 
-AdminsListContainer = connect(
-  mS,
-  mD,
-)(AdminsListContainer);
-
-export default AdminsListContainer;
+export default connect(mS, mD)(AdminsListContainer);

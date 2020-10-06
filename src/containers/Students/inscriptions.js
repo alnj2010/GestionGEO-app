@@ -1,35 +1,57 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getInscribedSchoolPeriods,cleanSelectedInscriptionSchoolPeriods } from '../../actions/student';
+import {
+  getInscribedSchoolPeriods,
+  cleanSelectedInscriptionSchoolPeriods,
+} from '../../actions/student';
 import StudentInscriptions from '../../components/Students/inscriptions';
 
-export class StudentInscriptionsContainer extends Component {
+class StudentInscriptionsContainer extends Component {
   constructor() {
     super();
     this.state = {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
-    const { getInscribedSchoolPeriods, match:{params:{id}}, } = this.props;
-    getInscribedSchoolPeriods(id).then(() => this.setState({ isLoading: false }));
+    const {
+      getInscribedSchoolPeriodsDispatch,
+      match: {
+        params: { id },
+      },
+    } = this.props;
+    getInscribedSchoolPeriodsDispatch(id).then(() => this.setState({ isLoading: false }));
   };
+
   componentWillUnmount = () => {
-    this.props.cleanSelectedInscriptionSchoolPeriods();
+    const { cleanSelectedInscriptionSchoolPeriodsDispatch } = this.props;
+    cleanSelectedInscriptionSchoolPeriodsDispatch();
   };
 
   render() {
-    const { 
-      inscribedSchoolPeriods, 
-      history, 
-      match: { params: { id }},
-      location:{ state: { fullname } }
+    const {
+      inscribedSchoolPeriods,
+      history,
+      match: {
+        params: { id },
+      },
+      location: {
+        state: { fullname },
+      },
     } = this.props;
+
     const { isLoading } = this.state;
     return (
       <StudentInscriptions
         inscribedSchoolPeriods={inscribedSchoolPeriods}
         studentId={id}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         fullname={fullname}
@@ -37,20 +59,32 @@ export class StudentInscriptionsContainer extends Component {
     );
   }
 }
+StudentInscriptionsContainer.propTypes = {
+  inscribedSchoolPeriods: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
-const mS = state => ({
+  history: PropTypes.shape({}).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    }),
+  }).isRequired,
+
+  location: PropTypes.shape({
+    state: PropTypes.shape({
+      fullname: PropTypes.string,
+    }),
+  }).isRequired,
+
+  cleanSelectedInscriptionSchoolPeriodsDispatch: PropTypes.func.isRequired,
+  getInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
+};
+const mS = (state) => ({
   inscribedSchoolPeriods: state.studentReducer.inscribedSchoolPeriods,
 });
 
 const mD = {
-  getInscribedSchoolPeriods,
-  cleanSelectedInscriptionSchoolPeriods
-
+  getInscribedSchoolPeriodsDispatch: getInscribedSchoolPeriods,
+  cleanSelectedInscriptionSchoolPeriodsDispatch: cleanSelectedInscriptionSchoolPeriods,
 };
 
-StudentInscriptionsContainer = connect(
-  mS,
-  mD,
-)(StudentInscriptionsContainer);
-
-export default StudentInscriptionsContainer;
+export default connect(mS, mD)(StudentInscriptionsContainer);

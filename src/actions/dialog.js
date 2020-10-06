@@ -5,25 +5,25 @@ export const ACTIONS = {
   CLEAN: 'dialog/clean',
 };
 
-export const show = action => async dispatch => {
+export const show = (action) => async (dispatch) => {
   dispatch({
     type: ACTIONS.SHOW,
-    payload: { open: true, action: action },
+    payload: { open: true, action },
   });
 };
 
-export const define = entity => async dispatch => {
+export const define = (entity) => async (dispatch) => {
   dispatch({
     type: ACTIONS.DEFINE,
-    payload: { entity: entity },
+    payload: { entity },
   });
 };
 
-export const hide = () => async dispatch => {
+export const hide = () => async (dispatch) => {
   dispatch({ type: ACTIONS.HIDE, payload: { open: false } });
 };
 
-export const cleanDialog = () => async dispatch => {
+export const cleanDialog = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN,
     payload: { open: false, action: '', entity: '' },

@@ -1,57 +1,53 @@
 import React, { Component } from 'react';
-import { array, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
 import { getCoursesList } from '../../actions/myCourse';
 import MyCoursesList from '../../components/MyCourses';
 
-export class MisCursosContainer extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isLoading: true,
-    };
-  }
+class MisCursosContainer extends Component {
   componentDidMount = () => {
-    const { getCoursesList, define } = this.props;
-    getCoursesList();
-    define('cursos');
+    const { getCoursesListDispatch, defineDispatch } = this.props;
+    getCoursesListDispatch();
+    defineDispatch('cursos');
   };
+
   componentWillUnmount = () => {
-    this.props.cleanDialog();
+    const { cleanDialogDispatch } = this.props;
+    cleanDialogDispatch();
   };
 
   render() {
-  const {myCourses,history} =this.props;
-    return (
-      <MyCoursesList
-        history={history}
-        myCourses={myCourses}
-      />
-    );
+    const { myCourses, history, showDispatch } = this.props;
+    return <MyCoursesList history={history} myCourses={myCourses} show={showDispatch} />;
   }
 }
 
 MisCursosContainer.propTypes = {
-  myCourses: array,
-  history: object.isRequired,
-  getCoursesList: func.isRequired,
+  myCourses: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    })
+  ).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+
+  getCoursesListDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   myCourses: state.myCourseReducer.list,
 });
 
 const mD = {
-  getCoursesList,
-  cleanDialog,
-  define,
-  show,
+  getCoursesListDispatch: getCoursesList,
+  cleanDialogDispatch: cleanDialog,
+  defineDispatch: define,
+  showDispatch: show,
 };
 
-MisCursosContainer = connect(
-  mS,
-  mD,
-)(MisCursosContainer);
-
-export default MisCursosContainer;
+export default connect(mS, mD)(MisCursosContainer);

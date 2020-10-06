@@ -1,43 +1,40 @@
-import React, { Component,Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Grid,
-  Button,
-  Typography
-} from '@material-ui/core';
+import { Grid, Button, Typography } from '@material-ui/core';
 import * as moment from 'moment';
-import { Form, reduxForm, change, submit, FieldArray, formValueSelector,Field } from 'redux-form';
-import { object, func, bool, number } from 'prop-types';
-import { show } from '../../actions/dialog';
-import Dialog from '../Dialog';
-import RenderFields from '../RenderFields'
+import { Form, reduxForm, submit, FieldArray, formValueSelector, Field } from 'redux-form';
+import PropTypes from 'prop-types';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { WEEK_DAYS, SUBJECT_PERIOD_MODALITY } from '../../services/constants';
+import { jsonToOptions } from '../../helpers';
+import { show } from '../../actions/dialog';
+import Dialog from '../Dialog';
+import RenderFields from '../RenderFields';
 
-
-const styles = theme => ({
+const styles = (theme) => ({
   fab: {
-    marginTop:50,
+    marginTop: 50,
     margin: theme.spacing.unit,
   },
   form: {
     paddingLeft: '5%',
   },
   buttonContainer: { paddingTop: '2%' },
-  buttonSchedule:{
+  buttonSchedule: {
     marginTop: theme.spacing.unit,
     padding: 2,
     width: '22%',
   },
   button: {
-    width:'100%'
+    width: '100%',
   },
   buttonDelete: {
-    marginTop:0,
-    padding:10
+    display: 'flex',
+    alignItems: 'flex-end',
   },
   save: {
     color: 'white',
@@ -46,8 +43,8 @@ const styles = theme => ({
       backgroundColor: 'rgb(78, 127, 71)',
     },
   },
-  subtitle:{
-    paddingTop:50
+  subtitle: {
+    paddingTop: 50,
   },
 });
 
@@ -58,73 +55,198 @@ class SchoolPeriodDetail extends Component {
       func: null,
     };
   }
-  unselectedSubjects = ( pos ) =>{
-    const {subjects, subjectsSelected} =this.props;
-    return subjects.filter( item => !subjectsSelected.some((selected,index)=>selected.subjectId===item.id && pos>index) )
-  }
 
-  renderSchedule = ({ fields, meta: { error, submitFailed } }) => (<Grid container justify="center">    
-  {fields.map((schedule, index) => (
-    <Fragment key={index}>
-      <Grid container item xs={10}>
-        <Field component="input" name="schoolPeriodSubjectTeacherId" type="hidden" style={{ height: 0 }} />
-        <RenderFields lineal={true} >{[
-          { label: 'Dia',field: `${schedule}.day`, id: `${schedule}.day`, type: 'select', options: ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo'].map(day => { return { key: day, value: day } }) },
-          { label: 'Hora inicio',field: `${schedule}.startHour`, id: `${schedule}.startHour`, type: 'time' },
-          { label: 'Hora fin',field: `${schedule}.endHour`, id: `${schedule}.endHour`, type: 'time' },
-          { label: 'Aula',field: `${schedule}.classroom`, id: `${schedule}.classroom`, type: 'text' },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={2}>
-        <IconButton className={this.props.classes.buttonDelete} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
-          <DeleteIcon />
-        </IconButton>
-      </Grid>
-    </Fragment>      
-    ))}
-    <Grid item xs={12}>
-        <Button variant="contained" color="primary" className={this.props.classes.buttonSchedule} onClick={() => fields.push({endHour:'00:00:00',startHour:'00:00:00'})} >horario +</Button>
-    </Grid>
-  </Grid>)
-
-  renderSubjects = ({ fields, meta: { error, submitFailed } }) => (<Fragment>    
-    {fields.map((subject, index) => (
-    <Grid container justify="center" key={index}>
-      <Grid container item xs={10}>
-        <RenderFields lineal={[3,3,2,2,2]} >{[
-          {field: `${subject}.subjectId`, id: `${subject}.subjectId`, type: 'select', label:'Materia', options: this.unselectedSubjects(index).map(subject => { return { key: subject.subject_name, value: subject.id } }) },
-          {field: `${subject}.teacherId`, id: `${subject}.teacherId`, type: 'select', label:'Profesor impartidor', options: this.props.teachers.map(teacher => { return { key: `${teacher.first_name} ${teacher.second_name?teacher.second_name:''} ${teacher.first_surname} ${teacher.second_surname?teacher.second_surname:''}`, value: teacher.teacher.id } }) },
-          {label:'Modalidad', field: `${subject}.modality`, id: `${subject}.modality`, type: 'select', options: [{key:'REGULAR',value:"REG"}, {key:'INTENSIVO',value:"INT"}].map(type => { return { key: type.key, value: type.value } }) },
-
-          {label: 'Maximo de alumnos', field: `${subject}.limit`, id: `${subject}.limit`, type: 'number', min:0 },
-          {label: 'Aranceles (Bs)', field: `${subject}.duty`, id: `${subject}.duty`, type: 'number', min:0 },
-        ]}</RenderFields>      
-      </Grid>
-      <Grid item xs={2}>
-        <IconButton className={this.props.classes.button} aria-label="remover" color="secondary" onClick={() => fields.remove(index)}>
-          <DeleteIcon />
-        </IconButton>
-      </Grid>   
-      <Grid item xs={10}>
-        <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
-      </Grid>
-    </Grid>      
-    ))}
-    <Grid container item xs={12} justify={'center'}>
-      <Grid item xs={1}>
-        <Fab color="primary" aria-label="Add" className={this.props.classes.fab} disabled={this.props.subjects && this.props.subjectsSelected && (this.props.subjects.length===this.props.subjectsSelected.length)} onClick={() => fields.push({schedule:[{endHour:'00:00:00',startHour:'00:00:00'}]})}>
-          <AddIcon />
-        </Fab>
-      </Grid>      
-    </Grid>
-  </Fragment>)
-
-  handleDialogShow = (action, func) => {
-    this.setState({ func: func }, () => {
-      this.props.show(action);
-    });
+  unselectedSubjects = (pos) => {
+    const { subjects, subjectsSelected } = this.props;
+    return subjects.filter(
+      (item) =>
+        !subjectsSelected.some((selected, index) => selected.subjectId === item.id && pos > index)
+    );
   };
 
+  renderSchedule = ({ fields }) => {
+    const { classes } = this.props;
+    return (
+      <Grid container justify="center">
+        {fields.map((schedule, index) => (
+          // eslint-disable-next-line
+          <Fragment key={index}>
+            <Grid container item xs={10}>
+              <Field
+                component="input"
+                name="schoolPeriodSubjectTeacherId"
+                type="hidden"
+                style={{ height: 0 }}
+              />
+              <RenderFields lineal>
+                {[
+                  {
+                    label: 'Dia',
+                    field: `${schedule}.day`,
+                    id: `${schedule}.day`,
+                    type: 'select',
+                    options: jsonToOptions(WEEK_DAYS),
+                  },
+                  {
+                    label: 'Hora inicio',
+                    field: `${schedule}.startHour`,
+                    id: `${schedule}.startHour`,
+                    type: 'time',
+                  },
+                  {
+                    label: 'Hora fin',
+                    field: `${schedule}.endHour`,
+                    id: `${schedule}.endHour`,
+                    type: 'time',
+                  },
+                  {
+                    label: 'Aula',
+                    field: `${schedule}.classroom`,
+                    id: `${schedule}.classroom`,
+                    type: 'text',
+                  },
+                ]}
+              </RenderFields>
+            </Grid>
+            <Grid item xs={1} className={classes.buttonDelete}>
+              <IconButton
+                aria-label="remover"
+                color="secondary"
+                onClick={() => fields.remove(index)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+          </Fragment>
+        ))}
+        <Grid item container xs={12} justify="center">
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.buttonSchedule}
+            onClick={() =>
+              fields.push({
+                endHour: '00:00:00',
+                startHour: '00:00:00',
+              })
+            }
+          >
+            horario +
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  };
+
+  renderSubjects = ({ fields }) => {
+    const { teachers, classes, subjects, subjectsSelected } = this.props;
+    return (
+      <>
+        {fields.map((subject, index) => (
+          // eslint-disable-next-line
+          <Grid container justify="center" key={index}>
+            <Grid container item xs={10}>
+              <RenderFields lineal={[3, 3, 2, 2, 2]}>
+                {[
+                  {
+                    field: `${subject}.subjectId`,
+                    id: `${subject}.subjectId`,
+                    type: 'select',
+                    label: 'Materia',
+                    options: this.unselectedSubjects(index).map((item) => {
+                      return {
+                        key: item.name,
+                        value: item.id,
+                      };
+                    }),
+                  },
+                  {
+                    field: `${subject}.teacherId`,
+                    id: `${subject}.teacherId`,
+                    type: 'select',
+                    label: 'Profesor impartidor',
+                    options: teachers.map((teacher) => {
+                      return {
+                        key: `${teacher.first_name} ${
+                          teacher.second_name ? teacher.second_name : ''
+                        } ${teacher.first_surname} ${
+                          teacher.second_surname ? teacher.second_surname : ''
+                        }`,
+                        value: teacher.teacher.id,
+                      };
+                    }),
+                  },
+                  {
+                    label: 'Modalidad',
+                    field: `${subject}.modality`,
+                    id: `${subject}.modality`,
+                    type: 'select',
+                    options: jsonToOptions(SUBJECT_PERIOD_MODALITY),
+                  },
+
+                  {
+                    label: 'Maximo de alumnos',
+                    field: `${subject}.limit`,
+                    id: `${subject}.limit`,
+                    type: 'number',
+                    min: 0,
+                  },
+                  {
+                    label: 'Aranceles (Bs)',
+                    field: `${subject}.duty`,
+                    id: `${subject}.duty`,
+                    type: 'number',
+                    min: 0,
+                  },
+                ]}
+              </RenderFields>
+            </Grid>
+            <Grid item xs={1} className={classes.buttonDelete}>
+              <IconButton
+                aria-label="remover"
+                color="secondary"
+                onClick={() => fields.remove(index)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Grid>
+            <Grid item xs={10}>
+              <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
+            </Grid>
+          </Grid>
+        ))}
+        <Grid container item xs={12} justify="center">
+          <Grid item xs={1} container justify="center">
+            <Fab
+              color="primary"
+              aria-label="Add"
+              className={classes.fab}
+              disabled={subjects && subjectsSelected && subjects.length === subjectsSelected.length}
+              onClick={() =>
+                fields.push({
+                  schedule: [
+                    {
+                      endHour: '00:00:00',
+                      startHour: '00:00:00',
+                    },
+                  ],
+                })
+              }
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
+        </Grid>
+      </>
+    );
+  };
+
+  handleDialogShow = (action, func) => {
+    const { showDispatch } = this.props;
+    this.setState({ func }, () => {
+      showDispatch(action);
+    });
+  };
 
   render = () => {
     const {
@@ -137,52 +259,109 @@ class SchoolPeriodDetail extends Component {
       pristine,
       submitting,
       valid,
-      submit,
+      submitDispatch,
       startDate,
-      schoolPeriod
+      schoolPeriod,
     } = this.props;
     const { func } = this.state;
-    
+
     return (
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {schoolPeriodId ? `Periodo semestral: ${schoolPeriod.cod_school_period}` : 'Nuevo Periodo semestral'}</h3>
+            <h3>
+              {schoolPeriodId
+                ? `Periodo semestral: ${schoolPeriod.cod_school_period}`
+                : 'Nuevo Periodo semestral'}
+            </h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
-            <Grid container >
+            <Grid container>
               <Grid container justify="center" item xs={12}>
-                <RenderFields >{[
-                  { label: 'Codigo', field: 'codSchoolPeriod', id: 'codSchoolPeriod', type: 'text' },
-                ]}</RenderFields>
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Codigo',
+                      field: 'codSchoolPeriod',
+                      id: 'codSchoolPeriod',
+                      type: 'text',
+                    },
+                  ]}
+                </RenderFields>
               </Grid>
               <Grid container justify="space-between" item xs={12}>
-                <RenderFields >{[
-                  { label: 'Fecha Inicio', field: 'startDate', id: 'startDate', type: 'date' }, 
-                  { label: 'Fecha Fin', field: 'endDate', id: 'endDate', type: 'date', minDate:(moment(startDate).add(1, 'days')), },
-                ]}</RenderFields>
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Fecha Inicio',
+                      field: 'startDate',
+                      id: 'startDate',
+                      type: 'date',
+                    },
+                    {
+                      label: 'Fecha Fin',
+                      field: 'endDate',
+                      id: 'endDate',
+                      type: 'date',
+                      minDate: moment(startDate).add(1, 'days'),
+                    },
+                    {
+                      label: 'Fecha Limite de retiro',
+                      field: 'withdrawalDeadline',
+                      id: 'withdrawalDeadline',
+                      type: 'date',
+                      minDate: moment(startDate).add(1, 'days'),
+                    },
+                    {
+                      label: 'Fecha en la que inicia la inscripcion',
+                      field: 'inscriptionStartDate',
+                      id: 'inscriptionStartDate',
+                      type: 'date',
+                    },
+                    {
+                      label: 'Aranceles para el proyecto',
+                      field: `projectDuty`,
+                      id: `projectDuty`,
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'Aranceles para el trabajo final',
+                      field: `finalWorkDuty`,
+                      id: `finalWorkDuty`,
+                      type: 'number',
+                      min: 0,
+                    },
+                  ]}
+                </RenderFields>
               </Grid>
-              
+
               <Grid item xs={12} className={classes.subtitle}>
-                <Typography variant="h6" gutterBottom>Materias del periodo</Typography>
+                <Typography variant="h6" gutterBottom>
+                  Materias del periodo
+                </Typography>
               </Grid>
               <Grid container item xs={12}>
                 <FieldArray name="subjects" component={this.renderSubjects} />
-              </Grid>                
+              </Grid>
             </Grid>
             <Grid container>
               <Grid item xs={12}>
-                <Grid container className={classes.buttonContainer} justify="space-between" spacing={16}>
-                 
+                <Grid
+                  container
+                  className={classes.buttonContainer}
+                  justify="space-between"
+                  spacing={16}
+                >
                   <Grid item xs={12} sm={3}>
                     <Button
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
                         schoolPeriodId
-                          ? this.handleDialogShow('actualizar', submit)
-                          : submit('schoolPeriod')
+                          ? this.handleDialogShow('actualizar', submitDispatch)
+                          : submitDispatch('Periodo semestral')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -202,9 +381,7 @@ class SchoolPeriodDetail extends Component {
                         className={classes.button}
                         variant="contained"
                         color="secondary"
-                        onClick={() =>
-                          this.handleDialogShow('delete', handleSchoolPeriodDelete)
-                        }
+                        onClick={() => this.handleDialogShow('borrar', handleSchoolPeriodDelete)}
                       >
                         Borrar
                       </Button>
@@ -222,135 +399,200 @@ class SchoolPeriodDetail extends Component {
 }
 
 SchoolPeriodDetail.propTypes = {
-  classes: object.isRequired,
-  handleSubmit: func.isRequired,
-  saveSchoolPeriod: func.isRequired,
-  goBack: func.isRequired,
-  schoolPeriodId: number,
-  handleSchoolPeriodDelete: func.isRequired,
-  pristine: bool.isRequired,
-  submitting: bool.isRequired,
-  valid: bool.isRequired,
+  classes: PropTypes.shape({
+    fab: PropTypes.string,
+    form: PropTypes.string,
+    buttonContainer: PropTypes.string,
+    buttonSchedule: PropTypes.string,
+    button: PropTypes.string,
+    buttonDelete: PropTypes.string,
+    save: PropTypes.string,
+    subtitle: PropTypes.string,
+  }).isRequired,
+
+  teachers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string,
+      second_name: PropTypes.string,
+
+      first_surname: PropTypes.string,
+      second_surname: PropTypes.string,
+      teacher: PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) })
+        .isRequired,
+    })
+  ).isRequired,
+
+  subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
+
+  schoolPeriod: PropTypes.shape({
+    cod_school_period: PropTypes.string,
+  }).isRequired,
+
+  startDate: PropTypes.string,
+
+  // eslint-disable-next-line react/forbid-prop-types
+  schoolPeriodId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+
+  saveSchoolPeriod: PropTypes.func.isRequired,
+  handleSchoolPeriodDelete: PropTypes.func.isRequired,
+
+  showDispatch: PropTypes.func.isRequired,
+  submitDispatch: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  goBack: PropTypes.func.isRequired,
 };
 
-const schoolPeriodValidation = values => {
+SchoolPeriodDetail.defaultProps = {
+  subjectsSelected: [],
+  schoolPeriodId: null,
+  startDate: null,
+};
+
+const schoolPeriodValidation = (values) => {
   const errors = {};
   if (!values.codSchoolPeriod) {
     errors.codSchoolPeriod = '*codigo es requerido';
   }
- if(!values.startDate) 
-    errors.startDate = '*Fecha inicial es requerida';
+  if (!values.startDate) errors.startDate = '*Fecha inicial es requerida';
 
-  if(!values.endDate) 
-    errors.endDate = '*Fecha fin es requerida';
-  else if((moment(values.endDate) <= moment(values.startDate)))
-    errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';
-  if (values.subjects && values.subjects.length){
-    const subjectArrayErrors = []
+  if (!values.endDate) errors.endDate = '*Fecha fin es requerida';
+  else {
+    if (moment(values.endDate) <= moment(values.startDate))
+      errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';
+
+    if (moment(values.withdrawalDeadline) <= moment(values.startDate))
+      errors.endDate = '*Fecha limite de retiro no debe estar por debajo de la inicial';
+
+    if (moment(values.endDate) < moment(values.withdrawalDeadline))
+      errors.endDate = '*Fecha limite de retiro no debe estar por encima de la final';
+  }
+  if (values.subjects && values.subjects.length) {
+    const subjectArrayErrors = [];
     values.subjects.forEach((subj, subjIndex) => {
-      const subjErrors = {}
+      const subjErrors = {};
       if (!subj || !subj.subjectId) {
-        subjErrors.subjectId = '*Materia es requerido'
-        subjectArrayErrors[subjIndex] = subjErrors
+        subjErrors.subjectId = '*Materia es requerido';
+        subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.teacherId) {
-        subjErrors.teacherId = '*Profesor es requerido'
-        subjectArrayErrors[subjIndex] = subjErrors
+        subjErrors.teacherId = '*Profesor es requerido';
+        subjectArrayErrors[subjIndex] = subjErrors;
       }
 
       if (!subj || !subj.modality) {
-        subjErrors.modality = '*Modalidad es requerido'
-        subjectArrayErrors[subjIndex] = subjErrors
+        subjErrors.modality = '*Modalidad es requerido';
+        subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.limit) {
-        subjErrors.limit = '*Maximo de alumnos es requerido'
-        subjectArrayErrors[subjIndex] = subjErrors
-      }  
-      if (!subj || !subj.duty) {
-        subjErrors.duty = '*Aranceles es requerido'
-        subjectArrayErrors[subjIndex] = subjErrors
+        subjErrors.limit = '*Maximo de alumnos es requerido';
+        subjectArrayErrors[subjIndex] = subjErrors;
       }
-  
-      if (subj.schedules && subj.schedules.length){
-        subjErrors.schedules = []
-        subj.schedules.forEach((sche,scheIndex)=>{
+      if (!subj || !subj.duty) {
+        subjErrors.duty = '*Aranceles es requerido';
+        subjectArrayErrors[subjIndex] = subjErrors;
+      }
 
-          const scheErrors = {}
+      if (subj.schedules && subj.schedules.length) {
+        subjErrors.schedules = [];
+        subj.schedules.forEach((sche, scheIndex) => {
+          const scheErrors = {};
           if (!sche || !sche.day) {
-            scheErrors.day = '*Dia es requerido'
-            subjErrors.schedules[scheIndex] = scheErrors
+            scheErrors.day = '*Dia es requerido';
+            subjErrors.schedules[scheIndex] = scheErrors;
           }
           if (!sche || !sche.classroom) {
-            scheErrors.classroom = '*Aula es requerido'
-            subjErrors.schedules[scheIndex] = scheErrors
+            scheErrors.classroom = '*Aula es requerido';
+            subjErrors.schedules[scheIndex] = scheErrors;
           }
           if (!sche || !sche.startHour) {
-            scheErrors.startHour = '*Hora inicio es requerida'
-            subjErrors.schedules[scheIndex] = scheErrors
+            scheErrors.startHour = '*Hora inicio es requerida';
+            subjErrors.schedules[scheIndex] = scheErrors;
           }
 
           if (!sche || !sche.endHour) {
-            scheErrors.endHour = '*Hora fin es requerida'
-            subjErrors.schedules[scheIndex] = scheErrors
-          } else if((moment(sche.endHour,'hh:mm:ss').isBefore(moment(sche.startHour,'hh:mm:ss'))))
-          {
+            scheErrors.endHour = '*Hora fin es requerida';
+            subjErrors.schedules[scheIndex] = scheErrors;
+          } else if (
+            moment(sche.endHour, 'hh:mm:ss').isBefore(moment(sche.startHour, 'hh:mm:ss'))
+          ) {
             scheErrors.endHour = '*Hora fin no debe estar por debajo de la inicial';
-            subjErrors.schedules[scheIndex] = scheErrors  
-
+            subjErrors.schedules[scheIndex] = scheErrors;
           }
-        })
-        subjectArrayErrors[subjIndex] = subjErrors
+        });
+        subjectArrayErrors[subjIndex] = subjErrors;
       }
-  
-    })
-    
+    });
+
     if (subjectArrayErrors.length) {
-      errors.subjects = subjectArrayErrors
+      errors.subjects = subjectArrayErrors;
     }
   }
   return errors;
 };
 
-SchoolPeriodDetail = reduxForm({
-  form: 'schoolPeriod',
+let SchoolPeriodDetailWrapper = reduxForm({
+  form: 'Periodo semestral',
   validate: schoolPeriodValidation,
   enableReinitialize: true,
 })(SchoolPeriodDetail);
-const selector = formValueSelector('schoolPeriod');
-SchoolPeriodDetail = connect(
-  state => ({
+const selector = formValueSelector('Periodo semestral');
+SchoolPeriodDetailWrapper = connect(
+  (state) => ({
     initialValues: {
       codSchoolPeriod: state.schoolPeriodReducer.selectedSchoolPeriod.cod_school_period
         ? state.schoolPeriodReducer.selectedSchoolPeriod.cod_school_period
         : '',
-      startDate:state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.start_date 
+      startDate: state.schoolPeriodReducer.selectedSchoolPeriod.start_date
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.start_date
         : moment().format('YYYY-MM-DD'),
-      endDate:state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.end_date 
+      endDate: state.schoolPeriodReducer.selectedSchoolPeriod.end_date
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.end_date
         : moment().add(1, 'days').format('YYYY-MM-DD'),
+      withdrawalDeadline: state.schoolPeriodReducer.selectedSchoolPeriod.withdrawal_deadline
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.withdrawal_deadline
+        : moment().add(1, 'days').format('YYYY-MM-DD'),
+      inscriptionStartDate: state.schoolPeriodReducer.selectedSchoolPeriod.inscription_start_date
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.inscription_start_date
+        : moment().subtract(1, 'days').format('YYYY-MM-DD'),
+      projectDuty: state.schoolPeriodReducer.selectedSchoolPeriod.project_duty
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.project_duty
+        : 0,
+      finalWorkDuty: state.schoolPeriodReducer.selectedSchoolPeriod.final_work_duty
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.final_work_duty
+        : 0,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
-        ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map(subj=>({ 
-          subjectId:subj.subject_id, 
-          teacherId:subj.teacher_id,
-          modality:subj.modality,
-          limit:subj.limit,
-          duty:subj.duty,
-          schedules: subj.schedules ? subj.schedules.map(sche =>({
-            schoolPeriodSubjectTeacherId:sche.school_period_subject_teacher_id,
-            day:sche.day,
-            startHour:sche.start_hour,
-            endHour:sche.end_hour,
-            classroom:sche.classroom,            
-          })) : [{}]
-        }))
-        : [{schedules:[{endHour:'00:00:00',startHour:'00:00:00'}]}],
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map((subj) => ({
+            subjectId: subj.subject_id,
+            teacherId: subj.teacher_id,
+            modality: subj.modality,
+            limit: subj.limit,
+            duty: subj.duty,
+            schedules: subj.schedules
+              ? subj.schedules.map((sche) => ({
+                  schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
+                  day: sche.day,
+                  startHour: sche.start_hour,
+                  endHour: sche.end_hour,
+                  classroom: sche.classroom,
+                }))
+              : [{}],
+          }))
+        : [
+            {
+              schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
+            },
+          ],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),
-    subjectsSelected: selector(state, 'subjects')
+    subjectsSelected: selector(state, 'subjects'),
   }),
-  { change, show, submit },
-)(SchoolPeriodDetail);
+  { showDispatch: show, submitDispatch: submit }
+)(SchoolPeriodDetailWrapper);
 
-export default withStyles(styles)(SchoolPeriodDetail);
+export default withStyles(styles)(SchoolPeriodDetailWrapper);

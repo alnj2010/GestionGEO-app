@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   FormControl,
   InputLabel,
@@ -9,7 +10,6 @@ import {
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { string, object } from 'prop-types';
 
 class PasswordInput extends Component {
   constructor(props) {
@@ -20,8 +20,9 @@ class PasswordInput extends Component {
   }
 
   handleClickShowPassword = () => {
-    this.setState(state => ({ showPassword: !state.showPassword }));
+    this.setState((state) => ({ showPassword: !state.showPassword }));
   };
+
   render() {
     const {
       input,
@@ -41,10 +42,7 @@ class PasswordInput extends Component {
           endAdornment={
             <InputAdornment position="end">
               <Tooltip title={showPassword ? 'Hide' : 'Show'} placement="right">
-                <IconButton
-                  aria-label={ariaLabel}
-                  onClick={this.handleClickShowPassword}
-                >
+                <IconButton aria-label={ariaLabel} onClick={this.handleClickShowPassword}>
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </Tooltip>
@@ -58,10 +56,15 @@ class PasswordInput extends Component {
   }
 }
 PasswordInput.propTypes = {
-  input: object.isRequired,
-  className: string,
-  id: string.isRequired,
-  ariaLabel: string.isRequired,
-  inputLabel: string.isRequired,
+  input: PropTypes.shape({}).isRequired,
+  className: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  inputLabel: PropTypes.string.isRequired,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+  }).isRequired,
 };
 export default PasswordInput;

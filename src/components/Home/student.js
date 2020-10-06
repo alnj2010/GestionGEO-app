@@ -1,72 +1,89 @@
-import React,{ Component,Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import {
-  Calendar,
-  momentLocalizer,
-  Views
-} from 'react-big-calendar'
+import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import * as moment from 'moment';
+import { getSessionUserRol } from '../../storage/sessionStorage';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import PresentationHome from './PresentationHome';
 
-import 'react-big-calendar/lib/css/react-big-calendar.css'
-const localizer = momentLocalizer(moment)
-const weekdays={
-  Lunes:1,
-  Martes:2,
-  Miercoles:3,
-  Jueves:4,
-  Viernes:5,
-}
+const localizer = momentLocalizer(moment);
+
 const styles = () => ({
-  calendar:{
-    height:"100vh",
-    paddingTop:50
-  }
+  calendar: {
+    height: '100vh',
+    paddingTop: 50,
+  },
 });
 
 class StudentHome extends Component {
-  
-  transformData = ()=>{
-    let arr=[];
-    
-    if(this.props.currentSubjects){
-        this.props.currentSubjects.forEach((subject,index) => {
-        let aux=subject.data_subject.schedules.map((schedule,index2) =>{
-          var startTime=moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(schedule.start_hour.split(':')[0])).minutes(parseInt(schedule.start_hour.split(':')[1]))._d;
-          var endTime=moment().isoWeekday(weekdays[schedule.day]).hours(parseInt(schedule.end_hour.split(':')[0])).minutes(schedule.end_hour.split(':')[1])._d;          
-          if(moment().day() === 0){
-            startTime=moment(startTime).add(7, 'day')._d;
-            endTime=moment(endTime).add(7, 'day')._d;
+  transformData = () => {
+    const { currentSubjects } = this.props;
+    let arr = [];
+
+    if (currentSubjects) {
+      currentSubjects.forEach((subject, index) => {
+        const aux = subject.data_subject.schedules.map((schedule, index2) => {
+          // eslint-disable-next-line no-underscore-dangle
+          let startTime = moment()
+            .isoWeekday(parseInt(schedule.day, 10))
+            .hours(parseInt(schedule.start_hour.split(':')[0], 10))
+            .minutes(parseInt(schedule.start_hour.split(':')[1], 10))._d;
+          // eslint-disable-next-line no-underscore-dangle
+          let endTime = moment()
+            .isoWeekday(parseInt(schedule.day, 10))
+            .hours(parseInt(schedule.end_hour.split(':')[0], 10))
+            .minutes(schedule.end_hour.split(':')[1], 10)._d;
+          if (moment().day() === 0) {
+            // eslint-disable-next-line no-underscore-dangle
+            startTime = moment(startTime).add(7, 'day')._d;
+            // eslint-disable-next-line no-underscore-dangle
+            endTime = moment(endTime).add(7, 'day')._d;
           }
 
           return {
-            id: parseInt(`${index}${index2}`),
-            title:subject.data_subject.subject.subject_name,
+            id: parseInt(`${index}${index2}`, 10),
+            title: subject.data_subject.subject.subject_name,
             start: startTime,
             end: endTime,
-          }
-        })
-        arr=arr.concat(aux)
-    });
-    return arr;
-    }else{
-      return [{}]
-    }    
-  }
+          };
+        });
+        arr = arr.concat(aux);
+      });
+      return arr;
+    }
+    return [{}];
+  };
 
-  render(){
-    const {miPerfil, classes} = this.props;
-    let allViews = Object.keys(Views).map(k => Views[k])
+  render() {
+    const { miPerfil, classes } = this.props;
+    const {
+      level_instruction: levelInstruction,
+      first_name: firstName,
+      second_name: secondName,
+      first_surname: firstSurname,
+      second_surname: secondSurname,
+      sex,
+    } = miPerfil;
+    const userRol = getSessionUserRol();
+    const allViews = Object.keys(Views).map((k) => Views[k]);
     const minTime = new Date();
-    minTime.setHours(7,0,0);
+    minTime.setHours(7, 0, 0);
     const maxTime = new Date();
-    maxTime.setHours(19,0,0);
+    maxTime.setHours(19, 0, 0);
 
-
-
-  return (
-    <Fragment>
-      <h1>Bienvenido {`${miPerfil.first_name} ${miPerfil.first_surname}` }</h1>
-      <Calendar
+    return (
+      <>
+        <PresentationHome
+          levelInstruction={levelInstruction}
+          firstName={firstName}
+          secondName={secondName}
+          firstSurname={firstSurname}
+          secondSurname={secondSurname}
+          sex={sex}
+          userRol={userRol}
+        />
+        <Calendar
           className={classes.calendar}
           events={this.transformData()}
           defaultView={Views.WORK_WEEK}
@@ -76,14 +93,28 @@ class StudentHome extends Component {
           localizer={localizer}
           max={maxTime}
           min={minTime}
-
         />
-    </Fragment>
-    
-  )    
-  };
+      </>
+    );
+  }
 }
 
-StudentHome.propTypes = {};
+StudentHome.propTypes = {
+  miPerfil: PropTypes.shape({
+    first_name: PropTypes.string,
+    first_surname: PropTypes.string,
+    level_instruction: PropTypes.string,
+    second_name: PropTypes.string,
+    second_surname: PropTypes.string,
+    sex: PropTypes.string,
+  }).isRequired,
+  classes: PropTypes.shape({
+    calendar: PropTypes.string,
+  }).isRequired,
+  currentSubjects: PropTypes.arrayOf(PropTypes.shape({})),
+};
+StudentHome.defaultProps = {
+  currentSubjects: null,
+};
 
 export default withStyles(styles)(StudentHome);

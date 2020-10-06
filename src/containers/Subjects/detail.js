@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { func, object } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   findSubjectById,
@@ -11,33 +11,45 @@ import {
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import SubjectDetail from '../../components/Subjects/detail';
 import { define, cleanDialog } from '../../actions/dialog';
-export class SubjectDetailContainer extends Component {
-  componentDidMount = () => {
-    const { match, findSubjectById, define } = this.props;
-    if (match.params.id) findSubjectById(match.params.id);
-    this.props.getSchoolProgramList();
-    define('materia');
-  };
-  componentWillUnmount = () => {
-    this.props.cleanSelectedSubject();
-    this.props.cleanDialog();
-    
-  };
 
-  saveSubject = values => {
+class SubjectDetailContainer extends Component {
+  componentDidMount = () => {
     const {
       match,
-      updateSubject,
-      findSubjectById,
-      saveSubject,
+      findSubjectByIdDispatch,
+      defineDispatch,
+      getSchoolProgramListDispatch,
+    } = this.props;
+    if (match.params.id) findSubjectByIdDispatch(match.params.id);
+    getSchoolProgramListDispatch();
+    defineDispatch('materia');
+  };
+
+  componentWillUnmount = () => {
+    const { cleanSelectedSubjectDispatch, cleanDialogDispatch } = this.props;
+    cleanSelectedSubjectDispatch();
+    cleanDialogDispatch();
+  };
+
+  saveSubject = (values) => {
+    const {
+      match,
+      updateSubjectDispatch,
+      findSubjectByIdDispatch,
+      saveSubjectDispatch,
       history,
     } = this.props;
     const payload = { ...values };
-    if (match.params.id) updateSubject({ ...payload, ...match.params });
+
+    payload.schoolPrograms = payload.schoolPrograms.map((sp) => ({
+      ...sp,
+      school_program_id: sp.id,
+    }));
+    if (match.params.id) updateSubjectDispatch({ ...payload, ...match.params });
     else
-      saveSubject({ ...payload }).then(response => {
+      saveSubjectDispatch({ ...payload }).then((response) => {
         if (response) {
-          findSubjectById(response).then(res => history.push(`edit/${response}`));
+          findSubjectByIdDispatch(response).then(() => history.push(`edit/${response}`));
         }
       });
   };
@@ -48,22 +60,18 @@ export class SubjectDetailContainer extends Component {
   };
 
   handleSubjectDelete = () => {
-    const { deleteSubject, history, match } = this.props;
-    deleteSubject(match.params.id).then(res => history.push('/materias'));
+    const { deleteSubjectDispatch, history, match } = this.props;
+    deleteSubjectDispatch(match.params.id).then(() => history.push('/materias'));
   };
 
-
   render() {
-    const {
-      subject,
-      schoolPrograms
-    } = this.props;
+    const { subject, schoolPrograms } = this.props;
     return (
       <SubjectDetail
         schoolPrograms={schoolPrograms}
         saveSubject={this.saveSubject}
         goBack={this.goBack}
-        subject = {subject}
+        subject={subject}
         subjectId={subject.id}
         handleSubjectDelete={this.handleSubjectDelete}
       />
@@ -72,33 +80,47 @@ export class SubjectDetailContainer extends Component {
 }
 
 SubjectDetailContainer.propTypes = {
-  deleteSubject: func.isRequired,
-  history: object.isRequired,
-  match: object.isRequired,
-  updateSubject: func.isRequired,
-  findSubjectById: func.isRequired,
-  saveSubject: func.isRequired,
-};
+  subject: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  }).isRequired,
 
-const mS = state => ({
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
+
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    }),
+  }).isRequired,
+
+  findSubjectByIdDispatch: PropTypes.func.isRequired,
+  updateSubjectDispatch: PropTypes.func.isRequired,
+  saveSubjectDispatch: PropTypes.func.isRequired,
+  deleteSubjectDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  cleanSelectedSubjectDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  getSchoolProgramListDispatch: PropTypes.func.isRequired,
+};
+SubjectDetailContainer.defaultProps = {};
+const mS = (state) => ({
   subject: state.subjectReducer.selectedSubject,
   schoolPrograms: state.schoolProgramReducer.list,
 });
 
 const mD = {
-  findSubjectById,
-  updateSubject,
-  saveSubject,
-  deleteSubject,
-  define,
-  cleanSelectedSubject,
-  cleanDialog,
-  getSchoolProgramList
+  findSubjectByIdDispatch: findSubjectById,
+  updateSubjectDispatch: updateSubject,
+  saveSubjectDispatch: saveSubject,
+  deleteSubjectDispatch: deleteSubject,
+  defineDispatch: define,
+  cleanSelectedSubjectDispatch: cleanSelectedSubject,
+  cleanDialogDispatch: cleanDialog,
+  getSchoolProgramListDispatch: getSchoolProgramList,
 };
 
-SubjectDetailContainer = connect(
-  mS,
-  mD,
-)(SubjectDetailContainer);
-
-export default SubjectDetailContainer;
+export default connect(mS, mD)(SubjectDetailContainer);

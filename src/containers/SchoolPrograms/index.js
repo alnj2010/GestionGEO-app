@@ -1,69 +1,76 @@
 import React, { Component } from 'react';
-import { array, object, func } from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
 import { getList, deleteSchoolProgram } from '../../actions/schoolProgram';
 import SchoolProgramsList from '../../components/SchoolPrograms';
 
-export class SchoolProgramsListContainer extends Component {
+class SchoolProgramsListContainer extends Component {
   constructor() {
     super();
     this.state = {
       isLoading: true,
     };
   }
+
   componentDidMount = () => {
-    const { getList, define } = this.props;
-    getList().then(() => this.setState({ isLoading: false }));
-    define('Programa academico');
-  };
-  componentWillUnmount = () => {
-    this.props.cleanDialog();
+    const { getListDispatch, defineDispatch } = this.props;
+    getListDispatch().then(() => this.setState({ isLoading: false }));
+    defineDispatch('Programa academico');
   };
 
-  handleDeleteSchoolProgram = id => {
-    const { getList, deleteSchoolProgram } = this.props;
-    deleteSchoolProgram(id).then(res => getList());
+  componentWillUnmount = () => {
+    const { cleanDialogDispatch } = this.props;
+    cleanDialogDispatch();
+  };
+
+  handleDeleteSchoolProgram = (id) => {
+    const { getListDispatch, deleteSchoolProgramDispatch } = this.props;
+    deleteSchoolProgramDispatch(id).then(() => getListDispatch());
   };
 
   render() {
-    const { schoolPrograms, history, show } = this.props;
+    const { schoolPrograms, history, showDispatch } = this.props;
     const { isLoading } = this.state;
     return (
       <SchoolProgramsList
         schoolPrograms={schoolPrograms}
+        localization={{
+          header: {
+            actions: 'Acciones',
+          },
+        }}
         isLoading={isLoading}
         history={history}
         handleSchoolProgramDetail={this.handleSchoolProgramDetail}
         handleDeleteSchoolProgram={this.handleDeleteSchoolProgram}
-        show={show}
+        show={showDispatch}
       />
     );
   }
 }
 
 SchoolProgramsListContainer.propTypes = {
-  schoolPrograms: array,
-  history: object.isRequired,
-  getList: func.isRequired,
-  deleteSchoolProgram: func.isRequired,
+  schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  history: PropTypes.shape({}).isRequired,
+
+  getListDispatch: PropTypes.func.isRequired,
+  deleteSchoolProgramDispatch: PropTypes.func.isRequired,
+  cleanDialogDispatch: PropTypes.func.isRequired,
+  defineDispatch: PropTypes.func.isRequired,
+  showDispatch: PropTypes.func.isRequired,
 };
 
-const mS = state => ({
+const mS = (state) => ({
   schoolPrograms: state.schoolProgramReducer.list,
 });
 
 const mD = {
-  getList,
-  deleteSchoolProgram,
-  cleanDialog,
-  define,
-  show,
+  getListDispatch: getList,
+  deleteSchoolProgramDispatch: deleteSchoolProgram,
+  cleanDialogDispatch: cleanDialog,
+  defineDispatch: define,
+  showDispatch: show,
 };
 
-SchoolProgramsListContainer = connect(
-  mS,
-  mD,
-)(SchoolProgramsListContainer);
-
-export default SchoolProgramsListContainer;
+export default connect(mS, mD)(SchoolProgramsListContainer);

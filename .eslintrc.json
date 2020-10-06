@@ -4,8 +4,14 @@
         "jest": true
     },
     "parser": "babel-eslint",
-    "extends": ["airbnb", "prettier/react", "plugin:prettier/recommended"],
-    "plugins": ["react", "prettier"],
+    "extends": [
+        "eslint-config-airbnb",
+        "prettier",
+        "prettier/react",
+        "plugin:prettier/recommended",
+        "plugin:react/recommended"
+    ],
+    "plugins": ["prettier", "react-hooks", "react"],
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
         "prettier/prettier": "error",
@@ -20,6 +26,11 @@
             {
                 "allow": ["warn", "error"]
             }
-        ]
+        ],
+        "react/jsx-props-no-spreading": ["warn", { "custom": "ignore" }],
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "no-case-declarations": "off",
+        "import/no-cycle": "off"
     }
 }

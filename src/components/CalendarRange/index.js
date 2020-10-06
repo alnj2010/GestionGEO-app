@@ -1,56 +1,59 @@
-import React, {Fragment} from 'react'
-import {
-    Grid,
-    TextField,
-
-} from '@material-ui/core';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { Field } from 'redux-form';
-import DatePicker from 'react-datepicker'
-import Texture from '@material-ui/icons/Texture';
+import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-const styles = theme => ({
 
-});
-function CalendarRange(props){
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
+const styles = () => ({});
+function CalendarRange({ name, startDate, endDate }) {
+  const handleChangeStart = (date) => {
+    return date;
+  };
 
-  const handleChangeStart=(date) => {
-    setStartDate(date)
-  }
-
-  const handleChangeEnd=(date) => {
-    setEndDate(date)
-  }
-  return (<Fragment>
-    <Field
-        name={props.name}
-        component={<DatePicker
-            selected={props.startDate}
+  const handleChangeEnd = (date) => {
+    return date;
+  };
+  return (
+    <>
+      <Field
+        name={name}
+        component={
+          <DatePicker
+            selected={startDate}
             selectsStart
-            customInput={ ( <TextField />)}
-            startDate={props.startDate}
-            endDate={props.endDate}
+            customInput={<TextField />}
+            startDate={startDate}
+            endDate={endDate}
             onChange={handleChangeStart}
-          />}                
-        type='date'
-    />
-    <Field
-        name={props.name}
-        component={<DatePicker
-            selected={props.endDate}
+          />
+        }
+        type="date"
+      />
+      <Field
+        name={name}
+        component={
+          <DatePicker
+            selected={endDate}
             selectsEnd
-            customInput={ ( <TextField />)}
-            startDate={props.startDate}
-            endDate={props.endDate}
+            customInput={<TextField />}
+            startDate={startDate}
+            endDate={endDate}
             onChange={handleChangeEnd}
-            minDate={props.startDate}
-          />}                
-        type='date'
-    />
-  </Fragment>)
+            minDate={startDate}
+          />
+        }
+        type="date"
+      />
+    </>
+  );
 }
+CalendarRange.propTypes = {
+  name: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+};
 
-export default withStyles(styles)(CalendarRange) ;
+export default withStyles(styles)(CalendarRange);

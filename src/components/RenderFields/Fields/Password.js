@@ -3,60 +3,53 @@ import PropTypes from 'prop-types';
 import { TextField } from '@material-ui/core';
 import { Field } from 'redux-form';
 
-const renderTextField = ({ label, input, meta: { touched, invalid, error }, ...custom }) => (
+const renderPasswordField = ({ label, input, meta: { touched, invalid, error }, ...custom }) => (
   <TextField
     style={{ width: '100%' }}
     label={label}
+    type="password"
     placeholder={label}
     error={touched && invalid}
     helperText={touched && error}
-    type="number"
-    inputProps={{ min: custom.min, max: custom.max, step: '1' }}
+    id={custom.id}
     {...input}
-    {...custom}
   />
 );
 
-renderTextField.propTypes = {
+renderPasswordField.propTypes = {
   label: PropTypes.string.isRequired,
-  input: PropTypes.shape({
-    name: PropTypes.string,
-  }).isRequired,
+  input: PropTypes.shape({}).isRequired,
   meta: PropTypes.shape({
     touched: PropTypes.bool,
-    error: PropTypes.string,
     invalid: PropTypes.bool,
+    error: PropTypes.string,
   }).isRequired,
 };
 
-export default function Number({ field, disabled, label, id, min, max }) {
+export default function Password(props) {
+  const { field, disabled, label, id } = props;
   return (
     <Field
       name={field}
-      component={renderTextField}
+      component={renderPasswordField}
       // custom props
       disabled={disabled}
       label={label}
       id={id}
-      min={min}
-      max={max}
+      multiline
+      rowsMax="4"
       margin="normal"
     />
   );
 }
-Number.propTypes = {
+
+Password.propTypes = {
   field: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   disabled: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
-  min: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  // eslint-disable-next-line react/forbid-prop-types
-  max: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
-Number.defaultProps = {
+Password.defaultProps = {
   disabled: false,
-  min: 0,
-  max: Number.POSITIVE_INFINITY,
 };

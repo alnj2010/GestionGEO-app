@@ -1,27 +1,27 @@
-import React, { Component } from "react";
-import MaterialTable from "material-table";
-import { array, bool, object, func } from "prop-types";
-import Add from "@material-ui/icons/Add";
-import { Fab, Grid } from "@material-ui/core";
-import Dialog from "../Dialog";
-import { handleExportCsv } from "../../utils/handleExportCsv";
+import React, { Component } from 'react';
+import MaterialTable from 'material-table';
+import PropTypes from 'prop-types';
+import Add from '@material-ui/icons/Add';
+import { Fab, Grid } from '@material-ui/core';
+import Dialog from '../Dialog';
+import handleExportCsv from '../../utils/handleExportCsv';
 
 class SubjectsList extends Component {
   constructor() {
     super();
     this.state = {
-      func: null
+      func: null,
     };
   }
-  transformData = subjects => {
+
+  transformData = (subjects) => {
     if (subjects)
-      return subjects.map(subject => {
+      return subjects.map((subject) => {
         return {
           id: subject.id,
-          subjectCode: subject.subject_code,
-          subjectName: subject.subject_name,
-          subjectType: subject.subject_type,
-          uc: subject.uc
+          subjectCode: subject.code,
+          subjectName: subject.name,
+          uc: subject.uc,
         };
       });
     return [];
@@ -29,7 +29,7 @@ class SubjectsList extends Component {
 
   handleDialogShow = (action, func) => {
     const { show } = this.props;
-    this.setState({ func: func }, () => {
+    this.setState({ func }, () => {
       show(action);
     });
   };
@@ -54,41 +54,42 @@ class SubjectsList extends Component {
         <Grid item xs={12}>
           <MaterialTable
             columns={[
-              { title: "#", field: "id", hidden: true },
-              { title: "Codigo", field: "subjectCode" },
-              { title: "Nombre", field: "subjectName" },
-              { title: "Tipo", field: "subjectType" },
-              { title: "Unidades de Credito", field: "uc" }
+              { title: '#', field: 'id', hidden: true },
+              { title: 'Codigo', field: 'subjectCode' },
+              { title: 'Nombre', field: 'subjectName' },
+              { title: 'Unidades de Credito', field: 'uc' },
             ]}
             data={this.transformData(subjects)}
             title="materias"
             actions={[
               {
-                icon: "visibility",
-                tooltip: "Ver detalles",
+                icon: 'visibility',
+                tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
                   history.push(`/materias/edit/${rowData.id}`);
-                }
+                },
               },
               {
-                icon: "delete",
-                tooltip: "Borrar materia",
+                icon: 'delete',
+                tooltip: 'Borrar materia',
                 onClick: (event, rowData) => {
-                  this.handleDialogShow("eliminar", entity =>
-                    handleDeleteSubject(rowData.id)
-                  );
-                }
-              }
+                  this.handleDialogShow('eliminar', () => handleDeleteSubject(rowData.id));
+                },
+              },
             ]}
             options={{
               pageSize: 10,
               search: true,
               exportButton: true,
-              exportCsv: (columns, renderData) =>
-                handleExportCsv(columns, renderData, "subjects")
+              exportCsv: (columns, renderData) => handleExportCsv(columns, renderData, 'subjects'),
             }}
             onChangePage={() => {
               window.scroll(0, 0);
+            }}
+            localization={{
+              header: {
+                actions: 'Acciones',
+              },
             }}
             isLoading={isLoading}
           />
@@ -100,10 +101,24 @@ class SubjectsList extends Component {
 }
 
 SubjectsList.propTypes = {
-  subjects: array,
-  isLoading: bool.isRequired,
-  history: object.isRequired,
-  handleDeleteSubject: func.isRequired
+  subjects: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      subject_code: PropTypes.string,
+      subject_name: PropTypes.string,
+      subject_type: PropTypes.string,
+      uc: PropTypes.number,
+    })
+  ).isRequired,
+
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+
+  isLoading: PropTypes.bool.isRequired,
+
+  show: PropTypes.func.isRequired,
+  handleDeleteSubject: PropTypes.func.isRequired,
 };
 
 export default SubjectsList;

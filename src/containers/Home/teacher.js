@@ -1,37 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import TeacherHome from '../../components/Home/teacher'
+import TeacherHome from '../../components/Home/teacher';
 
-export class TeacherHomeContainer extends Component {
-  componentDidMount = () => {
-  };
-  componentWillUnmount = () => {
-  };
+class TeacherHomeContainer extends Component {
+  componentDidMount = () => {};
+
+  componentWillUnmount = () => {};
 
   render() {
-    //const {
-    //} = this.props;
+    // const {
+    // } = this.props;
 
-    return (
-        <TeacherHome/>
-    );
+    return <TeacherHome />;
   }
 }
 
-TeacherHomeContainer.propTypes = {
+TeacherHomeContainer.propTypes = {};
 
-};
+const mS = () => ({});
 
-const mS = state => ({
-});
+const mD = {};
 
-const mD = {
-
-};
-
-TeacherHomeContainer = connect(
-  mS,
-  mD,
-)(TeacherHomeContainer);
-
-export default TeacherHomeContainer;
+export default connect(mS, mD)(TeacherHomeContainer);

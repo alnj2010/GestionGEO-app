@@ -1,35 +1,53 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form, Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import PersonIcon from '@material-ui/icons/LocalLibrary';
 import PasswordInput from '../PasswordInput';
 import CustomizedSnackbar from '../Snackbar';
 import TextInput from '../TextInput';
-import { bool, object, string, func } from 'prop-types';
-import RenderFields from '../RenderFields'
-import logo from '../../images/icon-gestionGeo.svg'
-import backImage from '../../images/pif.jpg'
+import RenderFields from '../RenderFields';
+import logo from '../../images/icon-gestionGeo.svg';
+import backImage from '../../images/pif.jpg';
+import { USER_ROL } from '../../services/constants';
+import { jsonToOptions } from '../../helpers';
 
-const styles = theme => ({
+const styles = (theme) => ({
   container: {
-    paddingLeft: '30%',
-    paddingTop: '10%',
-    paddingRight: '30%',
-    backgroundImage: `url(${backImage})`,
-    height:"100vh"
+    height: '100vh',
+    background: `url(${backImage})`,
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'no-repeat',
+    backgroundAttachment: 'fixed',
+    backgroundSize: 'cover',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0',
+      height: '0',
+    },
   },
   input: {
     width: '100%',
   },
   form: {
-    borderRadius:"10px"
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '10px',
   },
   formContainer: {
-    paddingLeft: '10%',
-    paddingRight: '10%',
-    paddingTop: '5%',
-    backgroundColor:'white'    
+    width: '550px',
+    padding: '1% 5%',
+    margin: ' 0 auto',
+    backgroundColor: 'white',
   },
   forgotPassword: {
     textAlign: 'right',
@@ -51,12 +69,12 @@ const styles = theme => ({
     fontWeight: 550,
   },
   logo: {
-    width:"60%",
-    height: "auto",
+    width: '60%',
+    height: 'auto',
   },
 });
 
-let LoginForm = props => {
+let LoginForm = (props) => {
   const {
     classes,
     handleLogin,
@@ -64,30 +82,18 @@ let LoginForm = props => {
     pristine,
     submitting,
     valid,
+    studentsTypes,
+    handleSetStudent,
+    handleCloseSetStudent,
   } = props;
-  let rol=[{
-    key:"ESTUDIANTE",
-    value:"S"
-  },{
-    key:"ADMINISTRADOR",
-    value:"A"
-  },{
-    key:"PROFESOR",
-    value:"T"
-  }]
+
   return (
     <Form onSubmit={handleSubmit(handleLogin)}>
       <Grid container className={classes.container}>
         <Grid className={classes.form} item xs={12}>
-          <Grid
-            container
-            spacing={8}
-            className={classes.formContainer}
-            id="loginForm"
-          >
-            <Grid container item xs={12} justify="center" direction="column" alignItems="center">            
-      
-              <img src={logo} alt="GestionGEO" className={classes.logo}/>
+          <Grid container spacing={8} className={classes.formContainer} id="loginForm">
+            <Grid container item xs={12} justify="center" direction="column" alignItems="center">
+              <img src={logo} alt="GestionGEO" className={classes.logo} />
             </Grid>
 
             <Grid item xs={12}>
@@ -112,9 +118,17 @@ let LoginForm = props => {
                 inputLabel="Clave"
               />
             </Grid>
-              <RenderFields >{[
-                {field: 'user_type', id: 'user_type', type: 'select', placeholder:'¿Como desea ingresar?', options: rol.map(type => { return { key: type.key, value: type.value } }) },
-              ]}</RenderFields>
+            <RenderFields>
+              {[
+                {
+                  field: 'userType',
+                  id: 'userType',
+                  type: 'select',
+                  label: '¿Como desea ingresar?',
+                  options: jsonToOptions(USER_ROL),
+                },
+              ]}
+            </RenderFields>
 
             <Grid item xs={12}>
               <Button
@@ -131,24 +145,63 @@ let LoginForm = props => {
         </Grid>
       </Grid>
       <CustomizedSnackbar />
+      {studentsTypes && (
+        <Dialog
+          onClose={handleCloseSetStudent}
+          aria-labelledby="simple-dialog-title"
+          open={!!studentsTypes}
+        >
+          <DialogTitle id="simple-dialog-title">Seleccione el programa academico</DialogTitle>
+          <List>
+            {studentsTypes.map((student, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <ListItem button onClick={() => handleSetStudent(student)} key={index}>
+                <ListItemAvatar>
+                  <Avatar>
+                    <PersonIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={student.school_program.school_program_name} />
+              </ListItem>
+            ))}
+          </List>
+        </Dialog>
+      )}
     </Form>
   );
 };
 
 LoginForm.propTypes = {
-  classes: object.isRequired,
-  showMenssageFloat: bool.isRequired,
-  menssageFloat: string,
-  handleLogin: func.isRequired,
+  classes: PropTypes.shape({
+    form: PropTypes.string,
+    save: PropTypes.string,
+    loginButton: PropTypes.string,
+    input: PropTypes.string,
+    container: PropTypes.string,
+    formContainer: PropTypes.string,
+    logo: PropTypes.string,
+  }).isRequired,
+  studentsTypes: PropTypes.arrayOf(PropTypes.shape({})),
+  handleSetStudent: PropTypes.func.isRequired,
+  handleCloseSetStudent: PropTypes.func.isRequired,
+  handleLogin: PropTypes.func.isRequired,
+  pristine: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  valid: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
-const loginValidator = values => {
+LoginForm.defaultProps = {
+  studentsTypes: null,
+};
+
+const loginValidator = (values) => {
   const errors = {};
   if (!values.identification) {
     errors.identification = 'Cedula es requerida';
   }
-  if (!values.user_type) {
-    errors.user_type = 'Rol es requerido';
+  if (!values.userType) {
+    errors.userType = 'Rol es requerido';
   }
   if (!values.password) {
     errors.password = 'Clave es requerida';

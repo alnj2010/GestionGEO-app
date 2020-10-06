@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import snackbarReducer from './snackbar';
 import dialogReducer from './dialog';
 import adminReducer from './admin';
@@ -10,7 +11,6 @@ import miPerfilReducer from './miPerfil';
 import myCourseReducer from './myCourse';
 import schoolPeriodReducer from './schoolPeriod';
 import studentInscriptionReducer from './studentInscription';
-import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
   snackbarReducer,
@@ -19,12 +19,12 @@ const rootReducer = combineReducers({
   teacherReducer,
   studentReducer,
   subjectReducer,
-  myCourseReducer, 
+  myCourseReducer,
   schoolProgramReducer,
   schoolPeriodReducer,
   miPerfilReducer,
   studentInscriptionReducer,
-  form: formReducer,  
+  form: formReducer,
 });
 
 export default rootReducer;

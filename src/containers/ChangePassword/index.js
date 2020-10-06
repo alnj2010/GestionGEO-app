@@ -1,50 +1,44 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ChangePasswordForm from '../../components/ChangePassword';
-import {
-  changePassword,
-} from '../../actions/miPerfil';
+import { changePassword } from '../../actions/miPerfil';
 
-export class ChangePassword extends Component {
-  componentDidMount = () => {
+class ChangePassword extends Component {
+  componentDidMount = () => {};
+
+  componentWillUnmount = () => {};
+
+  savePassword = (payload) => {
+    const { changePasswordDispatch, history } = this.props;
+
+    changePasswordDispatch(payload)
+      .then(() => history.goBack())
+      .catch((err) => console.warn(err));
   };
-  componentWillUnmount = () => {
+
+  goBack = () => {
+    const { history } = this.props;
+    history.goBack();
   };
-
-  savePassword=(payload)=>{
-    const {
-     changePassword
-    } = this.props;
-
-    changePassword(payload)
-  }
 
   render() {
-    //const {
-    //} = this.props;
+    // const {
+    // } = this.props;
 
-    return (
-        <ChangePasswordForm
-            savePassword={this.savePassword}
-        />
-    );
+    return <ChangePasswordForm savePassword={this.savePassword} goBack={this.goBack} />;
   }
 }
 
 ChangePassword.propTypes = {
-
+  changePasswordDispatch: PropTypes.func.isRequired,
+  history: PropTypes.shape({ goBack: PropTypes.func }).isRequired,
 };
 
-const mS = state => ({
-});
+const mS = () => ({});
 
 const mD = {
-  changePassword,
+  changePasswordDispatch: changePassword,
 };
 
-ChangePassword = connect(
-  mS,
-  mD,
-)(ChangePassword);
-
-export default ChangePassword;
+export default connect(mS, mD)(ChangePassword);
