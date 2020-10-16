@@ -7,6 +7,7 @@ const initialState = {
       equivalence: [],
     },
   },
+  warningStudents: [],
   availableSubjects: [],
   inscribedSchoolPeriods: [],
   selectedStudentSchoolPeriod: {},
@@ -16,6 +17,11 @@ const initialState = {
 const studentReducer = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONS.LIST:
+      return {
+        ...state,
+        ...action.payload,
+      };
+    case ACTIONS.WARNING_STUDENTS:
       return {
         ...state,
         ...action.payload,

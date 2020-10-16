@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 import { Grid, Fab } from '@material-ui/core';
 
@@ -21,13 +22,15 @@ class Inscription extends Component {
   };
 
   render() {
-    const { subjects, saveInscription } = this.props;
+    const { subjects, saveInscription, width } = this.props;
     const enrolledSubjects = [];
+    const matches = isWidthUp('sm', width);
+
     return (
       <Grid container>
         <Grid item xs={12}>
           <MaterialTable
-            title="Inscripcion"
+            title={matches ? 'Inscripcion' : ''}
             columns={[
               {
                 title: 'school_period_subject_teacher_id',
@@ -71,6 +74,7 @@ class Inscription extends Component {
 Inscription.propTypes = {
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   saveInscription: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired,
 };
 
-export default Inscription;
+export default withWidth()(Inscription);

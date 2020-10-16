@@ -8,11 +8,13 @@ import InputBase from '@material-ui/core/InputBase';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Download from '@material-ui/icons/Archive';
 import Visibility from '@material-ui/icons/Visibility';
 import Dialog from '../Dialog';
-import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
+import { reverseJson } from '../../helpers/index';
+import { CONSTANCES, USER_INSTANCE, COORDINATOR_ROL } from '../../services/constants';
 import handleExportCsv from '../../utils/handleExportCsv';
 import { getSessionUserId } from '../../storage/sessionStorage';
 
@@ -34,7 +36,9 @@ class AdminsList extends Component {
             email: admin.email,
             firstName: admin.first_name,
             firstSurname: admin.first_surname,
-            rol: admin.administrator ? admin.administrator.rol : false,
+            rol: admin.administrator
+              ? reverseJson(COORDINATOR_ROL)[admin.administrator.rol]
+              : false,
           };
         })
         .filter((admin) => parseInt(id, 10) !== parseInt(admin.id, 10));
@@ -49,7 +53,8 @@ class AdminsList extends Component {
   };
 
   render = () => {
-    const { admins, isLoading, history, handleDeleteAdmin, getConstance } = this.props;
+    const { admins, isLoading, history, handleDeleteAdmin, getConstance, width } = this.props;
+    const matches = isWidthUp('sm', width);
     const { func } = this.state;
     return (
       <Grid container spacing={8}>
@@ -59,7 +64,7 @@ class AdminsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/administradores/create`)}
+            onClick={() => history.push(`/administradores/agregar`)}
           >
             <Add />
             Agregar Administrador
@@ -75,7 +80,7 @@ class AdminsList extends Component {
               { title: 'Rol', field: 'rol' },
             ]}
             data={this.transformData(admins)}
-            title="Administradores"
+            title={matches ? 'Administradores' : ''}
             components={{
               Action: (props) => {
                 const {
@@ -136,7 +141,7 @@ class AdminsList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/administradores/edit/${rowData.id}`);
+                  history.push(`/administradores/modificar/${rowData.id}`);
                 },
               },
               {
@@ -182,11 +187,11 @@ AdminsList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-
+  width: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
   getConstance: PropTypes.func.isRequired,
   show: PropTypes.func.isRequired,
   handleDeleteAdmin: PropTypes.func.isRequired,
 };
 
-export default AdminsList;
+export default withWidth()(AdminsList);

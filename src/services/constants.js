@@ -5,12 +5,14 @@ export const URL = {
   SUBJECT: '/subjects',
   SUBJECTBYSCHOOLPROGRAM: '/subjectsBySchoolProgram',
   STUDENT: '/students',
+  WARNING_STUDENTS: '/warningStudents',
   TEACHER: '/teachers',
   SCHOOL_PERIOD: '/schoolPeriods',
   INSCRIPTION: '/inscriptions',
   STUDENT_INSCRIPTION: '/studentInscription',
   TEACHER_INSCRIPTION: '/teacherInscription',
   CONSTANCE: '/constance',
+  ANNUALREPORT: '/annualReport',
   CHANGE_PASSWORD: '/changePassword',
 };
 export const DURATION_TOAST = 3000;

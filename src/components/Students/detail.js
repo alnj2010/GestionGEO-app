@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
@@ -163,9 +164,12 @@ class StudentDetail extends Component {
       history,
       getConstance,
       teachersGuide,
+      width,
     } = this.props;
     const { func } = this.state;
     const rol = getSessionUserRol();
+    const matches = isWidthUp('sm', width);
+
     return (
       <Form onSubmit={handleSubmit(saveStudent)}>
         <Grid container>
@@ -409,7 +413,7 @@ class StudentDetail extends Component {
           <Grid container justify="center">
             <Grid item xs={12} style={{ marginTop: '30px' }}>
               <MaterialTable
-                title="Programas Academicos del estudiante"
+                title={matches ? 'Programas Academicos del estudiante' : ''}
                 components={{
                   Action: (props) => {
                     const {
@@ -543,7 +547,7 @@ class StudentDetail extends Component {
                     tooltip: 'Agregar programa academico',
                     isFreeAction: true,
                     onClick: () =>
-                      history.push(`${history.location.pathname}/programa-academico/create`, {
+                      history.push(`${history.location.pathname}/programa-academico/agregar`, {
                         selectedStudent: { ...student },
                       }),
                   },
@@ -578,7 +582,7 @@ StudentDetail.propTypes = {
   listBySchoolPeriod: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   schoolProgramSelected: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
-
+  width: PropTypes.string.isRequired,
   student: PropTypes.shape({
     first_surname: PropTypes.string,
     first_name: PropTypes.string,
@@ -753,4 +757,4 @@ StudentDetailWrapper = connect(
   { showDispatch: show, submitDispatch: submit }
 )(StudentDetailWrapper);
 
-export default withStyles(styles)(StudentDetailWrapper);
+export default withStyles(styles)(withWidth()(StudentDetailWrapper));

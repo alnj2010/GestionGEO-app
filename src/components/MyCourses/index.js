@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
@@ -35,8 +36,10 @@ class SubjectsList extends Component {
   };
 
   render = () => {
-    const { myCourses, history } = this.props;
+    const { myCourses, history, width } = this.props;
     const { func } = this.state;
+    const matches = isWidthUp('sm', width);
+
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -50,7 +53,7 @@ class SubjectsList extends Component {
               { title: 'limite', field: 'limit' },
             ]}
             data={this.transformData(myCourses)}
-            title="Mis Cursos"
+            title={matches ? 'Mis Cursos' : ''}
             actions={[
               {
                 icon: 'visibility',
@@ -87,8 +90,8 @@ SubjectsList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-
+  width: PropTypes.string.isRequired,
   show: PropTypes.func.isRequired,
 };
 
-export default SubjectsList;
+export default withWidth()(SubjectsList);

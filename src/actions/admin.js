@@ -1,4 +1,5 @@
 import { User } from '../services/user';
+import { Constance } from '../services/constance';
 import { show } from './snackbar';
 import { getSessionUserId, getSessionUser, setSessionUser } from '../storage/sessionStorage';
 
@@ -124,6 +125,17 @@ export const deleteAdmin = (adminId) => async (dispatch) => {
   return User.delete(adminId)
     .then(() => {
       show('Administrador eliminado', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
+
+export const getReport = (initial, final) => async (dispatch) => {
+  return Constance.getReport(initial, final)
+    .then(() => {
       return true;
     })
     .catch((error) => {

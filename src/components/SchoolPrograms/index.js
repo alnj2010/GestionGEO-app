@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import PropTypes from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
@@ -34,8 +35,9 @@ class SchoolProgramsList extends Component {
   };
 
   render = () => {
-    const { schoolPrograms, isLoading, history, handleDeleteSchoolProgram } = this.props;
+    const { schoolPrograms, isLoading, history, handleDeleteSchoolProgram, width } = this.props;
     const { func } = this.state;
+    const matches = isWidthUp('sm', width);
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -44,7 +46,7 @@ class SchoolProgramsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/programas-academicos/create`)}
+            onClick={() => history.push(`/programas-academicos/agregar`)}
           >
             <Add />
             Agregar programa academico
@@ -58,13 +60,13 @@ class SchoolProgramsList extends Component {
               { title: '# Unidades de credito', field: 'numCu' },
             ]}
             data={this.transformData(schoolPrograms)}
-            title="Programas Academicos"
+            title={matches ? 'Programas Academicos' : ''}
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/programas-academicos/edit/${rowData.id}`);
+                  history.push(`/programas-academicos/modificar/${rowData.id}`);
                 },
               },
               {
@@ -107,9 +109,9 @@ SchoolProgramsList.propTypes = {
   }).isRequired,
 
   isLoading: PropTypes.bool.isRequired,
-
+  width: PropTypes.string.isRequired,
   show: PropTypes.func.isRequired,
   handleDeleteSchoolProgram: PropTypes.func.isRequired,
 };
 
-export default SchoolProgramsList;
+export default withWidth()(SchoolProgramsList);

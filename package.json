@@ -15,6 +15,7 @@
     "material-ui-next-pickers": "0.0.20",
     "material-ui-pickers": "^2.2.4",
     "moment": "2.24.0",
+    "param-case": "^3.0.3",
     "prop-types": "^15.7.2",
     "react": "16.8.6",
     "react-big-calendar": "0.22.0",

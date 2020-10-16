@@ -5,6 +5,7 @@ import { show } from './snackbar';
 
 export const ACTIONS = {
   LIST: 'student/list',
+  WARNING_STUDENTS: 'student/warning',
   SELECT: `student/select`,
   AVAILABLE_SUBJECTS: `student/subjects_inscription`,
   INSCRIBED_SCHOOL_PERIODS: `student/inscribed_school_periods`,
@@ -18,6 +19,18 @@ export const getList = () => async (dispatch) => {
   return Student.getStudentList()
     .then((response) => {
       dispatch({ type: ACTIONS.LIST, payload: { list: response } });
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
+
+export const getWarningStudentsList = () => async (dispatch) => {
+  return Student.getWarningStudentsList()
+    .then((response) => {
+      dispatch({ type: ACTIONS.WARNING_STUDENTS, payload: { warningStudents: response } });
       return true;
     })
     .catch((error) => {

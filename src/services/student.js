@@ -10,6 +10,15 @@ export const Student = {
       .then(handleResponseService)
       .catch(handleErrorMsg);
   },
+
+  getWarningStudentsList() {
+    return AXIOS.get(`${URL.WARNING_STUDENTS}`, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+
   findStudentById(id) {
     return AXIOS.get(`${URL.STUDENT}/${id}`, {
       headers: headers(),

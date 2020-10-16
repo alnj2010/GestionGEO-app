@@ -56,34 +56,34 @@ function App() {
                 <Route exact path="/mis-cursos/curso/:id" component={CourseDetail} />
 
                 <Route exact path="/administradores/" component={AdminsList} />
-                <Route exact path="/administradores/edit/:id" component={AdminDetail} />
-                <Route exact path="/administradores/create" component={AdminDetail} />
+                <Route exact path="/administradores/modificar/:id" component={AdminDetail} />
+                <Route exact path="/administradores/agregar" component={AdminDetail} />
 
                 <Route exact path="/programas-academicos/" component={SchoolProgramsList} />
                 <Route
                   exact
-                  path="/programas-academicos/edit/:id"
+                  path="/programas-academicos/modificar/:id"
                   component={SchoolProgramDetail}
                 />
-                <Route exact path="/programas-academicos/create" component={SchoolProgramDetail} />
+                <Route exact path="/programas-academicos/agregar" component={SchoolProgramDetail} />
 
                 <Route exact path="/materias/" component={SubjectsList} />
-                <Route exact path="/materias/edit/:id" component={SubjectDetail} />
-                <Route exact path="/materias/create" component={SubjectDetail} />
+                <Route exact path="/materias/modificar/:id" component={SubjectDetail} />
+                <Route exact path="/materias/agregar" component={SubjectDetail} />
 
                 <Route exact path="/estudiantes/" component={StudentsList} />
-                <Route exact path="/estudiantes/edit/:id" component={StudentDetail} />
+                <Route exact path="/estudiantes/modificar/:id" component={StudentDetail} />
                 <Route
                   exact
-                  path="/estudiantes/edit/:userId/programa-academico/:studentId"
+                  path="/estudiantes/modificar/:userId/programa-academico/:studentId"
                   component={StudentSchoolProgramDetail}
                 />
                 <Route
                   exact
-                  path="/estudiantes/edit/:userId/programa-academico/create"
+                  path="/estudiantes/modificar/:userId/programa-academico/agregar"
                   component={StudentSchoolProgramDetail}
                 />
-                <Route exact path="/estudiantes/create" component={StudentDetail} />
+                <Route exact path="/estudiantes/agregar" component={StudentDetail} />
                 <Route
                   exact
                   path="/estudiantes/inscripciones/:id"
@@ -101,13 +101,17 @@ function App() {
                 />
 
                 <Route exact path="/profesores/" component={TeachersList} />
-                <Route exact path="/profesores/edit/:id" component={TeacherDetail} />
-                <Route exact path="/profesores/create" component={TeacherDetail} />
+                <Route exact path="/profesores/modificar/:id" component={TeacherDetail} />
+                <Route exact path="/profesores/agregar" component={TeacherDetail} />
 
-                <Route exact path="/periodo-semestral/actual" component={SchoolPeriodActual} />
-                <Route exact path="/periodo-semestral/list" component={SchoolPeriodsList} />
-                <Route exact path="/periodo-semestral/edit/:id" component={SchoolPeriodDetail} />
-                <Route exact path="/periodo-semestral/create" component={SchoolPeriodDetail} />
+                <Route exact path="/periodo-semestral/en-curso" component={SchoolPeriodActual} />
+                <Route exact path="/periodo-semestral/periodos" component={SchoolPeriodsList} />
+                <Route
+                  exact
+                  path="/periodo-semestral/modificar/:id"
+                  component={SchoolPeriodDetail}
+                />
+                <Route exact path="/periodo-semestral/agregar" component={SchoolPeriodDetail} />
                 <NotFound />
               </Switch>
             </Menu>

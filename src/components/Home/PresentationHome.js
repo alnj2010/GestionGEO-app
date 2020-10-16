@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import imgMan from '../../images/hombre.png';
 import imgWomen from '../../images/mujer.png';
 import { reverseJson } from '../../helpers/index';
-import { USER_ROL } from '../../services/constants';
+import { USER_ROL, COORDINATOR_ROL } from '../../services/constants';
 
 const styles = (theme) => ({
   welcome: {
@@ -106,7 +106,7 @@ function PresentationHome(props) {
           display="block"
           gutterBottom
         >
-          {`${rol} ${principal ? 'Principal' : ''}`}
+          {`${reverseJson(COORDINATOR_ROL)[rol]} ${principal ? 'Principal' : ''}`}
         </Typography>
       </Grid>
       <Grid item xs={8} sm={7}>

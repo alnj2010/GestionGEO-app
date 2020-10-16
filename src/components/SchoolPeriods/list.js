@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import PropTypes from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
@@ -35,8 +36,10 @@ class SchoolPeriodsList extends Component {
   };
 
   render = () => {
-    const { schoolPeriods, isLoading, history, handleDeleteSchoolPeriod } = this.props;
+    const { schoolPeriods, isLoading, history, handleDeleteSchoolPeriod, width } = this.props;
     const { func } = this.state;
+    const matches = isWidthUp('sm', width);
+
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -45,7 +48,7 @@ class SchoolPeriodsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/periodo-semestral/create`)}
+            onClick={() => history.push(`/periodo-semestral/agregar`)}
           >
             <Add />
             Agregar periodo semestral
@@ -60,13 +63,13 @@ class SchoolPeriodsList extends Component {
               { title: 'Fecha Fin', field: 'endDate' },
             ]}
             data={this.transformData(schoolPeriods)}
-            title="Periodos semestrales"
+            title={matches ? 'Periodos semestrales' : ''}
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/periodo-semestral/edit/${rowData.id}`);
+                  history.push(`/periodo-semestral/modificar/${rowData.id}`);
                 },
               },
               {
@@ -107,6 +110,7 @@ SchoolPeriodsList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  width: PropTypes.string.isRequired,
 
   isLoading: PropTypes.bool.isRequired,
 
@@ -114,4 +118,4 @@ SchoolPeriodsList.propTypes = {
   handleDeleteSchoolPeriod: PropTypes.func.isRequired,
 };
 
-export default SchoolPeriodsList;
+export default withWidth()(SchoolPeriodsList);
