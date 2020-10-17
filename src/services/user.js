@@ -20,6 +20,43 @@ export const User = {
       .then(handleResponseService)
       .catch(handleErrorMsg);
   },
+
+  getAdminList() {
+    return AXIOS.get(`${URL.ADMIN}`, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+
+  findAdminById(id) {
+    return AXIOS.get(`${URL.ADMIN}/${id}`, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+  saveAdmin(admin) {
+    return AXIOS.post(`${URL.ADMIN}`, admin, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+  delete(adminId) {
+    return AXIOS.delete(`${URL.ADMIN}/${adminId}`, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+  update(player) {
+    return AXIOS.put(`${URL.ADMIN}/${player.id}`, player, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
 };
 
 export default User;

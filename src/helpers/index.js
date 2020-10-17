@@ -25,7 +25,12 @@ export const handleErrorMsg = (error) => {
     if (typeof error.response.data.text === 'function') {
       return error.response.data.text().then((msg) => Promise.reject(JSON.parse(msg)));
     }
-    return Promise.reject(new Error(error.response.data.error));
+    const err = {
+      message: error.response.data.error,
+      status: error.response.status,
+      statusText: error.response.statusText,
+    };
+    throw err;
   }
 
   return Promise.reject(new Error('Ups! Al parecer hay un error desconocido.'));

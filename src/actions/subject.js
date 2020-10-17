@@ -17,7 +17,7 @@ export const getList = () => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 export const getSubjectBySchoolProgram = (id) => async (dispatch) => {
@@ -29,7 +29,7 @@ export const getSubjectBySchoolProgram = (id) => async (dispatch) => {
     .catch((error) => {
       dispatch({ type: ACTIONS.LISTBYSCHOOLPROGRAM, payload: { listBySchoolPeriod: [] } });
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -44,7 +44,7 @@ export const findSubjectById = (id) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -79,7 +79,7 @@ export const updateSubject = (subject) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -102,7 +102,7 @@ export const saveSubject = (subject) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -114,6 +114,6 @@ export const deleteSubject = (subjectId) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };

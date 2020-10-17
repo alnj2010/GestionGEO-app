@@ -34,7 +34,7 @@ export const login = ({ identification, password, userType }) => async (dispatch
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 

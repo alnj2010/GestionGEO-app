@@ -17,7 +17,7 @@ export const getList = () => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -32,7 +32,7 @@ export const findCurrentSchoolPeriod = () => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -47,7 +47,7 @@ export const findSchoolPeriodById = (id) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -100,7 +100,7 @@ export const updateSchoolPeriod = (schoolPeriod) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -141,7 +141,7 @@ export const saveSchoolPeriod = (schoolPeriod) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -153,6 +153,6 @@ export const deleteSchoolPeriod = (schoolPeriodId) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };

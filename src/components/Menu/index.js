@@ -36,7 +36,6 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 import { Collapse } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { paramCase } from 'param-case';
 import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
 import {
@@ -397,7 +396,9 @@ class MenuApp extends React.Component {
                     <ListItem
                       button
                       key={option.name}
-                      selected={location.pathname.includes(paramCase(option.name))}
+                      selected={location.pathname.includes(
+                        option.name.toLowerCase().replace(' ', '-')
+                      )}
                       onClick={() => this.handleClick(option.name)}
                     >
                       <ListItemIcon>
@@ -411,7 +412,9 @@ class MenuApp extends React.Component {
                       <ListItem
                         button
                         key={option.name}
-                        selected={location.pathname.includes(paramCase(option.name))}
+                        selected={location.pathname.includes(
+                          option.name.toLowerCase().replace(' ', '-')
+                        )}
                         onClick={() => this.handleClick(option.name)}
                       >
                         <ListItemIcon>
@@ -438,7 +441,9 @@ class MenuApp extends React.Component {
                               key={subOption.name}
                               onClick={() => this.handleClick(subOption.name)}
                               className={classes.nested}
-                              selected={location.pathname.includes(paramCase(subOption.name))}
+                              selected={location.pathname.includes(
+                                subOption.name.toLowerCase().replace(' ', '-')
+                              )}
                             >
                               <ListItemIcon>
                                 <subOption.component />
