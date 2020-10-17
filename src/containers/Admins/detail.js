@@ -18,6 +18,22 @@ class AdminDetailContainer extends Component {
     defineDispatch('administrador');
   };
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      match,
+      findAdminByIdDispatch,
+      defineDispatch,
+      cleanSelectedAdminDispatch,
+      cleanDialogDispatch,
+    } = this.props;
+    if (nextProps.match.params.id !== match.params.id) {
+      cleanSelectedAdminDispatch();
+      cleanDialogDispatch();
+      findAdminByIdDispatch(nextProps.match.params.id);
+      defineDispatch('administrador');
+    }
+  }
+
   componentWillUnmount = () => {
     const { cleanSelectedAdminDispatch, cleanDialogDispatch } = this.props;
     cleanSelectedAdminDispatch();

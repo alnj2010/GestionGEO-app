@@ -267,7 +267,7 @@ class MenuApp extends React.Component {
     switch (rol) {
       case 'A':
         this.handleClose();
-        window.location.href = `/administradores/modificar/${id}`;
+        history.push(`/administradores/modificar/${id}`);
         break;
       default:
         this.handleClose();
