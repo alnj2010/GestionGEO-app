@@ -11,6 +11,7 @@ function ResetPasswordContainer({ resetPasswordDispatch, history, location: { se
     if (!queryObject || !queryObject.token) {
       history.push('/');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleResetPassword = (data) => {
     resetPasswordDispatch({ ...data, ...queryObject })
