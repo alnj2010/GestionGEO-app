@@ -14,6 +14,10 @@ const renderTimeField = ({ label, input, ...custom }) => (
       label={label}
       {...input}
       {...custom}
+      cancelLabel={<div>CANCELAR</div>}
+      maxDateMessage={<div>La fecha no debe ser posterior a la fecha máxima</div>}
+      minDateMessage={<div>La fecha no debe ser anterior a la fecha mínima</div>}
+      invalidDateMessage={<div>Formato de fecha no válido</div>}
     />
   </MuiPickersUtilsProvider>
 );
