@@ -45,7 +45,7 @@ class AdminDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack();
+    history.push('/administradores');
   };
 
   handleAdminDelete = () => {

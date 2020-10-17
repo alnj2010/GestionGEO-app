@@ -26,7 +26,7 @@ class CourseDetailContainer extends Component {
   goBack = () => {
     const { history } = this.props;
 
-    history.goBack();
+    history.push('/mis-cursos');
   };
 
   updateQualifications = (value) => {
