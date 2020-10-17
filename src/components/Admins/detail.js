@@ -10,7 +10,7 @@ import { jsonToOptions } from '../../helpers';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 
-import { getSessionIsMainUser } from '../../storage/sessionStorage';
+import { getSessionIsMainUser, getSessionUser } from '../../storage/sessionStorage';
 
 const styles = () => ({
   form: {
@@ -56,11 +56,14 @@ class AdminDetail extends Component {
       submitting,
       valid,
       submitDispatch,
-      rol,
       admin,
     } = this.props;
     const { func } = this.state;
     const isMain = getSessionIsMainUser() === 'true';
+    const {
+      administrator: { rol: rolSesionActual, id: idSesionActual },
+    } = getSessionUser();
+    const isActual = idSesionActual === admin.administrator.id;
     return (
       <Form onSubmit={handleSubmit(saveAdmin)}>
         <Grid container>
@@ -169,7 +172,10 @@ class AdminDetail extends Component {
                     label: '¿Coordinador principal?',
                     field: 'principal',
                     id: 'principal',
-                    type: isMain && rol !== COORDINATOR_ROL.SECRETARIO ? 'switch' : 'hidden',
+                    type:
+                      isMain && rolSesionActual !== COORDINATOR_ROL.SECRETARIO && !isActual
+                        ? 'switch'
+                        : 'hidden',
                   },
                   {
                     label: '¿Usuario activo?',
@@ -243,8 +249,10 @@ AdminDetail.propTypes = {
   admin: PropTypes.shape({
     first_surname: PropTypes.string,
     first_name: PropTypes.string,
+    administrator: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    }),
   }).isRequired,
-  rol: PropTypes.string,
 
   // eslint-disable-next-line react/forbid-prop-types
   adminId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -261,7 +269,6 @@ AdminDetail.propTypes = {
 };
 
 AdminDetail.defaultProps = {
-  rol: null,
   adminId: null,
 };
 
@@ -291,11 +298,14 @@ const adminValidation = (values) => {
   if (!values.mobile || values.mobile === '(   )    -    ') {
     errors.mobile = 'movil es requerido';
   }
-
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
   if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
-  if (!values.rol) errors.rol = ' Rol Requerido';
+  if (!values.rol) {
+    errors.rol = ' Rol Requerido';
+  } else if (values.rol === COORDINATOR_ROL.SECRETARIO && values.principal) {
+    errors.rol = ' Un secretario no puede ser coordinador principal';
+  }
   return errors;
 };
 
