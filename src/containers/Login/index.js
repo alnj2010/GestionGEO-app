@@ -13,20 +13,27 @@ import {
 function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
   const [studentsTypes, setStudentsType] = useState(null);
   const handleLogin = ({ identification, password, userType }) => {
-    loginDispatch({ identification, password, userType }).then((isLogged) => {
-      if (userType === 'S') {
-        setStudentsType(isLogged);
-      } else if (isLogged) {
-        history.push('/home');
-      }
-    });
+    loginDispatch({ identification, password, userType })
+      .then((isLogged) => {
+        if (userType === 'S') {
+          setStudentsType(isLogged);
+        } else if (isLogged) {
+          history.push('/inicio');
+        }
+      })
+      .catch((err) => console.warn(err));
+  };
+
+  const handleForgotPassword = (event) => {
+    event.preventDefault();
+    history.push('/password/forgot');
   };
   const setStudent = (student) => {
     const user = getSessionUser();
     user.student = student;
     setSessionUser(user);
     setSessionStudentId(student.id);
-    history.push('/home');
+    history.push('/inicio');
   };
 
   const handleCloseSetStudent = () => {
@@ -36,6 +43,7 @@ function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
   return (
     <LoginForm
       showMenssageFloat={showSnackbar}
+      handleForgotPassword={handleForgotPassword}
       menssageFloat={message}
       handleLogin={handleLogin}
       studentsTypes={studentsTypes}

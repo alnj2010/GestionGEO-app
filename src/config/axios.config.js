@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { loadProgressBar } from 'axios-progress-bar';
 import { getSessionGeoToken } from '../storage/sessionStorage';
+import { DURATION_TOAST } from '../services/constants';
 
 export function headers(type) {
   let items;
@@ -43,13 +44,16 @@ AXIOS.interceptors.response.use(
       !error.response.data.error && error.response.data.message
         ? error.response.data.message
         : error.response.data.error;
-
-    if (status === 401) {
-      window.location.href = '/';
+    if (status === 401 && window.location.pathname !== '/') {
+      setTimeout(() => {
+        window.location.href = '/';
+      }, DURATION_TOAST);
       return Promise.reject(error);
     }
-    if (status === 403) {
-      window.location.href = '/';
+    if (status === 403 && window.location.pathname !== '/') {
+      setTimeout(() => {
+        window.location.href = '/';
+      }, DURATION_TOAST);
       return Promise.reject(error);
     }
     return Promise.reject(error);

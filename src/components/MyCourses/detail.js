@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 const styles = () => ({
   form: {
@@ -37,10 +38,12 @@ class SchoolProgramDetail extends Component {
   };
 
   render = () => {
-    const { students, updateQualifications } = this.props;
+    const { students, updateQualifications, width } = this.props;
+    const matches = isWidthUp('sm', width);
+
     return (
       <MaterialTable
-        title="Estudiantes"
+        title={matches ? 'Estudiantes' : ''}
         columns={[
           { title: '#', field: 'id', hidden: true },
           {
@@ -78,6 +81,7 @@ class SchoolProgramDetail extends Component {
 SchoolProgramDetail.propTypes = {
   students: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   updateQualifications: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(SchoolProgramDetail);
+export default withStyles(styles)(withWidth()(SchoolProgramDetail));

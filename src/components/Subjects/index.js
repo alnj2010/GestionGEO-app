@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import PropTypes from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
@@ -35,8 +36,10 @@ class SubjectsList extends Component {
   };
 
   render = () => {
-    const { subjects, isLoading, history, handleDeleteSubject } = this.props;
+    const { subjects, isLoading, history, handleDeleteSubject, width } = this.props;
     const { func } = this.state;
+    const matches = isWidthUp('sm', width);
+
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -45,7 +48,7 @@ class SubjectsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/materias/create`)}
+            onClick={() => history.push(`/materias/agregar`)}
           >
             <Add />
             Agregar materia
@@ -60,13 +63,13 @@ class SubjectsList extends Component {
               { title: 'Unidades de Credito', field: 'uc' },
             ]}
             data={this.transformData(subjects)}
-            title="materias"
+            title={matches ? 'materias' : ''}
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/materias/edit/${rowData.id}`);
+                  history.push(`/materias/modificar/${rowData.id}`);
                 },
               },
               {
@@ -114,6 +117,7 @@ SubjectsList.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  width: PropTypes.string.isRequired,
 
   isLoading: PropTypes.bool.isRequired,
 
@@ -121,4 +125,4 @@ SubjectsList.propTypes = {
   handleDeleteSubject: PropTypes.func.isRequired,
 };
 
-export default SubjectsList;
+export default withWidth()(SubjectsList);

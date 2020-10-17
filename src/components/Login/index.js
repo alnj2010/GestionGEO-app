@@ -2,53 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
+import {
+  Grid,
+  Typography,
+  Button,
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  DialogTitle,
+  Dialog,
+  Link,
+} from '@material-ui/core';
+
 import PersonIcon from '@material-ui/icons/LocalLibrary';
 import PasswordInput from '../PasswordInput';
 import CustomizedSnackbar from '../Snackbar';
 import TextInput from '../TextInput';
 import RenderFields from '../RenderFields';
-import logo from '../../images/icon-gestionGeo.svg';
-import backImage from '../../images/pif.jpg';
 import { USER_ROL } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 
-const styles = (theme) => ({
-  container: {
-    height: '100vh',
-    background: `url(${backImage})`,
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
-    backgroundAttachment: 'fixed',
-    backgroundSize: 'cover',
-    [theme.breakpoints.down('sm')]: {
-      padding: '0',
-      height: '0',
-    },
-  },
+const styles = () => ({
   input: {
     width: '100%',
   },
-  form: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: '10px',
-  },
-  formContainer: {
-    width: '550px',
-    padding: '1% 5%',
-    margin: ' 0 auto',
-    backgroundColor: 'white',
-  },
+
   forgotPassword: {
     textAlign: 'right',
     fontSize: 12,
@@ -61,16 +41,12 @@ const styles = (theme) => ({
   },
   loginButton: {
     width: '100%',
-    marginBottom: '15%',
+    margin: '5% 0',
     fontSize: 14,
     letterSpacing: '-0.84px',
     borderRadius: 3,
     backgroundColor: '#2196f3',
     fontWeight: 550,
-  },
-  logo: {
-    width: '60%',
-    height: 'auto',
   },
 });
 
@@ -85,105 +61,108 @@ let LoginForm = (props) => {
     studentsTypes,
     handleSetStudent,
     handleCloseSetStudent,
+    handleForgotPassword,
   } = props;
 
   return (
-    <Form onSubmit={handleSubmit(handleLogin)}>
-      <Grid container className={classes.container}>
-        <Grid className={classes.form} item xs={12}>
-          <Grid container spacing={8} className={classes.formContainer} id="loginForm">
-            <Grid container item xs={12} justify="center" direction="column" alignItems="center">
-              <img src={logo} alt="GestionGEO" className={classes.logo} />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Field
-                name="identification"
-                component={TextInput}
-                id="identification"
-                label="Cedula"
-                placeholder="Ingresa tu cedula"
-                margin="normal"
-                type="text"
-                className={classes.input}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Field
-                name="password"
-                component={PasswordInput}
-                className={classes.input}
-                id="password"
-                ariaLabel="Ver clave"
-                inputLabel="Clave"
-              />
-            </Grid>
-            <RenderFields>
-              {[
-                {
-                  field: 'userType',
-                  id: 'userType',
-                  type: 'select',
-                  label: '¿Como desea ingresar?',
-                  options: jsonToOptions(USER_ROL),
-                },
-              ]}
-            </RenderFields>
-
-            <Grid item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.loginButton}
-                disabled={!valid || pristine || submitting}
-                type="submit"
-              >
-                Ingresar
-              </Button>
-            </Grid>
-          </Grid>
+    <Grid container item xs={12} justify="center" direction="column" alignItems="center">
+      <Form onSubmit={handleSubmit(handleLogin)} style={{ width: '100%' }}>
+        <Grid item xs={12}>
+          <Field
+            name="identification"
+            component={TextInput}
+            id="identification"
+            label="Cedula"
+            placeholder="Ingresa tu cedula"
+            margin="normal"
+            type="text"
+            className={classes.input}
+          />
         </Grid>
-      </Grid>
-      <CustomizedSnackbar />
-      {studentsTypes && (
-        <Dialog
-          onClose={handleCloseSetStudent}
-          aria-labelledby="simple-dialog-title"
-          open={!!studentsTypes}
-        >
-          <DialogTitle id="simple-dialog-title">Seleccione el programa academico</DialogTitle>
-          <List>
-            {studentsTypes.map((student, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <ListItem button onClick={() => handleSetStudent(student)} key={index}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <PersonIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={student.school_program.school_program_name} />
-              </ListItem>
-            ))}
-          </List>
-        </Dialog>
-      )}
-    </Form>
+        <Grid item xs={12}>
+          <Field
+            name="password"
+            component={PasswordInput}
+            className={classes.input}
+            id="password"
+            ariaLabel="Ver clave"
+            inputLabel="Clave"
+          />
+        </Grid>
+        <RenderFields>
+          {[
+            {
+              field: 'userType',
+              id: 'userType',
+              type: 'select',
+              label: '¿Como desea ingresar?',
+              options: jsonToOptions(USER_ROL),
+            },
+          ]}
+        </RenderFields>
+
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.loginButton}
+            disabled={!valid || pristine || submitting}
+            type="submit"
+          >
+            Ingresar
+          </Button>
+        </Grid>
+        <Grid item container justify="flex-end" xs={12}>
+          <Typography>
+            <Link
+              href="/password/forgot"
+              className={classes.forgotPassword}
+              onClick={handleForgotPassword}
+            >
+              ¿Olvido su contraseña?
+            </Link>
+          </Typography>
+        </Grid>
+
+        <CustomizedSnackbar />
+        {studentsTypes && (
+          <Dialog
+            onClose={handleCloseSetStudent}
+            aria-labelledby="simple-dialog-title"
+            open={!!studentsTypes}
+          >
+            <DialogTitle id="simple-dialog-title">Seleccione el programa academico</DialogTitle>
+            <List>
+              {studentsTypes.map((student, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <ListItem button onClick={() => handleSetStudent(student)} key={index}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <PersonIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={student.school_program.school_program_name} />
+                </ListItem>
+              ))}
+            </List>
+          </Dialog>
+        )}
+      </Form>
+    </Grid>
   );
 };
 
 LoginForm.propTypes = {
   classes: PropTypes.shape({
-    form: PropTypes.string,
     save: PropTypes.string,
     loginButton: PropTypes.string,
     input: PropTypes.string,
-    container: PropTypes.string,
-    formContainer: PropTypes.string,
-    logo: PropTypes.string,
+    forgotPassword: PropTypes.string,
   }).isRequired,
   studentsTypes: PropTypes.arrayOf(PropTypes.shape({})),
   handleSetStudent: PropTypes.func.isRequired,
   handleCloseSetStudent: PropTypes.func.isRequired,
+  handleForgotPassword: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,

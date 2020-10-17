@@ -80,7 +80,7 @@ class StudentSchoolProgramContainer extends Component {
       },
     } = this.props;
     deleteSchoolProgramDispatch(idUser, idStudent).then(() =>
-      history.push(`/estudiantes/edit/${idUser}`)
+      history.push(`/estudiantes/modificar/${idUser}`)
     );
   };
 

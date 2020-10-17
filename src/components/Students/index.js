@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MaterialTable from 'material-table';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { PropTypes } from 'prop-types';
 import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
@@ -39,8 +40,9 @@ class StudentsList extends Component {
   };
 
   render = () => {
-    const { students, isLoading, history, handleDeleteStudent } = this.props;
+    const { students, isLoading, history, handleDeleteStudent, width } = this.props;
     const { func } = this.state;
+    const matches = isWidthUp('sm', width);
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -49,7 +51,7 @@ class StudentsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/estudiantes/create`)}
+            onClick={() => history.push(`/estudiantes/agregar`)}
           >
             <Add />
             Agregar estudiante
@@ -76,13 +78,13 @@ class StudentsList extends Component {
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(students)}
-            title="estudiantes"
+            title={matches ? 'estudiantes' : ''}
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/estudiantes/edit/${rowData.id}`);
+                  history.push(`/estudiantes/modificar/${rowData.id}`);
                 },
               },
               {
@@ -126,7 +128,8 @@ StudentsList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
 
   show: PropTypes.func.isRequired,
+  width: PropTypes.string.isRequired,
   handleDeleteStudent: PropTypes.func.isRequired,
 };
 
-export default StudentsList;
+export default withWidth()(StudentsList);

@@ -91,7 +91,7 @@ class StudentDetailContainer extends Component {
   handleDeleteSchoolProgram = (userId, studentId) => {
     const { deleteSchoolProgramDispatch, history } = this.props;
     deleteSchoolProgramDispatch(userId, studentId).then(() =>
-      history.push(`/estudiantes/edit/${userId}`)
+      history.push(`/estudiantes/modificar/${userId}`)
     );
   };
 

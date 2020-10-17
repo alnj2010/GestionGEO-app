@@ -5,6 +5,7 @@ import { show } from './snackbar';
 
 export const ACTIONS = {
   LIST: 'student/list',
+  WARNING_STUDENTS: 'student/warning',
   SELECT: `student/select`,
   AVAILABLE_SUBJECTS: `student/subjects_inscription`,
   INSCRIBED_SCHOOL_PERIODS: `student/inscribed_school_periods`,
@@ -22,7 +23,19 @@ export const getList = () => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
+    });
+};
+
+export const getWarningStudentsList = () => async (dispatch) => {
+  return Student.getWarningStudentsList()
+    .then((response) => {
+      dispatch({ type: ACTIONS.WARNING_STUDENTS, payload: { warningStudents: response } });
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
     });
 };
 
@@ -37,7 +50,7 @@ export const findStudentById = (id) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -100,7 +113,7 @@ export const updateSchoolProgram = (student) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -148,7 +161,7 @@ export const saveSchoolProgram = (student) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -160,7 +173,7 @@ export const deleteSchoolProgram = (userId, studentId) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 export const cleanSelectedStudent = () => async (dispatch) => {
@@ -218,7 +231,7 @@ export const updateStudent = (student) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -262,7 +275,7 @@ export const saveStudent = (student) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -274,7 +287,7 @@ export const deleteStudent = (studentId) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -288,7 +301,7 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -299,7 +312,7 @@ export const getConstance = (studentId, userType, constanceType) => async (dispa
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -324,7 +337,7 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -350,7 +363,7 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 

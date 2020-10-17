@@ -18,7 +18,7 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -33,7 +33,7 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -46,7 +46,7 @@ export const inscription = (value) => async (dispatch) => {
       })
       .catch((error) => {
         show(error.message, 'error')(dispatch);
-        return true;
+        return false;
       });
   }
   show('Ud no inscribio ninguna materia', 'error')(dispatch);

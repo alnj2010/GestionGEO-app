@@ -1,4 +1,5 @@
 import { User } from '../services/user';
+import { Constance } from '../services/constance';
 import { show } from './snackbar';
 import { getSessionUserId, getSessionUser, setSessionUser } from '../storage/sessionStorage';
 
@@ -17,7 +18,7 @@ export const getList = () => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -32,7 +33,7 @@ export const findAdminById = (id) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -86,7 +87,7 @@ export const updateAdmin = (admin) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -116,7 +117,7 @@ export const saveAdmin = (admin) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -128,6 +129,17 @@ export const deleteAdmin = (adminId) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
+    });
+};
+
+export const getReport = (initial, final) => async (dispatch) => {
+  return Constance.getReport(initial, final)
+    .then(() => {
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
     });
 };

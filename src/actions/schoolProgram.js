@@ -16,7 +16,7 @@ export const getList = () => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -31,7 +31,7 @@ export const findSchoolProgramById = (id) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -65,7 +65,7 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -88,7 +88,7 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };
 
@@ -100,6 +100,6 @@ export const deleteSchoolProgram = (schoolProgramId) => async (dispatch) => {
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
-      return false;
+      throw error;
     });
 };

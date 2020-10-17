@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import NotFound from './components/NotFound';
 import Login from './containers/Login';
+import RequestResetPassword from './containers/Login/RequestResetPassword';
+import ResetPassword from './containers/Login/ResetPassword';
 import Menu from './components/Menu';
+import Authentication from './components/Authentication';
 import Home from './components/Home';
 
 import MisCursos from './containers/MyCourses';
@@ -41,7 +44,19 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Login} />
+        <Route
+          exact
+          path={['/', '/password/forgot', '/password/reset']}
+          render={(props) => (
+            <Authentication {...props}>
+              <Switch>
+                <Route exact path="/" component={Login} />
+                <Route exact path="/password/forgot" component={RequestResetPassword} />
+                <Route exact path="/password/reset" component={ResetPassword} />
+              </Switch>
+            </Authentication>
+          )}
+        />
         <Route
           path="/"
           render={(props) => (
@@ -49,41 +64,41 @@ function App() {
               <Switch>
                 <Route exact path="/inscripcion" component={Inscription} />
 
-                <Route exact path="/home" component={Home} />
+                <Route exact path="/inicio" component={Home} />
                 <Route exact path="/cambio-clave" component={ChangePassword} />
                 <Route exact path="/mi-perfil/:id" component={MiPerfil} />
                 <Route exact path="/mis-cursos" component={MisCursos} />
                 <Route exact path="/mis-cursos/curso/:id" component={CourseDetail} />
 
                 <Route exact path="/administradores/" component={AdminsList} />
-                <Route exact path="/administradores/edit/:id" component={AdminDetail} />
-                <Route exact path="/administradores/create" component={AdminDetail} />
+                <Route exact path="/administradores/modificar/:id" component={AdminDetail} />
+                <Route exact path="/administradores/agregar" component={AdminDetail} />
 
                 <Route exact path="/programas-academicos/" component={SchoolProgramsList} />
                 <Route
                   exact
-                  path="/programas-academicos/edit/:id"
+                  path="/programas-academicos/modificar/:id"
                   component={SchoolProgramDetail}
                 />
-                <Route exact path="/programas-academicos/create" component={SchoolProgramDetail} />
+                <Route exact path="/programas-academicos/agregar" component={SchoolProgramDetail} />
 
                 <Route exact path="/materias/" component={SubjectsList} />
-                <Route exact path="/materias/edit/:id" component={SubjectDetail} />
-                <Route exact path="/materias/create" component={SubjectDetail} />
+                <Route exact path="/materias/modificar/:id" component={SubjectDetail} />
+                <Route exact path="/materias/agregar" component={SubjectDetail} />
 
                 <Route exact path="/estudiantes/" component={StudentsList} />
-                <Route exact path="/estudiantes/edit/:id" component={StudentDetail} />
+                <Route exact path="/estudiantes/modificar/:id" component={StudentDetail} />
                 <Route
                   exact
-                  path="/estudiantes/edit/:userId/programa-academico/:studentId"
+                  path="/estudiantes/modificar/:userId/programa-academico/:studentId"
                   component={StudentSchoolProgramDetail}
                 />
                 <Route
                   exact
-                  path="/estudiantes/edit/:userId/programa-academico/create"
+                  path="/estudiantes/modificar/:userId/programa-academico/agregar"
                   component={StudentSchoolProgramDetail}
                 />
-                <Route exact path="/estudiantes/create" component={StudentDetail} />
+                <Route exact path="/estudiantes/agregar" component={StudentDetail} />
                 <Route
                   exact
                   path="/estudiantes/inscripciones/:id"
@@ -101,13 +116,17 @@ function App() {
                 />
 
                 <Route exact path="/profesores/" component={TeachersList} />
-                <Route exact path="/profesores/edit/:id" component={TeacherDetail} />
-                <Route exact path="/profesores/create" component={TeacherDetail} />
+                <Route exact path="/profesores/modificar/:id" component={TeacherDetail} />
+                <Route exact path="/profesores/agregar" component={TeacherDetail} />
 
-                <Route exact path="/periodo-semestral/actual" component={SchoolPeriodActual} />
-                <Route exact path="/periodo-semestral/list" component={SchoolPeriodsList} />
-                <Route exact path="/periodo-semestral/edit/:id" component={SchoolPeriodDetail} />
-                <Route exact path="/periodo-semestral/create" component={SchoolPeriodDetail} />
+                <Route exact path="/periodo-semestral/en-curso" component={SchoolPeriodActual} />
+                <Route exact path="/periodo-semestral/periodos" component={SchoolPeriodsList} />
+                <Route
+                  exact
+                  path="/periodo-semestral/modificar/:id"
+                  component={SchoolPeriodDetail}
+                />
+                <Route exact path="/periodo-semestral/agregar" component={SchoolPeriodDetail} />
                 <NotFound />
               </Switch>
             </Menu>

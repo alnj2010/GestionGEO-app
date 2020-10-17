@@ -132,7 +132,7 @@ class MenuApp extends React.Component {
       anchorEl: null,
       options: [
         {
-          link: 'home',
+          link: 'inicio',
           name: 'Inicio',
           component: Home,
           clicked: false,
@@ -169,7 +169,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'programas-academicos',
-          name: 'Programa Academicos',
+          name: 'Programas Academicos',
           component: SchoolProgram,
           clicked: false,
           roles: ['A'],
@@ -212,13 +212,13 @@ class MenuApp extends React.Component {
           open: false,
           options: [
             {
-              link: 'actual',
-              name: 'Periodo en curso',
+              link: 'en-curso',
+              name: 'en curso',
               component: Actual,
               clicked: false,
             },
             {
-              link: 'list',
+              link: 'periodos',
               name: 'Periodos',
               component: ListIcon,
               clicked: false,
@@ -267,7 +267,7 @@ class MenuApp extends React.Component {
     switch (rol) {
       case 'A':
         this.handleClose();
-        history.push(`/administradores/edit/${id}`);
+        history.push(`/administradores/modificar/${id}`);
         break;
       default:
         this.handleClose();
@@ -287,7 +287,6 @@ class MenuApp extends React.Component {
 
   handleClick = (option) => {
     const { options } = this.state;
-    const { location } = this.props;
     let changed = false;
     options.map((opt) => {
       if (opt.name === option && opt.options) {
@@ -298,13 +297,10 @@ class MenuApp extends React.Component {
       return opt;
     });
     if (changed) this.setState({ options });
-    else {
-      location.pathname = `/${option}`;
-    }
   };
 
   render() {
-    const { classes, theme, children, history, getConstanceDispatch } = this.props;
+    const { classes, theme, children, history, getConstanceDispatch, location } = this.props;
     const { anchorEl, options, open: openOption, openDownload } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
@@ -400,6 +396,9 @@ class MenuApp extends React.Component {
                     <ListItem
                       button
                       key={option.name}
+                      selected={location.pathname.includes(
+                        option.name.toLowerCase().replace(' ', '-')
+                      )}
                       onClick={() => this.handleClick(option.name)}
                     >
                       <ListItemIcon>
@@ -413,6 +412,9 @@ class MenuApp extends React.Component {
                       <ListItem
                         button
                         key={option.name}
+                        selected={location.pathname.includes(
+                          option.name.toLowerCase().replace(' ', '-')
+                        )}
                         onClick={() => this.handleClick(option.name)}
                       >
                         <ListItemIcon>
@@ -423,7 +425,6 @@ class MenuApp extends React.Component {
                       </ListItem>
                     </Link>
                   )}
-
                   {option.options ? (
                     <Collapse in={option.open} timeout="auto" unmountOnExit>
                       <List component="div" disablePadding>
@@ -440,6 +441,9 @@ class MenuApp extends React.Component {
                               key={subOption.name}
                               onClick={() => this.handleClick(subOption.name)}
                               className={classes.nested}
+                              selected={location.pathname.includes(
+                                subOption.name.toLowerCase().replace(' ', '-')
+                              )}
                             >
                               <ListItemIcon>
                                 <subOption.component />
