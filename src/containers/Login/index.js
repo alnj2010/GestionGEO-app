@@ -17,16 +17,21 @@ function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
       if (userType === 'S') {
         setStudentsType(isLogged);
       } else if (isLogged) {
-        history.push('/home');
+        history.push('/inicio');
       }
     });
+  };
+
+  const handleForgotPassword = (event) => {
+    event.preventDefault();
+    history.push('/password/forgot');
   };
   const setStudent = (student) => {
     const user = getSessionUser();
     user.student = student;
     setSessionUser(user);
     setSessionStudentId(student.id);
-    history.push('/home');
+    history.push('/inicio');
   };
 
   const handleCloseSetStudent = () => {
@@ -36,6 +41,7 @@ function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
   return (
     <LoginForm
       showMenssageFloat={showSnackbar}
+      handleForgotPassword={handleForgotPassword}
       menssageFloat={message}
       handleLogin={handleLogin}
       studentsTypes={studentsTypes}

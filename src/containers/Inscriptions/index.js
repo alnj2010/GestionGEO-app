@@ -32,7 +32,7 @@ class InscriptionContainer extends Component {
     };
     inscriptionDispatch(payload).then((res) => {
       if (res) {
-        history.replace(`/home`);
+        history.replace(`/inicio`);
       }
     });
   };

@@ -14,7 +14,7 @@ class SubjectsList extends Component {
   }
 
   transformData = (myCourses) => {
-    if (myCourses)
+    if (Array.isArray(myCourses))
       return myCourses.map((course) => {
         return {
           id: course.id,
@@ -67,6 +67,9 @@ class SubjectsList extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: myCourses.message,
+              },
             }}
             options={{
               pageSize: 10,
@@ -85,7 +88,10 @@ class SubjectsList extends Component {
 }
 
 SubjectsList.propTypes = {
-  myCourses: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  myCourses: PropTypes.oneOfType([
+    PropTypes.shape({ message: PropTypes.string, error: PropTypes.string }),
+    PropTypes.arrayOf(PropTypes.shape({})),
+  ]).isRequired,
 
   history: PropTypes.shape({
     push: PropTypes.func,

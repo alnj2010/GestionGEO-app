@@ -14,6 +14,8 @@ export const URL = {
   CONSTANCE: '/constance',
   ANNUALREPORT: '/annualReport',
   CHANGE_PASSWORD: '/changePassword',
+  PASSWORD_EMAIL: '/password/email',
+  PASSWORD_RESET: '/password/reset',
 };
 export const DURATION_TOAST = 3000;
 

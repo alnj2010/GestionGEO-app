@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import NotFound from './components/NotFound';
 import Login from './containers/Login';
+import RequestResetPassword from './containers/Login/RequestResetPassword';
+import ResetPassword from './containers/Login/ResetPassword';
 import Menu from './components/Menu';
+import Authentication from './components/Authentication';
 import Home from './components/Home';
 
 import MisCursos from './containers/MyCourses';
@@ -41,7 +44,19 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={Login} />
+        <Route
+          exact
+          path={['/', '/password/forgot', '/password/reset']}
+          render={(props) => (
+            <Authentication {...props}>
+              <Switch>
+                <Route exact path="/" component={Login} />
+                <Route exact path="/password/forgot" component={RequestResetPassword} />
+                <Route exact path="/password/reset" component={ResetPassword} />
+              </Switch>
+            </Authentication>
+          )}
+        />
         <Route
           path="/"
           render={(props) => (
@@ -49,7 +64,7 @@ function App() {
               <Switch>
                 <Route exact path="/inscripcion" component={Inscription} />
 
-                <Route exact path="/home" component={Home} />
+                <Route exact path="/inicio" component={Home} />
                 <Route exact path="/cambio-clave" component={ChangePassword} />
                 <Route exact path="/mi-perfil/:id" component={MiPerfil} />
                 <Route exact path="/mis-cursos" component={MisCursos} />

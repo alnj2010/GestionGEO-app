@@ -97,7 +97,7 @@ function WarningStudents({
         data={data}
         editable={{
           onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
               const dataUpdate = [...data];
               const index = oldData.tableData.id;
               dataUpdate[index] = newData;

@@ -15,8 +15,9 @@ export const getCoursesList = () => async (dispatch) => {
       return true;
     })
     .catch((error) => {
+      dispatch({ type: ACTIONS.LIST, payload: { list: error } });
       show(error.message, 'error')(dispatch);
-      return false;
+      return error.message;
     });
 };
 export const getEnrolledStudents = (id) => async (dispatch) => {

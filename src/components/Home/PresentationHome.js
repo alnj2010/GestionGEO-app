@@ -106,7 +106,7 @@ function PresentationHome(props) {
           display="block"
           gutterBottom
         >
-          {`${reverseJson(COORDINATOR_ROL)[rol]} ${principal ? 'Principal' : ''}`}
+          {`${rol ? reverseJson(COORDINATOR_ROL)[rol] : ''} ${principal ? 'Principal' : ''}`}
         </Typography>
       </Grid>
       <Grid item xs={8} sm={7}>

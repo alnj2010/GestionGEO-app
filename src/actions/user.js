@@ -37,3 +37,37 @@ export const login = ({ identification, password, userType }) => async (dispatch
       return false;
     });
 };
+
+export const requestResetPassword = (data) => async (dispatch) => {
+  const payload = {
+    email: data.email,
+    user_type: data.userType,
+  };
+  return User.requestResetPassword(payload)
+    .then(() => {
+      show('Enlace enviado a su correo', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
+    });
+};
+
+export const resetPassword = (data) => async (dispatch) => {
+  const payload = {
+    email: data.email,
+    user_type: data.userType,
+    password: data.password,
+    password_confirmation: data.passwordConfirmation,
+    token: data.token,
+  };
+  return User.resetPassword(payload)
+    .then(() => {
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
+    });
+};

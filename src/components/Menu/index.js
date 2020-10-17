@@ -133,7 +133,7 @@ class MenuApp extends React.Component {
       anchorEl: null,
       options: [
         {
-          link: 'home',
+          link: 'inicio',
           name: 'Inicio',
           component: Home,
           clicked: false,

@@ -24,11 +24,14 @@ class MisCursosContainer extends Component {
 }
 
 MisCursosContainer.propTypes = {
-  myCourses: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    })
-  ).isRequired,
+  myCourses: PropTypes.oneOfType([
+    PropTypes.shape({ message: PropTypes.string, error: PropTypes.string }),
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      })
+    ),
+  ]).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
