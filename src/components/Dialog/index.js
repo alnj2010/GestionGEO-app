@@ -28,6 +28,10 @@ class AlertDialogSlide extends React.Component {
 
   render() {
     const { entity, action, open } = this.props;
+    const capitalize = (s) => {
+      if (typeof s !== 'string') return '';
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    };
     return (
       <Dialog
         open={open}
@@ -37,7 +41,7 @@ class AlertDialogSlide extends React.Component {
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle id="alert-dialog-slide-title">{`${action} ${entity}`}</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">{`${capitalize(action)} ${entity}`}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Estas seguro que quieres {action} el {entity}?

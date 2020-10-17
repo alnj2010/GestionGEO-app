@@ -18,7 +18,7 @@ class TeachersListContainer extends Component {
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
     getListDispatch().then(() => this.setState({ isLoading: false }));
-    defineDispatch('Profesor');
+    defineDispatch('profesor');
   };
 
   componentWillUnmount = () => {

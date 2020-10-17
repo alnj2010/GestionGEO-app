@@ -16,7 +16,7 @@ class SchoolPeriodsListContainer extends Component {
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
     getListDispatch().then(() => this.setState({ isLoading: false }));
-    defineDispatch('Periodo semestral');
+    defineDispatch('periodo semestral');
   };
 
   componentWillUnmount = () => {
