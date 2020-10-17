@@ -64,6 +64,7 @@ export const resetPassword = (data) => async (dispatch) => {
   };
   return User.resetPassword(payload)
     .then(() => {
+      show('Contraseña cambiada sastifactoriamente', 'success')(dispatch);
       return true;
     })
     .catch((error) => {

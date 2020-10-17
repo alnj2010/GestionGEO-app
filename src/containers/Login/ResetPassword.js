@@ -13,8 +13,8 @@ function ResetPasswordContainer({ resetPasswordDispatch, history, location: { se
     }
   }, []);
   const handleResetPassword = (data) => {
-    resetPasswordDispatch({ ...queryObject })
-      .then(() => null)
+    resetPasswordDispatch({ ...data, ...queryObject })
+      .then(() => history.push('/'))
       .catch(() => history.push('/'));
   };
   return <ResetPassword handleResetPassword={handleResetPassword} />;

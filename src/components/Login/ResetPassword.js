@@ -6,6 +6,8 @@ import { Grid, Button } from '@material-ui/core';
 
 import CustomizedSnackbar from '../Snackbar';
 import RenderFields from '../RenderFields';
+import { USER_ROL } from '../../services/constants';
+import { jsonToOptions } from '../../helpers';
 
 const styles = () => ({
   loginButton: {
@@ -27,6 +29,19 @@ let ResetPassword = (props) => {
       <Form onSubmit={handleSubmit(handleResetPassword)} style={{ width: '100%' }}>
         <RenderFields lineal={[12, 12]}>
           {[
+            {
+              label: 'Email',
+              field: 'email',
+              id: 'email',
+              type: 'text',
+            },
+            {
+              field: 'userType',
+              id: 'userType',
+              type: 'select',
+              label: 'Seleccione su rol',
+              options: jsonToOptions(USER_ROL),
+            },
             {
               label: 'Nueva contraseña',
               field: 'password',
@@ -75,8 +90,16 @@ ResetPassword.propTypes = {
 
 ResetPassword.defaultProps = {};
 
-const loginValidator = (values) => {
+const ResetPasswordValidator = (values) => {
   const errors = {};
+  if (!values.userType) {
+    errors.userType = 'Rol es requerido';
+  }
+  if (!values.email) {
+    errors.email = 'Email es requerido';
+  } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
+    errors.email = 'Introduce un email valido';
+  }
   if (!values.password) errors.password = 'Campo Requerido';
   if (!values.passwordConfirmation) errors.passwordConfirmation = 'Campo Requerido';
 
@@ -91,7 +114,7 @@ const loginValidator = (values) => {
 
 ResetPassword = reduxForm({
   form: 'login',
-  validate: loginValidator,
+  validate: ResetPasswordValidator,
 })(ResetPassword);
 
 export default withStyles(styles)(ResetPassword);

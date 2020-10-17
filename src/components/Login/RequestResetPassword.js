@@ -78,7 +78,7 @@ RequestResetPassword.propTypes = {
 
 RequestResetPassword.defaultProps = {};
 
-const loginValidator = (values) => {
+const RequestResetPasswordValidator = (values) => {
   const errors = {};
 
   if (!values.userType) {
@@ -93,8 +93,8 @@ const loginValidator = (values) => {
 };
 
 RequestResetPassword = reduxForm({
-  form: 'login',
-  validate: loginValidator,
+  form: 'RequestResetPassword',
+  validate: RequestResetPasswordValidator,
 })(RequestResetPassword);
 
 export default withStyles(styles)(RequestResetPassword);
