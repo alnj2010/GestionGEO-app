@@ -12,8 +12,9 @@ import { USER_ROL, COORDINATOR_ROL } from '../../services/constants';
 const styles = (theme) => ({
   welcome: {
     background: 'linear-gradient(45deg, rgba(250,250,250,1) 50%, rgba(63,81,181,0.5) 100%)',
-    height: '150px',
+    minHeight: '150px',
     minWidth: '215px',
+    paddingBottom: '10px',
     borderRadius: '5px',
     boxShadow: '-1px 2px 5px 0px rgba(0,0,0,0.2)',
   },
@@ -31,6 +32,7 @@ const styles = (theme) => ({
   welcome__info: {
     padding: '10px',
     display: 'flex',
+    textAlign: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
   },
@@ -94,7 +96,7 @@ function PresentationHome(props) {
           />
         </Grid>
       </Grid>
-      <Grid item xs={3} className={classes.welcome__info}>
+      <Grid item xs={12} sm={3} className={classes.welcome__info}>
         <Typography variant="h4" className={classes.welcome__infoUsername} gutterBottom>
           {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
             secondSurname || ''

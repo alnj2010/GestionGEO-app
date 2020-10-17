@@ -55,8 +55,13 @@ class StudentInscriptionContainer extends Component {
   };
 
   goBack = () => {
-    const { history } = this.props;
-    history.goBack();
+    const {
+      history,
+      match: {
+        params: { id },
+      },
+    } = this.props;
+    history.push(`/estudiantes/inscripciones/${id}`);
   };
 
   render() {
@@ -138,7 +143,7 @@ StudentInscriptionContainer.propTypes = {
 
   idInscription: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   defineDispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({ goBack: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   getSchoolPeriodsListDispatch: PropTypes.func.isRequired,
   getAvailableSubjectsDispatch: PropTypes.func.isRequired,

@@ -154,7 +154,7 @@ class SchoolProgramDetail extends Component {
 
                   <Grid item xs={12} sm={3}>
                     <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Cancelar
+                      Ir al listado
                     </Button>
                   </Grid>
 

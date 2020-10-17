@@ -46,7 +46,7 @@ class SchoolProgramDetailContainer extends Component {
   goBack = () => {
     const { history } = this.props;
 
-    history.goBack();
+    history.goBack('/programas-academicos');
   };
 
   handleSchoolProgramDelete = () => {

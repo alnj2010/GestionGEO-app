@@ -286,7 +286,7 @@ class StudentSchoolProgram extends Component {
 
                   <Grid item xs={12} sm={3}>
                     <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Cancelar
+                      IR AL LISTADO
                     </Button>
                   </Grid>
 

@@ -80,7 +80,7 @@ class StudentDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack();
+    history.goBack('/estudiantes');
   };
 
   handleStudentDelete = () => {

@@ -64,8 +64,15 @@ class StudentSchoolProgramContainer extends Component {
   };
 
   goBack = () => {
-    const { history } = this.props;
-    history.goBack();
+    const {
+      history,
+      location: {
+        state: {
+          selectedStudent: { id: idUser },
+        },
+      },
+    } = this.props;
+    history.push(`/estudiantes/modificar/${idUser}`);
   };
 
   handleSchoolProgramDelete = () => {

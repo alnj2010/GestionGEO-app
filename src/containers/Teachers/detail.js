@@ -46,7 +46,7 @@ class TeacherDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack();
+    history.goBack('/profesores');
   };
 
   handleTeacherDelete = () => {

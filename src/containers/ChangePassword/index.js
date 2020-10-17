@@ -13,13 +13,13 @@ class ChangePassword extends Component {
     const { changePasswordDispatch, history } = this.props;
 
     changePasswordDispatch(payload)
-      .then(() => history.goBack())
+      .then(() => history.push('/inicio'))
       .catch((err) => console.warn(err));
   };
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack();
+    history.push('/inicio');
   };
 
   render() {
@@ -32,7 +32,7 @@ class ChangePassword extends Component {
 
 ChangePassword.propTypes = {
   changePasswordDispatch: PropTypes.func.isRequired,
-  history: PropTypes.shape({ goBack: PropTypes.func }).isRequired,
+  history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
 };
 
 const mS = () => ({});
