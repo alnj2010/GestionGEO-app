@@ -20,7 +20,7 @@ class StudentInscriptions extends Component {
   };
 
   render = () => {
-    const { inscribedSchoolPeriods, isLoading, history, studentId, fullname } = this.props;
+    const { inscribedSchoolPeriods, isLoading, history, studentId, userId, fullname } = this.props;
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -29,12 +29,7 @@ class StudentInscriptions extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() =>
-              history.push(`/estudiantes/inscripciones/${studentId}/nueva`, {
-                inscriptedSP: inscribedSchoolPeriods,
-                fullname,
-              })
-            }
+            onClick={() => history.push(`/estudiantes/inscripciones/${userId}/${studentId}/nueva`)}
           >
             <Add />
             Inscribir estudiante
@@ -55,10 +50,7 @@ class StudentInscriptions extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/estudiantes/inscripciones/${studentId}/${rowData.id}`, {
-                    inscriptedSP: inscribedSchoolPeriods,
-                    fullname,
-                  });
+                  history.push(`/estudiantes/inscripciones/${userId}/${studentId}/${rowData.id}`);
                 },
               },
             ]}
@@ -88,6 +80,7 @@ StudentInscriptions.propTypes = {
 
   // eslint-disable-next-line react/forbid-prop-types
   studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+  userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   fullname: PropTypes.string.isRequired,
 
   history: PropTypes.shape({

@@ -152,7 +152,7 @@ class StudentDetail extends Component {
       handleSubmit,
       saveStudent,
       goBack,
-      studentId,
+      userId,
       handleStudentDelete,
       pristine,
       submitting,
@@ -175,7 +175,7 @@ class StudentDetail extends Component {
         <Grid container>
           <Grid item xs={12}>
             <h3>
-              {studentId
+              {userId
                 ? `Estudiante: ${student.first_surname} ${student.first_name}`
                 : 'Nuevo Estudiante'}
             </h3>
@@ -243,7 +243,7 @@ class StudentDetail extends Component {
                     label: 'Programa academico al que pertenece',
                     field: `schoolProgram`,
                     id: `schoolProgram`,
-                    type: studentId ? 'hidden' : 'select',
+                    type: userId ? 'hidden' : 'select',
                     options: schoolPrograms.map((post) => {
                       return {
                         key: post.school_program_name,
@@ -256,7 +256,7 @@ class StudentDetail extends Component {
                     label: 'Tipo',
                     field: `studentType`,
                     id: `studentType`,
-                    type: studentId ? 'hidden' : 'select',
+                    type: userId ? 'hidden' : 'select',
                     options: jsonToOptions(STUDENT_TYPE),
                     disabled: rol !== 'A',
                   },
@@ -264,13 +264,13 @@ class StudentDetail extends Component {
                     label: 'Tipo de ingreso',
                     field: 'typeIncome',
                     id: 'typeIncome',
-                    type: !studentId && rol === 'A' ? 'text' : 'hidden',
+                    type: !userId && rol === 'A' ? 'text' : 'hidden',
                   },
                   {
                     label: 'Creditos otorgados',
                     field: 'creditsGranted',
                     id: 'creditsGranted',
-                    type: !studentId && rol === 'A' ? 'number' : 'hidden',
+                    type: !userId && rol === 'A' ? 'number' : 'hidden',
                     min: 0,
                   },
                   {
@@ -284,14 +284,14 @@ class StudentDetail extends Component {
                     label: 'Universidad de Origen',
                     field: 'homeUniversity',
                     id: 'homeUniversity',
-                    type: !studentId && rol === 'A' ? 'text' : 'hidden',
+                    type: !userId && rol === 'A' ? 'text' : 'hidden',
                     disabled: rol !== 'A',
                   },
                   {
                     label: 'Profesor Guia',
                     field: `guideTeacherId`,
                     id: `guideTeacherId`,
-                    type: !studentId && rol === 'A' ? 'select' : 'hidden',
+                    type: !userId && rol === 'A' ? 'select' : 'hidden',
                     options: teachersGuide.map((item) => ({
                       key: `${item.first_name} ${item.first_surname}`,
                       value: item.id,
@@ -324,33 +324,33 @@ class StudentDetail extends Component {
                     label: '¿Profesor de la UCV?',
                     field: 'isUcvTeacher',
                     id: 'isUcvTeacher',
-                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
                     disabled: rol !== 'A',
                   },
                   {
                     label: '¿Posee empleo actualmente?',
                     field: 'withWork',
                     id: 'withWork',
-                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
                     disabled: rol !== 'A',
                   },
                   {
                     label: '¿Usuario activo?',
                     field: 'active',
                     id: 'active',
-                    type: studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: userId && rol === 'A' ? 'switch' : 'hidden',
                   },
                   {
                     label: '¿Puede Inscribir tesis?',
                     field: 'isAvailableFinalWork',
                     id: 'isAvailableFinalWork',
-                    type: !studentId && rol === 'A' ? 'switch' : 'hidden',
+                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
                   },
                 ]}
               </RenderFields>
-              <Field component="input" name="studentId" type="hidden" style={{ height: 0 }} />
+              <Field component="input" name="userId" type="hidden" style={{ height: 0 }} />
             </Grid>
-            {!studentId && (
+            {!userId && (
               <>
                 <Grid item xs={12}>
                   <Typography variant="h6" gutterBottom>
@@ -376,7 +376,7 @@ class StudentDetail extends Component {
                       variant="contained"
                       className={`${classes.save} ${classes.button}`}
                       onClick={() =>
-                        studentId
+                        userId
                           ? this.handleDialogShow('actualizar', submitDispatch)
                           : submitDispatch('estudiante')
                       }
@@ -393,7 +393,7 @@ class StudentDetail extends Component {
                   </Grid>
 
                   <Grid item xs={12} sm={3}>
-                    {studentId ? (
+                    {userId ? (
                       <Button
                         className={classes.button}
                         variant="contained"
@@ -409,7 +409,7 @@ class StudentDetail extends Component {
             </Grid>
           </Grid>
         </Grid>
-        {studentId && (
+        {userId && (
           <Grid container justify="center">
             <Grid item xs={12} style={{ marginTop: '30px' }}>
               <MaterialTable
@@ -520,11 +520,7 @@ class StudentDetail extends Component {
                     icon: Inscription,
                     tooltip: 'Inscribir',
                     onClick: (_, rowData) =>
-                      history.push(`/estudiantes/inscripciones/${rowData.id}`, {
-                        fullname: `${student.first_name} ${student.second_name || ''} ${
-                          student.first_surname
-                        } ${student.second_surname || ''}`,
-                      }),
+                      history.push(`/estudiantes/inscripciones/${userId}/${rowData.id}`),
                   },
                   {
                     id: 'constances',
@@ -537,7 +533,7 @@ class StudentDetail extends Component {
                     tooltip: 'Delete User',
                     onClick: (_, rowData) => {
                       this.handleDialogShow('eliminar', () =>
-                        handleDeleteSchoolProgram(studentId, rowData.id)
+                        handleDeleteSchoolProgram(userId, rowData.id)
                       );
                     },
                   },
@@ -592,7 +588,7 @@ StudentDetail.propTypes = {
   }).isRequired,
 
   // eslint-disable-next-line react/forbid-prop-types
-  studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   handleDeleteSchoolProgram: PropTypes.func.isRequired,
   history: PropTypes.shape({
@@ -616,7 +612,7 @@ StudentDetail.propTypes = {
 
 StudentDetail.defaultProps = {
   subjectsSelected: [],
-  studentId: null,
+  userId: null,
   schoolProgramSelected: null,
 };
 
@@ -721,7 +717,7 @@ StudentDetailWrapper = connect(
       creditsGranted: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.credits_granted
         : 0,
-      studentId: state.studentReducer.selectedStudent.student
+      userId: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.id
         : null,
       active: !!state.studentReducer.selectedStudent.active,

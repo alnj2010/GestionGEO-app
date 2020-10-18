@@ -7,6 +7,8 @@ import {
   editStudentPeriodSchool,
   getInscribedSchoolPeriods,
   cleanSelectedInscribedSchoolPeriods,
+  findStudentById,
+  cleanSelectedStudent,
 } from '../../actions/student';
 
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
@@ -18,21 +20,28 @@ class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
     const {
       match: {
-        params: { id, idSchoolPeriod },
+        params: { userId, studentId, idSchoolPeriod },
       },
       defineDispatch,
       getSchoolPeriodsListDispatch,
       getInscribedSchoolPeriodsDispatch,
+      findStudentByIdDispatch,
     } = this.props;
+    findStudentByIdDispatch(userId);
     getSchoolPeriodsListDispatch();
-    getInscribedSchoolPeriodsDispatch(id, idSchoolPeriod);
+    getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
     defineDispatch('estudiante');
   };
 
   componentWillUnmount = () => {
-    const { cleanSelectedInscribedSchoolPeriodsDispatch, cleanDialogDispatch } = this.props;
+    const {
+      cleanSelectedInscribedSchoolPeriodsDispatch,
+      cleanDialogDispatch,
+      cleanSelectedStudentDispatch,
+    } = this.props;
     cleanSelectedInscribedSchoolPeriodsDispatch();
     cleanDialogDispatch();
+    cleanSelectedStudentDispatch();
   };
 
   saveInscription = (values) => {
@@ -41,15 +50,15 @@ class StudentInscriptionContainer extends Component {
       editStudentPeriodSchoolDispatch,
       idInscription,
       match: {
-        params: { id, idSchoolPeriod },
+        params: { studentId, idSchoolPeriod },
       },
     } = this.props;
     if (!idSchoolPeriod)
-      addStudentPeriodSchoolDispatch({ ...values, studentId: id }).then(() => this.goBack());
+      addStudentPeriodSchoolDispatch({ ...values, studentId }).then(() => this.goBack());
     else
       editStudentPeriodSchoolDispatch({
         ...values,
-        studentId: id,
+        studentId,
         id: idInscription,
       });
   };
@@ -58,10 +67,10 @@ class StudentInscriptionContainer extends Component {
     const {
       history,
       match: {
-        params: { id },
+        params: { studentId, userId },
       },
     } = this.props;
-    history.push(`/estudiantes/inscripciones/${id}`);
+    history.push(`/estudiantes/inscripciones/${userId}/${studentId}`);
   };
 
   render() {
@@ -69,14 +78,18 @@ class StudentInscriptionContainer extends Component {
       schoolPeriods,
       subjects,
       match: {
-        params: { id, idSchoolPeriod },
+        params: { studentId, idSchoolPeriod },
       },
       getAvailableSubjectsDispatch,
       subjectInscriptions,
-      location: {
-        state: { inscriptedSP, fullname },
-      },
+      inscriptedSP,
+      student,
     } = this.props;
+
+    const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
+      student.second_surname || ''
+    }`;
+
     return (
       <StudentInscription
         schoolPeriods={schoolPeriods.filter(
@@ -87,7 +100,7 @@ class StudentInscriptionContainer extends Component {
         )}
         saveInscription={this.saveInscription}
         goBack={this.goBack}
-        studentId={id}
+        studentId={studentId}
         idSchoolPeriod={idSchoolPeriod}
         subjects={
           subjects
@@ -110,7 +123,8 @@ class StudentInscriptionContainer extends Component {
 StudentInscriptionContainer.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       idSchoolPeriod: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
@@ -131,16 +145,15 @@ StudentInscriptionContainer.propTypes = {
       }),
     })
   ),
-
+  student: PropTypes.shape({
+    first_name: PropTypes.string,
+    second_name: PropTypes.string,
+    first_surname: PropTypes.string,
+    second_surname: PropTypes.string,
+  }).isRequired,
   subjectInscriptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      inscriptedSP: PropTypes.arrayOf(PropTypes.shape({})),
-      fullname: PropTypes.string,
-    }),
-  }).isRequired,
-
+  inscriptedSP: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   idInscription: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   defineDispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
@@ -151,6 +164,8 @@ StudentInscriptionContainer.propTypes = {
   cleanSelectedInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
   addStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
   editStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
+  findStudentByIdDispatch: PropTypes.func.isRequired,
+  cleanSelectedStudentDispatch: PropTypes.func.isRequired,
 };
 
 StudentInscriptionContainer.defaultProps = {
@@ -163,6 +178,8 @@ const mS = (state) => ({
   idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
   schoolPeriods: state.schoolPeriodReducer.list,
   subjectInscriptions: state.studentReducer.availableSubjects,
+  inscriptedSP: state.studentReducer.inscribedSchoolPeriods,
+  student: state.studentReducer.selectedStudent,
 });
 
 const mD = {
@@ -174,6 +191,8 @@ const mD = {
   cleanSelectedInscribedSchoolPeriodsDispatch: cleanSelectedInscribedSchoolPeriods,
   addStudentPeriodSchoolDispatch: addStudentPeriodSchool,
   editStudentPeriodSchoolDispatch: editStudentPeriodSchool,
+  findStudentByIdDispatch: findStudentById,
+  cleanSelectedStudentDispatch: cleanSelectedStudent,
 };
 
 export default connect(mS, mD)(StudentInscriptionContainer);

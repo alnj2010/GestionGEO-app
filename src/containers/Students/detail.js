@@ -113,7 +113,7 @@ class StudentDetailContainer extends Component {
         goBack={this.goBack}
         listBySchoolPeriod={listBySchoolPeriod}
         getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}
-        studentId={student.id}
+        userId={student.id}
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}
