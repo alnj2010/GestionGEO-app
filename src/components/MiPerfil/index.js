@@ -68,12 +68,6 @@ class MiPerfil extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Cedula',
-                    field: 'identification',
-                    id: 'identification',
-                    type: 'text',
-                  },
-                  {
                     label: 'Nombre',
                     field: 'firstName',
                     id: 'firstName',
@@ -98,13 +92,25 @@ class MiPerfil extends Component {
                     type: 'text',
                   },
                   {
+                    label: 'Cedula',
+                    field: 'identification',
+                    id: 'identification',
+                    type: 'text',
+                  },
+                  {
+                    label: 'Email',
+                    field: 'email',
+                    id: 'email',
+                    type: 'text',
+                  },
+                  {
                     label: 'Movil',
                     field: 'mobile',
                     id: 'mobile',
                     type: 'phone',
                   },
                   {
-                    label: 'Telefono',
+                    label: 'Telefono de habitación',
                     field: 'telephone',
                     id: 'telephone',
                     type: 'phone',
@@ -115,12 +121,7 @@ class MiPerfil extends Component {
                     id: 'workPhone',
                     type: 'phone',
                   },
-                  {
-                    label: 'Email',
-                    field: 'email',
-                    id: 'email',
-                    type: 'text',
-                  },
+
                   {
                     label: 'Sexo',
                     field: `sex`,

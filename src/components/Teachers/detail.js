@@ -84,12 +84,6 @@ class TeacherDetail extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Cedula',
-                    field: 'identification',
-                    id: 'identification',
-                    type: 'text',
-                  },
-                  {
                     label: 'Nombre',
                     field: 'firstName',
                     id: 'firstName',
@@ -114,13 +108,25 @@ class TeacherDetail extends Component {
                     type: 'text',
                   },
                   {
+                    label: 'Cedula',
+                    field: 'identification',
+                    id: 'identification',
+                    type: 'text',
+                  },
+                  {
+                    label: 'Email',
+                    field: 'email',
+                    id: 'email',
+                    type: 'text',
+                  },
+                  {
                     label: 'Movil',
                     field: 'mobile',
                     id: 'mobile',
                     type: 'phone',
                   },
                   {
-                    label: 'Telefono',
+                    label: 'Telefono de habitación',
                     field: 'telephone',
                     id: 'telephone',
                     type: 'phone',
@@ -130,26 +136,6 @@ class TeacherDetail extends Component {
                     field: 'workPhone',
                     id: 'workPhone',
                     type: 'phone',
-                  },
-                  {
-                    label: 'Email',
-                    field: 'email',
-                    id: 'email',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Tipo',
-                    field: `teacherType`,
-                    id: `teacherType`,
-                    type: 'select',
-                    options: jsonToOptions(TEACHER_TYPE),
-                  },
-                  {
-                    label: 'Categoria',
-                    field: `category`,
-                    id: `category`,
-                    type: 'select',
-                    options: jsonToOptions(TEACHER_CATEGORY),
                   },
                   {
                     label: 'Sexo',
@@ -172,6 +158,21 @@ class TeacherDetail extends Component {
                     type: 'select',
                     options: jsonToOptions(LEVEL_INSTRUCTION),
                   },
+                  {
+                    label: 'Tipo',
+                    field: `teacherType`,
+                    id: `teacherType`,
+                    type: 'select',
+                    options: jsonToOptions(TEACHER_TYPE),
+                  },
+                  {
+                    label: 'Categoria',
+                    field: `category`,
+                    id: `category`,
+                    type: 'select',
+                    options: jsonToOptions(TEACHER_CATEGORY),
+                  },
+
                   {
                     label: 'Dedicacion',
                     field: `dedication`,

@@ -123,7 +123,7 @@ class AdminDetail extends Component {
                     type: 'phone',
                   },
                   {
-                    label: 'Telefono',
+                    label: 'Telefono de habitación',
                     field: 'telephone',
                     id: 'telephone',
                     type: 'phone',
@@ -135,18 +135,18 @@ class AdminDetail extends Component {
                     type: 'phone',
                   },
                   {
-                    label: 'Rol',
-                    field: `rol`,
-                    id: `rol`,
-                    type: 'select',
-                    options: jsonToOptions(COORDINATOR_ROL),
-                  },
-                  {
                     label: 'Sexo',
                     field: `sex`,
                     id: `sex`,
                     type: 'select',
                     options: jsonToOptions(GENDER),
+                  },
+                  {
+                    label: 'Nacionalidad',
+                    field: `nationality`,
+                    id: `nationality`,
+                    type: 'select',
+                    options: jsonToOptions(NATIONALITY),
                   },
                   {
                     label: 'Nivel de instruccion',
@@ -156,12 +156,13 @@ class AdminDetail extends Component {
                     options: jsonToOptions(LEVEL_INSTRUCTION),
                   },
                   {
-                    label: 'Nacionalidad',
-                    field: `nationality`,
-                    id: `nationality`,
+                    label: 'Rol',
+                    field: `rol`,
+                    id: `rol`,
                     type: 'select',
-                    options: jsonToOptions(NATIONALITY),
+                    options: jsonToOptions(COORDINATOR_ROL),
                   },
+
                   {
                     label: '¿Posee alguna discapacidad?',
                     field: 'withDisabilities',
