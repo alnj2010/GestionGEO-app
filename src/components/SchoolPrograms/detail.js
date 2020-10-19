@@ -73,7 +73,7 @@ class SchoolProgramDetail extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Nombre del programa academico',
+                    label: 'Programa academico',
                     field: 'schoolProgramName',
                     id: 'schoolProgramName',
                     type: 'text',
@@ -93,7 +93,7 @@ class SchoolProgramDetail extends Component {
                     min: 0,
                   },
                   {
-                    label: 'Minimo de UC para presentar la TEG',
+                    label: 'min. de UC para la TEG',
                     field: 'minNumCuFinalWork',
                     id: 'minNumCuFinalWork',
                     type: 'number',
@@ -102,7 +102,7 @@ class SchoolProgramDetail extends Component {
                     disabled: !numCu,
                   },
                   {
-                    label: 'Minimo de semestres para presentar la TEG',
+                    label: 'min. de semestres para la TEG',
                     field: 'minDuration',
                     id: 'minDuration',
                     type: 'number',
