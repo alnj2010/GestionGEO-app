@@ -47,7 +47,7 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
     id: schoolProgram.id,
     school_program_name: schoolProgram.schoolProgramName,
     num_cu: parseInt(schoolProgram.numCu, 10),
-    duration: parseInt(schoolProgram.duration, 10),
+    duration: parseInt(schoolProgram.duration, 10) || undefined,
     min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
     min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,
@@ -73,7 +73,7 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
   const payload = {
     school_program_name: schoolProgram.schoolProgramName,
     num_cu: parseInt(schoolProgram.numCu, 10),
-    duration: parseInt(schoolProgram.duration, 10),
+    duration: parseInt(schoolProgram.duration, 10) || undefined,
     min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
     min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,

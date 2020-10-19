@@ -46,7 +46,7 @@ class SchoolPeriodDetailContainer extends Component {
     else
       saveSchoolPeriodDispatch({ ...values }).then((response) => {
         if (response) {
-          findSchoolPeriodByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findSchoolPeriodByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };

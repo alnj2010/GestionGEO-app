@@ -39,7 +39,7 @@ class TeacherDetailContainer extends Component {
     else
       saveTeacherDispatch({ ...payload }).then((response) => {
         if (response) {
-          findTeacherByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findTeacherByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };

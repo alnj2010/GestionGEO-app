@@ -75,7 +75,7 @@ class AdminDetailContainer extends Component {
     } else
       saveAdminDispatch({ ...payload }).then((response) => {
         if (response) {
-          findAdminByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findAdminByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };

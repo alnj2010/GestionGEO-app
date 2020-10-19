@@ -38,7 +38,7 @@ class SchoolProgramDetailContainer extends Component {
     else
       saveSchoolProgramDispatch({ ...payload }).then((response) => {
         if (response) {
-          findSchoolProgramByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findSchoolProgramByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };

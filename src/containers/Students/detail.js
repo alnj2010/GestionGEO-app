@@ -73,7 +73,7 @@ class StudentDetailContainer extends Component {
     else
       saveStudentDispatch({ ...payload }).then((response) => {
         if (response) {
-          findStudentByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findStudentByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };
