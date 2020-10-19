@@ -55,6 +55,13 @@ export const cleanSelectedSubject = () => async (dispatch) => {
   });
 };
 
+export const cleanSubjectBySchoolProgram = () => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.LISTBYSCHOOLPROGRAM,
+    payload: { listBySchoolPeriod: [] },
+  });
+};
+
 export const updateSubject = (subject) => async (dispatch) => {
   const payload = {
     id: subject.id,

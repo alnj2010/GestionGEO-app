@@ -11,7 +11,7 @@ import {
   cleanSelectedStudent,
 } from '../../actions/student';
 import { getList as getTeacherList } from '../../actions/teacher';
-import { getSubjectBySchoolProgram } from '../../actions/subject';
+import { getSubjectBySchoolProgram, cleanSubjectBySchoolProgram } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import { define, cleanDialog } from '../../actions/dialog';
 import StudentSchoolProgram from '../../components/Students/schoolProgram';
@@ -32,11 +32,15 @@ class StudentSchoolProgramContainer extends Component {
 
     getTeacherListDispatch();
     getSchoolProgramListDispatch();
+
     findStudentByIdDispatch(userId).then((student) => {
-      const schoolProgram = student.student.find((item) => item.id === parseInt(studentId, 10));
-      loadSchoolProgramDispatch(schoolProgram);
-      getSubjectBySchoolProgramDispatch(schoolProgram.school_program_id);
+      if (studentId !== 'agregar') {
+        const schoolProgram = student.student.find((item) => item.id === parseInt(studentId, 10));
+        loadSchoolProgramDispatch(schoolProgram);
+        getSubjectBySchoolProgramDispatch(schoolProgram.school_program_id);
+      }
     });
+
     defineDispatch('programa academico del estudiante');
   };
 
@@ -45,10 +49,12 @@ class StudentSchoolProgramContainer extends Component {
       cleanSchoolProgramDispatch,
       cleanDialogDispatch,
       cleanSelectedStudentDispatch,
+      cleanSubjectBySchoolProgramDispatch,
     } = this.props;
     cleanSchoolProgramDispatch();
     cleanDialogDispatch();
     cleanSelectedStudentDispatch();
+    cleanSubjectBySchoolProgramDispatch();
   };
 
   saveStudent = (values) => {
@@ -99,17 +105,27 @@ class StudentSchoolProgramContainer extends Component {
   };
 
   render() {
-    const { teachers, subjects, allSchoolPrograms, student, schoolProgram } = this.props;
+    const {
+      teachers,
+      subjects,
+      allSchoolPrograms,
+      student,
+      schoolProgram,
+      getSubjectBySchoolProgramDispatch,
+    } = this.props;
     let schoolPrograms = allSchoolPrograms;
     if (!schoolProgram) {
       schoolPrograms = allSchoolPrograms.filter(
-        (y) => !student.student.some((x) => x.school_program_id === y.id)
+        (y) =>
+          !student.student.some((x) => x.school_program_id === y.id && x.current_status !== 'RET-B')
       );
     }
+
     return (
       <StudentSchoolProgram
         schoolPrograms={schoolPrograms}
         subjects={subjects}
+        getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}
         schoolProgram={schoolProgram}
         selectedStudent={student}
         saveStudent={this.saveStudent}
@@ -160,6 +176,7 @@ StudentSchoolProgramContainer.propTypes = {
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
   findStudentByIdDispatch: PropTypes.func.isRequired,
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
+  cleanSubjectBySchoolProgramDispatch: PropTypes.func.isRequired,
 };
 StudentSchoolProgramContainer.defaultProps = {
   schoolProgram: null,
@@ -185,6 +202,7 @@ const mD = {
   getSchoolProgramListDispatch: getSchoolProgramList,
   findStudentByIdDispatch: findStudentById,
   cleanSelectedStudentDispatch: cleanSelectedStudent,
+  cleanSubjectBySchoolProgramDispatch: cleanSubjectBySchoolProgram,
 };
 
 const StudentSchoolProgramContainerWrapper = connect(mS, mD)(StudentSchoolProgramContainer);
