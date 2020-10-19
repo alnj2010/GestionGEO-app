@@ -138,7 +138,7 @@ StudentSchoolProgramContainer.propTypes = {
   student: PropTypes.shape({
     student: PropTypes.arrayOf(PropTypes.shape({})),
   }).isRequired,
-  schoolProgram: PropTypes.shape({}).isRequired,
+  schoolProgram: PropTypes.shape({}),
   allSchoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
@@ -161,7 +161,9 @@ StudentSchoolProgramContainer.propTypes = {
   findStudentByIdDispatch: PropTypes.func.isRequired,
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
 };
-
+StudentSchoolProgramContainer.defaultProps = {
+  schoolProgram: null,
+};
 const mS = (state) => ({
   subjects: state.subjectReducer.listBySchoolPeriod,
   teachers: state.teacherReducer.list,
