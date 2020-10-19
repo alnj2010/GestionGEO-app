@@ -11,7 +11,7 @@ import {
   cleanSelectedStudent,
 } from '../../actions/student';
 import { getList as getTeacherList } from '../../actions/teacher';
-import { getList as getSubjectList } from '../../actions/subject';
+import { getSubjectBySchoolProgram } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import { define, cleanDialog } from '../../actions/dialog';
 import StudentSchoolProgram from '../../components/Students/schoolProgram';
@@ -22,19 +22,20 @@ class StudentSchoolProgramContainer extends Component {
       findStudentByIdDispatch,
       getTeacherListDispatch,
       defineDispatch,
-      getSubjectListDispatch,
+      getSubjectBySchoolProgramDispatch,
       getSchoolProgramListDispatch,
       loadSchoolProgramDispatch,
       match: {
         params: { userId, studentId },
       },
     } = this.props;
+
     getTeacherListDispatch();
-    getSubjectListDispatch();
     getSchoolProgramListDispatch();
     findStudentByIdDispatch(userId).then((student) => {
       const schoolProgram = student.student.find((item) => item.id === parseInt(studentId, 10));
       loadSchoolProgramDispatch(schoolProgram);
+      getSubjectBySchoolProgramDispatch(schoolProgram.school_program_id);
     });
     defineDispatch('programa academico del estudiante');
   };
@@ -152,7 +153,7 @@ StudentSchoolProgramContainer.propTypes = {
   cleanSchoolProgramDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
-  getSubjectListDispatch: PropTypes.func.isRequired,
+  getSubjectBySchoolProgramDispatch: PropTypes.func.isRequired,
   updateSchoolProgramDispatch: PropTypes.func.isRequired,
   saveSchoolProgramDispatch: PropTypes.func.isRequired,
   getSchoolProgramListDispatch: PropTypes.func.isRequired,
@@ -162,7 +163,7 @@ StudentSchoolProgramContainer.propTypes = {
 };
 
 const mS = (state) => ({
-  subjects: state.subjectReducer.list,
+  subjects: state.subjectReducer.listBySchoolPeriod,
   teachers: state.teacherReducer.list,
   allSchoolPrograms: state.schoolProgramReducer.list,
   student: state.studentReducer.selectedStudent,
@@ -170,7 +171,7 @@ const mS = (state) => ({
 });
 
 const mD = {
-  getSubjectListDispatch: getSubjectList,
+  getSubjectBySchoolProgramDispatch: getSubjectBySchoolProgram,
   loadSchoolProgramDispatch: loadSchoolProgram,
   getTeacherListDispatch: getTeacherList,
   cleanSchoolProgramDispatch: cleanSchoolProgram,
