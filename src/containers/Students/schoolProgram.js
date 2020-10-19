@@ -7,6 +7,8 @@ import {
   updateSchoolProgram,
   deleteSchoolProgram,
   saveSchoolProgram,
+  findStudentById,
+  cleanSelectedStudent,
 } from '../../actions/student';
 import { getList as getTeacherList } from '../../actions/teacher';
 import { getList as getSubjectList } from '../../actions/subject';
@@ -17,26 +19,35 @@ import StudentSchoolProgram from '../../components/Students/schoolProgram';
 class StudentSchoolProgramContainer extends Component {
   componentDidMount = () => {
     const {
-      location: {
-        state: { selectedSchoolProgram: schoolProgram },
-      },
-      loadSchoolProgramDispatch,
+      findStudentByIdDispatch,
       getTeacherListDispatch,
       defineDispatch,
       getSubjectListDispatch,
       getSchoolProgramListDispatch,
+      loadSchoolProgramDispatch,
+      match: {
+        params: { userId, studentId },
+      },
     } = this.props;
-    loadSchoolProgramDispatch(schoolProgram);
     getTeacherListDispatch();
     getSubjectListDispatch();
     getSchoolProgramListDispatch();
+    findStudentByIdDispatch(userId).then((student) => {
+      const schoolProgram = student.student.find((item) => item.id === parseInt(studentId, 10));
+      loadSchoolProgramDispatch(schoolProgram);
+    });
     defineDispatch('programa academico del estudiante');
   };
 
   componentWillUnmount = () => {
-    const { cleanSchoolProgramDispatch, cleanDialogDispatch } = this.props;
+    const {
+      cleanSchoolProgramDispatch,
+      cleanDialogDispatch,
+      cleanSelectedStudentDispatch,
+    } = this.props;
     cleanSchoolProgramDispatch();
     cleanDialogDispatch();
+    cleanSelectedStudentDispatch();
   };
 
   saveStudent = (values) => {
@@ -66,45 +77,32 @@ class StudentSchoolProgramContainer extends Component {
   goBack = () => {
     const {
       history,
-      location: {
-        state: {
-          selectedStudent: { id: idUser },
-        },
+      match: {
+        params: { userId },
       },
     } = this.props;
-    history.push(`/estudiantes/modificar/${idUser}`);
+    history.push(`/estudiantes/modificar/${userId}`);
   };
 
   handleSchoolProgramDelete = () => {
     const {
       deleteSchoolProgramDispatch,
       history,
-      location: {
-        state: {
-          selectedStudent: { id: idUser },
-          selectedSchoolProgram: { id: idStudent },
-        },
+      match: {
+        params: { userId, studentId },
       },
     } = this.props;
-    deleteSchoolProgramDispatch(idUser, idStudent).then(() =>
-      history.push(`/estudiantes/modificar/${idUser}`)
+    deleteSchoolProgramDispatch(userId, studentId).then(() =>
+      history.push(`/estudiantes/modificar/${userId}`)
     );
   };
 
   render() {
-    const {
-      location: {
-        state: { selectedSchoolProgram: schoolProgram, selectedStudent },
-      },
-      teachers,
-      subjects,
-      allSchoolPrograms,
-    } = this.props;
-
+    const { teachers, subjects, allSchoolPrograms, student, schoolProgram } = this.props;
     let schoolPrograms = allSchoolPrograms;
     if (!schoolProgram) {
       schoolPrograms = allSchoolPrograms.filter(
-        (y) => !selectedStudent.student.some((x) => x.school_program_id === y.id)
+        (y) => !student.student.some((x) => x.school_program_id === y.id)
       );
     }
     return (
@@ -112,7 +110,7 @@ class StudentSchoolProgramContainer extends Component {
         schoolPrograms={schoolPrograms}
         subjects={subjects}
         schoolProgram={schoolProgram}
-        selectedStudent={selectedStudent}
+        selectedStudent={student}
         saveStudent={this.saveStudent}
         teachersGuide={teachers}
         goBack={this.goBack}
@@ -136,10 +134,17 @@ StudentSchoolProgramContainer.propTypes = {
   }).isRequired,
   teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  student: PropTypes.shape({
+    student: PropTypes.arrayOf(PropTypes.shape({})),
+  }).isRequired,
+  schoolProgram: PropTypes.shape({}).isRequired,
   allSchoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
   match: PropTypes.shape({
-    params: PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) }),
+    params: PropTypes.shape({
+      userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    }),
   }).isRequired,
 
   loadSchoolProgramDispatch: PropTypes.func.isRequired,
@@ -152,12 +157,16 @@ StudentSchoolProgramContainer.propTypes = {
   saveSchoolProgramDispatch: PropTypes.func.isRequired,
   getSchoolProgramListDispatch: PropTypes.func.isRequired,
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
+  findStudentByIdDispatch: PropTypes.func.isRequired,
+  cleanSelectedStudentDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
   subjects: state.subjectReducer.list,
   teachers: state.teacherReducer.list,
   allSchoolPrograms: state.schoolProgramReducer.list,
+  student: state.studentReducer.selectedStudent,
+  schoolProgram: state.studentReducer.selectedSchoolProgram,
 });
 
 const mD = {
@@ -171,6 +180,8 @@ const mD = {
   deleteSchoolProgramDispatch: deleteSchoolProgram,
   saveSchoolProgramDispatch: saveSchoolProgram,
   getSchoolProgramListDispatch: getSchoolProgramList,
+  findStudentByIdDispatch: findStudentById,
+  cleanSelectedStudentDispatch: cleanSelectedStudent,
 };
 
 const StudentSchoolProgramContainerWrapper = connect(mS, mD)(StudentSchoolProgramContainer);

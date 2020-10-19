@@ -46,7 +46,7 @@ export const findStudentById = (id) => async (dispatch) => {
         type: ACTIONS.SELECT,
         payload: { selectedStudent: response },
       });
-      return true;
+      return response;
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
@@ -65,7 +65,7 @@ export const loadSchoolProgram = (schoolProgram) => async (dispatch) => {
 export const cleanSchoolProgram = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.SELECTED_SCHOOL_PROGRAM,
-    payload: { selectedSchoolProgram: {} },
+    payload: { selectedSchoolProgram: null },
   });
 };
 
