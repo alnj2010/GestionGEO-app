@@ -13,6 +13,7 @@ import {
 } from '../../actions/student';
 
 import { getList as getTeachersList } from '../../actions/teacher';
+import { getList as getSubjectsList } from '../../actions/subject';
 
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 
@@ -30,12 +31,14 @@ class StudentInscriptionContainer extends Component {
       getInscribedSchoolPeriodsDispatch,
       findStudentByIdDispatch,
       getTeachersListDispatch,
+      getSubjectsListDispatch,
     } = this.props;
     findStudentByIdDispatch(userId);
     getSchoolPeriodsListDispatch();
     getTeachersListDispatch();
     getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
-    defineDispatch('estudiante');
+    getSubjectsListDispatch();
+    defineDispatch('inscripcion');
   };
 
   componentWillUnmount = () => {
@@ -84,6 +87,7 @@ class StudentInscriptionContainer extends Component {
     const {
       schoolPeriods,
       subjects,
+      allSubjects,
       match: {
         params: { studentId, idSchoolPeriod },
       },
@@ -100,6 +104,7 @@ class StudentInscriptionContainer extends Component {
     const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
       student.second_surname || ''
     }`;
+    console.log(allSubjects);
     return (
       <StudentInscription
         teachers={teachers}
@@ -116,6 +121,7 @@ class StudentInscriptionContainer extends Component {
         finalWorkSubjects={finalWorkSubjects}
         approvedProjects={approvedProjects}
         availableDoctoralExam={availableDoctoralExam}
+        allSubjects={allSubjects}
         subjects={
           subjects
             ? subjects.map((item) => ({
@@ -195,6 +201,7 @@ StudentInscriptionContainer.defaultProps = {
 };
 
 const mS = (state) => ({
+  allSubjects: state.subjectReducer.list,
   subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
   idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
   schoolPeriods: state.schoolPeriodReducer.list,
@@ -220,6 +227,7 @@ const mD = {
   getTeachersListDispatch: getTeachersList,
   cleanSelectedStudentDispatch: cleanSelectedStudent,
   cleanAvailableSubjectsDispatch: cleanAvailableSubjects,
+  getSubjectsListDispatch: getSubjectsList,
 };
 
 export default connect(mS, mD)(StudentInscriptionContainer);

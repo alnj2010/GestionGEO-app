@@ -163,15 +163,28 @@ class StudentInscription extends Component {
       finalWorkSubjectsSelected,
       approvedProjects,
       teachers,
+      allSubjects: subjects,
     } = this.props;
-
-    const posiblesFinalSubjects = (pos) =>
-      finalWorkSubjects
+    const posiblesFinalSubjects = (pos) => {
+      if (idSchoolPeriod) {
+        const subjectsAux = subjects.map((item) => ({
+          value: item.id,
+          key: item.name,
+        }));
+        return subjectsAux.filter(
+          (item) =>
+            !finalWorkSubjectsSelected.some(
+              (selected, index) => selected.subjectId === item.value && pos > index
+            )
+        );
+      }
+      return finalWorkSubjects
         .filter(
           (item) =>
             !finalWorkSubjectsSelected.some((fws, i) => fws.subjectId === item.id && pos > i)
         )
         .map((fw) => ({ key: fw.name, value: fw.id }));
+    };
 
     return (
       <>
@@ -200,6 +213,7 @@ class StudentInscription extends Component {
                     id: `${finalWork}.subjectId`,
                     type: 'select',
                     label: 'Materia',
+                    disabled: !!idSchoolPeriod,
                     options: posiblesFinalSubjects(index),
                   },
                   {
@@ -409,7 +423,7 @@ class StudentInscription extends Component {
                       onClick={() =>
                         studentId
                           ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('student')
+                          : submitDispatch('inscripcion')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -499,7 +513,7 @@ StudentInscription.defaultProps = {
   availableDoctoralExam: false,
 };
 
-const studentValidation = (values) => {
+const studentInscriptionValidation = (values) => {
   const errors = {};
   if (!values.schoolPeriodId) errors.schoolPeriodId = '*Periodo semestral requerido';
   if (values.subjects && values.subjects.length) {
@@ -521,18 +535,46 @@ const studentValidation = (values) => {
         subjErrors.nota = '*nota debe estar entre 0 y 20';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
+      if (subjectArrayErrors.length) {
+        errors.subjects = subjectArrayErrors;
+      }
+    });
+  }
+
+  if (values.finalWorks && values.finalWorks.length) {
+    const finalWorkArrayErrors = [];
+    values.finalWorks.forEach((finalWork, finalWorkIndex) => {
+      const finalWorkErrors = {};
+      if (!finalWork || !finalWork.title) {
+        finalWorkErrors.title = '*Titulo es requerido';
+        finalWorkArrayErrors[finalWorkIndex] = finalWorkErrors;
+      }
+
+      if (!finalWork || !finalWork.status) {
+        finalWorkErrors.status = '*Estado es requerido';
+        finalWorkArrayErrors[finalWorkIndex] = finalWorkErrors;
+      }
+
+      if (!finalWork || !finalWork.subjectId) {
+        finalWorkErrors.subjectId = '*Materia es requerido';
+        finalWorkArrayErrors[finalWorkIndex] = finalWorkErrors;
+      }
+
+      if (finalWorkArrayErrors.length) {
+        errors.finalWorks = finalWorkArrayErrors;
+      }
     });
   }
   return errors;
 };
 
 let StudentInscriptionWrapper = reduxForm({
-  form: 'estudiante',
-  validate: studentValidation,
+  form: 'inscripcion',
+  validate: studentInscriptionValidation,
   enableReinitialize: true,
 })(StudentInscription);
 
-const selector = formValueSelector('estudiante');
+const selector = formValueSelector('inscripcion');
 StudentInscriptionWrapper = connect(
   (state) => ({
     initialValues: {
@@ -557,6 +599,17 @@ StudentInscriptionWrapper = connect(
             subjectId: subject.school_period_subject_teacher_id,
             status: subject.status,
             nota: subject.qualification,
+          }))
+        : [],
+      finalWorks: state.studentReducer.selectedStudentSchoolPeriod.final_work_data
+        ? state.studentReducer.selectedStudentSchoolPeriod.final_work_data.map((finalWork) => ({
+            title: finalWork.final_work.title,
+            status: finalWork.status,
+            subjectId: finalWork.final_work.subject_id,
+            projectId: finalWork.final_work.project_id,
+            advisors: finalWork.final_work.teachers.length
+              ? finalWork.final_work.teachers[0].id
+              : null,
           }))
         : [],
     },

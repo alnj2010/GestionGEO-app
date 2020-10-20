@@ -7,7 +7,7 @@ const NotFound = ({ history, location }) => (
     <h3>
       Ruta no encontrada <code>{location.pathname}</code>
     </h3>
-    <button type="button" onClick={history.push}>
+    <button type="button" onClick={history.goBack}>
       Go back
     </button>
   </div>
