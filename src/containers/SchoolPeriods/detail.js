@@ -53,7 +53,7 @@ class SchoolPeriodDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack('/periodo-semestral/periodos');
+    history.push('/periodo-semestral/periodos');
   };
 
   handleSchoolPeriodDelete = () => {

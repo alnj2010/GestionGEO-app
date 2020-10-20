@@ -29,8 +29,9 @@ import {
   LEVEL_INSTRUCTION,
   CONSTANCES,
   USER_INSTANCE,
+  STUDENT_STATUS,
 } from '../../services/constants';
-import { jsonToOptions } from '../../helpers';
+import { jsonToOptions, reverseJson } from '../../helpers';
 
 const styles = () => ({
   form: {
@@ -169,6 +170,7 @@ class StudentDetail extends Component {
     const { func } = this.state;
     const rol = getSessionUserRol();
     const matches = isWidthUp('sm', width);
+    const statusStudent = reverseJson(STUDENT_STATUS);
 
     return (
       <Form onSubmit={handleSubmit(saveStudent)}>
@@ -492,6 +494,7 @@ class StudentDetail extends Component {
                 ]}
                 data={student.student.map((item) => ({
                   ...item,
+                  current_status: statusStudent[item.current_status],
                   schoolProgram: item.school_program.school_program_name,
                 }))}
                 localization={{

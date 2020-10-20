@@ -80,7 +80,7 @@ class StudentDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack('/estudiantes');
+    history.push('/estudiantes');
   };
 
   handleStudentDelete = () => {
@@ -89,7 +89,7 @@ class StudentDetailContainer extends Component {
   };
 
   handleDeleteSchoolProgram = (userId, studentId) => {
-    const { deleteSchoolProgramDispatch, history, findStudentByIdDispatch, match } = this.props;
+    const { deleteSchoolProgramDispatch, findStudentByIdDispatch, match } = this.props;
     deleteSchoolProgramDispatch(userId, studentId).then(() =>
       findStudentByIdDispatch(match.params.id)
     );

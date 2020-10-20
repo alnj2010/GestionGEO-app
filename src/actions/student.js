@@ -296,13 +296,30 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
     .then((response) => {
       dispatch({
         type: ACTIONS.AVAILABLE_SUBJECTS,
-        payload: { availableSubjects: response.available_subjects },
+        payload: {
+          availableSubjects: response.available_subjects,
+          finalWorkSubjects: response.final_work_subjects,
+          availableDoctoralExam: response.available_doctoral_exam,
+          approvedProjects: response.approved_projects,
+        },
       });
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
       throw error;
     });
+};
+
+export const cleanAvailableSubjects = () => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.AVAILABLE_SUBJECTS,
+    payload: {
+      availableSubjects: [],
+      finalWorkSubjects: [],
+      approvedProjects: [],
+      availableDoctoralExam: false,
+    },
+  });
 };
 
 export const getConstance = (studentId, userType, constanceType) => async (dispatch) => {
@@ -324,6 +341,19 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
     financing: value.financing,
     financing_description: value.financingDescription,
     amount_paid: value.amountPaid,
+    doctoral_exam: value.doctoralExam
+      ? {
+          status: value.doctoralExam,
+        }
+      : undefined,
+    final_works:
+      value.finalWorks && value.finalWorks.length
+        ? value.finalWorks.map((finalWork) => ({
+            ...finalWork,
+            subject_id: finalWork.subjectId,
+            advisors: { teacher_id: finalWork.advisors },
+          }))
+        : undefined,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
       qualification: parseInt(subject.nota, 10),
@@ -350,6 +380,19 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
     financing: value.financing,
     financing_description: value.financingDescription,
     amount_paid: value.amountPaid,
+    doctoral_exam: value.doctoralExam
+      ? {
+          status: value.doctoralExam,
+        }
+      : undefined,
+    final_works:
+      value.finalWorks && value.finalWorks.length
+        ? value.finalWorks.map((finalWork) => ({
+            ...finalWork,
+            subject_id: finalWork.subjectId,
+            advisors: { teacher_id: finalWork.advisors },
+          }))
+        : undefined,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
       qualification: parseInt(subject.nota, 10),

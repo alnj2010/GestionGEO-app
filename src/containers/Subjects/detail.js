@@ -56,7 +56,7 @@ class SubjectDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack('/materias');
+    history.push('/materias');
   };
 
   handleSubjectDelete = () => {

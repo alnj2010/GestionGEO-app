@@ -144,6 +144,17 @@ export const STUDENT_TYPE = {
   ACTUALIZACION: 'ACT',
 };
 
+export const FINAL_WORK_STATUS = {
+  'EN PROGRESO': 'PROGRESS',
+  APROBADO: 'APPROVED',
+  REPROBADO: 'REPROBATE',
+};
+
+export const DOCTORAL_STATUS = {
+  APROBADO: 'APPROVED',
+  REPROBADO: 'REPROBATE',
+};
+
 export const STUDENT_STATUS = {
   REGULAR: 'REG',
   'RETIRO TIPO A': 'RET-A',
