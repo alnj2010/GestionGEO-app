@@ -63,7 +63,7 @@ class SubjectsList extends Component {
               { title: 'Unidades de Credito', field: 'uc' },
             ]}
             data={this.transformData(subjects)}
-            title={matches ? 'materias' : ''}
+            title={matches ? 'Materias' : ''}
             actions={[
               {
                 icon: 'visibility',

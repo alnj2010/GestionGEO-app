@@ -44,6 +44,13 @@ class StudentSchoolProgram extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { schoolProgramSelected, getSubjectBySchoolProgram } = this.props;
+    if (nextProps.schoolProgramSelected !== schoolProgramSelected) {
+      getSubjectBySchoolProgram(nextProps.schoolProgramSelected);
+    }
+  }
+
   handleDialogShow = (action, func) => {
     const { showDispatch } = this.props;
     this.setState({ func }, () => {
@@ -54,7 +61,8 @@ class StudentSchoolProgram extends Component {
   unselectedSubjects = (pos) => {
     const { subjects, subjectsSelected } = this.props;
     return subjects.filter(
-      (item) => !subjectsSelected.some((selected, index) => selected.id === item.id && pos > index)
+      (item) =>
+        !subjectsSelected.some((selected, index) => selected.subject_id === item.id && pos > index)
     );
   };
 
@@ -333,7 +341,7 @@ StudentSchoolProgram.propTypes = {
   schoolProgram: PropTypes.shape({
     school_program: PropTypes.shape({ school_program_name: PropTypes.string }),
   }),
-
+  schoolProgramSelected: PropTypes.number,
   teachersGuide: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 
   pristine: PropTypes.bool.isRequired,
@@ -342,7 +350,7 @@ StudentSchoolProgram.propTypes = {
 
   saveStudent: PropTypes.func.isRequired,
   handleSchoolProgramDelete: PropTypes.func.isRequired,
-
+  getSubjectBySchoolProgram: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
   submitDispatch: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -352,6 +360,7 @@ StudentSchoolProgram.propTypes = {
 StudentSchoolProgram.defaultProps = {
   subjectsSelected: [],
   schoolProgram: null,
+  schoolProgramSelected: null,
 };
 
 const schoolProgramValidation = (values) => {
@@ -421,6 +430,7 @@ StudentSchoolProgramWrapper = connect(
     },
     action: state.dialogReducer.action,
     subjectsSelected: selector(state, 'equivalences'),
+    schoolProgramSelected: selector(state, 'schoolProgramId'),
   }),
   { showDispatch: show, submitDispatch: submit }
 )(StudentSchoolProgramWrapper);

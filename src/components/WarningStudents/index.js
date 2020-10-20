@@ -69,7 +69,7 @@ function WarningStudents({
           { title: 'Cedula', field: 'identification', editable: 'never' },
           { title: 'Nombre', field: 'first_name', editable: 'never' },
           { title: 'apellido', field: 'first_surname', editable: 'never' },
-          { title: 'status', field: 'currentStatus', lookup: studenStatus },
+          { title: 'estado', field: 'currentStatus', lookup: studenStatus },
           { title: '', field: 'second_name', hidden: true, editable: 'never' },
           { title: '', field: 'second_surname', hidden: true, editable: 'never' },
           { title: '', field: 'telephone', hidden: true, editable: 'never' },

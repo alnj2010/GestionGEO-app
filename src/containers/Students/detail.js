@@ -73,14 +73,14 @@ class StudentDetailContainer extends Component {
     else
       saveStudentDispatch({ ...payload }).then((response) => {
         if (response) {
-          findStudentByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findStudentByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack('/estudiantes');
+    history.push('/estudiantes');
   };
 
   handleStudentDelete = () => {
@@ -89,9 +89,9 @@ class StudentDetailContainer extends Component {
   };
 
   handleDeleteSchoolProgram = (userId, studentId) => {
-    const { deleteSchoolProgramDispatch, history } = this.props;
+    const { deleteSchoolProgramDispatch, findStudentByIdDispatch, match } = this.props;
     deleteSchoolProgramDispatch(userId, studentId).then(() =>
-      history.push(`/estudiantes/modificar/${userId}`)
+      findStudentByIdDispatch(match.params.id)
     );
   };
 
@@ -113,7 +113,7 @@ class StudentDetailContainer extends Component {
         goBack={this.goBack}
         listBySchoolPeriod={listBySchoolPeriod}
         getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}
-        studentId={student.id}
+        userId={student.id}
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}

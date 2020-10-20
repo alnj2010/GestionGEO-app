@@ -78,7 +78,7 @@ class StudentsList extends Component {
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(students)}
-            title={matches ? 'estudiantes' : ''}
+            title={matches ? 'Estudiantes' : ''}
             actions={[
               {
                 icon: 'visibility',

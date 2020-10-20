@@ -10,6 +10,12 @@ import {
 } from '../../actions/admin';
 import AdminDetail from '../../components/Admins/detail';
 import { define, cleanDialog } from '../../actions/dialog';
+import {
+  getSessionUser,
+  getSessionIsMainUser,
+  removeSessionGeoToken,
+} from '../../storage/sessionStorage';
+import { COORDINATOR_ROL } from '../../services/constants';
 
 class AdminDetailContainer extends Component {
   componentDidMount = () => {
@@ -17,6 +23,22 @@ class AdminDetailContainer extends Component {
     if (match.params.id) findAdminByIdDispatch(match.params.id);
     defineDispatch('administrador');
   };
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      match,
+      findAdminByIdDispatch,
+      defineDispatch,
+      cleanSelectedAdminDispatch,
+      cleanDialogDispatch,
+    } = this.props;
+    if (nextProps.match.params.id !== match.params.id) {
+      cleanSelectedAdminDispatch();
+      cleanDialogDispatch();
+      findAdminByIdDispatch(nextProps.match.params.id);
+      defineDispatch('administrador');
+    }
+  }
 
   componentWillUnmount = () => {
     const { cleanSelectedAdminDispatch, cleanDialogDispatch } = this.props;
@@ -34,11 +56,26 @@ class AdminDetailContainer extends Component {
     } = this.props;
     const payload = { ...values };
 
-    if (match.params.id) updateAdminDispatch({ ...payload, ...match.params });
-    else
+    if (match.params.id) {
+      updateAdminDispatch({ ...payload, ...match.params }).then(() => {
+        const {
+          administrator: { rol: rolSesionActual },
+        } = getSessionUser();
+        const isMain = getSessionIsMainUser() === 'true';
+        if (
+          rolSesionActual === COORDINATOR_ROL.COORDINADOR &&
+          isMain &&
+          values.principal &&
+          values.rol === COORDINATOR_ROL.COORDINADOR
+        ) {
+          removeSessionGeoToken();
+          history.push('/');
+        }
+      });
+    } else
       saveAdminDispatch({ ...payload }).then((response) => {
         if (response) {
-          findAdminByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findAdminByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };

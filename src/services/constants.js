@@ -57,13 +57,19 @@ export const GENDER = {
 };
 
 export const LEVEL_INSTRUCTION = {
+  DOCTOR: 'Dr',
+  'MAGISTER SCIENTIARUM': 'MSc',
+  ESPECIALISTA: 'Esp',
+  LICENCIADO: 'Lic',
+  INGENIERO: 'Ing',
   TSU: 'TSU',
   'TEC MEDIO': 'TCM',
+};
+
+export const LEVEL_INSTRUCTION_4TO_LEVEL = {
   DOCTOR: 'Dr',
-  ESPECIALISTA: 'Esp',
-  INGENIERO: 'Ing',
   'MAGISTER SCIENTIARUM': 'MSc',
-  LICENCIADO: 'Lic',
+  ESPECIALISTA: 'Esp',
 };
 
 export const TEACHER_CATEGORY = {
@@ -136,6 +142,17 @@ export const STUDENT_TYPE = {
   PERFECCIONAMIENTO: 'PER',
   'POST-DOCTORAL': 'PDO',
   ACTUALIZACION: 'ACT',
+};
+
+export const FINAL_WORK_STATUS = {
+  'EN PROGRESO': 'PROGRESS',
+  APROBADO: 'APPROVED',
+  REPROBADO: 'REPROBATE',
+};
+
+export const DOCTORAL_STATUS = {
+  APROBADO: 'APPROVED',
+  REPROBADO: 'REPROBATE',
 };
 
 export const STUDENT_STATUS = {

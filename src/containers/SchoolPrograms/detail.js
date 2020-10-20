@@ -38,7 +38,7 @@ class SchoolProgramDetailContainer extends Component {
     else
       saveSchoolProgramDispatch({ ...payload }).then((response) => {
         if (response) {
-          findSchoolProgramByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findSchoolProgramByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };
@@ -46,7 +46,7 @@ class SchoolProgramDetailContainer extends Component {
   goBack = () => {
     const { history } = this.props;
 
-    history.goBack('/programas-academicos');
+    history.push('/programas-academicos');
   };
 
   handleSchoolProgramDelete = () => {

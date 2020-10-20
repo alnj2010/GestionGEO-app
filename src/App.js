@@ -101,17 +101,17 @@ function App() {
                 <Route exact path="/estudiantes/agregar" component={StudentDetail} />
                 <Route
                   exact
-                  path="/estudiantes/inscripciones/:id"
+                  path="/estudiantes/inscripciones/:userId/:studentId"
                   component={StudentInscriptions}
                 />
                 <Route
                   exact
-                  path="/estudiantes/inscripciones/:id/nueva"
+                  path="/estudiantes/inscripciones/:userId/:studentId/nueva"
                   component={StudentInscription}
                 />
                 <Route
                   exact
-                  path="/estudiantes/inscripciones/:id/:idSchoolPeriod"
+                  path="/estudiantes/inscripciones/:userId/:studentId/:idSchoolPeriod"
                   component={StudentInscription}
                 />
 

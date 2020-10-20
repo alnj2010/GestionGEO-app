@@ -71,7 +71,7 @@ class TeachersList extends Component {
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(teachers)}
-            title="profesores"
+            title="Profesores"
             components={{
               Action: (props) => {
                 const {

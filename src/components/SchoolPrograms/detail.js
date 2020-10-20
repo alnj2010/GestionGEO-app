@@ -54,6 +54,8 @@ class SchoolProgramDetail extends Component {
       submitDispatch,
       schoolProgram,
       numCu,
+      grantCertificateSelected,
+      conduciveToDegreeSelected,
     } = this.props;
     const { func } = this.state;
     return (
@@ -73,7 +75,7 @@ class SchoolProgramDetail extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Nombre del programa academico',
+                    label: 'Programa academico',
                     field: 'schoolProgramName',
                     id: 'schoolProgramName',
                     type: 'text',
@@ -82,7 +84,7 @@ class SchoolProgramDetail extends Component {
                     label: 'Unidades de credito',
                     field: 'numCu',
                     id: 'numCu',
-                    type: 'number',
+                    type: conduciveToDegreeSelected ? 'number' : 'hidden',
                     min: 0,
                   },
                   {
@@ -93,26 +95,26 @@ class SchoolProgramDetail extends Component {
                     min: 0,
                   },
                   {
-                    label: 'Minimo de UC para presentar la TEG',
+                    label: 'min. de UC para la TEG',
                     field: 'minNumCuFinalWork',
                     id: 'minNumCuFinalWork',
-                    type: 'number',
+                    type: conduciveToDegreeSelected ? 'number' : 'hidden',
                     min: 0,
                     max: numCu,
                     disabled: !numCu,
                   },
                   {
-                    label: 'Minimo de semestres para presentar la TEG',
+                    label: 'min. de semestres para la TEG',
                     field: 'minDuration',
                     id: 'minDuration',
-                    type: 'number',
+                    type: conduciveToDegreeSelected ? 'number' : 'hidden',
                     min: 1,
                   },
                   {
                     label: '¿Posee examen doctoral?',
                     field: 'doctoralExam',
                     id: 'doctoralExam',
-                    type: 'switch',
+                    type: conduciveToDegreeSelected ? 'switch' : 'hidden',
                   },
                   {
                     label: '¿Otorga un certificado de culminación?',
@@ -220,11 +222,19 @@ const schoolProgramValidation = (values) => {
     errors.schoolProgramName = 'Nombre del Programa academico es requerido';
   }
 
-  if (!values.numCu && values.conduciveToDegree) {
-    errors.numCu = 'Unidades de credito es requerido';
+  if (values.conduciveToDegree) {
+    if (!values.duration) errors.duration = 'Es requerido';
+    if (!values.numCu) errors.numCu = 'Es requerido';
+    if (!values.minNumCuFinalWork) errors.minNumCuFinalWork = 'Es requerido';
+    if (!values.minDuration) errors.minDuration = 'Es requerido';
   }
 
-  if (!values.duration && values.conduciveToDegree) {
+  if (!values.grantCertificate && !values.conduciveToDegree) {
+    errors.grantCertificate =
+      'Debe existir al menos un certigicado o grado para el periodo escolar';
+  }
+
+  /* if (!values.duration && values.conduciveToDegree) {
     errors.duration = 'Duracion es requerido';
   }
 
@@ -238,7 +248,7 @@ const schoolProgramValidation = (values) => {
 
   if (!values.grantCertificate && !values.conduciveToDegree) {
     errors.grantCertificate = 'Debe establecer al menos un reconocimiento';
-  }
+  } */
 
   return errors;
 };
@@ -279,6 +289,8 @@ SchoolProgramDetailWrapper = connect(
     },
     action: state.dialogReducer.action,
     numCu: selector(state, 'numCu'),
+    grantCertificateSelected: selector(state, 'grantCertificate'),
+    conduciveToDegreeSelected: selector(state, 'conduciveToDegree'),
   }),
   { showDispatch: show, submitDispatch: submit }
 )(SchoolProgramDetailWrapper);

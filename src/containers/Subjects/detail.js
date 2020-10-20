@@ -49,14 +49,14 @@ class SubjectDetailContainer extends Component {
     else
       saveSubjectDispatch({ ...payload }).then((response) => {
         if (response) {
-          findSubjectByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findSubjectByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack('/materias');
+    history.push('/materias');
   };
 
   handleSubjectDelete = () => {

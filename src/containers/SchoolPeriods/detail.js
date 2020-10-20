@@ -25,7 +25,7 @@ class SchoolPeriodDetailContainer extends Component {
     if (match.params.id) findSchoolPeriodByIdDispatch(match.params.id);
     getSubjectListDispatch();
     getTeacherListDispatch();
-    defineDispatch('Periodo semestral');
+    defineDispatch('periodo semestral');
   };
 
   componentWillUnmount = () => {
@@ -46,14 +46,14 @@ class SchoolPeriodDetailContainer extends Component {
     else
       saveSchoolPeriodDispatch({ ...values }).then((response) => {
         if (response) {
-          findSchoolPeriodByIdDispatch(response).then(() => history.push(`edit/${response}`));
+          findSchoolPeriodByIdDispatch(response).then(() => history.push(`modificar/${response}`));
         }
       });
   };
 
   goBack = () => {
     const { history } = this.props;
-    history.goBack('/periodo-semestral/periodos');
+    history.push('/periodo-semestral/periodos');
   };
 
   handleSchoolPeriodDelete = () => {

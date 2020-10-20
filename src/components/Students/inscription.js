@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, Typography } from '@material-ui/core';
 import { Form, reduxForm, submit, FieldArray, formValueSelector } from 'redux-form';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -12,7 +12,12 @@ import RenderFields from '../RenderFields';
 import Dialog from '../Dialog';
 import { show } from '../../actions/dialog';
 import { jsonToOptions } from '../../helpers';
-import { SUBJECT_STATE, FINANCING_TYPE } from '../../services/constants';
+import {
+  SUBJECT_STATE,
+  FINANCING_TYPE,
+  FINAL_WORK_STATUS,
+  DOCTORAL_STATUS,
+} from '../../services/constants';
 
 const styles = () => ({
   form: {
@@ -29,6 +34,9 @@ const styles = () => ({
   buttonDelete: {
     marginTop: 30,
     padding: 10,
+  },
+  listSubjects: {
+    marginTop: 30,
   },
   button: {
     width: '100%',
@@ -52,7 +60,7 @@ class StudentInscription extends Component {
   };
 
   unselectedSubjects = (pos) => {
-    const { subjectInscriptions, subjectsSelected, subjects, idSchoolPeriod } = this.props;
+    const { availableSubjects, subjectsSelected, subjects, idSchoolPeriod } = this.props;
     if (idSchoolPeriod) {
       const subjectsAux = subjects.map((item) => ({
         id: item.id,
@@ -65,14 +73,14 @@ class StudentInscription extends Component {
           !subjectsSelected.some((selected, index) => selected.subjectId === item.id && pos > index)
       );
     }
-    return subjectInscriptions.filter(
+    return availableSubjects.filter(
       (item) =>
         !subjectsSelected.some((selected, index) => selected.subjectId === item.id && pos > index)
     );
   };
 
   renderSubjects = ({ fields }) => {
-    const { classes, idSchoolPeriod, subjectInscriptions, subjectsSelected } = this.props;
+    const { classes, idSchoolPeriod, availableSubjects, subjectsSelected } = this.props;
     return (
       <>
         {fields.map((subject, index) => (
@@ -134,9 +142,111 @@ class StudentInscription extends Component {
               className={classes.fab}
               disabled={
                 !!idSchoolPeriod ||
-                subjectInscriptions.length === 0 ||
-                (!!subjectsSelected && subjectInscriptions.length === subjectsSelected.length)
+                availableSubjects.length === 0 ||
+                (!!subjectsSelected && availableSubjects.length === subjectsSelected.length)
               }
+              onClick={() => fields.push({})}
+            >
+              <AddIcon />
+            </Fab>
+          </Grid>
+        </Grid>
+      </>
+    );
+  };
+
+  renderFinalWork = ({ fields }) => {
+    const {
+      classes,
+      idSchoolPeriod,
+      finalWorkSubjects,
+      finalWorkSubjectsSelected,
+      approvedProjects,
+      teachers,
+    } = this.props;
+
+    const posiblesFinalSubjects = (pos) =>
+      finalWorkSubjects
+        .filter(
+          (item) =>
+            !finalWorkSubjectsSelected.some((fws, i) => fws.subjectId === item.id && pos > i)
+        )
+        .map((fw) => ({ key: fw.name, value: fw.id }));
+
+    return (
+      <>
+        {fields.map((finalWork, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Grid container justify="center" key={index}>
+            <Grid container item xs={10}>
+              <RenderFields lineal={[3, 2, 2, 2, 3]}>
+                {[
+                  {
+                    field: `${finalWork}.title`,
+                    id: `${finalWork}.title`,
+
+                    type: 'text',
+                    label: 'Titulo',
+                  },
+                  {
+                    field: `${finalWork}.status`,
+                    id: `${finalWork}.status`,
+                    type: 'select',
+                    label: 'Estado',
+                    options: jsonToOptions(FINAL_WORK_STATUS),
+                  },
+                  {
+                    field: `${finalWork}.subjectId`,
+                    id: `${finalWork}.subjectId`,
+                    type: 'select',
+                    label: 'Materia',
+                    options: posiblesFinalSubjects(index),
+                  },
+                  {
+                    field: `${finalWork}.projectId`,
+                    id: `${finalWork}.projectId`,
+                    type: 'select',
+                    label: 'Proyecto',
+                    options: approvedProjects.map((item) => ({
+                      key: item.title,
+                      value: item.id,
+                    })),
+                  },
+                  {
+                    field: `${finalWork}.advisors`,
+                    id: `${finalWork}.advisors`,
+                    type: 'select',
+                    multiple: true,
+                    label: 'Tutor',
+                    options: teachers.map((item) => ({
+                      key: `${item.first_name} ${item.first_surname}`,
+                      value: item.id,
+                    })),
+                  },
+                ]}
+              </RenderFields>
+            </Grid>
+            {idSchoolPeriod ? null : (
+              <Grid item xs={2}>
+                <IconButton
+                  className={classes.buttonDelete}
+                  aria-label="remover"
+                  color="secondary"
+                  onClick={() => fields.remove(index)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+            )}
+          </Grid>
+        ))}
+        <Grid container item xs={12} justify="center">
+          <Grid item xs={1}>
+            <Fab
+              color="primary"
+              aria-label="Add"
+              className={classes.fab}
+              disabled={finalWorkSubjectsSelected.length === finalWorkSubjects.length}
               onClick={() => fields.push({})}
             >
               <AddIcon />
@@ -163,12 +273,15 @@ class StudentInscription extends Component {
       idSchoolPeriod,
       fullname,
       subjectsSelected,
-      subjectInscriptions,
+      availableSubjects,
       subjects,
+      finalWorkSubjects,
+      availableDoctoralExam,
+      finalWorkSubjectsSelected,
     } = this.props;
     let rolledSubjects = [];
-    if (subjectInscriptions.length && subjectsSelected) {
-      rolledSubjects = subjectInscriptions.filter((item) =>
+    if (availableSubjects.length && subjectsSelected) {
+      rolledSubjects = availableSubjects.filter((item) =>
         subjectsSelected.some((subject) => subject.subjectId === item.id)
       );
     } else if (subjects.length && subjectsSelected) {
@@ -229,32 +342,57 @@ class StudentInscription extends Component {
                     min: 0,
                     label: 'Cantidad cancelada (bs)',
                   },
+                  {
+                    field: `doctoralExam`,
+                    id: `doctoralExam`,
+                    type: availableDoctoralExam ? 'select' : 'hidden',
+                    label: 'Examen doctoral',
+                    options: jsonToOptions(DOCTORAL_STATUS),
+                  },
                 ]}
               </RenderFields>
-              <Grid container item xs={12}>
-                <FieldArray name="subjects" component={this.renderSubjects} />
+
+              {subjectsSelected.length || availableSubjects.length ? (
+                <Grid container item xs={12} className={classes.listSubjects}>
+                  <Typography variant="h6" gutterBottom>
+                    Materias
+                  </Typography>
+                  <FieldArray name="subjects" component={this.renderSubjects} />
+                </Grid>
+              ) : null}
+
+              {finalWorkSubjectsSelected.length || finalWorkSubjects.length ? (
+                <Grid container item xs={12} className={classes.listSubjects}>
+                  <Typography variant="h6" gutterBottom>
+                    Trabajo final
+                  </Typography>
+                  <FieldArray name="finalWorks" component={this.renderFinalWork} />
+                </Grid>
+              ) : null}
+
+              <Grid item xs={12}>
+                <div>
+                  <h4>
+                    Total de creditos inscritos:{' '}
+                    <span style={{ color: '#2196f3' }}>
+                      {rolledSubjects.reduce(
+                        (total, item) => total + parseInt(item.subject.uc, 10),
+                        0
+                      )}{' '}
+                      uc
+                    </span>{' '}
+                  </h4>
+                  <h4>
+                    Costo total:{' '}
+                    <span style={{ color: '#9e9d24' }}>
+                      {rolledSubjects
+                        .reduce((total, item) => total + parseFloat(item.duty), 0.0)
+                        .toFixed(2)}{' '}
+                      bs
+                    </span>{' '}
+                  </h4>
+                </div>
               </Grid>
-              <div>
-                <h4>
-                  Total de creditos inscritos:{' '}
-                  <span style={{ color: '#2196f3' }}>
-                    {rolledSubjects.reduce(
-                      (total, item) => total + parseInt(item.subject.uc, 10),
-                      0
-                    )}{' '}
-                    uc
-                  </span>{' '}
-                </h4>
-                <h4>
-                  Costo total:{' '}
-                  <span style={{ color: '#9e9d24' }}>
-                    {rolledSubjects
-                      .reduce((total, item) => total + parseFloat(item.duty), 0.0)
-                      .toFixed(2)}{' '}
-                    bs
-                  </span>{' '}
-                </h4>
-              </div>
             </Grid>
             <Grid container>
               <Grid item xs={12}>
@@ -303,6 +441,7 @@ StudentInscription.propTypes = {
     buttonDelete: PropTypes.string,
     button: PropTypes.string,
     fab: PropTypes.string,
+    listSubjects: PropTypes.string,
   }).isRequired,
 
   schoolPeriods: PropTypes.arrayOf(
@@ -311,7 +450,7 @@ StudentInscription.propTypes = {
       id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
   ).isRequired,
-
+  teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   idSchoolPeriod: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
   subjectsSelected: PropTypes.arrayOf(
@@ -319,11 +458,15 @@ StudentInscription.propTypes = {
       subjectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
   ),
-  subjectInscriptions: PropTypes.arrayOf(
+  finalWorkSubjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
+  availableSubjects: PropTypes.arrayOf(
     PropTypes.shape({
       subjectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     })
   ).isRequired,
+  finalWorkSubjects: PropTypes.arrayOf(PropTypes.shape({})),
+  approvedProjects: PropTypes.arrayOf(PropTypes.shape({})),
+  availableDoctoralExam: PropTypes.bool,
 
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
@@ -349,7 +492,11 @@ StudentInscription.propTypes = {
 };
 StudentInscription.defaultProps = {
   subjectsSelected: [],
+  finalWorkSubjectsSelected: [],
   idSchoolPeriod: null,
+  finalWorkSubjects: [],
+  approvedProjects: [],
+  availableDoctoralExam: false,
 };
 
 const studentValidation = (values) => {
@@ -375,10 +522,6 @@ const studentValidation = (values) => {
         subjectArrayErrors[subjIndex] = subjErrors;
       }
     });
-
-    if (subjectArrayErrors.length) {
-      errors.subjects = subjectArrayErrors;
-    }
   }
   return errors;
 };
@@ -420,6 +563,7 @@ StudentInscriptionWrapper = connect(
     action: state.dialogReducer.action,
     schoolPeriodId: selector(state, 'schoolPeriodId'),
     subjectsSelected: selector(state, 'subjects'),
+    finalWorkSubjectsSelected: selector(state, 'finalWorks'),
   }),
   { showDispatch: show, submitDispatch: submit }
 )(StudentInscriptionWrapper);

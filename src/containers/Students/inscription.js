@@ -7,7 +7,12 @@ import {
   editStudentPeriodSchool,
   getInscribedSchoolPeriods,
   cleanSelectedInscribedSchoolPeriods,
+  findStudentById,
+  cleanSelectedStudent,
+  cleanAvailableSubjects,
 } from '../../actions/student';
+
+import { getList as getTeachersList } from '../../actions/teacher';
 
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 
@@ -18,21 +23,32 @@ class StudentInscriptionContainer extends Component {
   componentDidMount = () => {
     const {
       match: {
-        params: { id, idSchoolPeriod },
+        params: { userId, studentId, idSchoolPeriod },
       },
       defineDispatch,
       getSchoolPeriodsListDispatch,
       getInscribedSchoolPeriodsDispatch,
+      findStudentByIdDispatch,
+      getTeachersListDispatch,
     } = this.props;
+    findStudentByIdDispatch(userId);
     getSchoolPeriodsListDispatch();
-    getInscribedSchoolPeriodsDispatch(id, idSchoolPeriod);
+    getTeachersListDispatch();
+    getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
     defineDispatch('estudiante');
   };
 
   componentWillUnmount = () => {
-    const { cleanSelectedInscribedSchoolPeriodsDispatch, cleanDialogDispatch } = this.props;
+    const {
+      cleanSelectedInscribedSchoolPeriodsDispatch,
+      cleanDialogDispatch,
+      cleanSelectedStudentDispatch,
+      cleanAvailableSubjectsDispatch,
+    } = this.props;
     cleanSelectedInscribedSchoolPeriodsDispatch();
     cleanDialogDispatch();
+    cleanSelectedStudentDispatch();
+    cleanAvailableSubjectsDispatch();
   };
 
   saveInscription = (values) => {
@@ -41,15 +57,15 @@ class StudentInscriptionContainer extends Component {
       editStudentPeriodSchoolDispatch,
       idInscription,
       match: {
-        params: { id, idSchoolPeriod },
+        params: { studentId, idSchoolPeriod },
       },
     } = this.props;
     if (!idSchoolPeriod)
-      addStudentPeriodSchoolDispatch({ ...values, studentId: id }).then(() => this.goBack());
+      addStudentPeriodSchoolDispatch({ ...values, studentId }).then(() => this.goBack());
     else
       editStudentPeriodSchoolDispatch({
         ...values,
-        studentId: id,
+        studentId,
         id: idInscription,
       });
   };
@@ -58,10 +74,10 @@ class StudentInscriptionContainer extends Component {
     const {
       history,
       match: {
-        params: { id },
+        params: { studentId, userId },
       },
     } = this.props;
-    history.push(`/estudiantes/inscripciones/${id}`);
+    history.push(`/estudiantes/inscripciones/${userId}/${studentId}`);
   };
 
   render() {
@@ -69,16 +85,24 @@ class StudentInscriptionContainer extends Component {
       schoolPeriods,
       subjects,
       match: {
-        params: { id, idSchoolPeriod },
+        params: { studentId, idSchoolPeriod },
       },
       getAvailableSubjectsDispatch,
-      subjectInscriptions,
-      location: {
-        state: { inscriptedSP, fullname },
-      },
+      availableSubjects,
+      inscriptedSP,
+      student,
+      finalWorkSubjects,
+      approvedProjects,
+      availableDoctoralExam,
+      teachers,
     } = this.props;
+
+    const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
+      student.second_surname || ''
+    }`;
     return (
       <StudentInscription
+        teachers={teachers}
         schoolPeriods={schoolPeriods.filter(
           (sp) =>
             !inscriptedSP.some(
@@ -87,8 +111,11 @@ class StudentInscriptionContainer extends Component {
         )}
         saveInscription={this.saveInscription}
         goBack={this.goBack}
-        studentId={id}
+        studentId={studentId}
         idSchoolPeriod={idSchoolPeriod}
+        finalWorkSubjects={finalWorkSubjects}
+        approvedProjects={approvedProjects}
+        availableDoctoralExam={availableDoctoralExam}
         subjects={
           subjects
             ? subjects.map((item) => ({
@@ -100,7 +127,7 @@ class StudentInscriptionContainer extends Component {
             : []
         }
         getAvailableSubjects={getAvailableSubjectsDispatch}
-        subjectInscriptions={subjectInscriptions}
+        availableSubjects={availableSubjects}
         fullname={fullname}
       />
     );
@@ -110,7 +137,8 @@ class StudentInscriptionContainer extends Component {
 StudentInscriptionContainer.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      userId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       idSchoolPeriod: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     }),
   }).isRequired,
@@ -118,7 +146,9 @@ StudentInscriptionContainer.propTypes = {
   schoolPeriods: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]) })
   ).isRequired,
-
+  finalWorkSubjects: PropTypes.arrayOf(PropTypes.shape({})),
+  approvedProjects: PropTypes.arrayOf(PropTypes.shape({})),
+  availableDoctoralExam: PropTypes.bool,
   subjects: PropTypes.arrayOf(
     PropTypes.shape({
       school_period_subject_teacher_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
@@ -131,16 +161,15 @@ StudentInscriptionContainer.propTypes = {
       }),
     })
   ),
-
-  subjectInscriptions: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-
-  location: PropTypes.shape({
-    state: PropTypes.shape({
-      inscriptedSP: PropTypes.arrayOf(PropTypes.shape({})),
-      fullname: PropTypes.string,
-    }),
+  student: PropTypes.shape({
+    first_name: PropTypes.string,
+    second_name: PropTypes.string,
+    first_surname: PropTypes.string,
+    second_surname: PropTypes.string,
   }).isRequired,
-
+  availableSubjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  inscriptedSP: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   idInscription: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   defineDispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
@@ -151,18 +180,31 @@ StudentInscriptionContainer.propTypes = {
   cleanSelectedInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
   addStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
   editStudentPeriodSchoolDispatch: PropTypes.func.isRequired,
+  findStudentByIdDispatch: PropTypes.func.isRequired,
+  cleanSelectedStudentDispatch: PropTypes.func.isRequired,
+  cleanAvailableSubjectsDispatch: PropTypes.func.isRequired,
+  getTeachersListDispatch: PropTypes.func.isRequired,
 };
 
 StudentInscriptionContainer.defaultProps = {
   subjects: [],
   idInscription: null,
+  finalWorkSubjects: [],
+  approvedProjects: [],
+  availableDoctoralExam: false,
 };
 
 const mS = (state) => ({
   subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
   idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
   schoolPeriods: state.schoolPeriodReducer.list,
-  subjectInscriptions: state.studentReducer.availableSubjects,
+  availableSubjects: state.studentReducer.availableSubjects,
+  finalWorkSubjects: state.studentReducer.finalWorkSubjects,
+  approvedProjects: state.studentReducer.approvedProjects,
+  availableDoctoralExam: state.studentReducer.availableDoctoralExam,
+  inscriptedSP: state.studentReducer.inscribedSchoolPeriods,
+  teachers: state.teacherReducer.list,
+  student: state.studentReducer.selectedStudent,
 });
 
 const mD = {
@@ -174,6 +216,10 @@ const mD = {
   cleanSelectedInscribedSchoolPeriodsDispatch: cleanSelectedInscribedSchoolPeriods,
   addStudentPeriodSchoolDispatch: addStudentPeriodSchool,
   editStudentPeriodSchoolDispatch: editStudentPeriodSchool,
+  findStudentByIdDispatch: findStudentById,
+  getTeachersListDispatch: getTeachersList,
+  cleanSelectedStudentDispatch: cleanSelectedStudent,
+  cleanAvailableSubjectsDispatch: cleanAvailableSubjects,
 };
 
 export default connect(mS, mD)(StudentInscriptionContainer);
