@@ -350,6 +350,7 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
       value.finalWorks && value.finalWorks.length
         ? value.finalWorks.map((finalWork) => ({
             ...finalWork,
+            project_id: finalWork.projectId || undefined,
             subject_id: finalWork.subjectId,
             advisors: { teacher_id: finalWork.advisors },
           }))
@@ -389,6 +390,7 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
       value.finalWorks && value.finalWorks.length
         ? value.finalWorks.map((finalWork) => ({
             ...finalWork,
+            project_id: finalWork.projectId || undefined,
             subject_id: finalWork.subjectId,
             advisors: { teacher_id: finalWork.advisors },
           }))
