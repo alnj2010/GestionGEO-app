@@ -355,6 +355,14 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
             advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
           }))
         : undefined,
+    projects:
+      value.projects && value.projects.length
+        ? value.projects.map((project) => ({
+            title: project.title,
+            status: project.status,
+            subject_id: project.subjectId,
+          }))
+        : undefined,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
       qualification: parseInt(subject.nota, 10),
@@ -393,6 +401,14 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
             project_id: finalWork.projectId || undefined,
             subject_id: finalWork.subjectId,
             advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
+          }))
+        : undefined,
+    projects:
+      value.projects && value.projects.length
+        ? value.projects.map((project) => ({
+            title: project.title,
+            status: project.status,
+            subject_id: project.subjectId,
           }))
         : undefined,
     subjects: value.subjects.map((subject) => ({

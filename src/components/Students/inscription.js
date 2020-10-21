@@ -396,7 +396,10 @@ class StudentInscription extends Component {
                   <Typography variant="h6" gutterBottom>
                     {fws[0].is_final_subject ? 'Trabajo final' : 'Proyecto y seminario'}
                   </Typography>
-                  <FieldArray name="finalWorks" component={this.renderFinalWork} />
+                  <FieldArray
+                    name={fws[0].is_final_subject ? 'finalWorks' : 'projects'}
+                    component={this.renderFinalWork}
+                  />
                 </Grid>
               ) : null}
 
@@ -581,6 +584,31 @@ const studentInscriptionValidation = (values) => {
       }
     });
   }
+
+  if (values.projects && values.projects.length) {
+    const projectsArrayErrors = [];
+    values.projects.forEach((finalWork, finalWorkIndex) => {
+      const finalWorkErrors = {};
+      if (!finalWork || !finalWork.title) {
+        finalWorkErrors.title = '*Titulo es requerido';
+        projectsArrayErrors[finalWorkIndex] = finalWorkErrors;
+      }
+
+      if (!finalWork || !finalWork.status) {
+        finalWorkErrors.status = '*Estado es requerido';
+        projectsArrayErrors[finalWorkIndex] = finalWorkErrors;
+      }
+
+      if (!finalWork || !finalWork.subjectId) {
+        finalWorkErrors.subjectId = '*Materia es requerido';
+        projectsArrayErrors[finalWorkIndex] = finalWorkErrors;
+      }
+
+      if (projectsArrayErrors.length) {
+        errors.projects = projectsArrayErrors;
+      }
+    });
+  }
   return errors;
 };
 
@@ -618,6 +646,17 @@ StudentInscriptionWrapper = connect(
           }))
         : [],
       finalWorks: state.studentReducer.selectedStudentSchoolPeriod.final_work_data
+        ? state.studentReducer.selectedStudentSchoolPeriod.final_work_data.map((finalWork) => ({
+            title: finalWork.final_work.title,
+            status: finalWork.status,
+            subjectId: finalWork.final_work.subject_id,
+            projectId: finalWork.final_work.project_id,
+            advisors: finalWork.final_work.teachers.length
+              ? finalWork.final_work.teachers[0].id
+              : null,
+          }))
+        : [],
+      projects: state.studentReducer.selectedStudentSchoolPeriod.final_work_data
         ? state.studentReducer.selectedStudentSchoolPeriod.final_work_data.map((finalWork) => ({
             title: finalWork.final_work.title,
             status: finalWork.status,
