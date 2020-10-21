@@ -165,6 +165,7 @@ class StudentInscription extends Component {
       teachers,
       allSubjects: subjects,
     } = this.props;
+
     const posiblesFinalSubjects = (pos) => {
       if (idSchoolPeriod) {
         const subjectsAux = subjects.map((item) => ({
@@ -185,14 +186,21 @@ class StudentInscription extends Component {
         )
         .map((fw) => ({ key: fw.name, value: fw.id }));
     };
+    let fws = null;
+    if (finalWorkSubjects.length) {
+      fws = finalWorkSubjects;
+    } else if (finalWorkSubjectsSelected.length) {
+      fws = finalWorkSubjectsSelected;
+    }
 
+    const distributionItems = fws[0].is_final_subject ? [3, 2, 2, 2, 3] : [4, 4, 4];
     return (
       <>
         {fields.map((finalWork, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <Grid container justify="center" key={index}>
             <Grid container item xs={10}>
-              <RenderFields lineal={[3, 2, 2, 2, 3]}>
+              <RenderFields lineal={distributionItems}>
                 {[
                   {
                     field: `${finalWork}.title`,
@@ -219,7 +227,7 @@ class StudentInscription extends Component {
                   {
                     field: `${finalWork}.projectId`,
                     id: `${finalWork}.projectId`,
-                    type: 'select',
+                    type: fws[0].is_final_subject ? 'select' : 'hidden',
                     label: 'Proyecto',
                     options: approvedProjects.map((item) => ({
                       key: item.title,
@@ -229,7 +237,7 @@ class StudentInscription extends Component {
                   {
                     field: `${finalWork}.advisors`,
                     id: `${finalWork}.advisors`,
-                    type: 'select',
+                    type: fws[0].is_final_subject ? 'select' : 'hidden',
                     multiple: true,
                     label: 'Tutor',
                     options: teachers.map((item) => ({
@@ -260,7 +268,10 @@ class StudentInscription extends Component {
               color="primary"
               aria-label="Add"
               className={classes.fab}
-              disabled={finalWorkSubjectsSelected.length === finalWorkSubjects.length}
+              disabled={
+                !finalWorkSubjects.length ||
+                finalWorkSubjectsSelected.length === finalWorkSubjects.length
+              }
               onClick={() => fields.push({})}
             >
               <AddIcon />
@@ -303,7 +314,12 @@ class StudentInscription extends Component {
         subjectsSelected.some((subject) => subject.subjectId === item.id)
       );
     }
-
+    let fws = null;
+    if (finalWorkSubjects.length) {
+      fws = finalWorkSubjects;
+    } else if (finalWorkSubjectsSelected.length) {
+      fws = finalWorkSubjectsSelected;
+    }
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
@@ -378,7 +394,7 @@ class StudentInscription extends Component {
               {finalWorkSubjectsSelected.length || finalWorkSubjects.length ? (
                 <Grid container item xs={12} className={classes.listSubjects}>
                   <Typography variant="h6" gutterBottom>
-                    Trabajo final
+                    {fws[0].is_final_subject ? 'Trabajo final' : 'Proyecto y seminario'}
                   </Typography>
                   <FieldArray name="finalWorks" component={this.renderFinalWork} />
                 </Grid>
