@@ -59,15 +59,29 @@ class StudentInscriptionContainer extends Component {
       addStudentPeriodSchoolDispatch,
       editStudentPeriodSchoolDispatch,
       idInscription,
+      finalWorkSubjects,
+      finalWorkData,
       match: {
         params: { studentId, idSchoolPeriod },
       },
     } = this.props;
+
+    let isProjectSubject = null;
+    if (finalWorkSubjects && finalWorkSubjects.length) {
+      isProjectSubject = finalWorkSubjects[0].is_project_subject;
+    } else if (finalWorkData && finalWorkData[0]) {
+      isProjectSubject = finalWorkData[0].final_work.is_project;
+    }
+    let payload = { ...values };
+    if (isProjectSubject) {
+      payload = { ...values, projects: values.finalWorks, finalWorks: [] };
+    }
+
     if (!idSchoolPeriod)
-      addStudentPeriodSchoolDispatch({ ...values, studentId }).then(() => this.goBack());
+      addStudentPeriodSchoolDispatch({ ...payload, studentId }).then(() => this.goBack());
     else
       editStudentPeriodSchoolDispatch({
-        ...values,
+        ...payload,
         studentId,
         id: idInscription,
       });
@@ -99,12 +113,13 @@ class StudentInscriptionContainer extends Component {
       approvedProjects,
       availableDoctoralExam,
       teachers,
+      finalWorkData,
     } = this.props;
 
     const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
       student.second_surname || ''
     }`;
-    console.log(allSubjects);
+    console.log(finalWorkSubjects, finalWorkData);
     return (
       <StudentInscription
         teachers={teachers}
@@ -203,6 +218,7 @@ StudentInscriptionContainer.defaultProps = {
 const mS = (state) => ({
   allSubjects: state.subjectReducer.list,
   subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
+  finalWorkData: state.studentReducer.selectedStudentSchoolPeriod.final_work_data,
   idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
   schoolPeriods: state.schoolPeriodReducer.list,
   availableSubjects: state.studentReducer.availableSubjects,
