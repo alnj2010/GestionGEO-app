@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as moment from 'moment';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
@@ -647,7 +648,9 @@ StudentInscriptionWrapper = connect(
             descriptionStatus: finalWork.description_status,
             subjectId: finalWork.final_work.subject_id,
             projectId: finalWork.final_work.project_id,
-            approvalDate: finalWork.final_work.approval_date,
+            approvalDate: finalWork.final_work.approval_date
+              ? finalWork.final_work.approval_date
+              : moment().format('YYYY-MM-DD'),
             advisors: finalWork.final_work.teachers.length
               ? finalWork.final_work.teachers[0].id
               : null,
