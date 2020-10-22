@@ -298,7 +298,7 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
         type: ACTIONS.AVAILABLE_SUBJECTS,
         payload: {
           availableSubjects: response.available_subjects,
-          finalWorkSubjects: response.final_work_subjects,
+          finalWorkSubjects: response.final_work_subjects || response.project_subjects,
           availableDoctoralExam: response.available_doctoral_exam,
           approvedProjects: response.approved_projects,
         },
@@ -352,6 +352,8 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
             ...finalWork,
             project_id: finalWork.projectId || undefined,
             subject_id: finalWork.subjectId,
+            description_status: finalWork.descriptionStatus || undefined,
+            approval_date: finalWork.approvalDate || undefined,
             advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
           }))
         : undefined,
@@ -361,11 +363,13 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
             title: project.title,
             status: project.status,
             subject_id: project.subjectId,
+            description_status: project.descriptionStatus || undefined,
+            approval_date: project.approvalDate || undefined,
           }))
         : undefined,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
-      qualification: parseInt(subject.nota, 10),
+      qualification: subject.nota ? parseInt(subject.nota, 10) : undefined,
       status: subject.status,
     })),
   };
@@ -398,6 +402,8 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
       value.finalWorks && value.finalWorks.length
         ? value.finalWorks.map((finalWork) => ({
             ...finalWork,
+            description_status: finalWork.descriptionStatus || undefined,
+            approval_date: finalWork.approvalDate || undefined,
             project_id: finalWork.projectId || undefined,
             subject_id: finalWork.subjectId,
             advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
@@ -406,6 +412,8 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
     projects:
       value.projects && value.projects.length
         ? value.projects.map((project) => ({
+            description_status: project.descriptionStatus || undefined,
+            approval_date: project.approvalDate || undefined,
             title: project.title,
             status: project.status,
             subject_id: project.subjectId,
@@ -413,7 +421,7 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
         : undefined,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
-      qualification: parseInt(subject.nota, 10),
+      qualification: subject.nota ? parseInt(subject.nota, 10) : undefined,
       status: subject.status,
     })),
   };

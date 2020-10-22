@@ -47,7 +47,7 @@ import {
 } from '../../storage/sessionStorage';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const styles = (theme) => ({
   root: {
