@@ -113,20 +113,20 @@ class StudentInscriptionContainer extends Component {
       approvedProjects,
       availableDoctoralExam,
       teachers,
-      finalWorkData,
     } = this.props;
 
     const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
       student.second_surname || ''
     }`;
-    console.log(finalWorkSubjects, finalWorkData);
     return (
       <StudentInscription
         teachers={teachers}
         schoolPeriods={schoolPeriods.filter(
           (sp) =>
             !inscriptedSP.some(
-              (isp) => isp.id === sp.id && parseInt(isp.id, 10) !== parseInt(idSchoolPeriod, 10)
+              (isp) =>
+                isp.school_period_id === sp.id &&
+                parseInt(isp.school_period_id, 10) !== parseInt(idSchoolPeriod, 10)
             )
         )}
         saveInscription={this.saveInscription}

@@ -193,75 +193,101 @@ class StudentInscription extends Component {
       fws = finalWorkSubjectsSelected;
     }
 
-    const distributionItems = fws[0].is_final_subject ? [3, 2, 2, 2, 3] : [4, 4, 4];
+    const distributionItems = fws[0].is_final_subject ? [2, 2, 2, 2, 2, 2, 2] : [3, 3, 3, 3];
     return (
       <>
-        {fields.map((finalWork, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <Grid container justify="center" key={index}>
-            <Grid container item xs={10}>
-              <RenderFields lineal={distributionItems}>
-                {[
-                  {
-                    field: `${finalWork}.title`,
-                    id: `${finalWork}.title`,
+        {fields.map((finalWork, index) => {
+          let oneMore = null;
+          if (finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS['APROBADO']) {
+            if (distributionItems.length === 7) {
+              oneMore = [2, 1, 2, 2, 2, 1, 2];
+            } else if (distributionItems.length === 4) {
+              oneMore = [3, 2, 2, 3, 2];
+            }
+          }
+          return (
+            // eslint-disable-next-line react/no-array-index-key
+            <Grid container justify="center" key={index}>
+              <Grid container item xs={10}>
+                <RenderFields lineal={oneMore || distributionItems}>
+                  {[
+                    {
+                      field: `${finalWork}.title`,
+                      id: `${finalWork}.title`,
 
-                    type: 'text',
-                    label: 'Titulo',
-                  },
-                  {
-                    field: `${finalWork}.status`,
-                    id: `${finalWork}.status`,
-                    type: 'select',
-                    label: 'Estado',
-                    options: jsonToOptions(FINAL_WORK_STATUS),
-                  },
-                  {
-                    field: `${finalWork}.subjectId`,
-                    id: `${finalWork}.subjectId`,
-                    type: 'select',
-                    label: 'Materia',
-                    disabled: !!idSchoolPeriod,
-                    options: posiblesFinalSubjects(index),
-                  },
-                  {
-                    field: `${finalWork}.projectId`,
-                    id: `${finalWork}.projectId`,
-                    type: fws[0].is_final_subject ? 'select' : 'hidden',
-                    label: 'Proyecto',
-                    options: approvedProjects.map((item) => ({
-                      key: item.title,
-                      value: item.id,
-                    })),
-                  },
-                  {
-                    field: `${finalWork}.advisors`,
-                    id: `${finalWork}.advisors`,
-                    type: fws[0].is_final_subject ? 'select' : 'hidden',
-                    multiple: true,
-                    label: 'Tutor',
-                    options: teachers.map((item) => ({
-                      key: `${item.first_name} ${item.first_surname}`,
-                      value: item.id,
-                    })),
-                  },
-                ]}
-              </RenderFields>
-            </Grid>
-            {idSchoolPeriod ? null : (
-              <Grid item xs={2}>
-                <IconButton
-                  className={classes.buttonDelete}
-                  aria-label="remover"
-                  color="secondary"
-                  onClick={() => fields.remove(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
+                      type: 'text',
+                      label: 'Titulo',
+                    },
+                    {
+                      field: `${finalWork}.status`,
+                      id: `${finalWork}.status`,
+                      type: 'select',
+                      label: 'Estado',
+                      options: jsonToOptions(FINAL_WORK_STATUS),
+                    },
+
+                    {
+                      field: `${finalWork}.subjectId`,
+                      id: `${finalWork}.subjectId`,
+                      type: 'select',
+                      label: 'Materia',
+                      disabled: !!idSchoolPeriod,
+                      options: posiblesFinalSubjects(index),
+                    },
+                    {
+                      field: `${finalWork}.descriptionStatus`,
+                      id: `${finalWork}.descriptionStatus`,
+                      type: 'text',
+                      label: 'Descripcion del estado',
+                    },
+                    {
+                      field: `${finalWork}.approvalDate`,
+                      id: `${finalWork}.approvalDate`,
+                      type:
+                        finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS['APROBADO']
+                          ? 'date'
+                          : 'hidden',
+                      label: 'Fecha de aprobacion',
+                    },
+                    {
+                      field: `${finalWork}.projectId`,
+                      id: `${finalWork}.projectId`,
+                      type: fws[0].is_final_subject ? 'select' : 'hidden',
+                      label: 'Proyecto',
+                      options: approvedProjects.map((item) => ({
+                        key: item.title,
+                        value: item.id,
+                      })),
+                    },
+                    {
+                      field: `${finalWork}.advisors`,
+                      id: `${finalWork}.advisors`,
+                      type: fws[0].is_final_subject ? 'select' : 'hidden',
+                      multiple: true,
+                      label: 'Tutor',
+                      options: teachers.map((item) => ({
+                        key: `${item.first_name} ${item.first_surname}`,
+                        value: item.id,
+                      })),
+                    },
+                  ]}
+                </RenderFields>
               </Grid>
-            )}
-          </Grid>
-        ))}
+              {idSchoolPeriod ? null : (
+                <Grid item xs={2}>
+                  <IconButton
+                    className={classes.buttonDelete}
+                    aria-label="remover"
+                    color="secondary"
+                    onClick={() => fields.remove(index)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Grid>
+              )}
+            </Grid>
+          );
+        })}
         <Grid container item xs={12} justify="center">
           <Grid item xs={1}>
             <Fab
@@ -544,10 +570,7 @@ const studentInscriptionValidation = (values) => {
         subjErrors.status = '*Estado es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
-      if (!subj || !subj.nota) {
-        subjErrors.nota = '*nota es requerido';
-        subjectArrayErrors[subjIndex] = subjErrors;
-      } else if (parseInt(subj.nota, 10) < 0 || parseInt(subj.nota, 10) > 20) {
+      if ((subj && parseInt(subj.nota, 10) < 0) || parseInt(subj.nota, 10) > 20) {
         subjErrors.nota = '*nota debe estar entre 0 y 20';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
@@ -621,8 +644,10 @@ StudentInscriptionWrapper = connect(
         ? state.studentReducer.selectedStudentSchoolPeriod.final_work_data.map((finalWork) => ({
             title: finalWork.final_work.title,
             status: finalWork.status,
+            descriptionStatus: finalWork.description_status,
             subjectId: finalWork.final_work.subject_id,
             projectId: finalWork.final_work.project_id,
+            approvalDate: finalWork.final_work.approval_date,
             advisors: finalWork.final_work.teachers.length
               ? finalWork.final_work.teachers[0].id
               : null,
