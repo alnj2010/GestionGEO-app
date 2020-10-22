@@ -142,7 +142,6 @@ class StudentInscription extends Component {
               aria-label="Add"
               className={classes.fab}
               disabled={
-                !!idSchoolPeriod ||
                 availableSubjects.length === 0 ||
                 (!!subjectsSelected && availableSubjects.length === subjectsSelected.length)
               }

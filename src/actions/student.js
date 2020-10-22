@@ -13,6 +13,7 @@ export const ACTIONS = {
   CLEAN_SELECTED_STUDENT: `student/clean-selected`,
   SELECTED_STUDENT_SCHOOL_PERIOD: `student/selected_student_school_period`,
   SELECTED_SCHOOL_PROGRAM: `student/selected_school_program`,
+  CLEAN_STUDENT_REDUCER: `student/clean_student_reducer`,
 };
 
 export const getList = () => async (dispatch) => {
@@ -467,6 +468,13 @@ export const cleanSelectedInscribedSchoolPeriods = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
     payload: { selectedStudentSchoolPeriod: {} },
+  });
+};
+
+export const cleanStudentReducer = () => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.CLEAN_STUDENT_REDUCER,
+    payload: {},
   });
 };
 

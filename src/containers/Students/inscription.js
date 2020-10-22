@@ -10,6 +10,7 @@ import {
   findStudentById,
   cleanSelectedStudent,
   cleanAvailableSubjects,
+  cleanStudentReducer,
 } from '../../actions/student';
 
 import { getList as getTeachersList } from '../../actions/teacher';
@@ -32,8 +33,10 @@ class StudentInscriptionContainer extends Component {
       findStudentByIdDispatch,
       getTeachersListDispatch,
       getSubjectsListDispatch,
+      getAvailableSubjectsDispatch,
     } = this.props;
     findStudentByIdDispatch(userId);
+    getAvailableSubjectsDispatch(studentId, idSchoolPeriod);
     getSchoolPeriodsListDispatch();
     getTeachersListDispatch();
     getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
@@ -47,11 +50,13 @@ class StudentInscriptionContainer extends Component {
       cleanDialogDispatch,
       cleanSelectedStudentDispatch,
       cleanAvailableSubjectsDispatch,
+      cleanStudentReducerDispatch,
     } = this.props;
     cleanSelectedInscribedSchoolPeriodsDispatch();
     cleanDialogDispatch();
     cleanSelectedStudentDispatch();
     cleanAvailableSubjectsDispatch();
+    cleanStudentReducerDispatch();
   };
 
   saveInscription = (values) => {
@@ -204,6 +209,7 @@ StudentInscriptionContainer.propTypes = {
   findStudentByIdDispatch: PropTypes.func.isRequired,
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
   cleanAvailableSubjectsDispatch: PropTypes.func.isRequired,
+  cleanStudentReducerDispatch: PropTypes.func.isRequired,
   getTeachersListDispatch: PropTypes.func.isRequired,
 };
 
@@ -243,6 +249,7 @@ const mD = {
   getTeachersListDispatch: getTeachersList,
   cleanSelectedStudentDispatch: cleanSelectedStudent,
   cleanAvailableSubjectsDispatch: cleanAvailableSubjects,
+  cleanStudentReducerDispatch: cleanStudentReducer,
   getSubjectsListDispatch: getSubjectsList,
 };
 
