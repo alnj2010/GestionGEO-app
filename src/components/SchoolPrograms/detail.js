@@ -273,7 +273,7 @@ SchoolProgramDetailWrapper = connect(
     },
     action: state.dialogReducer.action,
     numCu: selector(state, 'numCu'),
-    grantCertificateSelected: selector(state, 'grantCertificate'),
+    conduciveToDegreeSelected: selector(state, 'conduciveToDegree'),
   }),
   { showDispatch: show, submitDispatch: submit }
 )(SchoolProgramDetailWrapper);

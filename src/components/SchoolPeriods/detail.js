@@ -142,79 +142,105 @@ class SchoolPeriodDetail extends Component {
     const { teachers, classes, subjects, subjectsSelected } = this.props;
     return (
       <>
-        {fields.map((subject, index) => (
-          // eslint-disable-next-line
-          <Grid container justify="center" key={index}>
-            <Grid container item xs={10}>
-              <RenderFields lineal={[3, 3, 2, 2, 2]}>
-                {[
-                  {
-                    field: `${subject}.subjectId`,
-                    id: `${subject}.subjectId`,
-                    type: 'select',
-                    label: 'Materia',
-                    options: this.unselectedSubjects(index).map((item) => {
-                      return {
-                        key: item.name,
-                        value: item.id,
-                      };
-                    }),
-                  },
-                  {
-                    field: `${subject}.teacherId`,
-                    id: `${subject}.teacherId`,
-                    type: 'select',
-                    label: 'Profesor',
-                    options: teachers.map((teacher) => {
-                      return {
-                        key: `${teacher.first_name} ${
-                          teacher.second_name ? teacher.second_name : ''
-                        } ${teacher.first_surname} ${
-                          teacher.second_surname ? teacher.second_surname : ''
-                        }`,
-                        value: teacher.teacher.id,
-                      };
-                    }),
-                  },
-                  {
-                    label: 'Modo',
-                    field: `${subject}.modality`,
-                    id: `${subject}.modality`,
-                    type: 'select',
-                    options: jsonToOptions(SUBJECT_PERIOD_MODALITY),
-                  },
+        {fields.map((subject, index) => {
+          let distributionItems = [2, 2, 2, 1, 1, 2, 2];
 
-                  {
-                    label: 'Alumnos',
-                    field: `${subject}.limit`,
-                    id: `${subject}.limit`,
-                    type: 'number',
-                    min: 0,
-                  },
-                  {
-                    label: 'Arancel (Bs)',
-                    field: `${subject}.duty`,
-                    id: `${subject}.duty`,
-                    type: 'number',
-                    min: 0,
-                  },
-                ]}
-              </RenderFields>
+          if (subjectsSelected[index].modality === SUBJECT_PERIOD_MODALITY.REGULAR) {
+            distributionItems = [3, 3, 2, 2, 2];
+          }
+          return (
+            // eslint-disable-next-line
+            <Grid container justify="center" key={index}>
+              <Grid container item xs={10}>
+                <RenderFields lineal={distributionItems}>
+                  {[
+                    {
+                      field: `${subject}.subjectId`,
+                      id: `${subject}.subjectId`,
+                      type: 'select',
+                      label: 'Materia',
+                      options: this.unselectedSubjects(index).map((item) => {
+                        return {
+                          key: item.name,
+                          value: item.id,
+                        };
+                      }),
+                    },
+                    {
+                      field: `${subject}.teacherId`,
+                      id: `${subject}.teacherId`,
+                      type: 'select',
+                      label: 'Profesor',
+                      options: teachers.map((teacher) => {
+                        return {
+                          key: `${teacher.first_name} ${
+                            teacher.second_name ? teacher.second_name : ''
+                          } ${teacher.first_surname} ${
+                            teacher.second_surname ? teacher.second_surname : ''
+                          }`,
+                          value: teacher.teacher.id,
+                        };
+                      }),
+                    },
+                    {
+                      label: 'Modo',
+                      field: `${subject}.modality`,
+                      id: `${subject}.modality`,
+                      type: 'select',
+                      options: jsonToOptions(SUBJECT_PERIOD_MODALITY),
+                    },
+
+                    {
+                      label: 'Alumnos',
+                      field: `${subject}.limit`,
+                      id: `${subject}.limit`,
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'Arancel (Bs)',
+                      field: `${subject}.duty`,
+                      id: `${subject}.duty`,
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'Fecha inicio',
+                      field: `${subject}.startDate`,
+                      id: `${subject}.startDate`,
+                      type:
+                        subjectsSelected[index].modality === SUBJECT_PERIOD_MODALITY.REGULAR
+                          ? 'hidden'
+                          : 'date',
+                    },
+                    {
+                      label: 'Fecha fin',
+                      field: `${subject}.endDate`,
+                      id: `${subject}.endDate`,
+                      type:
+                        subjectsSelected[index].modality === SUBJECT_PERIOD_MODALITY.REGULAR
+                          ? 'hidden'
+                          : 'date',
+                      minDate: moment(subjectsSelected[index].startDate).add(1, 'days'),
+                    },
+                  ]}
+                </RenderFields>
+              </Grid>
+              <Grid item xs={1} className={classes.buttonDelete}>
+                <IconButton
+                  aria-label="remover"
+                  color="secondary"
+                  onClick={() => fields.remove(index)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Grid>
+              <Grid item xs={10}>
+                <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
+              </Grid>
             </Grid>
-            <Grid item xs={1} className={classes.buttonDelete}>
-              <IconButton
-                aria-label="remover"
-                color="secondary"
-                onClick={() => fields.remove(index)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={10}>
-              <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
-            </Grid>
-          </Grid>
-        ))}
+          );
+        })}
         <Grid container item xs={12} justify="center">
           <Grid item xs={1} style={{ maxWidth: 'none' }} container justify="center">
             <Fab
@@ -487,6 +513,16 @@ const schoolPeriodValidation = (values) => {
       if (!subj || !subj.modality) {
         subjErrors.modality = '*Modalidad es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
+      } else if (subj.modality !== SUBJECT_PERIOD_MODALITY.REGULAR) {
+        if (!values.startDate) {
+          subjErrors.startDate = '*Fecha inicial es requerida';
+          subjectArrayErrors[subjIndex] = subjErrors;
+        }
+
+        if (!values.endDate) {
+          subjErrors.endDate = '*Fecha fin es requerida';
+          subjectArrayErrors[subjIndex] = subjErrors;
+        }
       }
       if (!subj || !subj.limit) {
         subjErrors.limit = '*Maximo de alumnos es requerido';
@@ -570,6 +606,8 @@ SchoolPeriodDetailWrapper = connect(
             subjectId: subj.subject_id,
             teacherId: subj.teacher_id,
             modality: subj.modality,
+            startDate: subj.start_date,
+            endDate: subj.end_date,
             limit: subj.limit,
             duty: subj.duty,
             schedules: subj.schedules
