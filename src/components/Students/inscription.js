@@ -198,7 +198,7 @@ class StudentInscription extends Component {
       <>
         {fields.map((finalWork, index) => {
           let oneMore = null;
-          if (finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS['APROBADO']) {
+          if (finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS.APROBADO) {
             if (distributionItems.length === 7) {
               oneMore = [2, 1, 2, 2, 2, 1, 2];
             } else if (distributionItems.length === 4) {
@@ -244,7 +244,7 @@ class StudentInscription extends Component {
                       field: `${finalWork}.approvalDate`,
                       id: `${finalWork}.approvalDate`,
                       type:
-                        finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS['APROBADO']
+                        finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS.APROBADO
                           ? 'date'
                           : 'hidden',
                       label: 'Fecha de aprobacion',
@@ -331,6 +331,7 @@ class StudentInscription extends Component {
       finalWorkSubjectsSelected,
     } = this.props;
     let rolledSubjects = [];
+    console.log(subjectsSelected);
     if (availableSubjects.length && subjectsSelected) {
       rolledSubjects = availableSubjects.filter((item) =>
         subjectsSelected.some((subject) => subject.subjectId === item.id)
@@ -591,6 +592,9 @@ const studentInscriptionValidation = (values) => {
 
       if (!finalWork || !finalWork.status) {
         finalWorkErrors.status = '*Estado es requerido';
+        finalWorkArrayErrors[finalWorkIndex] = finalWorkErrors;
+      } else if (finalWork.status === FINAL_WORK_STATUS.APROBADO && !finalWork.approvalDate) {
+        finalWorkErrors.approvalDate = '*Fecha es requerido';
         finalWorkArrayErrors[finalWorkIndex] = finalWorkErrors;
       }
 

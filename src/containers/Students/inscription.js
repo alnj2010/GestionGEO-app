@@ -35,11 +35,14 @@ class StudentInscriptionContainer extends Component {
       getSubjectsListDispatch,
       getAvailableSubjectsDispatch,
     } = this.props;
+    if (idSchoolPeriod) {
+      getAvailableSubjectsDispatch(studentId, idSchoolPeriod);
+    }
+    getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
     findStudentByIdDispatch(userId);
-    getAvailableSubjectsDispatch(studentId, idSchoolPeriod);
+
     getSchoolPeriodsListDispatch();
     getTeachersListDispatch();
-    getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
     getSubjectsListDispatch();
     defineDispatch('inscripcion');
   };

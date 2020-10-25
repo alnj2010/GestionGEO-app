@@ -46,7 +46,10 @@ class StudentSchoolProgram extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { schoolProgramSelected, getSubjectBySchoolProgram } = this.props;
-    if (nextProps.schoolProgramSelected !== schoolProgramSelected) {
+    if (
+      nextProps.schoolProgramSelected !== schoolProgramSelected &&
+      nextProps.schoolProgramSelected !== ''
+    ) {
       getSubjectBySchoolProgram(nextProps.schoolProgramSelected);
     }
   }

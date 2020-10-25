@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import Add from '@material-ui/icons/Add';
-import { Fab, Grid } from '@material-ui/core';
+import { Fab, Grid, Button } from '@material-ui/core';
 import handleExportCsv from '../../utils/handleExportCsv';
 
 class StudentInscriptions extends Component {
@@ -19,11 +19,16 @@ class StudentInscriptions extends Component {
     return [];
   };
 
+  goBack = () => {
+    const { history, userId } = this.props;
+    history.push(`/estudiantes/modificar/${userId}`);
+  };
+
   render = () => {
     const { inscribedSchoolPeriods, isLoading, history, studentId, userId, fullname } = this.props;
     return (
       <Grid container spacing={8}>
-        <Grid item xs={12}>
+        <Grid item container justify="space-between" xs={12}>
           <Fab
             variant="extended"
             size="medium"
@@ -34,6 +39,9 @@ class StudentInscriptions extends Component {
             <Add />
             Inscribir estudiante
           </Fab>
+          <Button variant="contained" onClick={this.goBack}>
+            Ir al detalle de {fullname.toUpperCase()}
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <MaterialTable
@@ -66,6 +74,9 @@ class StudentInscriptions extends Component {
             localization={{
               header: {
                 actions: 'Acciones',
+              },
+              body: {
+                emptyDataSourceMessage: 'Aun no tiene historial',
               },
             }}
             isLoading={isLoading}
