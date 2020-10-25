@@ -166,7 +166,7 @@ class StudentSchoolProgram extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Programa academico al que pertenece',
+                    label: 'Programa academico',
                     field: `schoolProgramId`,
                     id: `schoolProgramId`,
                     type: schoolProgram ? 'hidden' : 'select',
