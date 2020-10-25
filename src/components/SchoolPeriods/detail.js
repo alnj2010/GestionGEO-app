@@ -164,7 +164,7 @@ class SchoolPeriodDetail extends Component {
                     field: `${subject}.teacherId`,
                     id: `${subject}.teacherId`,
                     type: 'select',
-                    label: 'Profesor impartidor',
+                    label: 'Profesor',
                     options: teachers.map((teacher) => {
                       return {
                         key: `${teacher.first_name} ${
@@ -177,7 +177,7 @@ class SchoolPeriodDetail extends Component {
                     }),
                   },
                   {
-                    label: 'Modalidad',
+                    label: 'Modo',
                     field: `${subject}.modality`,
                     id: `${subject}.modality`,
                     type: 'select',
@@ -185,14 +185,14 @@ class SchoolPeriodDetail extends Component {
                   },
 
                   {
-                    label: 'Maximo de alumnos',
+                    label: 'Alumnos',
                     field: `${subject}.limit`,
                     id: `${subject}.limit`,
                     type: 'number',
                     min: 0,
                   },
                   {
-                    label: 'Aranceles (Bs)',
+                    label: 'Arancel (Bs)',
                     field: `${subject}.duty`,
                     id: `${subject}.duty`,
                     type: 'number',
@@ -216,7 +216,7 @@ class SchoolPeriodDetail extends Component {
           </Grid>
         ))}
         <Grid container item xs={12} justify="center">
-          <Grid item xs={1} container justify="center">
+          <Grid item xs={1} style={{ maxWidth: 'none' }} container justify="center">
             <Fab
               color="primary"
               aria-label="Add"
