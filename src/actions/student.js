@@ -385,7 +385,17 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
       throw error;
     });
 };
-
+export const deleteInscription = (id) => async (dispatch) => {
+  return Student.deleteInscription(id)
+    .then(() => {
+      show('Inscripcion, eliminada!', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
+    });
+};
 export const editStudentPeriodSchool = (value) => async (dispatch) => {
   const payload = {
     id: value.id,
@@ -461,6 +471,12 @@ export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => a
       }
     })
     .catch((error) => {
+      dispatch({
+        type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
+        payload: {
+          inscribedSchoolPeriods: [],
+        },
+      });
       show(error.message, 'error')(dispatch);
       return error;
     });

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { define, cleanDialog, show } from '../../actions/dialog';
 import {
   getInscribedSchoolPeriods,
   cleanSelectedInscriptionSchoolPeriods,
   findStudentById,
   cleanSelectedStudent,
+  deleteInscription,
 } from '../../actions/student';
 import StudentInscriptions from '../../components/Students/inscriptions';
 
@@ -24,24 +26,40 @@ class StudentInscriptionsContainer extends Component {
       match: {
         params: { studentId, userId },
       },
+      defineDispatch,
     } = this.props;
     getInscribedSchoolPeriodsDispatch(studentId).then(() => this.setState({ isLoading: false }));
     findStudentByIdDispatch(userId);
+    defineDispatch('inscripcion');
   };
 
   componentWillUnmount = () => {
     const {
       cleanSelectedInscriptionSchoolPeriodsDispatch,
       cleanSelectedStudentDispatch,
+      cleanDialogDispatch,
     } = this.props;
+    cleanDialogDispatch();
     cleanSelectedInscriptionSchoolPeriodsDispatch();
     cleanSelectedStudentDispatch();
+  };
+
+  handleDeleteInscription = (id) => {
+    const {
+      getInscribedSchoolPeriodsDispatch,
+      deleteInscriptionDispatch,
+      match: {
+        params: { studentId },
+      },
+    } = this.props;
+    deleteInscriptionDispatch(id).then(() => getInscribedSchoolPeriodsDispatch(studentId));
   };
 
   render() {
     const {
       inscribedSchoolPeriods,
       history,
+      showDispatch,
       match: {
         params: { studentId, userId },
       },
@@ -55,6 +73,7 @@ class StudentInscriptionsContainer extends Component {
     const { isLoading } = this.state;
     return (
       <StudentInscriptions
+        handleDeleteInscription={this.handleDeleteInscription}
         inscribedSchoolPeriods={inscribedSchoolPeriods}
         studentId={studentId}
         userId={userId}
@@ -66,6 +85,7 @@ class StudentInscriptionsContainer extends Component {
         isLoading={isLoading}
         history={history}
         fullname={fullname}
+        show={showDispatch}
       />
     );
   }
@@ -87,6 +107,7 @@ StudentInscriptionsContainer.propTypes = {
     second_surname: PropTypes.string,
   }).isRequired,
   cleanSelectedInscriptionSchoolPeriodsDispatch: PropTypes.func.isRequired,
+  deleteInscriptionDispatch: PropTypes.func.isRequired,
   getInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
   findStudentByIdDispatch: PropTypes.func.isRequired,
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
@@ -101,6 +122,10 @@ const mD = {
   cleanSelectedInscriptionSchoolPeriodsDispatch: cleanSelectedInscriptionSchoolPeriods,
   findStudentByIdDispatch: findStudentById,
   cleanSelectedStudentDispatch: cleanSelectedStudent,
+  deleteInscriptionDispatch: deleteInscription,
+  showDispatch: show,
+  defineDispatch: define,
+  cleanDialogDispatch: cleanDialog,
 };
 
 export default connect(mS, mD)(StudentInscriptionsContainer);
