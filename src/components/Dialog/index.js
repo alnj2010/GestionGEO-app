@@ -44,7 +44,7 @@ class AlertDialogSlide extends React.Component {
         <DialogTitle id="alert-dialog-slide-title">{`${capitalize(action)} ${entity}`}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Estas seguro que quieres {action} el {entity}?
+            ¿Estas seguro que quieres {action} {entity}?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

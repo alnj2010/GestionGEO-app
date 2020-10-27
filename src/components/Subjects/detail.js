@@ -26,11 +26,11 @@ const styles = (theme) => ({
   },
   buttonDelete: {
     marginTop: 0,
-    padding: 10,
+    padding: '0 0 0 10px',
   },
   buttonDeleteContainer: {
     display: 'flex',
-    alignItems: 'end',
+    alignItems: 'flex-end',
   },
   form: {
     paddingLeft: '5%',
@@ -72,7 +72,7 @@ class SubjectDetail extends Component {
   renderSchoolPrograms = ({ fields }) => {
     const { classes, schoolPrograms, schoolProgramsSelected } = this.props;
     return (
-      <Grid container item>
+      <Grid container item justify="center">
         {fields.map((schoolProgram, index) => (
           // eslint-disable-next-line react/no-array-index-key
           <Fragment key={index}>

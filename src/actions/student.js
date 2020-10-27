@@ -13,6 +13,7 @@ export const ACTIONS = {
   CLEAN_SELECTED_STUDENT: `student/clean-selected`,
   SELECTED_STUDENT_SCHOOL_PERIOD: `student/selected_student_school_period`,
   SELECTED_SCHOOL_PROGRAM: `student/selected_school_program`,
+  CLEAN_STUDENT_REDUCER: `student/clean_student_reducer`,
 };
 
 export const getList = () => async (dispatch) => {
@@ -349,7 +350,8 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
     final_works:
       value.finalWorks && value.finalWorks.length
         ? value.finalWorks.map((finalWork) => ({
-            ...finalWork,
+            title: finalWork.title,
+            status: finalWork.status,
             project_id: finalWork.projectId || undefined,
             subject_id: finalWork.subjectId,
             description_status: finalWork.descriptionStatus || undefined,
@@ -383,7 +385,17 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
       throw error;
     });
 };
-
+export const deleteInscription = (id) => async (dispatch) => {
+  return Student.deleteInscription(id)
+    .then(() => {
+      show('Inscripcion, eliminada!', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
+    });
+};
 export const editStudentPeriodSchool = (value) => async (dispatch) => {
   const payload = {
     id: value.id,
@@ -401,7 +413,8 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
     final_works:
       value.finalWorks && value.finalWorks.length
         ? value.finalWorks.map((finalWork) => ({
-            ...finalWork,
+            title: finalWork.title,
+            status: finalWork.status,
             description_status: finalWork.descriptionStatus || undefined,
             approval_date: finalWork.approvalDate || undefined,
             project_id: finalWork.projectId || undefined,
@@ -458,6 +471,12 @@ export const getInscribedSchoolPeriods = (studentId, idSchoolPeriod = null) => a
       }
     })
     .catch((error) => {
+      dispatch({
+        type: ACTIONS.INSCRIBED_SCHOOL_PERIODS,
+        payload: {
+          inscribedSchoolPeriods: [],
+        },
+      });
       show(error.message, 'error')(dispatch);
       return error;
     });
@@ -467,6 +486,13 @@ export const cleanSelectedInscribedSchoolPeriods = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.SELECTED_STUDENT_SCHOOL_PERIOD,
     payload: { selectedStudentSchoolPeriod: {} },
+  });
+};
+
+export const cleanStudentReducer = () => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.CLEAN_STUDENT_REDUCER,
+    payload: {},
   });
 };
 

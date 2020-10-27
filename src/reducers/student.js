@@ -67,6 +67,10 @@ const studentReducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
+    case ACTIONS.CLEAN_STUDENT_REDUCER:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

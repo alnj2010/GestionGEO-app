@@ -266,7 +266,7 @@ class StudentDetail extends Component {
                     options: jsonToOptions(LEVEL_INSTRUCTION),
                   },
                   {
-                    label: 'Programa academico al que pertenece',
+                    label: 'Programa academico',
                     field: `schoolProgram`,
                     id: `schoolProgram`,
                     type: userId ? 'hidden' : 'select',

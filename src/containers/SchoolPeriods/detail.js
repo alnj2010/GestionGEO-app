@@ -25,7 +25,7 @@ class SchoolPeriodDetailContainer extends Component {
     if (match.params.id) findSchoolPeriodByIdDispatch(match.params.id);
     getSubjectListDispatch();
     getTeacherListDispatch();
-    defineDispatch('periodo semestral');
+    defineDispatch('Periodo semestral');
   };
 
   componentWillUnmount = () => {

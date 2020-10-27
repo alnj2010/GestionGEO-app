@@ -2,15 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import Add from '@material-ui/icons/Add';
-import { Fab, Grid } from '@material-ui/core';
+import { Fab, Grid, Button } from '@material-ui/core';
 import handleExportCsv from '../../utils/handleExportCsv';
+import Dialog from '../Dialog';
 
 class StudentInscriptions extends Component {
+  constructor() {
+    super();
+    this.state = {
+      func: null,
+    };
+  }
+
   transformData = (schoolPeriods) => {
     if (schoolPeriods)
       return schoolPeriods.map((schoolPeriod) => {
         return {
           id: schoolPeriod.school_period_id,
+          inscriptionId: schoolPeriod.id,
           code: schoolPeriod.school_period.cod_school_period,
           startDate: schoolPeriod.school_period.end_date,
           endDate: schoolPeriod.school_period.start_date,
@@ -19,11 +28,32 @@ class StudentInscriptions extends Component {
     return [];
   };
 
+  goBack = () => {
+    const { history, userId } = this.props;
+    history.push(`/estudiantes/modificar/${userId}`);
+  };
+
+  handleDialogShow = (action, func) => {
+    const { show } = this.props;
+    this.setState({ func }, () => {
+      show(action);
+    });
+  };
+
   render = () => {
-    const { inscribedSchoolPeriods, isLoading, history, studentId, userId, fullname } = this.props;
+    const {
+      inscribedSchoolPeriods,
+      isLoading,
+      history,
+      studentId,
+      userId,
+      fullname,
+      handleDeleteInscription,
+    } = this.props;
+    const { func } = this.state;
     return (
       <Grid container spacing={8}>
-        <Grid item xs={12}>
+        <Grid item container justify="space-between" xs={12}>
           <Fab
             variant="extended"
             size="medium"
@@ -34,11 +64,15 @@ class StudentInscriptions extends Component {
             <Add />
             Inscribir estudiante
           </Fab>
+          <Button variant="contained" onClick={this.goBack}>
+            Ir al detalle de {fullname.toUpperCase()}
+          </Button>
         </Grid>
         <Grid item xs={12}>
           <MaterialTable
             columns={[
               { title: 'id', field: 'id', hidden: true },
+              { title: 'inscriptionId', field: 'inscriptionId', hidden: true },
               { title: 'Codigo', field: 'code' },
               { title: 'Fecha Inicio', field: 'startDate' },
               { title: 'Fecha fin', field: 'endDate' },
@@ -51,6 +85,16 @@ class StudentInscriptions extends Component {
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
                   history.push(`/estudiantes/inscripciones/${userId}/${studentId}/${rowData.id}`);
+                },
+              },
+              {
+                icon: 'delete',
+                id: 'delete',
+                tooltip: 'Borrar Inscripcion',
+                onClick: (event, rowData) => {
+                  this.handleDialogShow('eliminar', () =>
+                    handleDeleteInscription(rowData.inscriptionId)
+                  );
                 },
               },
             ]}
@@ -67,10 +111,14 @@ class StudentInscriptions extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: 'Aun no tiene historial',
+              },
             }}
             isLoading={isLoading}
           />
         </Grid>
+        <Dialog handleAgree={func} />
       </Grid>
     );
   };

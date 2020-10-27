@@ -54,7 +54,6 @@ class SchoolProgramDetail extends Component {
       submitDispatch,
       schoolProgram,
       numCu,
-      grantCertificateSelected,
       conduciveToDegreeSelected,
     } = this.props;
     const { func } = this.state;
@@ -201,7 +200,7 @@ SchoolProgramDetail.propTypes = {
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
-
+  conduciveToDegreeSelected: PropTypes.bool,
   showDispatch: PropTypes.func.isRequired,
   submitDispatch: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
@@ -213,6 +212,7 @@ SchoolProgramDetail.defaultProps = {
   schoolProgram: null,
   numCu: null,
   schoolProgramId: null,
+  conduciveToDegreeSelected: false,
 };
 
 const schoolProgramValidation = (values) => {
@@ -233,22 +233,6 @@ const schoolProgramValidation = (values) => {
     errors.grantCertificate =
       'Debe existir al menos un certigicado o grado para el periodo escolar';
   }
-
-  /* if (!values.duration && values.conduciveToDegree) {
-    errors.duration = 'Duracion es requerido';
-  }
-
-  if (!values.minNumCuFinalWork && values.conduciveToDegree) {
-    errors.minNumCuFinalWork = 'Minimo de UC para TEG es requerido';
-  }
-
-  if (!values.minDuration && values.conduciveToDegree) {
-    errors.minDuration = 'Minimo de semestres es requerido';
-  }
-
-  if (!values.grantCertificate && !values.conduciveToDegree) {
-    errors.grantCertificate = 'Debe establecer al menos un reconocimiento';
-  } */
 
   return errors;
 };
@@ -289,7 +273,6 @@ SchoolProgramDetailWrapper = connect(
     },
     action: state.dialogReducer.action,
     numCu: selector(state, 'numCu'),
-    grantCertificateSelected: selector(state, 'grantCertificate'),
     conduciveToDegreeSelected: selector(state, 'conduciveToDegree'),
   }),
   { showDispatch: show, submitDispatch: submit }

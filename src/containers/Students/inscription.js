@@ -10,10 +10,10 @@ import {
   findStudentById,
   cleanSelectedStudent,
   cleanAvailableSubjects,
+  cleanStudentReducer,
 } from '../../actions/student';
 
 import { getList as getTeachersList } from '../../actions/teacher';
-import { getList as getSubjectsList } from '../../actions/subject';
 
 import { getList as getSchoolPeriodsList } from '../../actions/schoolPeriod';
 
@@ -31,13 +31,16 @@ class StudentInscriptionContainer extends Component {
       getInscribedSchoolPeriodsDispatch,
       findStudentByIdDispatch,
       getTeachersListDispatch,
-      getSubjectsListDispatch,
+      getAvailableSubjectsDispatch,
     } = this.props;
+    if (idSchoolPeriod) {
+      getAvailableSubjectsDispatch(studentId, idSchoolPeriod);
+    }
+    getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
     findStudentByIdDispatch(userId);
+
     getSchoolPeriodsListDispatch();
     getTeachersListDispatch();
-    getInscribedSchoolPeriodsDispatch(studentId, idSchoolPeriod);
-    getSubjectsListDispatch();
     defineDispatch('inscripcion');
   };
 
@@ -47,11 +50,13 @@ class StudentInscriptionContainer extends Component {
       cleanDialogDispatch,
       cleanSelectedStudentDispatch,
       cleanAvailableSubjectsDispatch,
+      cleanStudentReducerDispatch,
     } = this.props;
     cleanSelectedInscribedSchoolPeriodsDispatch();
     cleanDialogDispatch();
     cleanSelectedStudentDispatch();
     cleanAvailableSubjectsDispatch();
+    cleanStudentReducerDispatch();
   };
 
   saveInscription = (values) => {
@@ -61,6 +66,7 @@ class StudentInscriptionContainer extends Component {
       idInscription,
       finalWorkSubjects,
       finalWorkData,
+      getAvailableSubjectsDispatch,
       match: {
         params: { studentId, idSchoolPeriod },
       },
@@ -84,7 +90,7 @@ class StudentInscriptionContainer extends Component {
         ...payload,
         studentId,
         id: idInscription,
-      });
+      }).then(() => getAvailableSubjectsDispatch(studentId, idSchoolPeriod));
   };
 
   goBack = () => {
@@ -101,7 +107,6 @@ class StudentInscriptionContainer extends Component {
     const {
       schoolPeriods,
       subjects,
-      allSubjects,
       match: {
         params: { studentId, idSchoolPeriod },
       },
@@ -136,7 +141,6 @@ class StudentInscriptionContainer extends Component {
         finalWorkSubjects={finalWorkSubjects}
         approvedProjects={approvedProjects}
         availableDoctoralExam={availableDoctoralExam}
-        allSubjects={allSubjects}
         subjects={
           subjects
             ? subjects.map((item) => ({
@@ -182,6 +186,11 @@ StudentInscriptionContainer.propTypes = {
       }),
     })
   ),
+  finalWorkData: PropTypes.arrayOf(
+    PropTypes.shape({
+      is_project_subject: PropTypes.bool,
+    })
+  ).isRequired,
   student: PropTypes.shape({
     first_name: PropTypes.string,
     second_name: PropTypes.string,
@@ -204,6 +213,7 @@ StudentInscriptionContainer.propTypes = {
   findStudentByIdDispatch: PropTypes.func.isRequired,
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
   cleanAvailableSubjectsDispatch: PropTypes.func.isRequired,
+  cleanStudentReducerDispatch: PropTypes.func.isRequired,
   getTeachersListDispatch: PropTypes.func.isRequired,
 };
 
@@ -216,7 +226,6 @@ StudentInscriptionContainer.defaultProps = {
 };
 
 const mS = (state) => ({
-  allSubjects: state.subjectReducer.list,
   subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
   finalWorkData: state.studentReducer.selectedStudentSchoolPeriod.final_work_data,
   idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
@@ -243,7 +252,7 @@ const mD = {
   getTeachersListDispatch: getTeachersList,
   cleanSelectedStudentDispatch: cleanSelectedStudent,
   cleanAvailableSubjectsDispatch: cleanAvailableSubjects,
-  getSubjectsListDispatch: getSubjectsList,
+  cleanStudentReducerDispatch: cleanStudentReducer,
 };
 
 export default connect(mS, mD)(StudentInscriptionContainer);

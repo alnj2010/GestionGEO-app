@@ -46,7 +46,10 @@ class StudentSchoolProgram extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { schoolProgramSelected, getSubjectBySchoolProgram } = this.props;
-    if (nextProps.schoolProgramSelected !== schoolProgramSelected) {
+    if (
+      nextProps.schoolProgramSelected !== schoolProgramSelected &&
+      nextProps.schoolProgramSelected !== ''
+    ) {
       getSubjectBySchoolProgram(nextProps.schoolProgramSelected);
     }
   }
@@ -163,7 +166,7 @@ class StudentSchoolProgram extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Programa academico al que pertenece',
+                    label: 'Programa academico',
                     field: `schoolProgramId`,
                     id: `schoolProgramId`,
                     type: schoolProgram ? 'hidden' : 'select',

@@ -11,6 +11,14 @@ export const Student = {
       .catch(handleErrorMsg);
   },
 
+  deleteInscription(id) {
+    return AXIOS.delete(`${URL.INSCRIPTION}/${id}`, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+
   getWarningStudentsList() {
     return AXIOS.get(`${URL.WARNING_STUDENTS}`, {
       headers: headers(),
