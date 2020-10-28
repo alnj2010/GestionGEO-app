@@ -203,7 +203,9 @@ class StudentInscription extends Component {
     }
     const totalSubjects = posiblesFinalSubjects(fields.length).length;
     const distributionItems =
-      fws[0].is_final_subject || !fws[0].isProject ? [2, 2, 2, 2, 2, 2, 2] : [3, 3, 3, 3];
+      fws[0].is_final_subject || (fws[0].isProject !== undefined && !fws[0].isProject)
+        ? [2, 2, 2, 2, 2, 2, 2]
+        : [3, 3, 3, 3];
     return (
       <>
         {fields.map((finalWork, index) => {
@@ -262,7 +264,11 @@ class StudentInscription extends Component {
                     {
                       field: `${finalWork}.projectId`,
                       id: `${finalWork}.projectId`,
-                      type: fws[0].is_final_subject || !fws[0].isProject ? 'select' : 'hidden',
+                      type:
+                        fws[0].is_final_subject ||
+                        (fws[0].isProject !== undefined && !fws[0].isProject)
+                          ? 'select'
+                          : 'hidden',
                       label: 'Proyecto',
                       options: approvedProjects.map((item) => ({
                         key: item.title,
@@ -272,7 +278,11 @@ class StudentInscription extends Component {
                     {
                       field: `${finalWork}.advisors`,
                       id: `${finalWork}.advisors`,
-                      type: fws[0].is_final_subject || !fws[0].isProject ? 'select' : 'hidden',
+                      type:
+                        fws[0].is_final_subject ||
+                        (fws[0].isProject !== undefined && !fws[0].isProject)
+                          ? 'select'
+                          : 'hidden',
                       multiple: true,
                       label: 'Tutor',
                       options: teachers.map((item) => ({
@@ -357,6 +367,7 @@ class StudentInscription extends Component {
     } else if (finalWorkSubjectsSelected.length) {
       fws = finalWorkSubjectsSelected;
     }
+    console.log(fws);
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
@@ -434,7 +445,8 @@ class StudentInscription extends Component {
               {finalWorkSubjectsSelected.length || finalWorkSubjects.length ? (
                 <Grid container item xs={12} className={classes.listSubjects}>
                   <Typography variant="h6" gutterBottom>
-                    {fws[0].is_final_subject || !fws[0].isProject
+                    {fws[0].is_final_subject ||
+                    (fws[0].isProject !== undefined && !fws[0].isProject)
                       ? 'Trabajo final'
                       : 'Proyecto y seminario'}
                   </Typography>

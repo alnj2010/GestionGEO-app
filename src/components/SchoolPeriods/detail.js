@@ -98,6 +98,7 @@ class SchoolPeriodDetail extends Component {
                     field: `${schedule}.endHour`,
                     id: `${schedule}.endHour`,
                     type: 'time',
+                    minTime: moment('13:00:00', 'hh:mm:ss'),
                   },
                   {
                     label: 'Aula',

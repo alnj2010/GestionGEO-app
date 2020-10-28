@@ -469,6 +469,9 @@ class StudentDetail extends Component {
                           </div>
                         );
                       case 'delete':
+                        if (student.student.length === 1) {
+                          return '';
+                        }
                         return (
                           <DeleteIcon
                             style={{ cursor: 'pointer' }}
