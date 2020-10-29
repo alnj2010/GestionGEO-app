@@ -39,7 +39,7 @@ export default function Date({ field, label, id, minDate, disabled }) {
       // custom props
       label={label}
       id={id}
-      minDate={minDate}
+      minDate={minDate || undefined}
       disabled={disabled}
     />
   );

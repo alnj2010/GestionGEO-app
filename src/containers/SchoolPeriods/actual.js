@@ -48,6 +48,8 @@ class SchoolPeriodActualContainer extends Component {
         teacherId: subject.teacher_id,
         duty: subject.duty,
         limit: subject.limit,
+        modality: subject.modality,
+
         schedules: subject.schedules.map((schedule) => ({
           schoolPeriodSubjectTeacherId: schedule.school_period_subject_teacher_id,
           day: schedule.day,
@@ -62,10 +64,19 @@ class SchoolPeriodActualContainer extends Component {
 
   render() {
     const {
-      schoolPeriodActual: { start_date: startDate, end_date: endDate, subjects, message },
+      schoolPeriodActual,
+      schoolPeriodActual: {
+        start_date: startDate,
+        end_date: endDate,
+        subjects,
+        message,
+        cod_school_period,
+      },
     } = this.props;
+    console.log(schoolPeriodActual);
     return !message ? (
       <SchoolPeriodActual
+        codSchoolPeriod={cod_school_period}
         startDate={startDate}
         endDate={endDate}
         saveSchoolPeriod={this.saveSchoolPeriod}
