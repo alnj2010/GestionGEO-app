@@ -73,7 +73,6 @@ class SchoolPeriodActualContainer extends Component {
         cod_school_period,
       },
     } = this.props;
-    console.log(schoolPeriodActual);
     return !message ? (
       <SchoolPeriodActual
         codSchoolPeriod={cod_school_period}
