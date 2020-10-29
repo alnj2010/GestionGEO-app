@@ -31,6 +31,10 @@ const styles = () => ({
   calendar: {
     height: '100vh',
     paddingTop: 50,
+    overflow: 'scroll',
+    '&>div': {
+      minWidth: '448px',
+    },
   },
 });
 
@@ -97,6 +101,7 @@ class SchoolPeriodActual extends Component {
       pristine,
       submitting,
       valid,
+      codSchoolPeriod,
       submitDispatch,
       endDate,
     } = this.props;
@@ -114,7 +119,7 @@ class SchoolPeriodActual extends Component {
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> Periodo semestral actual</h3>
+            <h3> Periodo semestral actual {codSchoolPeriod}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -163,7 +168,7 @@ class SchoolPeriodActual extends Component {
                       onClick={() =>
                         schoolPeriodId
                           ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('schoolPeriod')
+                          : submitDispatch('periodo semestral')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -219,7 +224,7 @@ SchoolPeriodActual.defaultProps = {
 };
 
 let SchoolPeriodActualWrapper = reduxForm({
-  form: 'schoolPeriodActual',
+  form: 'periodo semestral',
   enableReinitialize: true,
 })(SchoolPeriodActual);
 
