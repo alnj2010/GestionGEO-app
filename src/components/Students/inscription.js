@@ -318,7 +318,7 @@ class StudentInscription extends Component {
                 (finalWorkSubjectsSelected[fields.length - 1] &&
                   !finalWorkSubjectsSelected[fields.length - 1].subjectId)
               }
-              onClick={() => fields.push({})}
+              onClick={() => fields.push({ approvalDate: moment().format('YYYY-MM-DD') })}
             >
               <AddIcon />
             </Fab>
