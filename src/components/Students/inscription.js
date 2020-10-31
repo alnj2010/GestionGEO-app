@@ -171,6 +171,7 @@ class StudentInscription extends Component {
       idSchoolPeriod,
       finalWorkSubjects,
       finalWorkSubjectsSelected,
+      finalWorkEnrolled,
       approvedProjects,
       teachers,
     } = this.props;
@@ -181,12 +182,19 @@ class StudentInscription extends Component {
           value: item.id,
           key: item.name,
         }));
-        return subjectsAux.filter(
-          (item) =>
-            !finalWorkSubjectsSelected.some(
-              (selected, index) => selected.subjectId === item.value && pos > index
-            )
-        );
+        return subjectsAux
+          .concat(
+            finalWorkEnrolled.map((item) => ({
+              value: item.id,
+              key: item.name,
+            }))
+          )
+          .filter(
+            (item) =>
+              !finalWorkSubjectsSelected.some(
+                (selected, index) => selected.subjectId === item.value && pos > index
+              )
+          );
       }
       return finalWorkSubjects
         .filter(
@@ -367,7 +375,6 @@ class StudentInscription extends Component {
     } else if (finalWorkSubjectsSelected.length) {
       fws = finalWorkSubjectsSelected;
     }
-    console.log(fws);
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
