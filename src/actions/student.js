@@ -306,7 +306,7 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
       });
     })
     .catch((error) => {
-      show(error.message, 'error')(dispatch);
+      //show(error.message, 'error')(dispatch);
       throw error;
     });
 };

@@ -112,23 +112,33 @@ class StudentInscriptionContainer extends Component {
       },
       getAvailableSubjectsDispatch,
       availableSubjects,
-      inscriptedSP,
+      schoolPeriodsInscripted,
       student,
       finalWorkSubjects,
       approvedProjects,
       availableDoctoralExam,
       teachers,
     } = this.props;
-
     const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
       student.second_surname || ''
     }`;
+    const schoolPeriodInscripted = schoolPeriodsInscripted.find(
+      (sp) => sp.school_period_id === parseInt(idSchoolPeriod, 10)
+    );
+    let finalWorkEnrolled = [];
+
+    if (schoolPeriodInscripted) {
+      finalWorkEnrolled = schoolPeriodInscripted.final_work_data.map(
+        (item) => item.final_work.subject
+      );
+    }
+
     return (
       <StudentInscription
         teachers={teachers}
         schoolPeriods={schoolPeriods.filter(
           (sp) =>
-            !inscriptedSP.some(
+            !schoolPeriodsInscripted.some(
               (isp) =>
                 isp.school_period_id === sp.id &&
                 parseInt(isp.school_period_id, 10) !== parseInt(idSchoolPeriod, 10)
@@ -139,6 +149,7 @@ class StudentInscriptionContainer extends Component {
         studentId={studentId}
         idSchoolPeriod={idSchoolPeriod}
         finalWorkSubjects={finalWorkSubjects}
+        finalWorkEnrolled={finalWorkEnrolled}
         approvedProjects={approvedProjects}
         availableDoctoralExam={availableDoctoralExam}
         subjects={
@@ -199,7 +210,7 @@ StudentInscriptionContainer.propTypes = {
   }).isRequired,
   availableSubjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   teachers: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  inscriptedSP: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  schoolPeriodsInscripted: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   idInscription: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   defineDispatch: PropTypes.func.isRequired,
   history: PropTypes.shape({ goBack: PropTypes.func, push: PropTypes.func }).isRequired,
@@ -234,7 +245,7 @@ const mS = (state) => ({
   finalWorkSubjects: state.studentReducer.finalWorkSubjects,
   approvedProjects: state.studentReducer.approvedProjects,
   availableDoctoralExam: state.studentReducer.availableDoctoralExam,
-  inscriptedSP: state.studentReducer.inscribedSchoolPeriods,
+  schoolPeriodsInscripted: state.studentReducer.inscribedSchoolPeriods,
   teachers: state.teacherReducer.list,
   student: state.studentReducer.selectedStudent,
 });
