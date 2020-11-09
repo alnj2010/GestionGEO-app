@@ -27,7 +27,10 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
     .then((response) => {
       dispatch({
         type: ACTIONS.AVAILABLE_SUBJECTS,
-        payload: { availableSubjects: response },
+        payload: {
+          availableSubjects: response.available_subjects,
+          finalWorkSubjects: response.final_work_subjects || response.project_subjects,
+        },
       });
       return true;
     })

@@ -368,7 +368,6 @@ StudentSchoolProgram.defaultProps = {
 
 const schoolProgramValidation = (values) => {
   const errors = {};
-  if (!values.guideTeacherId) errors.guideTeacherId = 'Profesor guia es requerido';
   if (!values.schoolProgramId) errors.schoolProgramId = 'Programa academico es requerido';
   if (!values.studentType) errors.studentType = 'Tipo de estudiante es requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen es requerido';

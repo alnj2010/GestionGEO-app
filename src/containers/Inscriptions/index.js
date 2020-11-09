@@ -38,9 +38,15 @@ class InscriptionContainer extends Component {
   };
 
   render() {
-    const { subjects } = this.props;
+    const { subjects, finalWorks } = this.props;
 
-    return <Inscription subjects={subjects} saveInscription={this.saveInscription} />;
+    return (
+      <Inscription
+        subjects={subjects}
+        finalWorks={finalWorks}
+        saveInscription={this.saveInscription}
+      />
+    );
   }
 }
 
@@ -59,6 +65,7 @@ InscriptionContainer.propTypes = {
 
 const mS = (state) => ({
   subjects: state.studentInscriptionReducer.availableSubjects,
+  finalWorks: state.studentInscriptionReducer.finalWorkSubjects,
 });
 
 const mD = {

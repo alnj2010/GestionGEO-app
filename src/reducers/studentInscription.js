@@ -3,6 +3,7 @@ import { ACTIONS } from '../actions/studentInscription';
 const initialState = {
   currentEnrolledSubjects: {},
   availableSubjects: [],
+  finalWorkSubjects: [],
 };
 const StudentInscription = (state = initialState, action) => {
   switch (action.type) {
