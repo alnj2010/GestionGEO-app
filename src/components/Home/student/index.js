@@ -5,10 +5,11 @@ import { getSessionUserRol } from '../../../storage/sessionStorage';
 import PresentationHome from '../PresentationHome';
 import CalendarStudent from './CalendarStudent';
 import TableEnrolledSubjects from './TableEnrolledSubjects';
+import TableEnrolledFinalWorks from './TableEnrolledFinalWorks';
 
 const styles = () => ({});
 
-function StudentHome({ miPerfil, currentSubjects, classes }) {
+function StudentHome({ miPerfil, currentSubjects, classes, codSchoolPeriod, finalWorks }) {
   const {
     level_instruction: levelInstruction,
     first_name: firstName,
@@ -30,7 +31,9 @@ function StudentHome({ miPerfil, currentSubjects, classes }) {
         sex={sex}
         userRol={userRol}
       />
-      <TableEnrolledSubjects currentSubjects={currentSubjects} />
+      <TableEnrolledSubjects currentSubjects={currentSubjects} codSchoolPeriod={codSchoolPeriod} />
+      {finalWorks.length ? <TableEnrolledFinalWorks finalWorks={finalWorks} /> : null}
+
       <CalendarStudent currentSubjects={currentSubjects} />
     </>
   );

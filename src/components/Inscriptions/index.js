@@ -27,6 +27,7 @@ function Inscription({
   submitting,
   valid,
   teachers,
+  message,
 }) {
   const [finalWorkSelected, setFinalWorkSelected] = useState([]);
   const [subjectsSelected, setSubjectsSelected] = useState([]);
@@ -53,13 +54,18 @@ function Inscription({
       ...values,
     });
   };
+  console.log(message);
   return (
     <Grid container>
       <Typography variant="h6" gutterBottom>
         Materias disponibles para inscripción
       </Typography>
 
-      <SubjectTable subjects={subjects} setSubjectsSelected={setSubjectsSelected} />
+      <SubjectTable
+        subjects={subjects}
+        setSubjectsSelected={setSubjectsSelected}
+        message={message}
+      />
       {finalWorks && finalWorks.length ? (
         <FinalWorkTable
           finalWorks={finalWorks}

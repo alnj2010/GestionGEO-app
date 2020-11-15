@@ -11,11 +11,11 @@ const styles = () => ({
   },
 });
 
-function TableEnrolledSubjects({ currentSubjects, classes }) {
+function TableEnrolledSubjects({ currentSubjects, classes, codSchoolPeriod }) {
   return (
     <Grid item xs={12} className={classes.tableContainer}>
       <MaterialTable
-        title=""
+        title={codSchoolPeriod}
         columns={[
           { title: 'Codigo', field: 'code' },
           { title: 'Materia', field: 'name' },
