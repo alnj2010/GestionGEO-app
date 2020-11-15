@@ -247,7 +247,7 @@ class MenuApp extends React.Component {
 
   handleOpenDownload = () => {
     this.setState((state) => {
-      return { openDownload: !state.openDownload };
+      return { openDownload: !state.openDownload, open: true };
     });
   };
 

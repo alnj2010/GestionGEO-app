@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import { withStyles } from '@material-ui/core/styles';
@@ -43,7 +43,7 @@ function SubjectTable({ subjects, setSubjectsSelected }) {
         data={transformData()}
         localization={{
           body: {
-            emptyDataSourceMessage: 'No hay materias disponibles',
+            emptyDataSourceMessage: 'No hay materias disponibles para inscribir',
           },
         }}
         options={{

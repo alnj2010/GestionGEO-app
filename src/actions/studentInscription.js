@@ -17,7 +17,6 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error.message, 'error')(dispatch);
       throw error;
     });
 };
@@ -36,7 +35,6 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error.message, 'error')(dispatch);
       throw error;
     });
 };
