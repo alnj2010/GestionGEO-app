@@ -123,12 +123,12 @@ function FinalWorkTable({
       />
       <div className={classes.fieldsRequiredContainer}>
         <div className={classes.fieldRequired}>** Titulo es requerido</div>
-        {isFinalSubject && (
+        {isFinalSubject ? (
           <>
             <div className={classes.fieldRequired}>** Proyecto es requerido</div>
             <div className={classes.fieldRequired}>** Tutor es requerido</div>
           </>
-        )}
+        ) : null}
       </div>
     </Grid>
   );

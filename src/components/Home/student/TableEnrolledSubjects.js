@@ -32,12 +32,17 @@ function TableEnrolledSubjects({ currentSubjects, classes }) {
               }))
             : []
         }
+        localization={{
+          body: {
+            emptyDataSourceMessage: 'No hay materias inscritas',
+          },
+        }}
         options={{
           search: false,
           paging: false,
           showTextRowsSelected: false,
         }}
-      />{' '}
+      />
     </Grid>
   );
 }

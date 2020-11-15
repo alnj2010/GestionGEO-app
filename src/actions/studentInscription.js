@@ -42,19 +42,15 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
 };
 
 export const inscription = (value) => async (dispatch) => {
-  if (value.subjects.length) {
-    return StudentInscription.inscription(value)
-      .then((response) => {
-        show('Inscripcion realizada sastifactoriamente', 'success')(dispatch);
-        return response;
-      })
-      .catch((error) => {
-        show(error.message, 'error')(dispatch);
-        return false;
-      });
-  }
-  show('Ud no inscribio ninguna materia', 'error')(dispatch);
-  return false;
+  return StudentInscription.inscription(value)
+    .then((response) => {
+      show('Inscripcion realizada sastifactoriamente', 'success')(dispatch);
+      return response;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
 };
 
 export const cleanAvailableSubjects = () => async (dispatch) => {
