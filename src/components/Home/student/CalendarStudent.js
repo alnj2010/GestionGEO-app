@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import * as moment from 'moment';
-import { getSessionUserRol } from '../../storage/sessionStorage';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import PresentationHome from './PresentationHome';
 
 const localizer = momentLocalizer(moment);
 
@@ -16,7 +14,7 @@ const styles = () => ({
   },
 });
 
-class StudentHome extends Component {
+class CalendarStudent extends Component {
   transformData = () => {
     const { currentSubjects } = this.props;
     let arr = [];
@@ -43,7 +41,7 @@ class StudentHome extends Component {
 
           return {
             id: parseInt(`${index}${index2}`, 10),
-            title: subject.data_subject.subject.subject_name,
+            title: subject.data_subject.subject.name,
             start: startTime,
             end: endTime,
           };
@@ -56,16 +54,8 @@ class StudentHome extends Component {
   };
 
   render() {
-    const { miPerfil, classes } = this.props;
-    const {
-      level_instruction: levelInstruction,
-      first_name: firstName,
-      second_name: secondName,
-      first_surname: firstSurname,
-      second_surname: secondSurname,
-      sex,
-    } = miPerfil;
-    const userRol = getSessionUserRol();
+    const { classes } = this.props;
+
     const allViews = Object.keys(Views).map((k) => Views[k]);
     const minTime = new Date();
     minTime.setHours(7, 0, 0);
@@ -74,15 +64,6 @@ class StudentHome extends Component {
 
     return (
       <>
-        <PresentationHome
-          levelInstruction={levelInstruction}
-          firstName={firstName}
-          secondName={secondName}
-          firstSurname={firstSurname}
-          secondSurname={secondSurname}
-          sex={sex}
-          userRol={userRol}
-        />
         <Calendar
           className={classes.calendar}
           events={this.transformData()}
@@ -99,22 +80,14 @@ class StudentHome extends Component {
   }
 }
 
-StudentHome.propTypes = {
-  miPerfil: PropTypes.shape({
-    first_name: PropTypes.string,
-    first_surname: PropTypes.string,
-    level_instruction: PropTypes.string,
-    second_name: PropTypes.string,
-    second_surname: PropTypes.string,
-    sex: PropTypes.string,
-  }).isRequired,
+CalendarStudent.propTypes = {
   classes: PropTypes.shape({
     calendar: PropTypes.string,
   }).isRequired,
   currentSubjects: PropTypes.arrayOf(PropTypes.shape({})),
 };
-StudentHome.defaultProps = {
+CalendarStudent.defaultProps = {
   currentSubjects: null,
 };
 
-export default withStyles(styles)(StudentHome);
+export default withStyles(styles)(CalendarStudent);

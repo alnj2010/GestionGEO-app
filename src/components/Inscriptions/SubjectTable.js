@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 const styles = () => ({});
 function SubjectTable({ subjects, setSubjectsSelected }) {
