@@ -1,17 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form, reduxForm } from 'redux-form';
-import MaterialTable from 'material-table';
 import { withStyles } from '@material-ui/core/styles';
 
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { Grid, Fab, Typography } from '@material-ui/core';
+import FinalWorkTable from './FinalWorkTable';
+import SubjectTable from './SubjectTable';
 import RenderFields from '../RenderFields';
 import CustomizedSnackbar from '../Snackbar';
 import { FINANCING_TYPE } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
-import Table from './Table';
-import TableBodyRow from './Row';
 
 const styles = () => ({
   tableContainer: {
@@ -21,52 +19,17 @@ const styles = () => ({
 function Inscription({
   subjects,
   saveInscription,
-  width,
   finalWorks,
+  approvedProjects,
   classes,
   handleSubmit,
   pristine,
   submitting,
   valid,
+  teachers,
 }) {
-  const matches = isWidthUp('sm', width);
-
-  const [finalWorksData, setFinalWorksData] = useState([]);
-  const tableFinalWorkRef = useRef(null);
-  const tableSubjectRef = useRef(null);
-  useEffect(() => {
-    if (finalWorks && finalWorks.length) {
-      setFinalWorksData(
-        finalWorks.map((fw) => {
-          return {
-            id: fw.id,
-            code: fw.code,
-            name: fw.name,
-            laboratoryHours: fw.laboratory_hours,
-            practicalHours: fw.practical_hours,
-            theoreticalHours: fw.theoretical_hours,
-            uc: fw.uc,
-            title: 'Sin titulo',
-          };
-        })
-      );
-    }
-  }, [finalWorks]);
-
-  const transformData = () => {
-    if (subjects)
-      return subjects.map((subject) => {
-        return {
-          school_period_subject_teacher_id: subject.id,
-          subject: subject.subject.name,
-          teacher: `${subject.teacher.user.first_name} ${subject.teacher.user.first_surname}`,
-          duty: subject.duty,
-          uc: subject.subject.uc,
-          enrolled_students: subject.enrolled_students,
-        };
-      });
-    return [];
-  };
+  const [finalWorkSelected, setFinalWorkSelected] = useState([]);
+  const [subjectsSelected, setSubjectsSelected] = useState([]);
 
   let isFinalSubject;
   if (finalWorks && finalWorks.length) {
@@ -74,117 +37,37 @@ function Inscription({
     isFinalSubject = item.is_final_subject;
   }
   const handleInscriptionStudent = (values) => {
-    const enrolledSubjects = tableSubjectRef.current.props.data.filter(
-      (item) => item.tableData.checked
-    );
-    let enrolledProjectOrWorks;
     let enrolledFinalWorks;
     let enrolledProjects;
 
-    if (tableFinalWorkRef) {
-      enrolledProjectOrWorks = tableFinalWorkRef.current.props.data.filter(
-        (item) => item.tableData.checked
-      );
-
-      if (isFinalSubject) {
-        enrolledFinalWorks = enrolledProjectOrWorks;
-      } else {
-        enrolledProjects = enrolledProjectOrWorks;
-      }
+    if (isFinalSubject) {
+      enrolledFinalWorks = finalWorkSelected;
+    } else {
+      enrolledProjects = finalWorkSelected;
     }
-    saveInscription({ enrolledSubjects, enrolledProjects, enrolledFinalWorks, ...values });
+
+    saveInscription({
+      enrolledSubjects: subjectsSelected,
+      enrolledProjects,
+      enrolledFinalWorks,
+      ...values,
+    });
   };
   return (
     <Grid container>
       <Typography variant="h6" gutterBottom>
         Materias disponibles para inscripción
       </Typography>
-      <Grid item xs={12}>
-        <MaterialTable
-          tableRef={tableSubjectRef}
-          title={matches ? 'inscripción' : ''}
-          components={{
-            Toolbar: () => null,
-          }}
-          columns={[
-            {
-              title: 'school_period_subject_teacher_id',
-              field: 'school_period_subject_teacher_id',
-              hidden: true,
-            },
-            { title: 'Materia', field: 'subject' },
-            { title: 'Profesor', field: 'teacher' },
-            { title: 'Aranceles', field: 'duty' },
-            { title: 'Unidades de credito', field: 'uc' },
-            { title: 'Inscritos', field: 'enrolled_students' },
-          ]}
-          data={transformData()}
-          localization={{
-            body: {
-              emptyDataSourceMessage: 'No hay materias disponibles',
-            },
-          }}
-          options={{
-            search: false,
-            selection: true,
-            paging: false,
-            showTextRowsSelected: false,
-          }}
-        />
-      </Grid>
-      {finalWorks && finalWorks.length ? (
-        <Grid item className={classes.tableContainer} xs={12}>
-          <Table
-            tableRef={tableFinalWorkRef}
-            title={matches ? 'inscripción' : ''}
-            options={{
-              selection: true,
-              search: false,
-              paging: false,
-              actionsColumnIndex: -1,
-            }}
-            components={{
-              Row: TableBodyRow,
-              Toolbar: () => null,
-            }}
-            columns={[
-              {
-                title: 'id',
-                field: 'id',
-                hidden: true,
-              },
-              {
-                title: 'Codigo',
-                field: 'code',
-                editable: 'never',
-              },
-              {
-                title: 'Titulo',
-                field: 'title',
-                editable: 'onUpdate',
-              },
-              { title: 'Nombre', field: 'name', editable: 'never' },
-              { title: 'Unidades de Credito', field: 'uc', editable: 'never' },
-            ]}
-            data={finalWorksData}
-            localization={{
-              body: {
-                emptyDataSourceMessage: 'No hay Trabajos finales disponibles',
-              },
-            }}
-            editable={{
-              onRowUpdate: (newData, oldData) =>
-                new Promise((resolve, reject) => {
-                  const data = [...finalWorksData];
-                  const index = data.indexOf(oldData);
-                  data[index] = newData;
-                  setFinalWorksData(data);
 
-                  resolve();
-                }),
-            }}
-          />
-        </Grid>
+      <SubjectTable subjects={subjects} setSubjectsSelected={setSubjectsSelected} />
+      {finalWorks && finalWorks.length ? (
+        <FinalWorkTable
+          finalWorks={finalWorks}
+          teachers={teachers}
+          isFinalSubject={isFinalSubject}
+          setFinalWorkSelected={setFinalWorkSelected}
+          approvedProjects={approvedProjects}
+        />
       ) : null}
       <Grid container className={classes.tableContainer}>
         <Form onSubmit={handleSubmit(handleInscriptionStudent)} style={{ width: '100%' }}>
@@ -207,8 +90,8 @@ function Inscription({
                 {[
                   {
                     label: 'Descripcion financiación',
-                    field: 'financing_description',
-                    id: 'financing_description',
+                    field: 'financingDescription',
+                    id: 'financingDescription',
                     type: 'text',
                   },
                 ]}
@@ -225,8 +108,14 @@ function Inscription({
                   !valid ||
                   pristine ||
                   submitting ||
-                  !tableSubjectRef.current.props.data.filter((item) => item.tableData.checked)
-                    .length
+                  !(finalWorkSelected.length + subjectsSelected.length) ||
+                  (finalWorkSelected.length &&
+                    finalWorkSelected.findIndex(
+                      (fw) =>
+                        fw.title === '' ||
+                        (isFinalSubject && fw.projectId === '') ||
+                        (isFinalSubject && fw.advisors === '')
+                    ) !== -1)
                 }
                 type="submit"
               >
@@ -244,13 +133,12 @@ function Inscription({
 Inscription.propTypes = {
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   saveInscription: PropTypes.func.isRequired,
-  width: PropTypes.string.isRequired,
 };
 
 const inscriptionStudentValidator = (values) => {
   const errors = {};
-  if (!values.financing_description) {
-    errors.financing_description = 'descripcion requerida';
+  if (!values.financingDescription) {
+    errors.financingDescription = 'descripcion requerida';
   }
   if (!values.financing) {
     errors.financing = 'financiacion requerida';
@@ -263,4 +151,4 @@ const InscriptionWrapper = reduxForm({
   validate: inscriptionStudentValidator,
 })(Inscription);
 
-export default withStyles(styles)(withWidth()(InscriptionWrapper));
+export default withStyles(styles)(InscriptionWrapper);

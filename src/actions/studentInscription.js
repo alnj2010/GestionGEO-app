@@ -30,6 +30,7 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
         payload: {
           availableSubjects: response.available_subjects,
           finalWorkSubjects: response.final_work_subjects || response.project_subjects,
+          approvedProjects: response.approved_projects || [],
         },
       });
       return true;

@@ -4,6 +4,7 @@ const initialState = {
   currentEnrolledSubjects: {},
   availableSubjects: [],
   finalWorkSubjects: [],
+  approvedProjects: [],
 };
 const StudentInscription = (state = initialState, action) => {
   switch (action.type) {

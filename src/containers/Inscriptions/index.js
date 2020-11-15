@@ -7,13 +7,15 @@ import {
   inscription,
   cleanAvailableSubjects,
 } from '../../actions/studentInscription';
+import { getList as getTeachersList } from '../../actions/teacher';
 import { getSessionStudentId, getSessionUser } from '../../storage/sessionStorage';
 
 class InscriptionContainer extends Component {
   componentDidMount = () => {
-    const { getAvailableSubjectsDispatch } = this.props;
+    const { getAvailableSubjectsDispatch, getTeachersListDispatch } = this.props;
     const id = getSessionStudentId();
     getAvailableSubjectsDispatch(id);
+    getTeachersListDispatch();
   };
 
   componentWillUnmount = () => {
@@ -26,7 +28,7 @@ class InscriptionContainer extends Component {
     enrolledFinalWorks,
     enrolledProjects,
     financing,
-    financing_description: financingDescription,
+    financingDescription,
   }) => {
     const { inscriptionDispatch, history } = this.props;
     const {
@@ -44,11 +46,9 @@ class InscriptionContainer extends Component {
         enrolledFinalWorks && enrolledFinalWorks.length
           ? enrolledFinalWorks.map((item) => ({
               title: item.title,
-              subject_id: 13,
-              project_id: 4,
-              advisors: item.advisors.map((advisor) => ({
-                teacher_id: advisor.id,
-              })),
+              subject_id: item.id,
+              project_id: item.projectId,
+              advisors: [{ teacher_id: item.advisors }],
             }))
           : undefined,
       projects:
@@ -67,12 +67,14 @@ class InscriptionContainer extends Component {
   };
 
   render() {
-    const { subjects, finalWorks } = this.props;
+    const { subjects, finalWorks, approvedProjects, teachers } = this.props;
 
     return (
       <Inscription
         subjects={subjects}
+        teachers={teachers}
         finalWorks={finalWorks}
+        approvedProjects={approvedProjects}
         saveInscription={this.saveInscription}
       />
     );
@@ -95,12 +97,15 @@ InscriptionContainer.propTypes = {
 const mS = (state) => ({
   subjects: state.studentInscriptionReducer.availableSubjects,
   finalWorks: state.studentInscriptionReducer.finalWorkSubjects,
+  approvedProjects: state.studentInscriptionReducer.approvedProjects,
+  teachers: state.teacherReducer.list,
 });
 
 const mD = {
   getAvailableSubjectsDispatch: getAvailableSubjects,
   inscriptionDispatch: inscription,
   cleanAvailableSubjectsDispatch: cleanAvailableSubjects,
+  getTeachersListDispatch: getTeachersList,
 };
 
 export default connect(mS, mD)(InscriptionContainer);
