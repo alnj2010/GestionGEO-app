@@ -54,7 +54,6 @@ function Inscription({
       ...values,
     });
   };
-  console.log(message);
   return (
     <Grid container>
       <Typography variant="h6" gutterBottom>
