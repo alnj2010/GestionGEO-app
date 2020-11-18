@@ -27,7 +27,11 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
     .then((response) => {
       dispatch({
         type: ACTIONS.AVAILABLE_SUBJECTS,
-        payload: { availableSubjects: response },
+        payload: {
+          availableSubjects: response.available_subjects,
+          finalWorkSubjects: response.final_work_subjects || response.project_subjects,
+          approvedProjects: response.approved_projects || [],
+        },
       });
       return true;
     })
@@ -38,19 +42,15 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
 };
 
 export const inscription = (value) => async (dispatch) => {
-  if (value.subjects.length) {
-    return StudentInscription.inscription(value)
-      .then((response) => {
-        show('Inscripcion realizada sastifactoriamente', 'success')(dispatch);
-        return response;
-      })
-      .catch((error) => {
-        show(error.message, 'error')(dispatch);
-        return false;
-      });
-  }
-  show('Ud no inscribio ninguna materia', 'error')(dispatch);
-  return false;
+  return StudentInscription.inscription(value)
+    .then((response) => {
+      show('Inscripcion realizada sastifactoriamente', 'success')(dispatch);
+      return response;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
 };
 
 export const cleanAvailableSubjects = () => async (dispatch) => {
