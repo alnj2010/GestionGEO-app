@@ -22,9 +22,16 @@ class StudentHomeContainer extends Component {
   };
 
   render() {
-    const { miPerfil, currentSubjects } = this.props;
+    const { miPerfil, currentSubjects, codSchoolPeriod, finalWorks } = this.props;
 
-    return <StudentHome miPerfil={miPerfil} currentSubjects={currentSubjects} />;
+    return (
+      <StudentHome
+        miPerfil={miPerfil}
+        currentSubjects={currentSubjects}
+        finalWorks={finalWorks}
+        codSchoolPeriod={codSchoolPeriod}
+      />
+    );
   }
 }
 
@@ -44,6 +51,13 @@ StudentHomeContainer.defaultProps = {
 const mS = (state) => ({
   miPerfil: state.miPerfilReducer.selectedMiPerfil,
   currentSubjects: state.studentInscriptionReducer.currentEnrolledSubjects.enrolled_subjects,
+  finalWorks:
+    state.studentInscriptionReducer.currentEnrolledSubjects.final_work ||
+    state.studentInscriptionReducer.currentEnrolledSubjects.project ||
+    [],
+  codSchoolPeriod: state.studentInscriptionReducer.currentEnrolledSubjects.school_period
+    ? state.studentInscriptionReducer.currentEnrolledSubjects.school_period.cod_school_period
+    : '',
 });
 
 const mD = {

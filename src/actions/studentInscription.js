@@ -17,7 +17,6 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
-      show(error.message, 'error')(dispatch);
       throw error;
     });
 };
@@ -31,12 +30,21 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
           availableSubjects: response.available_subjects,
           finalWorkSubjects: response.final_work_subjects || response.project_subjects,
           approvedProjects: response.approved_projects || [],
+          message: null,
         },
       });
       return true;
     })
     .catch((error) => {
-      show(error.message, 'error')(dispatch);
+      dispatch({
+        type: ACTIONS.AVAILABLE_SUBJECTS,
+        payload: {
+          availableSubjects: [],
+          finalWorkSubjects: [],
+          approvedProjects: [],
+          message: error.message,
+        },
+      });
       throw error;
     });
 };
@@ -56,6 +64,6 @@ export const inscription = (value) => async (dispatch) => {
 export const cleanAvailableSubjects = () => async (dispatch) => {
   dispatch({
     type: ACTIONS.CLEAN_AVAILABLE_SUBJECTS,
-    payload: { availableSubjects: {} },
+    payload: { availableSubjects: [], finalWorkSubjects: [], approvedProjects: [], message: null },
   });
 };

@@ -41,17 +41,18 @@ class CourseDetailContainer extends Component {
         },
       ],
     };
-    updateQualificationsDispatch(payload).then(() => {
-      getEnrolledStudentsDispatch(match.params.id);
-    });
+    return updateQualificationsDispatch(payload).then(() =>
+      getEnrolledStudentsDispatch(match.params.id)
+    );
   };
 
   render() {
-    const { students } = this.props;
+    const { students, loadNotes } = this.props;
     return (
       <CourseDetail
         students={students}
         goBack={this.goBack}
+        loadNotes={loadNotes}
         updateQualifications={this.updateQualifications}
       />
     );
@@ -73,11 +74,15 @@ CourseDetailContainer.propTypes = {
   updateQualificationsDispatch: PropTypes.func.isRequired,
   cleanEnrolledStudentsDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
+  loadNotes: PropTypes.bool,
   cleanDialogDispatch: PropTypes.func.isRequired,
 };
-
+CourseDetailContainer.defaultProps = {
+  loadNotes: false,
+};
 const mS = (state) => ({
   students: state.myCourseReducer.enrolledStudents,
+  loadNotes: !!state.schoolPeriodReducer.selectedSchoolPeriod.load_notes,
 });
 
 const mD = {

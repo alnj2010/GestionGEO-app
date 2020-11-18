@@ -5,6 +5,7 @@ const initialState = {
   availableSubjects: [],
   finalWorkSubjects: [],
   approvedProjects: [],
+  message: null,
 };
 const StudentInscription = (state = initialState, action) => {
   switch (action.type) {

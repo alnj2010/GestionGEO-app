@@ -67,12 +67,13 @@ class InscriptionContainer extends Component {
   };
 
   render() {
-    const { subjects, finalWorks, approvedProjects, teachers } = this.props;
+    const { subjects, finalWorks, approvedProjects, teachers, message } = this.props;
 
     return (
       <Inscription
         subjects={subjects}
         teachers={teachers}
+        message={message}
         finalWorks={finalWorks}
         approvedProjects={approvedProjects}
         saveInscription={this.saveInscription}
@@ -98,6 +99,7 @@ const mS = (state) => ({
   subjects: state.studentInscriptionReducer.availableSubjects,
   finalWorks: state.studentInscriptionReducer.finalWorkSubjects,
   approvedProjects: state.studentInscriptionReducer.approvedProjects,
+  message: state.studentInscriptionReducer.message,
   teachers: state.teacherReducer.list,
 });
 

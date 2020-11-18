@@ -27,7 +27,6 @@ function FinalWorkTable({
   approvedProjects,
   teachers,
 }) {
-  console.log(teachers);
   const [finalWorksData, setFinalWorksData] = useState([]);
   const projects = approvedProjects.reduce((accumulator, currentValue) => {
     accumulator[currentValue.id] = currentValue.title;

@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import { withStyles } from '@material-ui/core/styles';
@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 const styles = () => ({});
-function SubjectTable({ subjects, setSubjectsSelected }) {
+function SubjectTable({ subjects, setSubjectsSelected, message }) {
   const transformData = () => {
     if (subjects)
       return subjects.map((subject) => {
@@ -43,7 +43,7 @@ function SubjectTable({ subjects, setSubjectsSelected }) {
         data={transformData()}
         localization={{
           body: {
-            emptyDataSourceMessage: 'No hay materias disponibles',
+            emptyDataSourceMessage: message || 'No hay materias disponibles para inscribir',
           },
         }}
         options={{
@@ -65,6 +65,8 @@ SubjectTable.propTypes = {
 export default withStyles(styles)(
   memo(
     SubjectTable,
-    (prevProps, nextProps) => prevProps.subjects.length === nextProps.subjects.length
+    (prevProps, nextProps) =>
+      prevProps.subjects.length === nextProps.subjects.length &&
+      prevProps.message === nextProps.message
   )
 );

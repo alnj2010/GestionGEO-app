@@ -38,6 +38,7 @@ import { Collapse } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
+import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod } from '../../actions/schoolPeriod';
 import {
   removeSessionGeoToken,
   getSessionUserRol,
@@ -229,6 +230,20 @@ class MenuApp extends React.Component {
     };
   }
 
+  componentDidMount = () => {
+    const { findCurrentSchoolPeriodDispatch } = this.props;
+    const rol = getSessionUserRol();
+
+    if (rol === 'S' || rol === 'T') {
+      findCurrentSchoolPeriodDispatch();
+    }
+  };
+
+  componentWillUnmount = () => {
+    const { cleanSelectedSchoolPeriodDispatch } = this.props;
+    cleanSelectedSchoolPeriodDispatch();
+  };
+
   componentWillMount = () => {
     this.validateToken();
   };
@@ -247,7 +262,7 @@ class MenuApp extends React.Component {
 
   handleOpenDownload = () => {
     this.setState((state) => {
-      return { openDownload: !state.openDownload };
+      return { openDownload: !state.openDownload, open: true };
     });
   };
 
@@ -300,7 +315,15 @@ class MenuApp extends React.Component {
   };
 
   render() {
-    const { classes, theme, children, history, getConstanceDispatch, location } = this.props;
+    const {
+      classes,
+      theme,
+      children,
+      history,
+      getConstanceDispatch,
+      location,
+      inscriptionVisible,
+    } = this.props;
     const { anchorEl, options, open: openOption, openDownload } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
@@ -389,7 +412,11 @@ class MenuApp extends React.Component {
           <Divider />
           <List>
             {options
-              .filter((option) => option.roles.some((item) => item === rol))
+              .filter(
+                (option) =>
+                  (option.roles.some((item) => item === rol) && option.name !== 'Inscripcion') ||
+                  (option.name === 'Inscripcion' && rol === 'S' && inscriptionVisible)
+              )
               .map((option) => (
                 <Fragment key={option.name}>
                   {option.options ? (
@@ -527,14 +554,22 @@ MenuApp.propTypes = {
   }).isRequired,
   children: PropTypes.shape({}).isRequired,
   getConstanceDispatch: PropTypes.func.isRequired,
+  inscriptionVisible: PropTypes.bool,
+  findCurrentSchoolPeriodDispatch: PropTypes.func.isRequired,
+  cleanSelectedSchoolPeriodDispatch: PropTypes.func.isRequired,
 };
-
+MenuApp.defaultProps = {
+  inscriptionVisible: false,
+};
 const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
   message: state.snackbarReducer.message,
+  inscriptionVisible: !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
 });
 const mD = {
   getConstanceDispatch: getConstance,
+  findCurrentSchoolPeriodDispatch: findCurrentSchoolPeriod,
+  cleanSelectedSchoolPeriodDispatch: cleanSelectedSchoolPeriod,
 };
 const MenuAppWrapper = withStyles(styles, { withTheme: true })(connect(mS, mD)(MenuApp));
 export default MenuAppWrapper;
