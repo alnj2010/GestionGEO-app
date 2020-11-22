@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import { Grid } from '@material-ui/core';
-import { FINANCING_TYPE } from '../../services/constants';
-import { jsonToOptions } from '../../helpers';
 import Table from './Table';
 import TableBodyRow from './Row';
 

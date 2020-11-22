@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { User } from '../services/user';
 import { show } from './snackbar';
 import {
@@ -7,6 +8,8 @@ import {
   setSessionUserId,
   setSessionTeacherId,
   setSessionIsMainUser,
+  setTokenExpires,
+  setInitTimeLogin,
 } from '../storage/sessionStorage';
 
 export const ACTIONS = {
@@ -20,6 +23,9 @@ export const login = ({ identification, password, userType }) => async (dispatch
       setSessionUser(response.user);
       setSessionUserRol(response.user.user_type);
       setSessionUserId(response.user.id);
+      setTokenExpires(response.expires);
+      setInitTimeLogin(moment().unix());
+
       if (response.user.user_type === 'S') {
         return response.user.student;
       }

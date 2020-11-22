@@ -1,7 +1,16 @@
 import axios from 'axios';
+import * as moment from 'moment';
 import { loadProgressBar } from 'axios-progress-bar';
-import { getSessionGeoToken } from '../storage/sessionStorage';
-import { DURATION_TOAST } from '../services/constants';
+import {
+  getSessionGeoToken,
+  getInitTimeLogin,
+  setInitTimeLogin,
+  getTokenExpires,
+  removeSessionGeoToken,
+  setSessionGeoToken,
+  setSessionUser,
+} from '../storage/sessionStorage';
+import { DURATION_TOAST, REFRESH_TIMEOUT } from '../services/constants';
 
 export function headers(type) {
   let items;
@@ -25,13 +34,33 @@ const AXIOS = axios.create({
 
 AXIOS.interceptors.response.use(
   (response) => {
-    const { status } = response;
+    const { config, status } = response;
+    const loginTimestamp = parseInt(getInitTimeLogin(), 10);
+    const curretTimestamp = moment().unix();
+    const sessionExpiresSecons = parseInt(getTokenExpires(), 10) * 60;
+    const timeoutSession = sessionExpiresSecons - (curretTimestamp - loginTimestamp);
 
     response.data.error = response.data.message ? response.data.message : null;
 
     if (status === 206) {
       // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject({ response });
+    }
+
+    if (
+      timeoutSession >= 0 &&
+      timeoutSession <= REFRESH_TIMEOUT &&
+      config.url !== `${config.baseURL}/refresh`
+    ) {
+      return AXIOS.post('/refresh', {}, { headers: headers() })
+        .then((res) => {
+          setInitTimeLogin(curretTimestamp);
+          setSessionGeoToken(res.data.access_token);
+          return response;
+        })
+        .catch(() => {
+          removeSessionGeoToken();
+        });
     }
     return response;
   },
