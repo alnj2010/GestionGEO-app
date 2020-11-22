@@ -83,7 +83,8 @@ function RenderFields(props) {
         );
 
       default:
-        return null;
+        // eslint-disable-next-line react/no-array-index-key
+        return <Grid key={index} item xs={movil} sm={desktop[index]} />;
     }
   });
 }

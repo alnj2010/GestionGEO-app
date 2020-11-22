@@ -331,6 +331,7 @@ class SchoolPeriodDetail extends Component {
                       field: 'endDate',
                       id: 'endDate',
                       type: 'date',
+                      minDateMessage: 'La fecha fin no debe ser anterior a la fecha de inicio',
                       minDate: moment(startDate).add(1, 'days'),
                     },
                     {
@@ -338,6 +339,8 @@ class SchoolPeriodDetail extends Component {
                       field: 'withdrawalDeadline',
                       id: 'withdrawalDeadline',
                       type: 'date',
+                      minDateMessage:
+                        'La fecha de retiro no debe ser anterior a la fecha de inicio',
                       minDate: moment(startDate).add(1, 'days'),
                     },
                     {

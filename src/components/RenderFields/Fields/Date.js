@@ -5,7 +5,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import * as moment from 'moment';
 
-const renderDateField = ({ label, input, ...custom }) => (
+const renderDateField = ({ label, maxDateMessage, minDateMessage, input, ...custom }) => (
   <MuiPickersUtilsProvider utils={DateFnsUtils}>
     <DatePicker
       autoOk
@@ -16,8 +16,8 @@ const renderDateField = ({ label, input, ...custom }) => (
       {...input}
       {...custom}
       cancelLabel={<div>CANCELAR</div>}
-      maxDateMessage={<div>La fecha no debe ser posterior a la fecha máxima</div>}
-      minDateMessage={<div>La fecha no debe ser anterior a la fecha mínima</div>}
+      maxDateMessage={<div>{maxDateMessage}</div>}
+      minDateMessage={<div>{minDateMessage}</div>}
       invalidDateMessage={<div>Formato de fecha no válido</div>}
     />
   </MuiPickersUtilsProvider>
@@ -27,9 +27,19 @@ renderDateField.propTypes = {
   input: PropTypes.shape({
     name: PropTypes.string,
   }).isRequired,
+  maxDateMessage: PropTypes.string.isRequired,
+  minDateMessage: PropTypes.string.isRequired,
 };
 
-export default function Date({ field, label, id, minDate, disabled }) {
+export default function Date({
+  field,
+  label,
+  id,
+  minDate,
+  disabled,
+  maxDateMessage,
+  minDateMessage,
+}) {
   return (
     <Field
       name={field}
@@ -41,6 +51,8 @@ export default function Date({ field, label, id, minDate, disabled }) {
       id={id}
       minDate={minDate || undefined}
       disabled={disabled}
+      maxDateMessage={maxDateMessage}
+      minDateMessage={minDateMessage}
     />
   );
 }
@@ -52,8 +64,12 @@ Date.propTypes = {
   id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   disabled: PropTypes.bool,
   minDate: PropTypes.shape({}),
+  maxDateMessage: PropTypes.string,
+  minDateMessage: PropTypes.string,
 };
 Date.defaultProps = {
   disabled: false,
   minDate: null,
+  maxDateMessage: 'La fecha no debe ser posterior a la fecha máxima',
+  minDateMessage: 'La fecha no debe ser anterior a la fecha mínima',
 };

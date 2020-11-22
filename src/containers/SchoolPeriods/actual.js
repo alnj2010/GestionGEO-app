@@ -30,6 +30,7 @@ class SchoolPeriodActualContainer extends Component {
       end_date: values.endDate,
       inscription_visible: values.incriptionVisible,
       load_notes: values.loadNotes,
+      withdrawal_deadline: values.withdrawalDeadline,
     };
     let payload = { ...schoolPeriodActual, ...val };
     payload = {
@@ -37,6 +38,7 @@ class SchoolPeriodActualContainer extends Component {
       inscriptionVisible: payload.inscription_visible,
       endSchoolPeriod: payload.end_school_period,
       loadNotes: payload.load_notes,
+      withdrawalDeadline: payload.withdrawal_deadline,
       codSchoolPeriod: payload.cod_school_period,
       inscriptionStartDate: payload.inscription_start_date,
       projectDuty: payload.project_duty,
@@ -44,7 +46,7 @@ class SchoolPeriodActualContainer extends Component {
       endDate: payload.end_date,
       startDate: payload.start_date,
       subjects: payload.subjects.map((subject) => ({
-        subjectId: subject.id,
+        subjectId: subject.subject_id,
         teacherId: subject.teacher_id,
         duty: subject.duty,
         limit: subject.limit,
@@ -64,7 +66,6 @@ class SchoolPeriodActualContainer extends Component {
 
   render() {
     const {
-      schoolPeriodActual,
       schoolPeriodActual: {
         start_date: startDate,
         end_date: endDate,

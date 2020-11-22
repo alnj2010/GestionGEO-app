@@ -19,6 +19,14 @@ export const StudentInscription = {
       .catch(handleErrorMsg);
   },
 
+  withdrawSubjects(value) {
+    return AXIOS.post(`${URL.STUDENT_INSCRIPTION}/withdrawSubjects`, value, {
+      headers: headers(),
+    })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+
   inscription(value) {
     return AXIOS.post(`${URL.STUDENT_INSCRIPTION}`, value, {
       headers: headers(),

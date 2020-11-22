@@ -9,7 +9,16 @@ import TableEnrolledFinalWorks from './TableEnrolledFinalWorks';
 
 const styles = () => ({});
 
-function StudentHome({ miPerfil, currentSubjects, classes, codSchoolPeriod, finalWorks }) {
+function StudentHome({
+  miPerfil,
+  currentSubjects,
+  classes,
+  codSchoolPeriod,
+  finalWorks,
+  withdrawalDeadline,
+  show,
+  handleRetireSubject,
+}) {
   const {
     level_instruction: levelInstruction,
     first_name: firstName,
@@ -31,7 +40,13 @@ function StudentHome({ miPerfil, currentSubjects, classes, codSchoolPeriod, fina
         sex={sex}
         userRol={userRol}
       />
-      <TableEnrolledSubjects currentSubjects={currentSubjects} codSchoolPeriod={codSchoolPeriod} />
+      <TableEnrolledSubjects
+        currentSubjects={currentSubjects}
+        codSchoolPeriod={codSchoolPeriod}
+        withdrawalDeadline={withdrawalDeadline}
+        show={show}
+        handleRetireSubject={handleRetireSubject}
+      />
       {finalWorks.length ? <TableEnrolledFinalWorks finalWorks={finalWorks} /> : null}
 
       <CalendarStudent currentSubjects={currentSubjects} />

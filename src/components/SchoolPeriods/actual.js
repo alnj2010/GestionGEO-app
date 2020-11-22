@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
 import * as moment from 'moment';
-import { Form, reduxForm, submit } from 'redux-form';
+import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import { show } from '../../actions/dialog';
@@ -101,6 +101,7 @@ class SchoolPeriodActual extends Component {
       pristine,
       submitting,
       valid,
+      startDate,
       codSchoolPeriod,
       submitDispatch,
       endDate,
@@ -114,7 +115,6 @@ class SchoolPeriodActual extends Component {
     minTime.setHours(7, 0, 0);
     const maxTime = new Date();
     maxTime.setHours(19, 0, 0);
-
     return (
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
@@ -124,7 +124,7 @@ class SchoolPeriodActual extends Component {
           </Grid>
           <Grid item xs={12} className={classes.form}>
             <Grid container>
-              <RenderFields>
+              <RenderFields lineal={[6, 6, 6, 6, 6, 6]}>
                 {[
                   {
                     label: 'Fecha Inicio',
@@ -140,6 +140,15 @@ class SchoolPeriodActual extends Component {
                     type: 'date',
                     minDate: moment(),
                   },
+                  {
+                    label: 'Fecha Limite de retiro',
+                    field: 'withdrawalDeadline',
+                    id: 'withdrawalDeadline',
+                    type: 'date',
+                    minDateMessage: 'La fecha de retiro no debe ser anterior a la fecha de inicio',
+                    minDate: moment(startDate).add(1, 'days'),
+                  },
+                  { type: 'hidden' },
                   {
                     label: 'Habilitar inscripcion',
                     field: 'incriptionVisible',
@@ -227,7 +236,7 @@ let SchoolPeriodActualWrapper = reduxForm({
   form: 'periodo semestral',
   enableReinitialize: true,
 })(SchoolPeriodActual);
-
+const selector = formValueSelector('periodo semestral');
 SchoolPeriodActualWrapper = connect(
   (state) => ({
     initialValues: {
@@ -239,7 +248,11 @@ SchoolPeriodActualWrapper = connect(
         : moment().format('YYYY-MM-DD'),
       incriptionVisible: state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
       loadNotes: state.schoolPeriodReducer.selectedSchoolPeriod.load_notes,
+      withdrawalDeadline: state.schoolPeriodReducer.selectedSchoolPeriod.withdrawal_deadline
+        ? state.schoolPeriodReducer.selectedSchoolPeriod.withdrawal_deadline
+        : moment().add(1, 'days').format('YYYY-MM-DD'),
     },
+    startDate: selector(state, 'startDate'),
     action: state.dialogReducer.action,
   }),
   { showDispatch: show, submitDispatch: submit }
