@@ -97,7 +97,7 @@ class StudentSchoolProgram extends Component {
                       id: `${subject}.qualification`,
                       type: 'number',
                       label: 'Calificacion',
-                      min: 0,
+                      min: 10,
                       max: 20,
                     },
                   ]}
@@ -371,6 +371,25 @@ const schoolProgramValidation = (values) => {
   if (!values.schoolProgramId) errors.schoolProgramId = 'Programa academico es requerido';
   if (!values.studentType) errors.studentType = 'Tipo de estudiante es requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen es requerido';
+  if (values.equivalences && values.equivalences.length) {
+    const equivalenceArrayErrors = [];
+    values.equivalences.forEach((equivalence, equivalenceIndex) => {
+      const equivalenceErrors = {};
+      if (!equivalence || !equivalence.qualification) {
+        equivalenceErrors.qualification = '*Calificacion es requerido';
+        equivalenceArrayErrors[equivalenceIndex] = equivalenceErrors;
+      }
+
+      if (!equivalence || !equivalence.subject_id) {
+        equivalenceErrors.subject_id = '*Materia es requerido';
+        equivalenceArrayErrors[equivalenceIndex] = equivalenceErrors;
+      }
+    });
+
+    if (equivalenceArrayErrors.length) {
+      errors.equivalences = equivalenceArrayErrors;
+    }
+  }
 
   return errors;
 };
