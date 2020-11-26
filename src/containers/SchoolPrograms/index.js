@@ -20,9 +20,9 @@ class SchoolProgramsListContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanDialogDispatch, cleanGetList } = this.props;
+    const { cleanDialogDispatch, cleanGetListDispatch } = this.props;
     cleanDialogDispatch();
-    cleanGetList();
+    cleanGetListDispatch();
   };
 
   handleDeleteSchoolProgram = (id) => {
@@ -60,7 +60,7 @@ SchoolProgramsListContainer.propTypes = {
   cleanDialogDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
-  cleanGetList: PropTypes.func.isRequired,
+  cleanGetListDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({

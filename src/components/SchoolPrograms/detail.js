@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button } from '@material-ui/core';
-import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
+import { Form, reduxForm, submit, formValueSelector, change } from 'redux-form';
 import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
@@ -33,6 +33,17 @@ class SchoolProgramDetail extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { conduciveToDegree, grantCertificate, changeDispatch } = this.props;
+    if (conduciveToDegree !== nextProps.conduciveToDegree && nextProps.conduciveToDegree) {
+      changeDispatch('programa academico', 'grantCertificate', false);
+    }
+
+    if (grantCertificate !== nextProps.grantCertificate && nextProps.grantCertificate) {
+      changeDispatch('programa academico', 'conduciveToDegree', false);
+    }
+  }
+
   handleDialogShow = (action, func) => {
     this.setState({ func }, () => {
       const { showDispatch } = this.props;
@@ -55,6 +66,7 @@ class SchoolProgramDetail extends Component {
       schoolProgram,
       numCu,
       conduciveToDegreeSelected,
+      doctoralExam,
     } = this.props;
     const { func } = this.state;
     return (
@@ -108,6 +120,15 @@ class SchoolProgramDetail extends Component {
                     id: 'minDuration',
                     type: conduciveToDegreeSelected ? 'number' : 'hidden',
                     min: 1,
+                  },
+                  {
+                    label: 'min. de UC para examen doctoral',
+                    field: 'numCuToDoctoralExam',
+                    id: 'numCuToDoctoralExam',
+                    type: conduciveToDegreeSelected && doctoralExam ? 'number' : 'hidden',
+                    min: 0,
+                    max: numCu,
+                    disabled: !numCu || !doctoralExam,
                   },
                   {
                     label: '¿Posee examen doctoral?',
@@ -258,6 +279,9 @@ SchoolProgramDetailWrapper = connect(
       minNumCuFinalWork: state.schoolProgramReducer.selectedSchoolProgram.min_num_cu_final_work
         ? state.schoolProgramReducer.selectedSchoolProgram.min_num_cu_final_work
         : '',
+      numCuToDoctoralExam: state.schoolProgramReducer.selectedSchoolProgram.num_cu_to_doctoral_exam
+        ? state.schoolProgramReducer.selectedSchoolProgram.num_cu_to_doctoral_exam
+        : '',
       minDuration: state.schoolProgramReducer.selectedSchoolProgram.min_duration
         ? state.schoolProgramReducer.selectedSchoolProgram.min_duration
         : '',
@@ -274,8 +298,11 @@ SchoolProgramDetailWrapper = connect(
     action: state.dialogReducer.action,
     numCu: selector(state, 'numCu'),
     conduciveToDegreeSelected: selector(state, 'conduciveToDegree'),
+    conduciveToDegree: selector(state, 'conduciveToDegree'),
+    grantCertificate: selector(state, 'grantCertificate'),
+    doctoralExam: selector(state, 'doctoralExam'),
   }),
-  { showDispatch: show, submitDispatch: submit }
+  { showDispatch: show, submitDispatch: submit, changeDispatch: change }
 )(SchoolProgramDetailWrapper);
 
 export default withStyles(styles)(SchoolProgramDetailWrapper);

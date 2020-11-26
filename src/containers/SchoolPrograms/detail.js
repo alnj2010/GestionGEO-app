@@ -33,7 +33,6 @@ class SchoolProgramDetailContainer extends Component {
       history,
     } = this.props;
     const payload = { ...values };
-
     if (match.params.id) updateSchoolProgramDispatch({ ...payload, ...match.params });
     else
       saveSchoolProgramDispatch({ ...payload }).then((response) => {
