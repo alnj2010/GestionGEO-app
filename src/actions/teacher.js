@@ -42,6 +42,10 @@ export const cleanSelectedTeacher = () => async (dispatch) => {
   });
 };
 
+export const cleanGetList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
+};
+
 export const updateTeacher = (teacher) => async (dispatch) => {
   const payload = {
     id: teacher.id,

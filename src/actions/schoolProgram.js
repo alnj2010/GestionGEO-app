@@ -20,6 +20,10 @@ export const getList = () => async (dispatch) => {
     });
 };
 
+export const cleanGetList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
+};
+
 export const findSchoolProgramById = (id) => async (dispatch) => {
   return SchoolProgram.findSchoolProgramById(id)
     .then((response) => {

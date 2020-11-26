@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import { updateSchoolPeriod, findCurrentSchoolPeriod } from '../../actions/schoolPeriod';
+import {
+  updateSchoolPeriod,
+  findCurrentSchoolPeriod,
+  cleanSelectedSchoolPeriod,
+} from '../../actions/schoolPeriod';
 import SchoolPeriodActual from '../../components/SchoolPeriods/actual';
 import { define, cleanDialog } from '../../actions/dialog';
 import { WEEKDAYS } from '../../services/constants';
@@ -19,8 +23,9 @@ class SchoolPeriodActualContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanDialogDispatch } = this.props;
+    const { cleanDialogDispatch, cleanSelectedSchoolPeriodDispatch } = this.props;
     cleanDialogDispatch();
+    cleanSelectedSchoolPeriodDispatch();
   };
 
   saveSchoolPeriod = (values) => {
@@ -102,6 +107,7 @@ SchoolPeriodActualContainer.propTypes = {
   defineDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   findCurrentSchoolPeriodDispatch: PropTypes.func.isRequired,
+  cleanSelectedSchoolPeriodDispatch: PropTypes.func.isRequired,
 };
 SchoolPeriodActualContainer.defaultProps = {};
 
@@ -113,6 +119,7 @@ const mD = {
   updateSchoolPeriodDispatch: updateSchoolPeriod,
   defineDispatch: define,
   cleanDialogDispatch: cleanDialog,
+  cleanSelectedSchoolPeriodDispatch: cleanSelectedSchoolPeriod,
   findCurrentSchoolPeriodDispatch: findCurrentSchoolPeriod,
 };
 

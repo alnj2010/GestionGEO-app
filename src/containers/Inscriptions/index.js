@@ -7,7 +7,7 @@ import {
   inscription,
   cleanAvailableSubjects,
 } from '../../actions/studentInscription';
-import { getList as getTeachersList } from '../../actions/teacher';
+import { getList as getTeachersList, cleanGetList } from '../../actions/teacher';
 import { getSessionStudentId, getSessionUser } from '../../storage/sessionStorage';
 
 class InscriptionContainer extends Component {
@@ -19,8 +19,9 @@ class InscriptionContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanAvailableSubjectsDispatch } = this.props;
+    const { cleanAvailableSubjectsDispatch, cleanGetListDispatch } = this.props;
     cleanAvailableSubjectsDispatch();
+    cleanGetListDispatch();
   };
 
   saveInscription = ({
@@ -91,6 +92,8 @@ InscriptionContainer.propTypes = {
   }).isRequired,
 
   getAvailableSubjectsDispatch: PropTypes.func.isRequired,
+  cleanGetListDispatch: PropTypes.func.isRequired,
+  getTeachersListDispatch: PropTypes.func.isRequired,
   inscriptionDispatch: PropTypes.func.isRequired,
   cleanAvailableSubjectsDispatch: PropTypes.func.isRequired,
 };
@@ -108,6 +111,7 @@ const mD = {
   inscriptionDispatch: inscription,
   cleanAvailableSubjectsDispatch: cleanAvailableSubjects,
   getTeachersListDispatch: getTeachersList,
+  cleanGetListDispatch: cleanGetList,
 };
 
 export default connect(mS, mD)(InscriptionContainer);

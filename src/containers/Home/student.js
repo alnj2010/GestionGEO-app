@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import StudentHome from '../../components/Home/student';
-import { findMiPerfil } from '../../actions/miPerfil';
+import { findMiPerfil, cleanSelectedMiPerfil } from '../../actions/miPerfil';
 import { define, cleanDialog, show } from '../../actions/dialog';
-import { getCurrentEnrolledSubjects, withdrawSubjects } from '../../actions/studentInscription';
+import {
+  getCurrentEnrolledSubjects,
+  cleanGetCurrentEnrolledSubjects,
+  withdrawSubjects,
+} from '../../actions/studentInscription';
 
 import { getSessionStudentId } from '../../storage/sessionStorage';
 import { WEEKDAYS } from '../../services/constants';
@@ -23,7 +27,13 @@ class StudentHomeContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanDialogDispatch } = this.props;
+    const {
+      cleanDialogDispatch,
+      cleanSelectedMiPerfilDispatch,
+      cleanGetCurrentEnrolledSubjectsDispatch,
+    } = this.props;
+    cleanSelectedMiPerfilDispatch();
+    cleanGetCurrentEnrolledSubjectsDispatch();
     cleanDialogDispatch();
   };
 
@@ -67,7 +77,9 @@ StudentHomeContainer.propTypes = {
   findMiPerfilDispatch: PropTypes.func.isRequired,
   getCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
+  cleanSelectedMiPerfilDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
+  cleanGetCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
 };
 StudentHomeContainer.defaultProps = {
@@ -92,6 +104,8 @@ const mD = {
   getCurrentEnrolledSubjectsDispatch: getCurrentEnrolledSubjects,
   withdrawSubjectsDispatch: withdrawSubjects,
   cleanDialogDispatch: cleanDialog,
+  cleanSelectedMiPerfilDispatch: cleanSelectedMiPerfil,
+  cleanGetCurrentEnrolledSubjectsDispatch: cleanGetCurrentEnrolledSubjects,
   defineDispatch: define,
   showDispatch: show,
 };

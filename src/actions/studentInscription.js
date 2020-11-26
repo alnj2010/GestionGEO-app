@@ -20,7 +20,13 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
       throw error;
     });
 };
-
+export const cleanGetCurrentEnrolledSubjects = (id) => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.CURRENT_ENROLLED_SUBJECTS,
+    payload: { currentEnrolledSubjects: [] },
+  });
+  return true;
+};
 export const withdrawSubjects = (id, studentId) => async (dispatch) => {
   const payload = {
     student_id: studentId,

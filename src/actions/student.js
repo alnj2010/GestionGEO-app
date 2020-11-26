@@ -70,6 +70,10 @@ export const cleanSchoolProgram = () => async (dispatch) => {
   });
 };
 
+export const cleanGetWarningStudentsList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.WARNING_STUDENTS, payload: { warningStudents: [] } });
+};
+
 export const updateSchoolProgram = (student) => async (dispatch) => {
   const payload = {
     identification: student.identification,

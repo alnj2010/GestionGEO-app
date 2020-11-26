@@ -21,6 +21,10 @@ export const getList = () => async (dispatch) => {
       throw error;
     });
 };
+
+export const cleanGetList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
+};
 export const getSubjectBySchoolProgram = (id) => async (dispatch) => {
   return Subject.getSubjectBySchoolProgram(id)
     .then((response) => {

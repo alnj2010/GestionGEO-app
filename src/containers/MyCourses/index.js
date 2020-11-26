@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
-import { getCoursesList } from '../../actions/myCourse';
+import { getCoursesList, cleanGetCoursesList } from '../../actions/myCourse';
 import MyCoursesList from '../../components/MyCourses';
 
 class MisCursosContainer extends Component {
@@ -13,8 +13,9 @@ class MisCursosContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanDialogDispatch } = this.props;
+    const { cleanDialogDispatch, cleanGetCoursesListDispatch } = this.props;
     cleanDialogDispatch();
+    cleanGetCoursesListDispatch();
   };
 
   render() {
@@ -37,6 +38,7 @@ MisCursosContainer.propTypes = {
   }).isRequired,
 
   getCoursesListDispatch: PropTypes.func.isRequired,
+  cleanGetCoursesListDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
@@ -48,6 +50,7 @@ const mS = (state) => ({
 
 const mD = {
   getCoursesListDispatch: getCoursesList,
+  cleanGetCoursesListDispatch: cleanGetCoursesList,
   cleanDialogDispatch: cleanDialog,
   defineDispatch: define,
   showDispatch: show,
