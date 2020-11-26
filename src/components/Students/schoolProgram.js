@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
-import { Form, reduxForm, FieldArray, submit, formValueSelector } from 'redux-form';
+import { Form, reduxForm, submit, formValueSelector, change } from 'redux-form';
 import PropTypes from 'prop-types';
-import AddIcon from '@material-ui/icons/Add';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Fab from '@material-ui/core/Fab';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
+import RenderFieldsArray from '../RenderFieldsArray';
 import { getSessionUserRol } from '../../storage/sessionStorage';
 import { STUDENT_TYPE, STUDENT_STATUS } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
@@ -45,11 +42,17 @@ class StudentSchoolProgram extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { schoolProgramSelected, getSubjectBySchoolProgram } = this.props;
+    const {
+      schoolProgramSelected,
+      getSubjectBySchoolProgram,
+      changeDispatch,
+      schoolProgram,
+    } = this.props;
     if (
       nextProps.schoolProgramSelected !== schoolProgramSelected &&
       nextProps.schoolProgramSelected !== ''
     ) {
+      if (!schoolProgram) changeDispatch('programa academico del estudiante', 'equivalences', []);
       getSubjectBySchoolProgram(nextProps.schoolProgramSelected);
     }
   }
@@ -59,76 +62,6 @@ class StudentSchoolProgram extends Component {
     this.setState({ func }, () => {
       showDispatch(action);
     });
-  };
-
-  unselectedSubjects = (pos) => {
-    const { subjects, subjectsSelected } = this.props;
-    return subjects.filter(
-      (item) =>
-        !subjectsSelected.some((selected, index) => selected.subject_id === item.id && pos > index)
-    );
-  };
-
-  renderSubjects = ({ fields }) => {
-    const { classes, subjects, subjectsSelected } = this.props;
-    return (
-      <>
-        {fields.map((subject, index) => {
-          return (
-            // eslint-disable-next-line
-            <Grid container justify="center" key={index}>
-              <Grid container item xs={10}>
-                <RenderFields lineal={[6, 6]}>
-                  {[
-                    {
-                      field: `${subject}.subject_id`,
-                      id: `${subject}.subject_id`,
-                      type: 'select',
-                      label: 'Materia',
-                      options: this.unselectedSubjects(index).map((item) => {
-                        return {
-                          key: item.name,
-                          value: item.id,
-                        };
-                      }),
-                    },
-                    {
-                      field: `${subject}.qualification`,
-                      id: `${subject}.qualification`,
-                      type: 'number',
-                      label: 'Calificacion',
-                      min: 0,
-                      max: 20,
-                    },
-                  ]}
-                </RenderFields>
-              </Grid>
-              <Grid item xs={1} className={classes.buttonDelete}>
-                <IconButton
-                  aria-label="remover"
-                  color="secondary"
-                  onClick={() => fields.remove(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-          );
-        })}
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={1}>
-            <Fab
-              color="primary"
-              aria-label="Add"
-              disabled={subjects && subjectsSelected && subjects.length === subjectsSelected.length}
-              onClick={() => fields.push({})}
-            >
-              <AddIcon />
-            </Fab>
-          </Grid>
-        </Grid>
-      </>
-    );
   };
 
   render = () => {
@@ -146,6 +79,8 @@ class StudentSchoolProgram extends Component {
       teachersGuide,
       selectedStudent,
       schoolPrograms,
+      subjects,
+      schoolProgramSelected,
     } = this.props;
     const { func } = this.state;
     const rol = getSessionUserRol();
@@ -267,7 +202,35 @@ class StudentSchoolProgram extends Component {
                 </Typography>
               </Grid>
               <Grid container item xs={12}>
-                <FieldArray name="equivalences" component={this.renderSubjects} />
+                <RenderFieldsArray
+                  name="equivalences"
+                  nonRepeatOptions={subjects.map((item) => {
+                    return {
+                      id: schoolProgramSelected,
+                      key: item.name,
+                      value: item.id,
+                    };
+                  })}
+                  distributions={[6, 6]}
+                >
+                  {() => [
+                    {
+                      field: `subject_id`,
+                      id: `subject_id`,
+                      type: 'select',
+                      label: 'Materia',
+                      repeatOption: false,
+                    },
+                    {
+                      field: `qualification`,
+                      id: `qualification`,
+                      type: 'number',
+                      label: 'Calificacion',
+                      min: 10,
+                      max: 20,
+                    },
+                  ]}
+                </RenderFieldsArray>
               </Grid>
             </>
 
@@ -335,7 +298,6 @@ StudentSchoolProgram.propTypes = {
   }).isRequired,
   schoolPrograms: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   subjects: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  subjectsSelected: PropTypes.arrayOf(PropTypes.shape({})),
 
   selectedStudent: PropTypes.shape({
     first_surname: PropTypes.string,
@@ -355,13 +317,13 @@ StudentSchoolProgram.propTypes = {
   handleSchoolProgramDelete: PropTypes.func.isRequired,
   getSubjectBySchoolProgram: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
+  changeDispatch: PropTypes.func.isRequired,
   submitDispatch: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   goBack: PropTypes.func.isRequired,
 };
 
 StudentSchoolProgram.defaultProps = {
-  subjectsSelected: [],
   schoolProgram: null,
   schoolProgramSelected: null,
 };
@@ -371,6 +333,25 @@ const schoolProgramValidation = (values) => {
   if (!values.schoolProgramId) errors.schoolProgramId = 'Programa academico es requerido';
   if (!values.studentType) errors.studentType = 'Tipo de estudiante es requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen es requerido';
+  if (values.equivalences && values.equivalences.length) {
+    const equivalenceArrayErrors = [];
+    values.equivalences.forEach((equivalence, equivalenceIndex) => {
+      const equivalenceErrors = {};
+      if (!equivalence || !equivalence.qualification) {
+        equivalenceErrors.qualification = '*Calificacion es requerido';
+        equivalenceArrayErrors[equivalenceIndex] = equivalenceErrors;
+      }
+
+      if (!equivalence || !equivalence.subject_id) {
+        equivalenceErrors.subject_id = '*Materia es requerido';
+        equivalenceArrayErrors[equivalenceIndex] = equivalenceErrors;
+      }
+    });
+
+    if (equivalenceArrayErrors.length) {
+      errors.equivalences = equivalenceArrayErrors;
+    }
+  }
 
   return errors;
 };
@@ -431,10 +412,9 @@ StudentSchoolProgramWrapper = connect(
           : [],
     },
     action: state.dialogReducer.action,
-    subjectsSelected: selector(state, 'equivalences'),
     schoolProgramSelected: selector(state, 'schoolProgramId'),
   }),
-  { showDispatch: show, submitDispatch: submit }
+  { showDispatch: show, submitDispatch: submit, changeDispatch: change }
 )(StudentSchoolProgramWrapper);
 
 export default withStyles(styles)(StudentSchoolProgramWrapper);

@@ -18,7 +18,7 @@ export const URL = {
   PASSWORD_RESET: '/password/reset',
 };
 export const DURATION_TOAST = 3000;
-
+export const REFRESH_TIMEOUT = 300; // SEGUNDOS PARA INICIAR EL REFRESH TOKEN
 export const CONSTANCES = {
   A: [
     {

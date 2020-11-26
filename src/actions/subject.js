@@ -16,9 +16,14 @@ export const getList = () => async (dispatch) => {
       return true;
     })
     .catch((error) => {
+      dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
       show(error.message, 'error')(dispatch);
       throw error;
     });
+};
+
+export const cleanGetList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
 };
 export const getSubjectBySchoolProgram = (id) => async (dispatch) => {
   return Subject.getSubjectBySchoolProgram(id)

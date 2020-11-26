@@ -20,6 +20,32 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
       throw error;
     });
 };
+export const cleanGetCurrentEnrolledSubjects = (id) => async (dispatch) => {
+  dispatch({
+    type: ACTIONS.CURRENT_ENROLLED_SUBJECTS,
+    payload: { currentEnrolledSubjects: [] },
+  });
+  return true;
+};
+export const withdrawSubjects = (id, studentId) => async (dispatch) => {
+  const payload = {
+    student_id: studentId,
+    withdraw_subjects: [
+      {
+        student_subject_id: id,
+      },
+    ],
+  };
+  return StudentInscription.withdrawSubjects(payload)
+    .then((response) => {
+      show('Retiro sastifactorio', 'success')(dispatch);
+      return response;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      return false;
+    });
+};
 
 export const getAvailableSubjects = (id) => async (dispatch) => {
   return StudentInscription.getAvailableSubjects(id)

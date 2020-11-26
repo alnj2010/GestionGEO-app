@@ -20,6 +20,10 @@ export const getList = () => async (dispatch) => {
     });
 };
 
+export const cleanGetList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
+};
+
 export const findSchoolProgramById = (id) => async (dispatch) => {
   return SchoolProgram.findSchoolProgramById(id)
     .then((response) => {
@@ -49,6 +53,9 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
     num_cu: parseInt(schoolProgram.numCu, 10),
     duration: parseInt(schoolProgram.duration, 10) || undefined,
     min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
+    min_cu_to_doctoral_exam: schoolProgram.minCuToDoctoralExam
+      ? parseInt(schoolProgram.minCuToDoctoralExam, 10)
+      : 0,
     min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,
     conducive_to_degree: schoolProgram.conduciveToDegree,
@@ -75,6 +82,9 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
     num_cu: parseInt(schoolProgram.numCu, 10),
     duration: parseInt(schoolProgram.duration, 10) || undefined,
     min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
+    min_cu_to_doctoral_exam: schoolProgram.minCuToDoctoralExam
+      ? parseInt(schoolProgram.minCuToDoctoralExam, 10)
+      : 0,
     min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,
     conducive_to_degree: schoolProgram.conduciveToDegree,

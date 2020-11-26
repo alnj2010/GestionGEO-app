@@ -4,12 +4,9 @@ import * as moment from 'moment';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Typography } from '@material-ui/core';
-import { Form, reduxForm, submit, FieldArray, formValueSelector, change } from 'redux-form';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Form, reduxForm, submit, formValueSelector, change } from 'redux-form';
 import RenderFields from '../RenderFields';
+import RenderFieldsArray from '../RenderFieldsArray';
 import Dialog from '../Dialog';
 import { show } from '../../actions/dialog';
 import { jsonToOptions } from '../../helpers';
@@ -60,282 +57,6 @@ class StudentInscription extends Component {
     });
   };
 
-  unselectedSubjects = (pos) => {
-    const { availableSubjects, subjectsSelected, subjects, idSchoolPeriod } = this.props;
-    if (idSchoolPeriod) {
-      const subjectsAux = subjects.map((item) => ({
-        id: item.id,
-        subject: {
-          name: item.subject_name,
-        },
-      }));
-      return subjectsAux
-        .concat(availableSubjects)
-        .filter(
-          (item) =>
-            !subjectsSelected.some(
-              (selected, index) => selected.subjectId === item.id && pos > index
-            )
-        );
-    }
-    return availableSubjects.filter(
-      (item) =>
-        !subjectsSelected.some((selected, index) => selected.subjectId === item.id && pos > index)
-    );
-  };
-
-  renderSubjects = ({ fields }) => {
-    const { classes, availableSubjects, subjectsSelected } = this.props;
-    const totalSubjects = this.unselectedSubjects(fields.length).length;
-    return (
-      <>
-        {fields.map((subject, index) => {
-          const availableOptions = this.unselectedSubjects(index).map((unselectedSubject) => {
-            return {
-              key: unselectedSubject.subject.name,
-              value: unselectedSubject.id,
-            };
-          });
-          return (
-            // eslint-disable-next-line react/no-array-index-key
-            <Grid container justify="center" key={index}>
-              <Grid container item xs={10}>
-                <RenderFields lineal>
-                  {[
-                    {
-                      field: `${subject}.subjectId`,
-                      id: `${subject}.subjectId`,
-                      disabled: !!subjectsSelected[index].subjectId,
-                      type: 'select',
-                      label: 'Materia',
-                      options: availableOptions,
-                    },
-                    {
-                      label: 'Estado Materia',
-                      field: `${subject}.status`,
-                      id: `${subject}.status`,
-                      type: 'select',
-                      options: jsonToOptions(SUBJECT_STATE),
-                    },
-                    {
-                      label: 'Nota',
-                      field: `${subject}.nota`,
-                      id: `${subject}.nota`,
-                      type: 'number',
-                      disabled: subjectsSelected[index].status === SUBJECT_STATE.CURSANDO,
-                      min: 0,
-                      max: 20,
-                    },
-                  ]}
-                </RenderFields>
-              </Grid>
-
-              <Grid item xs={2}>
-                <IconButton
-                  className={classes.buttonDelete}
-                  aria-label="remover"
-                  color="secondary"
-                  onClick={() => fields.remove(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-          );
-        })}
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={1}>
-            <Fab
-              color="primary"
-              aria-label="Add"
-              className={classes.fab}
-              disabled={
-                availableSubjects.length === 0 ||
-                totalSubjects === 0 ||
-                (subjectsSelected[fields.length - 1] &&
-                  !subjectsSelected[fields.length - 1].subjectId)
-              }
-              onClick={() => fields.push({})}
-            >
-              <AddIcon />
-            </Fab>
-          </Grid>
-        </Grid>
-      </>
-    );
-  };
-
-  renderFinalWork = ({ fields }) => {
-    const {
-      classes,
-      idSchoolPeriod,
-      finalWorkSubjects,
-      finalWorkSubjectsSelected,
-      finalWorkEnrolled,
-      approvedProjects,
-      teachers,
-    } = this.props;
-
-    const posiblesFinalSubjects = (pos) => {
-      if (idSchoolPeriod) {
-        const subjectsAux = finalWorkSubjects.map((item) => ({
-          value: item.id,
-          key: item.name,
-        }));
-        return subjectsAux
-          .concat(
-            finalWorkEnrolled.map((item) => ({
-              value: item.id,
-              key: item.name,
-            }))
-          )
-          .filter(
-            (item) =>
-              !finalWorkSubjectsSelected.some(
-                (selected, index) => selected.subjectId === item.value && pos > index
-              )
-          );
-      }
-      return finalWorkSubjects
-        .filter(
-          (item) =>
-            !finalWorkSubjectsSelected.some((fws, i) => fws.subjectId === item.id && pos > i)
-        )
-        .map((fw) => ({ key: fw.name, value: fw.id }));
-    };
-    let fws = null;
-    if (finalWorkSubjects.length) {
-      fws = finalWorkSubjects;
-    } else if (finalWorkSubjectsSelected.length) {
-      fws = finalWorkSubjectsSelected;
-    }
-    const totalSubjects = posiblesFinalSubjects(fields.length).length;
-    const distributionItems =
-      fws[0].is_final_subject || (fws[0].isProject !== undefined && !fws[0].isProject)
-        ? [2, 2, 2, 2, 2, 2, 2]
-        : [3, 3, 3, 3];
-    return (
-      <>
-        {fields.map((finalWork, index) => {
-          let oneMore = null;
-          if (finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS.APROBADO) {
-            if (distributionItems.length === 7) {
-              oneMore = [2, 1, 2, 2, 2, 1, 2];
-            } else if (distributionItems.length === 4) {
-              oneMore = [3, 2, 2, 3, 2];
-            }
-          }
-          return (
-            // eslint-disable-next-line react/no-array-index-key
-            <Grid container justify="center" key={index}>
-              <Grid container item xs={10}>
-                <RenderFields lineal={oneMore || distributionItems}>
-                  {[
-                    {
-                      field: `${finalWork}.title`,
-                      id: `${finalWork}.title`,
-
-                      type: 'text',
-                      label: 'Titulo',
-                    },
-                    {
-                      field: `${finalWork}.status`,
-                      id: `${finalWork}.status`,
-                      type: 'select',
-                      label: 'Estado',
-                      options: jsonToOptions(FINAL_WORK_STATUS),
-                    },
-
-                    {
-                      field: `${finalWork}.subjectId`,
-                      id: `${finalWork}.subjectId`,
-                      type: 'select',
-                      label: 'Materia',
-                      disabled: !!finalWorkSubjectsSelected[index].subjectId,
-                      options: posiblesFinalSubjects(index),
-                    },
-                    {
-                      field: `${finalWork}.descriptionStatus`,
-                      id: `${finalWork}.descriptionStatus`,
-                      type: 'text',
-                      label: 'Descripcion del estado',
-                    },
-                    {
-                      field: `${finalWork}.approvalDate`,
-                      id: `${finalWork}.approvalDate`,
-                      type:
-                        finalWorkSubjectsSelected[index].status === FINAL_WORK_STATUS.APROBADO
-                          ? 'date'
-                          : 'hidden',
-                      label: 'Fecha de aprobacion',
-                    },
-                    {
-                      field: `${finalWork}.projectId`,
-                      id: `${finalWork}.projectId`,
-                      type:
-                        fws[0].is_final_subject ||
-                        (fws[0].isProject !== undefined && !fws[0].isProject)
-                          ? 'select'
-                          : 'hidden',
-                      label: 'Proyecto',
-                      options: approvedProjects.map((item) => ({
-                        key: item.title,
-                        value: item.id,
-                      })),
-                    },
-                    {
-                      field: `${finalWork}.advisors`,
-                      id: `${finalWork}.advisors`,
-                      type:
-                        fws[0].is_final_subject ||
-                        (fws[0].isProject !== undefined && !fws[0].isProject)
-                          ? 'select'
-                          : 'hidden',
-                      multiple: true,
-                      label: 'Tutor',
-                      options: teachers.map((item) => ({
-                        key: `${item.first_name} ${item.first_surname}`,
-                        value: item.id,
-                      })),
-                    },
-                  ]}
-                </RenderFields>
-              </Grid>
-              <Grid item xs={2}>
-                <IconButton
-                  className={classes.buttonDelete}
-                  aria-label="remover"
-                  color="secondary"
-                  onClick={() => fields.remove(index)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Grid>
-            </Grid>
-          );
-        })}
-        <Grid container item xs={12} justify="center">
-          <Grid item xs={1}>
-            <Fab
-              color="primary"
-              aria-label="Add"
-              className={classes.fab}
-              disabled={
-                finalWorkSubjects.length === 0 ||
-                totalSubjects === 0 ||
-                (finalWorkSubjectsSelected[fields.length - 1] &&
-                  !finalWorkSubjectsSelected[fields.length - 1].subjectId)
-              }
-              onClick={() => fields.push({ approvalDate: moment().format('YYYY-MM-DD') })}
-            >
-              <AddIcon />
-            </Fab>
-          </Grid>
-        </Grid>
-      </>
-    );
-  };
-
   render = () => {
     const {
       classes,
@@ -348,13 +69,14 @@ class StudentInscription extends Component {
       valid,
       submitDispatch,
       changeDispatch,
+      teachers,
+      approvedProjects,
       schoolPeriods,
       getAvailableSubjects,
       idSchoolPeriod,
       fullname,
       subjectsSelected,
       availableSubjects,
-      subjects,
       finalWorkSubjects,
       availableDoctoralExam,
       finalWorkSubjectsSelected,
@@ -362,11 +84,7 @@ class StudentInscription extends Component {
     let rolledSubjects = [];
     if (availableSubjects.length && subjectsSelected) {
       rolledSubjects = availableSubjects.filter((item) =>
-        subjectsSelected.some((subject) => subject.subjectId === item.id)
-      );
-    } else if (subjects.length && subjectsSelected) {
-      rolledSubjects = subjects.filter((item) =>
-        subjectsSelected.some((subject) => subject.subjectId === item.id)
+        subjectsSelected.some((subject) => subject.subjectId === item.value)
       );
     }
     let fws = null;
@@ -445,7 +163,40 @@ class StudentInscription extends Component {
                   <Typography variant="h6" gutterBottom>
                     Materias
                   </Typography>
-                  <FieldArray name="subjects" component={this.renderSubjects} />
+                  <RenderFieldsArray
+                    name="subjects"
+                    nonRepeatOptions={availableSubjects}
+                    distributions={[4, 4, 4]}
+                  >
+                    {(subjectSelected) => {
+                      return [
+                        {
+                          field: `subjectId`,
+                          id: `subjectId`,
+                          type: 'select',
+                          label: 'Materia',
+                          repeatOption: false,
+                        },
+                        {
+                          label: 'Estado Materia',
+                          field: `status`,
+                          id: `status`,
+                          type: 'select',
+                          options: jsonToOptions(SUBJECT_STATE),
+                        },
+                        {
+                          label: 'Nota',
+                          field: `nota`,
+                          id: `nota`,
+                          type: 'number',
+                          min: 0,
+                          max: 20,
+                          disabled:
+                            subjectSelected && subjectSelected.status === SUBJECT_STATE.CURSANDO,
+                        },
+                      ];
+                    }}
+                  </RenderFieldsArray>
                 </Grid>
               ) : null}
 
@@ -457,7 +208,87 @@ class StudentInscription extends Component {
                       ? 'Trabajo final'
                       : 'Proyecto y seminario'}
                   </Typography>
-                  <FieldArray name="finalWorks" component={this.renderFinalWork} />
+                  <RenderFieldsArray
+                    name="finalWorks"
+                    nonRepeatOptions={finalWorkSubjects}
+                    distributions={
+                      fws[0].is_final_subject ||
+                      (fws[0].isProject !== undefined && !fws[0].isProject)
+                        ? [2, 1, 1, 2, 2, 2, 2]
+                        : [3, 1, 3, 3, 2]
+                    }
+                  >
+                    {(finalWorkSelected) => {
+                      return [
+                        {
+                          field: `title`,
+                          id: `title`,
+
+                          type: 'text',
+                          label: 'Titulo',
+                        },
+                        {
+                          field: `status`,
+                          id: `status`,
+                          type: 'select',
+                          label: 'Estado',
+                          options: jsonToOptions(FINAL_WORK_STATUS),
+                        },
+
+                        {
+                          field: `subjectId`,
+                          id: `subjectId`,
+                          type: 'select',
+                          label: 'Materia',
+                          repeatOption: false,
+                        },
+                        {
+                          field: `descriptionStatus`,
+                          id: `descriptionStatus`,
+                          type: 'text',
+                          label: 'Descripcion del estado',
+                        },
+                        {
+                          field: `approvalDate`,
+                          id: `approvalDate`,
+                          type: 'date',
+                          label: 'Fecha de aprobacion',
+                          disabled:
+                            !finalWorkSelected ||
+                            finalWorkSelected.status !== FINAL_WORK_STATUS.APROBADO,
+                        },
+                        {
+                          field: `projectId`,
+                          id: `projectId`,
+                          type:
+                            fws[0].is_final_subject ||
+                            (fws[0].isProject !== undefined && !fws[0].isProject)
+                              ? 'select'
+                              : 'hidden',
+                          label: 'Proyecto',
+                          options: approvedProjects.map((item) => ({
+                            key: item.title,
+                            value: item.id,
+                          })),
+                        },
+                        {
+                          field: `advisors`,
+                          id: `advisors`,
+                          type:
+                            fws[0].is_final_subject ||
+                            (fws[0].isProject !== undefined && !fws[0].isProject)
+                              ? 'select'
+                              : 'hidden',
+                          multiple: true,
+                          label: 'Tutor',
+                          options: teachers.map((item) => ({
+                            key: `${item.first_name} ${item.first_surname}`,
+                            value: item.id,
+                          })),
+                        },
+                      ];
+                    }}
+                  </RenderFieldsArray>
                 </Grid>
               ) : null}
 
@@ -466,11 +297,7 @@ class StudentInscription extends Component {
                   <h4>
                     Total de creditos inscritos:{' '}
                     <span style={{ color: '#2196f3' }}>
-                      {rolledSubjects.reduce(
-                        (total, item) => total + parseInt(item.subject.uc, 10),
-                        0
-                      )}{' '}
-                      uc
+                      {rolledSubjects.reduce((total, item) => total + parseInt(item.uc, 10), 0)} uc
                     </span>{' '}
                   </h4>
                   <h4>
@@ -558,13 +385,6 @@ StudentInscription.propTypes = {
   finalWorkSubjects: PropTypes.arrayOf(PropTypes.shape({})),
   approvedProjects: PropTypes.arrayOf(PropTypes.shape({})),
   availableDoctoralExam: PropTypes.bool,
-
-  subjects: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      name: PropTypes.string,
-    })
-  ).isRequired,
 
   // eslint-disable-next-line react/forbid-prop-types
   studentId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
@@ -694,6 +514,9 @@ StudentInscriptionWrapper = connect(
               : null,
           }))
         : [],
+      doctoralExam: state.studentReducer.selectedStudentSchoolPeriod.doctoral_exam
+        ? state.studentReducer.selectedStudentSchoolPeriod.doctoral_exam.status
+        : null,
     },
     action: state.dialogReducer.action,
     schoolPeriodId: selector(state, 'schoolPeriodId'),

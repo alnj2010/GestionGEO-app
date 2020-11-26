@@ -59,6 +59,10 @@ export const cleanSelectedSchoolPeriod = () => async (dispatch) => {
   });
 };
 
+export const cleanGetList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
+};
+
 export const updateSchoolPeriod = (schoolPeriod) => async (dispatch) => {
   const payload = {
     id: schoolPeriod.id,

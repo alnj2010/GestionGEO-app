@@ -44,6 +44,10 @@ export const cleanSelectedAdmin = () => async (dispatch) => {
   });
 };
 
+export const cleanGetList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
+};
+
 export const updateAdmin = (admin) => async (dispatch) => {
   const payload = {
     id: admin.id,

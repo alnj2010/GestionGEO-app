@@ -5,6 +5,8 @@ const KEY_STORAGE = {
   GEO_TOKEN: 'geo-token',
   USER_ROL: 'user-rol',
   USER_ID: 'user-id',
+  TOKEN_EXPIRES: 'token-expires',
+  INIT_TIME_LOGIN: 'init-time-login',
   IS_MAIN_USER: 'is-main-user',
 };
 
@@ -48,6 +50,24 @@ export function removeSessionGeoToken() {
   sessionStorage.removeItem(KEY_STORAGE.TEACHER_ID);
   sessionStorage.removeItem(KEY_STORAGE.IS_MAIN_USER);
   sessionStorage.removeItem(KEY_STORAGE.USER);
+  sessionStorage.removeItem(KEY_STORAGE.INIT_TIME_LOGIN);
+  sessionStorage.removeItem(KEY_STORAGE.TOKEN_EXPIRES);
+}
+
+export function setTokenExpires(value) {
+  sessionStorage.setItem(KEY_STORAGE.TOKEN_EXPIRES, value);
+}
+
+export function getTokenExpires() {
+  return sessionStorage.getItem(KEY_STORAGE.TOKEN_EXPIRES);
+}
+
+export function setInitTimeLogin(value) {
+  sessionStorage.setItem(KEY_STORAGE.INIT_TIME_LOGIN, value);
+}
+
+export function getInitTimeLogin() {
+  return sessionStorage.getItem(KEY_STORAGE.INIT_TIME_LOGIN);
 }
 
 export function setSessionUserRol(value) {

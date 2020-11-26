@@ -70,6 +70,10 @@ export const cleanSchoolProgram = () => async (dispatch) => {
   });
 };
 
+export const cleanGetWarningStudentsList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.WARNING_STUDENTS, payload: { warningStudents: [] } });
+};
+
 export const updateSchoolProgram = (student) => async (dispatch) => {
   const payload = {
     identification: student.identification,
@@ -87,7 +91,7 @@ export const updateSchoolProgram = (student) => async (dispatch) => {
     sex: student.sex,
     nationality: student.nationality,
     student_id: student.idStudent,
-    guide_teacher_id: student.guideTeacherId,
+    guide_teacher_id: student.guideTeacherId || undefined,
     student_type: student.studentType,
     home_university: student.homeUniversity,
     current_postgraduate: student.currentPostgraduate,
@@ -134,7 +138,7 @@ export const saveSchoolProgram = (student) => async (dispatch) => {
     with_disabilities: student.with_disabilities,
     sex: student.sex,
     nationality: student.nationality,
-    guide_teacher_id: student.guideTeacherId,
+    guide_teacher_id: student.guideTeacherId || undefined,
     student_type: student.studentType,
     school_program_id: student.schoolProgramId,
     home_university: student.homeUniversity,
@@ -202,7 +206,7 @@ export const updateStudent = (student) => async (dispatch) => {
     sex: student.sex,
     nationality: student.nationality,
     student_id: student.studentId,
-    guide_teacher_id: student.guideTeacherId,
+    guide_teacher_id: student.guideTeacherId || undefined,
     student_type: student.studentType,
     home_university: student.homeUniversity,
     current_postgraduate: student.currentPostgraduate,
@@ -252,7 +256,7 @@ export const saveStudent = (student) => async (dispatch) => {
     sex: student.sex,
     nationality: student.nationality,
     school_program_id: student.schoolProgram,
-    guide_teacher_id: student.guideTeacherId,
+    guide_teacher_id: student.guideTeacherId || undefined,
     student_type: student.studentType,
     home_university: student.homeUniversity,
     // current_postgraduate:student.currentPostgraduate,
@@ -306,6 +310,15 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
       });
     })
     .catch((error) => {
+      dispatch({
+        type: ACTIONS.AVAILABLE_SUBJECTS,
+        payload: {
+          availableSubjects: [],
+          finalWorkSubjects: [],
+          approvedProjects: [],
+          availableDoctoralExam: false,
+        },
+      });
       //show(error.message, 'error')(dispatch);
       throw error;
     });

@@ -8,8 +8,14 @@ import {
   cleanSelectedSchoolPeriod,
   saveSchoolPeriod,
 } from '../../actions/schoolPeriod';
-import { getList as getSubjectList } from '../../actions/subject';
-import { getList as getTeacherList } from '../../actions/teacher';
+import {
+  getList as getSubjectList,
+  cleanGetList as cleanGetSubjectList,
+} from '../../actions/subject';
+import {
+  getList as getTeacherList,
+  cleanGetList as cleanGetTeacherList,
+} from '../../actions/teacher';
 import SchoolPeriodDetail from '../../components/SchoolPeriods/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
@@ -29,9 +35,16 @@ class SchoolPeriodDetailContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanSelectedSchoolPeriodDispatch, cleanDialogDispatch } = this.props;
+    const {
+      cleanSelectedSchoolPeriodDispatch,
+      cleanDialogDispatch,
+      cleanGetSubjectListDispatch,
+      cleanGetTeacherListDispatch,
+    } = this.props;
     cleanSelectedSchoolPeriodDispatch();
     cleanDialogDispatch();
+    cleanGetSubjectListDispatch();
+    cleanGetTeacherListDispatch();
   };
 
   saveSchoolPeriod = (values) => {
@@ -105,6 +118,8 @@ SchoolPeriodDetailContainer.propTypes = {
   cleanDialogDispatch: PropTypes.func.isRequired,
   getSubjectListDispatch: PropTypes.func.isRequired,
   getTeacherListDispatch: PropTypes.func.isRequired,
+  cleanGetSubjectListDispatch: PropTypes.func.isRequired,
+  cleanGetTeacherListDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -123,6 +138,8 @@ const mD = {
   cleanDialogDispatch: cleanDialog,
   getSubjectListDispatch: getSubjectList,
   getTeacherListDispatch: getTeacherList,
+  cleanGetSubjectListDispatch: cleanGetSubjectList,
+  cleanGetTeacherListDispatch: cleanGetTeacherList,
 };
 
 export default connect(mS, mD)(SchoolPeriodDetailContainer);

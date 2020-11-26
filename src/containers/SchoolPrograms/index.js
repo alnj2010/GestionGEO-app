@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
-import { getList, deleteSchoolProgram } from '../../actions/schoolProgram';
+import { getList, deleteSchoolProgram, cleanGetList } from '../../actions/schoolProgram';
 import SchoolProgramsList from '../../components/SchoolPrograms';
 
 class SchoolProgramsListContainer extends Component {
@@ -20,8 +20,9 @@ class SchoolProgramsListContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanDialogDispatch } = this.props;
+    const { cleanDialogDispatch, cleanGetListDispatch } = this.props;
     cleanDialogDispatch();
+    cleanGetListDispatch();
   };
 
   handleDeleteSchoolProgram = (id) => {
@@ -59,6 +60,7 @@ SchoolProgramsListContainer.propTypes = {
   cleanDialogDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
+  cleanGetListDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -69,6 +71,7 @@ const mD = {
   getListDispatch: getList,
   deleteSchoolProgramDispatch: deleteSchoolProgram,
   cleanDialogDispatch: cleanDialog,
+  cleanGetListDispatch: cleanGetList,
   defineDispatch: define,
   showDispatch: show,
 };

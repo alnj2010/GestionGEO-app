@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { define, cleanDialog, show } from '../../actions/dialog';
-import { getList, deleteAdmin } from '../../actions/admin';
+import { getList, deleteAdmin, cleanGetList } from '../../actions/admin';
 import { getConstance } from '../../actions/student';
 import AdminsList from '../../components/Admins';
 
@@ -21,8 +21,9 @@ class AdminsListContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanDialogDispatch } = this.props;
+    const { cleanDialogDispatch, cleanGetListDispatch } = this.props;
     cleanDialogDispatch();
+    cleanGetListDispatch();
   };
 
   handleDeleteAdmin = (id) => {
@@ -60,6 +61,7 @@ AdminsListContainer.propTypes = {
   getConstanceDispatch: PropTypes.func.isRequired,
   deleteAdminDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
+  cleanGetListDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
   showDispatch: PropTypes.func.isRequired,
 };
@@ -73,6 +75,7 @@ const mD = {
   getConstanceDispatch: getConstance,
   deleteAdminDispatch: deleteAdmin,
   cleanDialogDispatch: cleanDialog,
+  cleanGetListDispatch: cleanGetList,
   defineDispatch: define,
   showDispatch: show,
 };

@@ -20,6 +20,10 @@ export const getCoursesList = () => async (dispatch) => {
       return error.message;
     });
 };
+
+export const cleanGetCoursesList = () => async (dispatch) => {
+  dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
+};
 export const getEnrolledStudents = (id) => async (dispatch) => {
   return MyCourse.getEnrolledStudents(getSessionTeacherId(), id)
     .then((response) => {

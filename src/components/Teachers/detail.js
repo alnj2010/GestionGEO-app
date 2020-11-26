@@ -63,10 +63,9 @@ class TeacherDetail extends Component {
       valid,
       submitDispatch,
       teacher,
-      teacherType,
+      category,
     } = this.props;
     const { func } = this.state;
-
     return (
       <Form onSubmit={handleSubmit(saveTeacher)}>
         <Grid container>
@@ -194,7 +193,7 @@ class TeacherDetail extends Component {
                   },
                 ]}
               </RenderFields>
-              {teacherType === TEACHER_CATEGORY.INVITADO ? (
+              {category === TEACHER_CATEGORY.INVITADO ? (
                 <RenderFields>
                   {[
                     {
@@ -280,7 +279,7 @@ TeacherDetail.propTypes = {
     first_name: PropTypes.string,
   }),
 
-  teacherType: PropTypes.string,
+  category: PropTypes.string,
   // eslint-disable-next-line react/forbid-prop-types
   teacherId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   pristine: PropTypes.bool.isRequired,
@@ -297,7 +296,7 @@ TeacherDetail.propTypes = {
 TeacherDetail.defaultProps = {
   teacherId: null,
   teacher: null,
-  teacherType: null,
+  category: null,
 };
 
 const teacherValidation = (values) => {
@@ -398,7 +397,7 @@ TeacherDetailWrapper = connect(
       active: !!state.teacherReducer.selectedTeacher.active,
     },
     action: state.dialogReducer.action,
-    teacherType: selector(state, 'teacherType'),
+    category: selector(state, 'category'),
   }),
   { showDispatch: show, submitDispatch: submit }
 )(TeacherDetailWrapper);

@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AdminHome from '../../components/Home/admin';
-import { getList } from '../../actions/schoolPeriod';
+import { getList, cleanGetList } from '../../actions/schoolPeriod';
 import { getReport } from '../../actions/admin';
-import { getWarningStudentsList, updateSchoolProgram } from '../../actions/student';
+import {
+  getWarningStudentsList,
+  updateSchoolProgram,
+  cleanGetWarningStudentsList,
+} from '../../actions/student';
 
 class AdminHomeContainer extends Component {
   constructor() {
@@ -25,7 +29,11 @@ class AdminHomeContainer extends Component {
     updateSchoolProgramDispatch(student);
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => {
+    const { cleanGetListDispatch, cleanGetWarningStudentsListDispatch } = this.props;
+    cleanGetListDispatch();
+    cleanGetWarningStudentsListDispatch();
+  };
 
   render() {
     const { schoolPeriods, getReportDispatch, warningStudents, history } = this.props;
@@ -57,6 +65,8 @@ AdminHomeContainer.propTypes = {
   getReportDispatch: PropTypes.func.isRequired,
   getWarningStudentsListDispatch: PropTypes.func.isRequired,
   updateSchoolProgramDispatch: PropTypes.func.isRequired,
+  cleanGetListDispatch: PropTypes.func.isRequired,
+  cleanGetWarningStudentsListDispatch: PropTypes.func.isRequired,
 };
 AdminHomeContainer.defaultProps = {};
 
@@ -70,6 +80,8 @@ const mD = {
   getReportDispatch: getReport,
   getWarningStudentsListDispatch: getWarningStudentsList,
   updateSchoolProgramDispatch: updateSchoolProgram,
+  cleanGetListDispatch: cleanGetList,
+  cleanGetWarningStudentsListDispatch: cleanGetWarningStudentsList,
 };
 
 export default connect(mS, mD)(AdminHomeContainer);

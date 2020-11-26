@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
-import { updateSchoolPeriod, findCurrentSchoolPeriod } from '../../actions/schoolPeriod';
+import {
+  updateSchoolPeriod,
+  findCurrentSchoolPeriod,
+  cleanSelectedSchoolPeriod,
+} from '../../actions/schoolPeriod';
 import SchoolPeriodActual from '../../components/SchoolPeriods/actual';
 import { define, cleanDialog } from '../../actions/dialog';
 import { WEEKDAYS } from '../../services/constants';
@@ -19,8 +23,9 @@ class SchoolPeriodActualContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanDialogDispatch } = this.props;
+    const { cleanDialogDispatch, cleanSelectedSchoolPeriodDispatch } = this.props;
     cleanDialogDispatch();
+    cleanSelectedSchoolPeriodDispatch();
   };
 
   saveSchoolPeriod = (values) => {
@@ -30,6 +35,7 @@ class SchoolPeriodActualContainer extends Component {
       end_date: values.endDate,
       inscription_visible: values.incriptionVisible,
       load_notes: values.loadNotes,
+      withdrawal_deadline: values.withdrawalDeadline,
     };
     let payload = { ...schoolPeriodActual, ...val };
     payload = {
@@ -37,6 +43,7 @@ class SchoolPeriodActualContainer extends Component {
       inscriptionVisible: payload.inscription_visible,
       endSchoolPeriod: payload.end_school_period,
       loadNotes: payload.load_notes,
+      withdrawalDeadline: payload.withdrawal_deadline,
       codSchoolPeriod: payload.cod_school_period,
       inscriptionStartDate: payload.inscription_start_date,
       projectDuty: payload.project_duty,
@@ -44,7 +51,7 @@ class SchoolPeriodActualContainer extends Component {
       endDate: payload.end_date,
       startDate: payload.start_date,
       subjects: payload.subjects.map((subject) => ({
-        subjectId: subject.id,
+        subjectId: subject.subject_id,
         teacherId: subject.teacher_id,
         duty: subject.duty,
         limit: subject.limit,
@@ -64,7 +71,6 @@ class SchoolPeriodActualContainer extends Component {
 
   render() {
     const {
-      schoolPeriodActual,
       schoolPeriodActual: {
         start_date: startDate,
         end_date: endDate,
@@ -101,6 +107,7 @@ SchoolPeriodActualContainer.propTypes = {
   defineDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   findCurrentSchoolPeriodDispatch: PropTypes.func.isRequired,
+  cleanSelectedSchoolPeriodDispatch: PropTypes.func.isRequired,
 };
 SchoolPeriodActualContainer.defaultProps = {};
 
@@ -112,6 +119,7 @@ const mD = {
   updateSchoolPeriodDispatch: updateSchoolPeriod,
   defineDispatch: define,
   cleanDialogDispatch: cleanDialog,
+  cleanSelectedSchoolPeriodDispatch: cleanSelectedSchoolPeriod,
   findCurrentSchoolPeriodDispatch: findCurrentSchoolPeriod,
 };
 
