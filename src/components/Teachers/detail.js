@@ -66,7 +66,6 @@ class TeacherDetail extends Component {
       category,
     } = this.props;
     const { func } = this.state;
-    console.log(category);
     return (
       <Form onSubmit={handleSubmit(saveTeacher)}>
         <Grid container>

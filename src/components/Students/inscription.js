@@ -514,6 +514,9 @@ StudentInscriptionWrapper = connect(
               : null,
           }))
         : [],
+      doctoralExam: state.studentReducer.selectedStudentSchoolPeriod.doctoral_exam
+        ? state.studentReducer.selectedStudentSchoolPeriod.doctoral_exam.status
+        : null,
     },
     action: state.dialogReducer.action,
     schoolPeriodId: selector(state, 'schoolPeriodId'),
