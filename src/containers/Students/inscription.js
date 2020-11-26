@@ -71,10 +71,9 @@ class StudentInscriptionContainer extends Component {
         params: { studentId, idSchoolPeriod },
       },
     } = this.props;
-
     let isProjectSubject = null;
     if (finalWorkSubjects && finalWorkSubjects.length) {
-      isProjectSubject = finalWorkSubjects[0].is_project_subject;
+      isProjectSubject = finalWorkSubjects[0].isProject;
     } else if (finalWorkData && finalWorkData[0]) {
       isProjectSubject = finalWorkData[0].final_work.is_project;
     }
@@ -106,7 +105,6 @@ class StudentInscriptionContainer extends Component {
   render() {
     const {
       schoolPeriods,
-      subjects,
       match: {
         params: { studentId, idSchoolPeriod },
       },
@@ -148,20 +146,18 @@ class StudentInscriptionContainer extends Component {
         goBack={this.goBack}
         studentId={studentId}
         idSchoolPeriod={idSchoolPeriod}
-        finalWorkSubjects={finalWorkSubjects}
+        finalWorkSubjects={finalWorkSubjects.concat(
+          finalWorkEnrolled
+            ? finalWorkEnrolled.map((item) => ({
+                id: idSchoolPeriod,
+                value: item.id,
+                key: item.name,
+              }))
+            : []
+        )}
         finalWorkEnrolled={finalWorkEnrolled}
         approvedProjects={approvedProjects}
         availableDoctoralExam={availableDoctoralExam}
-        subjects={
-          subjects
-            ? subjects.map((item) => ({
-                id: item.school_period_subject_teacher_id,
-                subject_name: item.data_subject.subject.name,
-                duty: item.data_subject.duty,
-                subject: { uc: item.data_subject.subject.uc },
-              }))
-            : []
-        }
         getAvailableSubjects={getAvailableSubjectsDispatch}
         availableSubjects={availableSubjects}
         fullname={fullname}
@@ -185,18 +181,6 @@ StudentInscriptionContainer.propTypes = {
   finalWorkSubjects: PropTypes.arrayOf(PropTypes.shape({})),
   approvedProjects: PropTypes.arrayOf(PropTypes.shape({})),
   availableDoctoralExam: PropTypes.bool,
-  subjects: PropTypes.arrayOf(
-    PropTypes.shape({
-      school_period_subject_teacher_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-      data_subject: PropTypes.shape({
-        subject: PropTypes.shape({
-          subject_name: PropTypes.string,
-          uc: PropTypes.number,
-        }),
-        duty: PropTypes.number,
-      }),
-    })
-  ),
   finalWorkData: PropTypes.arrayOf(
     PropTypes.shape({
       is_project_subject: PropTypes.bool,
@@ -229,7 +213,6 @@ StudentInscriptionContainer.propTypes = {
 };
 
 StudentInscriptionContainer.defaultProps = {
-  subjects: [],
   idInscription: null,
   finalWorkSubjects: [],
   approvedProjects: [],
@@ -237,12 +220,41 @@ StudentInscriptionContainer.defaultProps = {
 };
 
 const mS = (state) => ({
-  subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects,
   finalWorkData: state.studentReducer.selectedStudentSchoolPeriod.final_work_data,
   idInscription: state.studentReducer.selectedStudentSchoolPeriod.id,
   schoolPeriods: state.schoolPeriodReducer.list,
-  availableSubjects: state.studentReducer.availableSubjects,
-  finalWorkSubjects: state.studentReducer.finalWorkSubjects,
+  availableSubjects: state.studentReducer.availableSubjects
+    .map((item) => {
+      return {
+        id: state.form.inscripcion.values.schoolPeriodId,
+        key: item.subject.name,
+        value: item.id,
+        duty: item.duty,
+        uc: item.subject.uc,
+      };
+    })
+    .concat(
+      state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects
+        ? state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects.map((item) => ({
+            id: state.form.inscripcion.values.schoolPeriodId,
+            key: item.data_subject.subject.name,
+            value: item.school_period_subject_teacher_id,
+            duty: item.data_subject.duty,
+            uc: item.data_subject.subject.uc,
+          }))
+        : []
+    ),
+  finalWorkSubjects:
+    state.studentReducer.finalWorkSubjects &&
+    state.studentReducer.finalWorkSubjects
+      .map((item) => ({
+        id: state.form.inscripcion.values.schoolPeriodId,
+        key: item.name,
+        value: item.id,
+        is_final_subject: item.is_final_subject,
+        isProject: item.is_project_subject,
+      }))
+      .concat([]),
   approvedProjects: state.studentReducer.approvedProjects,
   availableDoctoralExam: state.studentReducer.availableDoctoralExam,
   schoolPeriodsInscripted: state.studentReducer.inscribedSchoolPeriods,

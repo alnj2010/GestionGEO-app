@@ -16,6 +16,7 @@ export const getList = () => async (dispatch) => {
       return true;
     })
     .catch((error) => {
+      dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
       show(error.message, 'error')(dispatch);
       throw error;
     });

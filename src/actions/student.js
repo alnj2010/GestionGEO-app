@@ -306,6 +306,15 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
       });
     })
     .catch((error) => {
+      dispatch({
+        type: ACTIONS.AVAILABLE_SUBJECTS,
+        payload: {
+          availableSubjects: [],
+          finalWorkSubjects: [],
+          approvedProjects: [],
+          availableDoctoralExam: false,
+        },
+      });
       //show(error.message, 'error')(dispatch);
       throw error;
     });

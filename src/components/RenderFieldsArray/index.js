@@ -24,14 +24,14 @@ function RenderFieldsArray({
   children,
   nonRepeatOptions,
 }) {
-  let fieldSelectnonRepeat = children.find(
-    (child) => child.type === 'select' && !child.repeatOption
+  let fieldSelectnonRepeat = children().find(
+    (child) =>
+      child.type === 'select' && child.hasOwnProperty('repeatOption') && !child.repeatOption
   );
   fieldSelectnonRepeat = fieldSelectnonRepeat && fieldSelectnonRepeat.field;
 
   const renderChildren = ({ fields }) => {
     const selectedFields = fields.getAll();
-
     return (
       <>
         {fields.map((field, index) => {
@@ -40,7 +40,7 @@ function RenderFieldsArray({
             <Grid container justify="center" key={index}>
               <Grid container item xs={10}>
                 <RenderFields lineal={distributions}>
-                  {children.map((input) => {
+                  {children(selectedFields[index]).map((input) => {
                     const propsSelectNonRepeat = {};
                     if (
                       input.type === 'select' &&
@@ -74,6 +74,7 @@ function RenderFieldsArray({
             </Grid>
           );
         })}
+
         <Grid container item xs={12} justify="center">
           <Grid item xs={1}>
             <Fab
@@ -82,6 +83,7 @@ function RenderFieldsArray({
               disabled={
                 addButtonDisabled ||
                 (nonRepeatOptions &&
+                  selectedFields &&
                   !nonRepeatOptions.some(
                     (nonOpt) =>
                       !selectedFields.some(
@@ -110,7 +112,7 @@ RenderFieldsArray.propTypes = {
   name: PropTypes.string.isRequired,
   addButtonDisabled: PropTypes.bool,
   distributions: PropTypes.arrayOf(PropTypes.number),
-  children: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  children: PropTypes.func.isRequired,
   nonRepeatOptions: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.number, key: PropTypes.string, value: PropTypes.number })
   ),

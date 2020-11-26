@@ -213,7 +213,7 @@ class StudentSchoolProgram extends Component {
                   })}
                   distributions={[6, 6]}
                 >
-                  {[
+                  {() => [
                     {
                       field: `subject_id`,
                       id: `subject_id`,
