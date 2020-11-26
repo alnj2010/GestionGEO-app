@@ -123,18 +123,12 @@ class SchoolProgramDetail extends Component {
                   },
                   {
                     label: 'min. de UC para examen doctoral',
-                    field: 'numCuToDoctoralExam',
-                    id: 'numCuToDoctoralExam',
+                    field: 'minCuToDoctoralExam',
+                    id: 'minCuToDoctoralExam',
                     type: conduciveToDegreeSelected && doctoralExam ? 'number' : 'hidden',
                     min: 0,
                     max: numCu,
                     disabled: !numCu || !doctoralExam,
-                  },
-                  {
-                    label: '¿Posee examen doctoral?',
-                    field: 'doctoralExam',
-                    id: 'doctoralExam',
-                    type: conduciveToDegreeSelected ? 'switch' : 'hidden',
                   },
                   {
                     label: '¿Otorga un certificado de culminación?',
@@ -142,6 +136,13 @@ class SchoolProgramDetail extends Component {
                     id: 'grantCertificate',
                     type: 'switch',
                   },
+                  {
+                    label: '¿Posee examen doctoral?',
+                    field: 'doctoralExam',
+                    id: 'doctoralExam',
+                    type: conduciveToDegreeSelected ? 'switch' : 'hidden',
+                  },
+
                   {
                     label: '¿Otorga un grado academico?',
                     field: 'conduciveToDegree',
@@ -279,8 +280,8 @@ SchoolProgramDetailWrapper = connect(
       minNumCuFinalWork: state.schoolProgramReducer.selectedSchoolProgram.min_num_cu_final_work
         ? state.schoolProgramReducer.selectedSchoolProgram.min_num_cu_final_work
         : '',
-      numCuToDoctoralExam: state.schoolProgramReducer.selectedSchoolProgram.num_cu_to_doctoral_exam
-        ? state.schoolProgramReducer.selectedSchoolProgram.num_cu_to_doctoral_exam
+      minCuToDoctoralExam: state.schoolProgramReducer.selectedSchoolProgram.min_cu_to_doctoral_exam
+        ? state.schoolProgramReducer.selectedSchoolProgram.min_cu_to_doctoral_exam
         : '',
       minDuration: state.schoolProgramReducer.selectedSchoolProgram.min_duration
         ? state.schoolProgramReducer.selectedSchoolProgram.min_duration

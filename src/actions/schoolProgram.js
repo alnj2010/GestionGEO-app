@@ -53,7 +53,9 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
     num_cu: parseInt(schoolProgram.numCu, 10),
     duration: parseInt(schoolProgram.duration, 10) || undefined,
     min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
-    num_cu_to_doctoral_exam: parseInt(schoolProgram.numCuToDoctoralExam, 10),
+    min_cu_to_doctoral_exam: schoolProgram.minCuToDoctoralExam
+      ? parseInt(schoolProgram.minCuToDoctoralExam, 10)
+      : 0,
     min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,
     conducive_to_degree: schoolProgram.conduciveToDegree,
@@ -80,7 +82,9 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
     num_cu: parseInt(schoolProgram.numCu, 10),
     duration: parseInt(schoolProgram.duration, 10) || undefined,
     min_num_cu_final_work: parseInt(schoolProgram.minNumCuFinalWork, 10),
-    num_cu_to_doctoral_exam: parseInt(schoolProgram.numCuToDoctoralExam, 10),
+    min_cu_to_doctoral_exam: schoolProgram.minCuToDoctoralExam
+      ? parseInt(schoolProgram.minCuToDoctoralExam, 10)
+      : 0,
     min_duration: parseInt(schoolProgram.minDuration, 10),
     grant_certificate: schoolProgram.grantCertificate,
     conducive_to_degree: schoolProgram.conduciveToDegree,
