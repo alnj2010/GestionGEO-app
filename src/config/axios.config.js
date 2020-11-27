@@ -22,6 +22,7 @@ export function headers(type) {
   }
   return items;
 }
+
 const AXIOS = axios.create({
   baseURL: window._env_.REACT_APP_API_URL,
   headers: {

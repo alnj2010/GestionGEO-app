@@ -13,8 +13,7 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 
 ReactDOM.render(
   <Provider store={store}>
-      <p>API_URL: {window._env_.REACT_APP_API_URL}</p>
-      <App />
+    <App />
   </Provider>,
   document.getElementById('root')
 );
