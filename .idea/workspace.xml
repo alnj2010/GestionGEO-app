@@ -262,7 +262,7 @@
       <workItem from="1605663159429" duration="823000" />
       <workItem from="1605712345228" duration="2406000" />
       <workItem from="1606132582794" duration="605000" />
-      <workItem from="1606396077503" duration="4502000" />
+      <workItem from="1606396077503" duration="4769000" />
     </task>
     <task id="LOCAL-00001" summary="docker">
       <created>1603193854058</created>
@@ -289,7 +289,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="69011000" />
+    <option name="totallyTimeSpent" value="69278000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1360" height="768" extended-state="6" />
