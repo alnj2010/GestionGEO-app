@@ -24,7 +24,7 @@ export function headers(type) {
 }
 
 const AXIOS = axios.create({
-  baseURL: window._env_.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
     'Content-Type': 'application/json',
     'Organization-Key': process.env.REACT_APP_ORGANIZATION_KEY,
