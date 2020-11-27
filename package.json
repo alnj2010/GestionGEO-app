@@ -45,14 +45,6 @@
     "eslint-check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check",
     "start-prod": "node start-react.js"
   },
-  "lint-staged": {
-    "linters": {
-      "**/*.{js,jsx}": [
-        "npm run lint:fix",
-        "git add"
-      ]
-    }
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
