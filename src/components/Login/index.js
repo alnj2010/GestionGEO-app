@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Field, reduxForm } from 'redux-form';
+import { Form, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Grid,
@@ -17,12 +17,8 @@ import {
 } from '@material-ui/core';
 
 import PersonIcon from '@material-ui/icons/LocalLibrary';
-import PasswordInput from '../PasswordInput';
 import CustomizedSnackbar from '../Snackbar';
-import TextInput from '../TextInput';
 import RenderFields from '../RenderFields';
-import { USER_ROL } from '../../services/constants';
-import { jsonToOptions } from '../../helpers';
 
 const styles = () => ({
   input: {
