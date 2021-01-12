@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import Email from '@material-ui/icons/Email';
 import Phone from '@material-ui/icons/Phone';
-import backImage from '../../images/pif.jpg';
 
 import logo from '../../images/gestiongeo.svg';
 import engineerLogo from '../../images/ing.svg';
@@ -16,7 +16,7 @@ import pggqLogo from '../../images/pggq.svg';
 
 const styles = (theme) => ({
   container: {
-    height: '100vh',
+    minHeight: '100vh',
     backgroundColor: '#FBFBFB',
     display: 'flex',
     flexDirection: 'column',
@@ -29,11 +29,12 @@ const styles = (theme) => ({
     background: 'linear-gradient(180deg, rgba(3,161,244,1) 50%, rgba(0,123,230,1) 100%)',
   },
   section: {
-    height: '100%',
+    flexGrow: 1,
     paddingLeft: 78,
+    paddingRight: 550,
     '& article': {
       height: 350,
-      width: 727,
+      maxWidth: 727,
       fontSize: 14,
       fontFamily: 'Roboto',
       lineHeight: '30px',
@@ -41,16 +42,14 @@ const styles = (theme) => ({
   },
   loginContainer: {
     position: 'absolute',
-    width: 479,
-    height: 501,
-    backgroundColor: 'white',
-    boxShadow: '10px 10px 5px 0px rgba(0,0,0,0.15)',
-    borderRadius: 5,
+    height: 434,
+    display: 'flex',
+    justifyContent: 'center',
     top: 85,
     right: 42,
     zIndex: 1,
   },
-
+  loginPaper: { width: 479, padding: '42px 50px', boxSizing: 'border-box' },
   logoContainer: {
     paddingLeft: 78,
     userSelect: 'none',
@@ -95,10 +94,10 @@ const styles = (theme) => ({
     backgroundColor: 'rgba(112, 112, 112, 0.5)',
   },
   peopleContainer: {
-    position: 'relative',
-    right: 360,
-    bottom: 19,
     userSelect: 'none',
+    position: 'relative',
+    bottom: 100,
+    left: 2,
   },
 });
 
@@ -124,8 +123,8 @@ function AuthenticationApp({ children, classes }) {
           <img src={logo} alt="GestionGEO" />
         </div>
         <div className={classes.loginContainer}>
-          <img src={peopleLogo} className={classes.peopleContainer} alt="Estudiantes" />{' '}
-          {/* {children} */}
+          <img src={peopleLogo} className={classes.peopleContainer} alt="Estudiantes" />
+          <Paper className={classes.loginPaper}>{children}</Paper>
         </div>
       </header>
       <section className={classes.section}>

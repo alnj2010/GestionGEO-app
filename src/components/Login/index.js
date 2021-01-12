@@ -48,6 +48,15 @@ const styles = () => ({
     backgroundColor: '#2196f3',
     fontWeight: 550,
   },
+  titleContainer: { fontFamily: 'Roboto' },
+  titleLogin: { fontWeight: 'bold', fontSize: 24 },
+  subtitleLogin: {
+    fontWeight: 500,
+    fontSize: 13,
+    color: '#707070',
+    marginTop: 7,
+    lineHeight: '18px',
+  },
 });
 
 let LoginForm = (props) => {
@@ -66,37 +75,28 @@ let LoginForm = (props) => {
 
   return (
     <Grid container item xs={12} justify="center" direction="column" alignItems="center">
+      <div className={classes.titleContainer}>
+        <div className={classes.titleLogin}>Inicio de sesion</div>
+        <div className={classes.subtitleLogin}>
+          Procede a iniciar sesion y asi gestionar tus procesos academicos.
+        </div>
+      </div>
+
       <Form onSubmit={handleSubmit(handleLogin)} style={{ width: '100%' }}>
-        <Grid item xs={12}>
-          <Field
-            name="identification"
-            component={TextInput}
-            id="identification"
-            label="Cedula"
-            placeholder="Ingresa tu cedula"
-            margin="normal"
-            type="text"
-            className={classes.input}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Field
-            name="password"
-            component={PasswordInput}
-            className={classes.input}
-            id="password"
-            ariaLabel="Ver clave"
-            inputLabel="Clave"
-          />
-        </Grid>
-        <RenderFields>
+        <RenderFields lineal={[12, 12]}>
           {[
             {
-              field: 'userType',
-              id: 'userType',
-              type: 'select',
-              label: '¿Como desea ingresar?',
-              options: jsonToOptions(USER_ROL),
+              field: 'identification',
+              id: 'identification',
+              type: 'text',
+              label: 'Cedula',
+              placeholder: 'Ingresa tu cedula',
+            },
+            {
+              field: 'password',
+              id: 'password',
+              type: 'password',
+              label: 'Contraseña',
             },
           ]}
         </RenderFields>
@@ -158,6 +158,9 @@ LoginForm.propTypes = {
     loginButton: PropTypes.string,
     input: PropTypes.string,
     forgotPassword: PropTypes.string,
+    titleContainer: PropTypes.string,
+    titleLogin: PropTypes.string,
+    subtitleLogin: PropTypes.string,
   }).isRequired,
   studentsTypes: PropTypes.arrayOf(PropTypes.shape({})),
   handleSetStudent: PropTypes.func.isRequired,
