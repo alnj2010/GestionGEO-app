@@ -33,6 +33,7 @@ const styles = (theme) => ({
     paddingLeft: 78,
     paddingRight: 550,
     '& article': {
+      color: '#707070',
       height: 350,
       maxWidth: 727,
       fontSize: 14,
@@ -87,6 +88,8 @@ const styles = (theme) => ({
   },
   info: {
     marginLeft: 7,
+    color: 'black',
+    textDecoration: 'none',
   },
   verticalSeparator: {
     width: 1,
@@ -147,7 +150,9 @@ function AuthenticationApp({ children, classes }) {
           <div className={classes.contactInfoContainer}>
             <div className={classes.contactInfo}>
               <Email />
-              <span className={classes.info}>postgrado.geoquimica@gmail.com</span>
+              <a href="mailto:postgrado.geoquimica@gmail.com" className={classes.info}>
+                postgrado.geoquimica@gmail.com
+              </a>
             </div>
             <span className={classes.verticalSeparator} />
             <div className={classes.contactInfo}>

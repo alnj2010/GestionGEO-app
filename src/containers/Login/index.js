@@ -12,14 +12,16 @@ import {
 
 function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
   const [studentsTypes, setStudentsType] = useState(null);
-  const handleLogin = ({ identification, password, userType }) => {
-    loginDispatch({ identification, password, userType })
+  const handleLogin = ({ identification, password }) => {
+    loginDispatch({ identification, password })
       .then((isLogged) => {
+        /*   const userType = 'S';
         if (userType === 'S') {
           setStudentsType(isLogged);
         } else if (isLogged) {
           history.push('/inicio');
-        }
+        } */
+        console.log({ isLogged });
       })
       .catch((err) => console.warn(err));
   };

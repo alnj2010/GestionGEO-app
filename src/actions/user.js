@@ -16,26 +16,31 @@ export const ACTIONS = {
   LOGIN: 'user/login',
 };
 
-export const login = ({ identification, password, userType }) => async (dispatch) => {
-  return User.login({ identification, password, user_type: userType })
+export const login = ({ identification, password }) => async (dispatch) => {
+  return User.login({ identification, password })
     .then((response) => {
+      console.log(response);
       setSessionGeoToken(response.token);
-      setSessionUser(response.user);
-      setSessionUserRol(response.user.user_type);
-      setSessionUserId(response.user.id);
       setTokenExpires(response.expires);
       setInitTimeLogin(moment().unix());
+      if (response.user.roles.length === 1) {
+        setSessionUser(response.user);
+        setSessionUserRol(response.user.roles[0].user.type);
 
-      if (response.user.user_type === 'S') {
-        return response.user.student;
+        setSessionUserId(response.user.id);
+
+        if (response.user.roles[0].user.type === 'S') {
+          return response.user.student;
+        }
+
+        if (response.user.roles[0].user.type === 'T') setSessionTeacherId(response.user.teacher.id);
+
+        if (response.user.roles[0].user.type === 'A')
+          setSessionIsMainUser(!!response.user.administrator.principal);
+
+        dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
       }
 
-      if (response.user.user_type === 'T') setSessionTeacherId(response.user.teacher.id);
-
-      if (response.user.user_type === 'A')
-        setSessionIsMainUser(!!response.user.administrator.principal);
-
-      dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
       return true;
     })
     .catch((error) => {
