@@ -28,7 +28,7 @@ export const login = ({ identification, password }) => async (dispatch) => {
       setSessionUserId(response.user.id);
       dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
       if (response.user.roles.length === 1) {
-        const [userType] = response.user.roles;
+        const [{ user_type: userType }] = response.user.roles;
         setSessionUserRol(userType);
 
         if (userType === 'S') {
