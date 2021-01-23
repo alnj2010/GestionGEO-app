@@ -77,9 +77,9 @@ let LoginForm = (props) => {
   return (
     <Grid container item xs={12} justify="center" direction="column" alignItems="center">
       <div className={classes.titleContainer}>
-        <div className={classes.titleLogin}>Inicio de sesion</div>
+        <div className={classes.titleLogin}>Inicio de sesión</div>
         <div className={classes.subtitleLogin}>
-          Procede a iniciar sesion y asi gestionar tus procesos academicos.
+          Procede a iniciar sesión y asi gestionar tus procesos academicos.
         </div>
       </div>
 

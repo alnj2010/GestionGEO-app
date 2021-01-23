@@ -10,7 +10,16 @@ function RequestResetPasswordContainer({ requestResetPasswordDispatch, history }
       .then(() => history.push('/'))
       .catch(() => history.push('/'));
   };
-  return <RequestResetPassword handleForgotPassword={handleForgotPassword} />;
+  const handleBackLogin = (event) => {
+    event.preventDefault();
+    history.push('/');
+  };
+  return (
+    <RequestResetPassword
+      handleBackLogin={handleBackLogin}
+      handleForgotPassword={handleForgotPassword}
+    />
+  );
 }
 
 RequestResetPasswordContainer.propTypes = {

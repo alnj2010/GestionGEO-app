@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, Typography, Link } from '@material-ui/core';
 
 import CustomizedSnackbar from '../Snackbar';
 import RenderFields from '../RenderFields';
@@ -19,6 +19,12 @@ const styles = () => ({
     backgroundColor: '#2196f3',
     fontWeight: 550,
   },
+  backLogin: {
+    textAlign: 'right',
+    fontSize: 12,
+    color: '#007EFF',
+    cursor: 'pointer',
+  },
   titleContainer: { fontFamily: 'Roboto' },
   titleLogin: { fontWeight: 'bold', fontSize: 24 },
   subtitleLogin: {
@@ -31,7 +37,15 @@ const styles = () => ({
 });
 
 let RequestResetPassword = (props) => {
-  const { classes, handleSubmit, pristine, submitting, valid, handleForgotPassword } = props;
+  const {
+    classes,
+    handleSubmit,
+    pristine,
+    submitting,
+    valid,
+    handleForgotPassword,
+    handleBackLogin,
+  } = props;
 
   return (
     <Grid container item xs={12} justify="center" direction="column" alignItems="center">
@@ -50,13 +64,6 @@ let RequestResetPassword = (props) => {
               id: 'email',
               type: 'text',
             },
-            {
-              field: 'userType',
-              id: 'userType',
-              type: 'select',
-              label: 'Seleccione su rol',
-              options: jsonToOptions(USER_ROL),
-            },
           ]}
         </RenderFields>
 
@@ -71,7 +78,13 @@ let RequestResetPassword = (props) => {
             Recuperar contraseña
           </Button>
         </Grid>
-
+        <Grid item container justify="flex-end" xs={12}>
+          <Typography>
+            <Link href="/password/forgot" className={classes.backLogin} onClick={handleBackLogin}>
+              ¿Desea iniciar sesión?
+            </Link>
+          </Typography>
+        </Grid>
         <CustomizedSnackbar />
       </Form>
     </Grid>
@@ -85,9 +98,11 @@ RequestResetPassword.propTypes = {
     titleContainer: PropTypes.string,
     titleLogin: PropTypes.string,
     subtitleLogin: PropTypes.string,
+    backLogin: PropTypes.string,
   }).isRequired,
 
   handleForgotPassword: PropTypes.func.isRequired,
+  handleBackLogin: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
