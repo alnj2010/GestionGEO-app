@@ -19,6 +19,15 @@ const styles = () => ({
     backgroundColor: '#2196f3',
     fontWeight: 550,
   },
+  titleContainer: { fontFamily: 'Roboto' },
+  titleLogin: { fontWeight: 'bold', fontSize: 24 },
+  subtitleLogin: {
+    fontWeight: 500,
+    fontSize: 13,
+    color: '#707070',
+    marginTop: 7,
+    lineHeight: '18px',
+  },
 });
 
 let RequestResetPassword = (props) => {
@@ -26,6 +35,12 @@ let RequestResetPassword = (props) => {
 
   return (
     <Grid container item xs={12} justify="center" direction="column" alignItems="center">
+      <div className={classes.titleContainer}>
+        <div className={classes.titleLogin}>Recuperación de contraseña</div>
+        <div className={classes.subtitleLogin}>
+          Procede a recuperar tu contraseña y asi gestionar tus procesos academicos.
+        </div>
+      </div>
       <Form onSubmit={handleSubmit(handleForgotPassword)} style={{ width: '100%' }}>
         <RenderFields lineal={[12, 12]}>
           {[
@@ -67,6 +82,9 @@ RequestResetPassword.propTypes = {
   classes: PropTypes.shape({
     save: PropTypes.string,
     loginButton: PropTypes.string,
+    titleContainer: PropTypes.string,
+    titleLogin: PropTypes.string,
+    subtitleLogin: PropTypes.string,
   }).isRequired,
 
   handleForgotPassword: PropTypes.func.isRequired,
