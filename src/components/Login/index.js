@@ -16,9 +16,12 @@ import {
   Link,
 } from '@material-ui/core';
 
-import PersonIcon from '@material-ui/icons/LocalLibrary';
+import LocalLibrary from '@material-ui/icons/LocalLibrary';
+import PersonIcon from '@material-ui/icons/Person';
 import CustomizedSnackbar from '../Snackbar';
 import RenderFields from '../RenderFields';
+import { reverseJson } from '../../helpers/index';
+import { USER_ROL } from '../../services/constants';
 
 const styles = () => ({
   input: {
@@ -64,8 +67,10 @@ let LoginForm = (props) => {
     submitting,
     valid,
     studentsTypes,
+    userType,
     handleSetStudent,
-    handleCloseSetStudent,
+    handleSetUserType,
+    handleCloseSetUser,
     handleForgotPassword,
   } = props;
 
@@ -123,21 +128,45 @@ let LoginForm = (props) => {
         <CustomizedSnackbar />
         {studentsTypes && (
           <Dialog
-            onClose={handleCloseSetStudent}
-            aria-labelledby="simple-dialog-title"
+            onClose={handleCloseSetUser}
+            aria-labelledby="simple-dialog-student-type"
             open={!!studentsTypes}
           >
-            <DialogTitle id="simple-dialog-title">Seleccione el programa academico</DialogTitle>
+            <DialogTitle id="simple-dialog-student-type">
+              Seleccione el programa academico
+            </DialogTitle>
             <List>
               {studentsTypes.map((student, index) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <ListItem button onClick={() => handleSetStudent(student)} key={index}>
                   <ListItemAvatar>
                     <Avatar>
-                      <PersonIcon />
+                      <LocalLibrary />
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={student.school_program.school_program_name} />
+                </ListItem>
+              ))}
+            </List>
+          </Dialog>
+        )}
+        {userType && (
+          <Dialog
+            onClose={handleCloseSetUser}
+            aria-labelledby="simple-dialog-user-type"
+            open={!!userType}
+          >
+            <DialogTitle id="simple-dialog-user-type">Seleccione el tipo de usuario</DialogTitle>
+            <List>
+              {userType.roles.map((rol, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <ListItem button onClick={() => handleSetUserType(rol)} key={index}>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <PersonIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={reverseJson(USER_ROL)[rol.user_type]} />
                 </ListItem>
               ))}
             </List>
@@ -159,8 +188,10 @@ LoginForm.propTypes = {
     subtitleLogin: PropTypes.string,
   }).isRequired,
   studentsTypes: PropTypes.arrayOf(PropTypes.shape({})),
+  userType: PropTypes.arrayOf(PropTypes.shape({})),
   handleSetStudent: PropTypes.func.isRequired,
-  handleCloseSetStudent: PropTypes.func.isRequired,
+  handleSetUserType: PropTypes.func.isRequired,
+  handleCloseSetUser: PropTypes.func.isRequired,
   handleForgotPassword: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
@@ -171,6 +202,7 @@ LoginForm.propTypes = {
 
 LoginForm.defaultProps = {
   studentsTypes: null,
+  userType: null,
 };
 
 const loginValidator = (values) => {

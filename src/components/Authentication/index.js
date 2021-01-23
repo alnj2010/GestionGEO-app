@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import Email from '@material-ui/icons/Email';

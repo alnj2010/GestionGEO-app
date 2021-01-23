@@ -10,6 +10,8 @@ import {
   setSessionIsMainUser,
   setTokenExpires,
   setInitTimeLogin,
+  getSessionUser,
+  setSessionStudentId,
 } from '../storage/sessionStorage';
 
 export const ACTIONS = {
@@ -19,29 +21,34 @@ export const ACTIONS = {
 export const login = ({ identification, password }) => async (dispatch) => {
   return User.login({ identification, password })
     .then((response) => {
-      console.log(response);
       setSessionGeoToken(response.token);
       setTokenExpires(response.expires);
       setInitTimeLogin(moment().unix());
+      setSessionUser(response.user);
+      setSessionUserId(response.user.id);
+      dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
       if (response.user.roles.length === 1) {
-        setSessionUser(response.user);
-        setSessionUserRol(response.user.roles[0].user.type);
+        const [userType] = response.user.roles;
+        setSessionUserRol(userType);
 
-        setSessionUserId(response.user.id);
-
-        if (response.user.roles[0].user.type === 'S') {
-          return response.user.student;
+        if (userType === 'S') {
+          if (response.user.student.length !== 1) {
+            return response.user.student;
+          }
+          const [student] = response.user.student;
+          const user = getSessionUser();
+          user.student = student;
+          setSessionUser(user);
+          setSessionStudentId(student.id);
         }
 
-        if (response.user.roles[0].user.type === 'T') setSessionTeacherId(response.user.teacher.id);
+        if (userType === 'T') setSessionTeacherId(response.user.teacher.id);
 
-        if (response.user.roles[0].user.type === 'A')
-          setSessionIsMainUser(!!response.user.administrator.principal);
+        if (userType === 'A') setSessionIsMainUser(!!response.user.administrator.principal);
 
-        dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
+        return userType;
       }
-
-      return true;
+      return response.user;
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);

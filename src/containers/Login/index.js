@@ -8,20 +8,26 @@ import {
   setSessionUser,
   getSessionUser,
   removeSessionGeoToken,
+  setSessionTeacherId,
+  setSessionIsMainUser,
+  setSessionUserRol,
 } from '../../storage/sessionStorage';
 
 function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
   const [studentsTypes, setStudentsType] = useState(null);
+  const [userType, setUserType] = useState(null);
   const handleLogin = ({ identification, password }) => {
     loginDispatch({ identification, password })
-      .then((isLogged) => {
-        /*   const userType = 'S';
-        if (userType === 'S') {
-          setStudentsType(isLogged);
-        } else if (isLogged) {
+      .then((user) => {
+        if (typeof user !== 'string') {
+          if (Array.isArray(user)) {
+            setStudentsType(user);
+          } else {
+            setUserType(user);
+          }
+        } else {
           history.push('/inicio');
-        } */
-        console.log({ isLogged });
+        }
       })
       .catch((err) => console.warn(err));
   };
@@ -38,8 +44,27 @@ function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
     history.push('/inicio');
   };
 
-  const handleCloseSetStudent = () => {
+  const setUser = (userTypeSelected) => {
+    const user = getSessionUser();
+    setSessionUserRol(userTypeSelected.user_type);
+    if (userTypeSelected.user_type === 'T') setSessionTeacherId(user.teacher.id);
+
+    if (userTypeSelected.user_type === 'A') setSessionIsMainUser(!!user.administrator.principal);
+
+    if (userTypeSelected.user_type === 'S' && user.student.length === 1) {
+      const [student] = user.student;
+      user.student = student;
+      setSessionUser(user);
+      setSessionStudentId(student.id);
+    } else {
+      setUserType(null);
+      setStudentsType(user.student);
+    }
+    history.push('/inicio');
+  };
+  const handleCloseSetUser = () => {
     setStudentsType(null);
+    setUserType(null);
     removeSessionGeoToken();
   };
   return (
@@ -49,8 +74,10 @@ function LoginContainer({ showSnackbar, message, loginDispatch, history }) {
       menssageFloat={message}
       handleLogin={handleLogin}
       studentsTypes={studentsTypes}
+      userType={userType}
       handleSetStudent={setStudent}
-      handleCloseSetStudent={handleCloseSetStudent}
+      handleSetUserType={setUser}
+      handleCloseSetUser={handleCloseSetUser}
     />
   );
 }
