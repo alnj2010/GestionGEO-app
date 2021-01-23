@@ -1,7 +1,11 @@
-version: "3.2"
+version: "3.7"
 services:
   gestion-geo:
+    build:
+      context: ./
+      dockerfile: Dockerfile
     image: gestion-geo
+    container_name: gestion-geo-app
     ports:
       - "5000:80"
     environment:
