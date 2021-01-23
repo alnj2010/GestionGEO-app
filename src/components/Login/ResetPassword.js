@@ -35,13 +35,7 @@ let ResetPassword = (props) => {
               id: 'email',
               type: 'text',
             },
-            {
-              field: 'userType',
-              id: 'userType',
-              type: 'select',
-              label: 'Seleccione su rol',
-              options: jsonToOptions(USER_ROL),
-            },
+
             {
               label: 'Nueva contraseña',
               field: 'password',
@@ -92,9 +86,6 @@ ResetPassword.defaultProps = {};
 
 const ResetPasswordValidator = (values) => {
   const errors = {};
-  if (!values.userType) {
-    errors.userType = 'Rol es requerido';
-  }
   if (!values.email) {
     errors.email = 'Email es requerido';
   } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {

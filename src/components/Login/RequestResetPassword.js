@@ -114,9 +114,6 @@ RequestResetPassword.defaultProps = {};
 const RequestResetPasswordValidator = (values) => {
   const errors = {};
 
-  if (!values.userType) {
-    errors.userType = 'Rol es requerido';
-  }
   if (!values.email) {
     errors.email = 'Email es requerido';
   } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {

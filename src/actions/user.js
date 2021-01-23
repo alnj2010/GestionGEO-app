@@ -59,7 +59,6 @@ export const login = ({ identification, password }) => async (dispatch) => {
 export const requestResetPassword = (data) => async (dispatch) => {
   const payload = {
     email: data.email,
-    user_type: data.userType,
   };
   return User.requestResetPassword(payload)
     .then(() => {
@@ -75,7 +74,6 @@ export const requestResetPassword = (data) => async (dispatch) => {
 export const resetPassword = (data) => async (dispatch) => {
   const payload = {
     email: data.email,
-    user_type: data.userType,
     password: data.password,
     password_confirmation: data.passwordConfirmation,
     token: data.token,
