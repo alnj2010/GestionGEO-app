@@ -22,16 +22,42 @@ const styles = (theme) => ({
     justifyContent: 'space-between',
   },
   header: {
-    flexShrink: 0,
-    position: 'relative',
     height: 325,
     background: 'linear-gradient(180deg, rgba(3,161,244,1) 50%, rgba(0,123,230,1) 100%)',
+  },
+  headerTop: {
+    height: '25%',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
+  },
+  headerBottom: {
+    height: '75%',
+    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center',
+      flexDirection: 'column',
+    },
+  },
+  headerLeft: {
+    width: '50%',
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+    },
+  },
+  headerRight: {
+    width: '50%',
+    position: 'relative',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
   },
   section: {
     flexGrow: 1,
     paddingLeft: 78,
     paddingRight: 550,
     '& article': {
+      textAlign: 'justify',
       color: '#707070',
       height: 350,
       maxWidth: 727,
@@ -39,26 +65,56 @@ const styles = (theme) => ({
       fontFamily: 'Roboto',
       lineHeight: '30px',
     },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   loginContainer: {
     position: 'absolute',
     height: 434,
     display: 'flex',
     justifyContent: 'center',
-    top: 85,
+    top: -25,
     right: 42,
     zIndex: 1,
+    [theme.breakpoints.down('sm')]: {
+      position: 'static',
+    },
   },
-  loginPaper: { width: 479, padding: '42px 50px', boxSizing: 'border-box' },
+  loginPaper: {
+    width: 479,
+    padding: '42px 50px',
+    boxSizing: 'border-box',
+    flexShrink: 0,
+    [theme.breakpoints.down('xs')]: {
+      flexShrink: 1,
+      boxShadow: 'none',
+      borderRadius: 0,
+      padding: '42px 25px',
+    },
+  },
   logoContainer: {
     paddingLeft: 78,
     userSelect: 'none',
+    '& img': {
+      [theme.breakpoints.down('sm')]: {
+        height: 150,
+      },
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 0,
+    },
   },
   partners: {
-    padding: '38px 0 0 44px',
+    padding: '10px 0 0 44px',
     '& a': {
       paddingRight: 27,
       userSelect: 'none',
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '10px 0 0 0',
+      display: 'flex',
+      justifyContent: 'space-evenly',
     },
   },
   footer: {
@@ -68,11 +124,24 @@ const styles = (theme) => ({
     height: 45,
     borderTop: '1px solid rgba(112, 112, 112, 0.5)',
     margin: '0 32px 0 72px',
+    [theme.breakpoints.down('sm')]: {
+      margin: '0 32px',
+    },
+
+    [theme.breakpoints.down('xs')]: {
+      margin: '0 32px',
+      border: 'none',
+      height: 30,
+      display: 'block',
+    },
   },
   footerItem: {
     fontFamily: 'Roboto',
     fontWeight: 'bold',
     fontSize: 12,
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center',
+    },
   },
   contactInfoContainer: {
     display: 'flex',
@@ -80,10 +149,17 @@ const styles = (theme) => ({
     alignItems: 'center',
     fontWeight: 'normal',
     width: 378,
+    [theme.breakpoints.down('xs')]: {
+      width: 'auto',
+      display: 'block',
+    },
   },
   contactInfo: {
     display: 'flex',
     alignItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
   info: {
     marginLeft: 7,
@@ -98,8 +174,11 @@ const styles = (theme) => ({
   peopleContainer: {
     userSelect: 'none',
     position: 'relative',
-    bottom: 100,
+    bottom: 70,
     left: 2,
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    },
   },
 });
 
@@ -107,26 +186,38 @@ function AuthenticationApp({ children, classes }) {
   return (
     <div className={classes.container}>
       <header className={classes.header}>
-        <div className={classes.partners}>
-          <a href="http://www.ucv.ve/" target="_blank" rel="noopener noreferrer">
-            <img src={ucvLogo} alt="logo ucv" />
-          </a>
-          <a href="http://fiucv.ing.ucv.ve/" target="_blank" rel="noopener noreferrer">
-            <img src={engineerLogo} alt="logo facultad ingenieria" />
-          </a>
-          <a href="http://www.ciens.ucv.ve/ciens/" target="_blank" rel="noopener noreferrer">
-            <img src={scienceLogo} alt="logo facultad ciencias" />
-          </a>
-          <a href="http://gea.ciens.ucv.ve/geopostgrado/" target="_blank" rel="noopener noreferrer">
-            <img src={pggqLogo} alt="logo postgrado de geoquimica" />
-          </a>
+        <div className={classes.headerTop}>
+          <div className={classes.partners}>
+            <a href="http://www.ucv.ve/" target="_blank" rel="noopener noreferrer">
+              <img src={ucvLogo} alt="logo ucv" />
+            </a>
+            <a href="http://fiucv.ing.ucv.ve/" target="_blank" rel="noopener noreferrer">
+              <img src={engineerLogo} alt="logo facultad ingenieria" />
+            </a>
+            <a href="http://www.ciens.ucv.ve/ciens/" target="_blank" rel="noopener noreferrer">
+              <img src={scienceLogo} alt="logo facultad ciencias" />
+            </a>
+            <a
+              href="http://gea.ciens.ucv.ve/geopostgrado/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={pggqLogo} alt="logo postgrado de geoquimica" />
+            </a>
+          </div>
         </div>
-        <div className={classes.logoContainer}>
-          <img src={logo} alt="GestionGEO" />
-        </div>
-        <div className={classes.loginContainer}>
-          <img src={peopleLogo} className={classes.peopleContainer} alt="Estudiantes" />
-          <Paper className={classes.loginPaper}>{children}</Paper>
+        <div className={classes.headerBottom}>
+          <div className={classes.headerLeft}>
+            <div className={classes.logoContainer}>
+              <img src={logo} alt="GestionGEO" />
+            </div>
+          </div>
+          <div className={classes.headerRight}>
+            <div className={classes.loginContainer}>
+              <img src={peopleLogo} className={classes.peopleContainer} alt="Estudiantes" />
+              <Paper className={classes.loginPaper}>{children}</Paper>
+            </div>
+          </div>
         </div>
       </header>
       <section className={classes.section}>
@@ -180,9 +271,14 @@ AuthenticationApp.propTypes = {
     formContainer: PropTypes.string,
     partners: PropTypes.string,
     loginContainer: PropTypes.string,
+    loginPaper: PropTypes.string,
     logoContainer: PropTypes.string,
     logo: PropTypes.string,
     peopleContainer: PropTypes.string,
+    headerTop: PropTypes.string,
+    headerBottom: PropTypes.string,
+    headerLeft: PropTypes.string,
+    headerRight: PropTypes.string,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
