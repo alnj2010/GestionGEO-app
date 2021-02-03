@@ -336,8 +336,10 @@ export const cleanAvailableSubjects = () => async (dispatch) => {
   });
 };
 
-export const getConstance = (studentId, userType, constanceType) => async (dispatch) => {
-  return Constance.getConstance(studentId, userType, constanceType)
+export const getConstance = (studentId, userType, constanceType, others = null) => async (
+  dispatch
+) => {
+  return Constance.getConstance(studentId, userType, constanceType, others)
     .then(() => {
       return true;
     })

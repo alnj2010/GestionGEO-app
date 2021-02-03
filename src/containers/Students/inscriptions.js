@@ -8,6 +8,7 @@ import {
   findStudentById,
   cleanSelectedStudent,
   deleteInscription,
+  getConstance,
 } from '../../actions/student';
 import StudentInscriptions from '../../components/Students/inscriptions';
 
@@ -60,6 +61,7 @@ class StudentInscriptionsContainer extends Component {
       inscribedSchoolPeriods,
       history,
       showDispatch,
+      getConstanceDispatch,
       match: {
         params: { studentId, userId },
       },
@@ -77,6 +79,7 @@ class StudentInscriptionsContainer extends Component {
         inscribedSchoolPeriods={inscribedSchoolPeriods}
         studentId={studentId}
         userId={userId}
+        getConstance={getConstanceDispatch}
         localization={{
           header: {
             actions: 'Acciones',
@@ -111,6 +114,7 @@ StudentInscriptionsContainer.propTypes = {
   getInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
   findStudentByIdDispatch: PropTypes.func.isRequired,
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
+  getConstanceDispatch: PropTypes.func.isRequired,
 };
 const mS = (state) => ({
   inscribedSchoolPeriods: state.studentReducer.inscribedSchoolPeriods,
@@ -126,6 +130,7 @@ const mD = {
   showDispatch: show,
   defineDispatch: define,
   cleanDialogDispatch: cleanDialog,
+  getConstanceDispatch: getConstance,
 };
 
 export default connect(mS, mD)(StudentInscriptionsContainer);

@@ -3,9 +3,11 @@ import { URL } from './constants';
 import { handleErrorMsg } from '../helpers';
 
 export const Constance = {
-  getConstance(id, userType, constanceType) {
+  getConstance(id, userType, constanceType, others) {
     return AXIOS({
-      url: `${URL.CONSTANCE}/${constanceType}?${userType}_id=${id}`,
+      url: `${URL.CONSTANCE}/${constanceType}?${userType}_id=${id}${
+        constanceType === 'inscription' ? `&inscription_id=${others.inscriptionId}` : ''
+      }`,
       method: 'GET',
       headers: headers('pdf'),
       responseType: 'blob', // important

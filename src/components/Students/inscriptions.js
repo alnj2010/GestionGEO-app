@@ -49,6 +49,7 @@ class StudentInscriptions extends Component {
       userId,
       fullname,
       handleDeleteInscription,
+      getConstance,
     } = this.props;
     const { func } = this.state;
     return (
@@ -85,6 +86,15 @@ class StudentInscriptions extends Component {
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
                   history.push(`/estudiantes/inscripciones/${userId}/${studentId}/${rowData.id}`);
+                },
+              },
+              {
+                icon: 'archive',
+                tooltip: 'Constancia de estudios',
+                onClick: (event, rowData) => {
+                  getConstance(studentId, 'student', 'inscription', {
+                    inscriptionId: rowData.inscriptionId,
+                  });
                 },
               },
               {
