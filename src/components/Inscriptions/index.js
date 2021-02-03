@@ -57,7 +57,7 @@ function Inscription({
   return (
     <Grid container>
       <Typography variant="h6" gutterBottom>
-        Materias disponibles para inscripción
+        Asignaturas disponibles para inscripción
       </Typography>
 
       <SubjectTable

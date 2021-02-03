@@ -369,7 +369,7 @@ class SchoolPeriodDetail extends Component {
 
               <Grid item xs={12} className={classes.subtitle}>
                 <Typography variant="h6" gutterBottom>
-                  Materias del periodo
+                  Asignaturas del periodo
                 </Typography>
               </Grid>
               <Grid container item xs={12}>

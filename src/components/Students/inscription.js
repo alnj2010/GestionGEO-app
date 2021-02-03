@@ -161,7 +161,7 @@ class StudentInscription extends Component {
               {subjectsSelected.length || availableSubjects.length ? (
                 <Grid container item xs={12} className={classes.listSubjects}>
                   <Typography variant="h6" gutterBottom>
-                    Materias
+                    Asignaturas
                   </Typography>
                   <RenderFieldsArray
                     name="subjects"

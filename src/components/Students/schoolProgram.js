@@ -198,7 +198,7 @@ class StudentSchoolProgram extends Component {
             <>
               <Grid item xs={12}>
                 <Typography variant="h6" gutterBottom>
-                  Materias por equivalencia
+                  Asignaturas por equivalencia
                 </Typography>
               </Grid>
               <Grid container item xs={12}>
