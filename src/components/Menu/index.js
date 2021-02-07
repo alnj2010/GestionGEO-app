@@ -129,7 +129,7 @@ class MenuApp extends React.Component {
     super();
     this.state = {
       openDownload: false,
-      open: false,
+      open: true,
       anchorEl: null,
       options: [
         {
@@ -197,7 +197,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'materias',
-          name: 'Materias',
+          name: 'Asignaturas',
           component: Subject,
           clicked: false,
           roles: ['A'],
