@@ -119,9 +119,9 @@ function App() {
                   component={StudentInscription}
                 />
 
-                <Route exact path="/profesores/" component={TeachersList} />
-                <Route exact path="/profesores/modificar/:id" component={TeacherDetail} />
-                <Route exact path="/profesores/agregar" component={TeacherDetail} />
+                <Route exact path="/usuarios/profesores/" component={TeachersList} />
+                <Route exact path="/usuarios/profesores/modificar/:id" component={TeacherDetail} />
+                <Route exact path="/usuarios/profesores/agregar" component={TeacherDetail} />
 
                 <Route exact path="/periodo-semestral/en-curso" component={SchoolPeriodActual} />
                 <Route exact path="/periodo-semestral/periodos" component={SchoolPeriodsList} />
