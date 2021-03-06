@@ -8,6 +8,7 @@ const KEY_STORAGE = {
   TOKEN_EXPIRES: 'token-expires',
   INIT_TIME_LOGIN: 'init-time-login',
   IS_MAIN_USER: 'is-main-user',
+  HIDE_WELCOME_MODAL: 'hide-welcome-modal',
 };
 
 export function setSessionUser(value) {
@@ -92,4 +93,12 @@ export function setSessionIsMainUser(value) {
 
 export function getSessionIsMainUser() {
   return sessionStorage.getItem(KEY_STORAGE.IS_MAIN_USER);
+}
+
+export function setHideWelcomeModal() {
+  localStorage.setItem(KEY_STORAGE.HIDE_WELCOME_MODAL, true);
+}
+
+export function getHideWelcomeModal() {
+  return JSON.parse(localStorage.getItem(KEY_STORAGE.HIDE_WELCOME_MODAL));
 }

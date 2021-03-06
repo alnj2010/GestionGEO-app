@@ -82,12 +82,12 @@ class AdminDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/administradores');
+    history.push('/usuarios/administradores');
   };
 
   handleAdminDelete = () => {
     const { deleteAdminDispatch, history, match } = this.props;
-    deleteAdminDispatch(match.params.id).then(() => history.push('/administradores'));
+    deleteAdminDispatch(match.params.id).then(() => history.push('/usuarios/administradores'));
   };
 
   render() {

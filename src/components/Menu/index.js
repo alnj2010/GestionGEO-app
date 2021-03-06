@@ -25,7 +25,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Teacher from '@material-ui/icons/School';
 import SchoolProgram from '@material-ui/icons/Extension';
-import Admin from '@material-ui/icons/Group';
+import Users from '@material-ui/icons/Group';
+import Help from '@material-ui/icons/Help';
+import AccountBox from '@material-ui/icons/AccountBox';
 import Face from '@material-ui/icons/Face';
 import Subject from '@material-ui/icons/LocalLibrary';
 import InsertInvitation from '@material-ui/icons/InsertInvitation';
@@ -36,6 +38,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 import { Collapse } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import WelcomeModal from '../WelcomeModal';
 import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
 import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod } from '../../actions/schoolPeriod';
@@ -45,7 +48,15 @@ import {
   getSessionUserId,
   getSessionGeoToken,
   getSessionUser,
+  setHideWelcomeModal,
+  getHideWelcomeModal,
 } from '../../storage/sessionStorage';
+import adminStep1 from '../../images/adminWelcome.jpg';
+import adminStep2 from '../../images/stepUsers.jpg';
+import adminStep3 from '../../images/stepSubjects.jpg';
+import adminStep4 from '../../images/stepSchoolPrograms.jpg';
+import adminStep5 from '../../images/stepSchoolPeriod.jpg';
+import adminStep6 from '../../images/stepDowload.jpg';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
 
 const drawerWidth = 250;
@@ -124,12 +135,193 @@ const styles = (theme) => ({
   },
 });
 
+const tutorialSteps = [
+  {
+    // eslint-disable-next-line react/display-name
+    Content: ({ classes }) => {
+      const {
+        level_instruction: levelInstruction,
+        first_name: firstName,
+        second_name: secondName,
+        first_surname: firstSurname,
+        second_surname: secondSurname,
+      } = getSessionUser();
+      return (
+        <>
+          <div className={classes.title}>
+            Bienvenido{' '}
+            {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
+              secondSurname || ''
+            }`}
+          </div>
+          <div className={classes.descriptionContainer}>
+            <span className={classes.introduction}>
+              Ud ha ingresado como <strong>Administrador</strong> de GestionGeo.
+            </span>
+            En este modulo podra gestionar cada una de las entidades que conforman el sistema:
+            <ul>
+              <li>Usuarios (Administradores, Profesores y Estudiantes)</li>
+              <li>Programas Academicos</li>
+              <li>Asignaturas</li>
+              <li>Periodos Semestrales</li>
+            </ul>
+          </div>
+        </>
+      );
+    },
+    image: adminStep1,
+  },
+  {
+    // eslint-disable-next-line react/display-name
+    Content: ({ classes }) => {
+      return (
+        <>
+          <div className={classes.title}>
+            Usuarios <Users />
+          </div>
+          <div className={classes.descriptionContainer}>
+            <span className={classes.introduction}>
+              Actualmente la plataforma maneja 3 tipos de Usuarios:
+            </span>
+            <ol>
+              <li>Administradores</li>
+              <li>Profesores </li>
+              <li>Estudiantes</li>
+            </ol>
+            A través del menú lateral izquierdo, haciendo click en el ítem <strong>Usuarios</strong>{' '}
+            . Ud. accederá a la lista donde podrá agregar nuevos usuarios, acceder a los detalles de
+            cada uno y modificar sus valores si es necesario.
+          </div>
+        </>
+      );
+    },
+    image: adminStep2,
+  },
+  {
+    // eslint-disable-next-line react/display-name
+    Content: ({ classes }) => {
+      return (
+        <>
+          <div className={classes.title}>
+            Asignaturas <Subject />
+          </div>
+          <div className={classes.descriptionContainer}>
+            <span className={classes.section}>
+              A través del menú lateral izquierdo, haciendo click en el ítem{' '}
+              <strong>Asignaturas</strong> . Ud. podrá acceder a la lista de asignaturas, como
+              también incorporar nuevas y modificar las existentes si es necesario.
+            </span>
+            <span className={classes.section}>
+              En esta sección podrá incorporar asignaturas con modalidad regular y cursos de
+              ampliación.
+            </span>
+          </div>
+        </>
+      );
+    },
+    image: adminStep3,
+  },
+  {
+    // eslint-disable-next-line react/display-name
+    Content: ({ classes }) => {
+      return (
+        <>
+          <div className={classes.title}>
+            Programas Académicos <SchoolProgram />
+          </div>
+          <div className={classes.descriptionContainer}>
+            <span className={classes.section}>
+              Haciendo click en el ítem <strong>Programas Académicos</strong> . Ud. podrá acceder a
+              la lista de programas académicos existentes, como también incorporar nuevos y
+              modificar los existentes si es necesario.
+            </span>
+          </div>
+        </>
+      );
+    },
+    image: adminStep4,
+  },
+  {
+    // eslint-disable-next-line react/display-name
+    Content: ({ classes }) => {
+      return (
+        <>
+          <div className={classes.title}>
+            Periodos semestrales <InsertInvitation />
+          </div>
+          <div className={classes.descriptionContainer}>
+            <span className={classes.introduction}>
+              Haciendo click en el ítem <strong>Periodos semestrales</strong>, se desplegará 2
+              opciones:
+            </span>
+            <ol>
+              <li className={classes.listOrderItem}>
+                <strong>
+                  <em>
+                    Periodo en curso <Actual />:
+                  </em>
+                </strong>{' '}
+                Podrá definir los siguientes valores del periodo semestral en curso:
+                <ul>
+                  <li> Fecha límite de retiro de asignaturas. </li>
+                  <li> Fecha en la que finalizará el periodo semestral. </li>
+                  <li>
+                    Habilitar la carga de notas donde permitirá que los docentes carguen las notas
+                    de sus cursos impartidos.
+                  </li>
+                  <li>
+                    Habilita la posibilidad de inscripción de los estudiantes en el periodo
+                    semestral.
+                  </li>
+                </ul>
+                <span className={classes.section}>
+                  Además se podrá visualizar el calendario de las materias impartidas en dicho
+                  periodo semestral.
+                </span>
+              </li>
+              <li className={classes.listOrderItem}>
+                <strong>
+                  <em>
+                    Periodos <ListIcon />:
+                  </em>
+                </strong>{' '}
+                Ud. podrá acceder a la lista de periodos semestrales existentes, como también
+                incorporar nuevos y modificar los existentes si es necesario.
+              </li>
+            </ol>
+          </div>
+        </>
+      );
+    },
+    image: adminStep5,
+  },
+  {
+    // eslint-disable-next-line react/display-name
+    Content: ({ classes }) => {
+      return (
+        <>
+          <div className={classes.title}>
+            Descargas <Download />
+          </div>
+          <div className={classes.descriptionContainer}>
+            <span className={classes.section}>
+              Haciendo click en el ítem <strong>Descargas</strong>, se desplegará las constancias
+              asociadas a su usuario.
+            </span>
+          </div>
+        </>
+      );
+    },
+    image: adminStep6,
+  },
+];
 class MenuApp extends React.Component {
   constructor() {
     super();
     this.state = {
       openDownload: false,
       open: true,
+      openWelcomeModal: !getHideWelcomeModal(),
       anchorEl: null,
       options: [
         {
@@ -160,15 +352,6 @@ class MenuApp extends React.Component {
           options: false,
         },
         {
-          link: 'administradores',
-          name: 'Administradores',
-          component: Admin,
-          clicked: false,
-          roles: ['A'],
-          open: false,
-          options: false,
-        },
-        {
           link: 'programas-academicos',
           name: 'Programas Academicos',
           component: SchoolProgram,
@@ -178,23 +361,35 @@ class MenuApp extends React.Component {
           options: false,
         },
         {
-          link: 'profesores',
-          name: 'Profesores',
-          component: Teacher,
+          link: 'usuarios',
+          name: 'Usuarios',
+          component: Users,
           clicked: false,
           roles: ['A'],
           open: false,
-          options: false,
+          options: [
+            {
+              link: 'administradores',
+              name: 'Administradores',
+              component: AccountBox,
+              clicked: false,
+            },
+
+            {
+              link: 'profesores',
+              name: 'Profesores',
+              component: Teacher,
+              clicked: false,
+            },
+            {
+              link: 'estudiantes',
+              name: 'Estudiantes',
+              component: Face,
+              clicked: false,
+            },
+          ],
         },
-        {
-          link: 'estudiantes',
-          name: 'Estudiantes',
-          component: Face,
-          clicked: false,
-          roles: ['A'],
-          open: false,
-          options: false,
-        },
+
         {
           link: 'materias',
           name: 'Asignaturas',
@@ -230,6 +425,11 @@ class MenuApp extends React.Component {
     };
   }
 
+  handleCloseWelcomeModal = () => {
+    this.setState({ openWelcomeModal: false });
+    setHideWelcomeModal();
+  };
+
   componentDidMount = () => {
     const { findCurrentSchoolPeriodDispatch } = this.props;
     const rol = getSessionUserRol();
@@ -260,6 +460,10 @@ class MenuApp extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleOpenWelcomeModal = () => {
+    this.setState({ openWelcomeModal: true });
+  };
+
   handleOpenDownload = () => {
     this.setState((state) => {
       return { openDownload: !state.openDownload, open: true };
@@ -282,7 +486,7 @@ class MenuApp extends React.Component {
     switch (rol) {
       case 'A':
         this.handleClose();
-        history.push(`/administradores/modificar/${id}`);
+        history.push(`/usuarios/administradores/modificar/${id}`);
         break;
       default:
         this.handleClose();
@@ -324,7 +528,7 @@ class MenuApp extends React.Component {
       location,
       inscriptionVisible,
     } = this.props;
-    const { anchorEl, options, open: openOption, openDownload } = this.state;
+    const { anchorEl, options, open: openOption, openDownload, openWelcomeModal } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
     const userSession = getSessionUser();
@@ -354,6 +558,9 @@ class MenuApp extends React.Component {
             </Typography>
 
             <div>
+              <IconButton onClick={this.handleOpenWelcomeModal} color="inherit">
+                <Help />
+              </IconButton>
               <IconButton
                 aria-owns={open ? 'menu-appbar' : undefined}
                 aria-haspopup="true"
@@ -521,6 +728,11 @@ class MenuApp extends React.Component {
           {children}
           {this.validateToken()}
         </main>
+        <WelcomeModal
+          tutorialSteps={tutorialSteps}
+          open={openWelcomeModal}
+          handleCloseWelcomeModal={this.handleCloseWelcomeModal}
+        />
       </div>
     );
   }

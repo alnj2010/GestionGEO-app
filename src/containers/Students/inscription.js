@@ -99,7 +99,7 @@ class StudentInscriptionContainer extends Component {
         params: { studentId, userId },
       },
     } = this.props;
-    history.push(`/estudiantes/inscripciones/${userId}/${studentId}`);
+    history.push(`/usuarios/estudiantes/inscripciones/${userId}/${studentId}`);
   };
 
   render() {

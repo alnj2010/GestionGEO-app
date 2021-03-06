@@ -46,12 +46,12 @@ class TeacherDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/profesores');
+    history.push('/usuarios/profesores');
   };
 
   handleTeacherDelete = () => {
     const { deleteTeacherDispatch, history, match } = this.props;
-    deleteTeacherDispatch(match.params.id).then(() => history.push('/profesores'));
+    deleteTeacherDispatch(match.params.id).then(() => history.push('/usuarios/profesores'));
   };
 
   render() {

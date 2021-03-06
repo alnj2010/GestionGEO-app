@@ -51,7 +51,7 @@ class StudentsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/estudiantes/agregar`)}
+            onClick={() => history.push(`/usuarios/estudiantes/agregar`)}
           >
             <Add />
             Agregar estudiante
@@ -84,7 +84,7 @@ class StudentsList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/estudiantes/modificar/${rowData.id}`);
+                  history.push(`/usuarios/estudiantes/modificar/${rowData.id}`);
                 },
               },
               {

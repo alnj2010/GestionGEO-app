@@ -55,7 +55,7 @@ class TeachersList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/profesores/agregar`)}
+            onClick={() => history.push(`/usuarios/profesores/agregar`)}
           >
             <Add />
             Agregar profesor
@@ -132,7 +132,7 @@ class TeachersList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/profesores/modificar/${rowData.id}`);
+                  history.push(`/usuarios/profesores/modificar/${rowData.id}`);
                 },
               },
               {

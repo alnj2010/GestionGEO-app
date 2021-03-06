@@ -64,7 +64,7 @@ class AdminsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/administradores/agregar`)}
+            onClick={() => history.push(`/usuarios/administradores/agregar`)}
           >
             <Add />
             Agregar Administrador
@@ -141,7 +141,7 @@ class AdminsList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/administradores/modificar/${rowData.id}`);
+                  history.push(`/usuarios/administradores/modificar/${rowData.id}`);
                 },
               },
               {

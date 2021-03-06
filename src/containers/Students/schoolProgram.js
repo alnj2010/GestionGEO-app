@@ -88,7 +88,7 @@ class StudentSchoolProgramContainer extends Component {
         params: { userId },
       },
     } = this.props;
-    history.push(`/estudiantes/modificar/${userId}`);
+    history.push(`/usuarios/estudiantes/modificar/${userId}`);
   };
 
   handleSchoolProgramDelete = () => {
@@ -100,7 +100,7 @@ class StudentSchoolProgramContainer extends Component {
       },
     } = this.props;
     deleteSchoolProgramDispatch(userId, studentId).then(() =>
-      history.push(`/estudiantes/modificar/${userId}`)
+      history.push(`/usuarios/estudiantes/modificar/${userId}`)
     );
   };
 

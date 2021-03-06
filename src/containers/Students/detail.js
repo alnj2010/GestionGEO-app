@@ -80,12 +80,12 @@ class StudentDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/estudiantes');
+    history.push('/usuarios/estudiantes');
   };
 
   handleStudentDelete = () => {
     const { deleteStudentDispatch, history, match } = this.props;
-    deleteStudentDispatch(match.params.id).then(() => history.push('/estudiantes'));
+    deleteStudentDispatch(match.params.id).then(() => history.push('/usuarios/estudiantes'));
   };
 
   handleDeleteSchoolProgram = (userId, studentId) => {
