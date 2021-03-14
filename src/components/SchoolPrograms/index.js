@@ -3,7 +3,10 @@ import MaterialTable from 'material-table';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import PropTypes from 'prop-types';
 import Add from '@material-ui/icons/Add';
+import { withStyles } from '@material-ui/core/styles';
 import { Fab, Grid } from '@material-ui/core';
+import Help from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip';
 import Dialog from '../Dialog';
 import handleExportCsv from '../../utils/handleExportCsv';
 
@@ -38,6 +41,50 @@ class SchoolProgramsList extends Component {
     const { schoolPrograms, isLoading, history, handleDeleteSchoolProgram, width } = this.props;
     const { func } = this.state;
     const matches = isWidthUp('sm', width);
+
+    const HelpButton = withStyles(() => ({
+      root: {
+        boxShadow: 'none',
+        background: 'white',
+        '&:active': {
+          boxShadow: 'none',
+        },
+      },
+    }))(({ classes }) => (
+      <Tooltip
+        title={
+          <>
+            <div>
+              <b>Programas Academicos</b>
+            </div>
+            <div>
+              Son sistemas compuestos por actividades académicas, estudiantes, profesores,
+              egresados, recursos, líneas de investigación, estrategias de evaluación y actividades
+              de extensión, mediante las cuales se desarrolla un proceso que busca cumplir los
+              objetivos de formación de los estudiantes por medio de sus planes de estudio.
+            </div>
+            <br />
+            <div>
+              Abajo se listan los distintos programas academicos existenten en el Postgrado de
+              Geoquimica
+            </div>
+          </>
+        }
+        aria-label="Add"
+        placement="right"
+      >
+        <Fab
+          classes={classes}
+          disableRipple
+          color="inherit"
+          aria-label="help"
+          size="small"
+          onClick={() => false}
+        >
+          <Help />
+        </Fab>
+      </Tooltip>
+    ));
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -60,7 +107,16 @@ class SchoolProgramsList extends Component {
               { title: '# Unidades de credito', field: 'numCu' },
             ]}
             data={this.transformData(schoolPrograms)}
-            title={matches ? 'Programas Academicos' : ''}
+            title={
+              matches ? (
+                <>
+                  Programas Academicos
+                  <HelpButton />
+                </>
+              ) : (
+                ''
+              )
+            }
             actions={[
               {
                 icon: 'visibility',
