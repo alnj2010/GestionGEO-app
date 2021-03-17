@@ -14,6 +14,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import Dialog from '../Dialog';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
 import handleExportCsv from '../../utils/handleExportCsv';
+import HelpButton from '../HelpButton';
 
 class TeachersList extends Component {
   constructor() {
@@ -71,7 +72,25 @@ class TeachersList extends Component {
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(teachers)}
-            title="Profesores"
+            title={
+              <>
+                Profesores{' '}
+                <HelpButton>
+                  <div>
+                    <b>Profesores</b>
+                  </div>
+                  <div>
+                    Los profesores tienen como rol administrar y calificar los estudiantes
+                    pertenecientes a los cursos que imparten.
+                  </div>
+                  <br />
+                  <div>
+                    Abajo se listan los distintos Profesores existenten en el Postgrado de
+                    Geoquimica
+                  </div>
+                </HelpButton>
+              </>
+            }
             components={{
               Action: (props) => {
                 const {

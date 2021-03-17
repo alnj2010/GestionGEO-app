@@ -6,6 +6,7 @@ import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import handleExportCsv from '../../utils/handleExportCsv';
+import HelpButton from '../HelpButton';
 
 class StudentsList extends Component {
   constructor() {
@@ -78,7 +79,26 @@ class StudentsList extends Component {
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(students)}
-            title={matches ? 'Estudiantes' : ''}
+            title={
+              matches ? (
+                <>
+                  Estudiantes{' '}
+                  <HelpButton>
+                    <div>
+                      <b>Estudiantes</b>
+                    </div>
+                    <div>asdasdas daddsa ad asd</div>
+                    <br />
+                    <div>
+                      Abajo se listan los distintos estudiantes existenten en el Postgrado de
+                      Geoquimica
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             actions={[
               {
                 icon: 'visibility',

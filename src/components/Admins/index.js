@@ -17,6 +17,7 @@ import { reverseJson } from '../../helpers/index';
 import { CONSTANCES, USER_INSTANCE, COORDINATOR_ROL } from '../../services/constants';
 import handleExportCsv from '../../utils/handleExportCsv';
 import { getSessionUserId } from '../../storage/sessionStorage';
+import HelpButton from '../HelpButton';
 
 class AdminsList extends Component {
   constructor() {
@@ -80,7 +81,30 @@ class AdminsList extends Component {
               { title: 'Rol', field: 'rol' },
             ]}
             data={this.transformData(admins)}
-            title={matches ? 'Administradores' : ''}
+            title={
+              matches ? (
+                <>
+                  Administradores{' '}
+                  <HelpButton>
+                    <div>
+                      <b>Administrador</b>
+                    </div>
+                    <div>
+                      El administrador de la plataforma es responsable de gestionar y conservar los
+                      datos de gestionGeo, por lo que podra incorporar, modificar y dar de baja a
+                      cada una de las entidades existentes en la plataforma
+                    </div>
+                    <br />
+                    <div>
+                      Abajo se listan los distintos administradores existenten en el Postgrado de
+                      Geoquimica
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             components={{
               Action: (props) => {
                 const {
