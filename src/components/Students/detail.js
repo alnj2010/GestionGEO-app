@@ -291,6 +291,8 @@ class StudentDetail extends Component {
                     field: 'typeIncome',
                     id: 'typeIncome',
                     type: !userId && rol === 'A' ? 'text' : 'hidden',
+                    tooltipText:
+                      'Medio por el cual el estudiante ingreso al Postgrado de Geoquimica. Ej. Opsu',
                   },
                   {
                     label: 'Creditos otorgados',
@@ -298,6 +300,8 @@ class StudentDetail extends Component {
                     id: 'creditsGranted',
                     type: !userId && rol === 'A' ? 'number' : 'hidden',
                     min: 0,
+                    tooltipText:
+                      'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquimica',
                   },
 
                   {
@@ -306,6 +310,8 @@ class StudentDetail extends Component {
                     id: 'homeUniversity',
                     type: !userId && rol === 'A' ? 'text' : 'hidden',
                     disabled: rol !== 'A',
+                    tooltipText:
+                      'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simon Bolivar, Universidad de Carabobo, etc... ',
                   },
                   {
                     label: 'Profesor Guia',
@@ -344,12 +350,16 @@ class StudentDetail extends Component {
                     field: 'active',
                     id: 'active',
                     type: userId && rol === 'A' ? 'switch' : 'hidden',
+                    tooltipText:
+                      'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
                   },
                   {
                     label: '¿Puede Inscribir tesis?',
                     field: 'isAvailableFinalWork',
                     id: 'isAvailableFinalWork',
                     type: !userId && rol === 'A' ? 'switch' : 'hidden',
+                    tooltipText:
+                      'Habilitar de forma manual la inscripcion de tesis de un estudiante en un Programa Academico',
                   },
                 ]}
               </RenderFields>

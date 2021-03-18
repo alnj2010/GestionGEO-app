@@ -183,6 +183,8 @@ class AdminDetail extends Component {
                     field: 'active',
                     id: 'active',
                     type: adminId ? 'switch' : 'hidden',
+                    tooltipText:
+                      'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
                   },
                 ]}
               </RenderFields>

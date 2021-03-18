@@ -189,6 +189,8 @@ class TeacherDetail extends Component {
                     label: '¿Usuario activo?',
                     field: 'active',
                     id: 'active',
+                    tooltipText:
+                      'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
                     type: teacherId ? 'switch' : 'hidden',
                   },
                 ]}

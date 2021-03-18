@@ -87,7 +87,11 @@ class StudentsList extends Component {
                     <div>
                       <b>Estudiantes</b>
                     </div>
-                    <div>asdasdas daddsa ad asd</div>
+                    <div>
+                      Son las entidades mas importantes del sistema. Estan asociados directamente a
+                      un Programa Academico. Pueden inscribir asignaturas y solicitar constancias
+                      tanto de inscripcion como de estudio.
+                    </div>
                     <br />
                     <div>
                       Abajo se listan los distintos estudiantes existenten en el Postgrado de

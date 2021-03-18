@@ -90,6 +90,8 @@ class SchoolProgramDetail extends Component {
                     field: 'schoolProgramName',
                     id: 'schoolProgramName',
                     type: 'text',
+                    tooltipText:
+                      'Suministrar el Nombre del Programa Academico. Ej: Especializacion en Hidrocarburos, Doctorado, etc...',
                   },
                   {
                     label: 'Unidades de credito',
@@ -113,6 +115,8 @@ class SchoolProgramDetail extends Component {
                     min: 0,
                     max: numCu,
                     disabled: !numCu,
+                    tooltipText:
+                      'Ingrese la minima cantidad de Unidades de Credito necesaria para presentar el Trabajo especial de Grado',
                   },
                   {
                     label: 'min. de semestres para la TEG',
@@ -120,6 +124,8 @@ class SchoolProgramDetail extends Component {
                     id: 'minDuration',
                     type: conduciveToDegreeSelected ? 'number' : 'hidden',
                     min: 1,
+                    tooltipText:
+                      'Ingrese la cantidad minima de semestres necesarios para presentar el Trabajo especial de Grado',
                   },
                   {
                     label: 'min. de UC para examen doctoral',
@@ -129,6 +135,8 @@ class SchoolProgramDetail extends Component {
                     min: 0,
                     max: numCu,
                     disabled: !numCu || !doctoralExam,
+                    tooltipText:
+                      'Ingrese la cantidad minima de semestres necesarios para presentar el examen doctoral',
                   },
                   {
                     label: '¿Otorga un certificado de culminación?',

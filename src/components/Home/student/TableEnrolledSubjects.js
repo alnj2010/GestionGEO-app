@@ -65,7 +65,7 @@ class TableEnrolledSubjects extends Component {
           }
           localization={{
             body: {
-              emptyDataSourceMessage: 'No hay materias inscritas',
+              emptyDataSourceMessage: 'No hay asignaturas inscritas',
             },
 
             header: {

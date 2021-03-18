@@ -6,6 +6,7 @@ import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import handleExportCsv from '../../utils/handleExportCsv';
+import HelpButton from '../HelpButton';
 
 class SchoolPeriodsList extends Component {
   constructor() {
@@ -63,7 +64,29 @@ class SchoolPeriodsList extends Component {
               { title: 'Fecha Fin', field: 'endDate' },
             ]}
             data={this.transformData(schoolPeriods)}
-            title={matches ? 'Periodos semestrales' : ''}
+            title={
+              matches ? (
+                <>
+                  Periodos Semestrales{' '}
+                  <HelpButton>
+                    <div>
+                      <b> Periodos Semestral</b>
+                    </div>
+                    <div>
+                      Se define como el tiempo durante el cual el Postgrado de Geoquimica imparte
+                      clases a los estudiantes que cursan una o más asignaturas.
+                    </div>
+                    <br />
+                    <div>
+                      Abajo se listan los distintos Periodos Semestrales existenten en el Postgrado
+                      de Geoquimica
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             actions={[
               {
                 icon: 'visibility',

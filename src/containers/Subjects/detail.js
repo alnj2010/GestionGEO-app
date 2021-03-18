@@ -56,12 +56,12 @@ class SubjectDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/materias');
+    history.push('/asignaturas');
   };
 
   handleSubjectDelete = () => {
     const { deleteSubjectDispatch, history, match } = this.props;
-    deleteSubjectDispatch(match.params.id).then(() => history.push('/materias'));
+    deleteSubjectDispatch(match.params.id).then(() => history.push('/asignaturas'));
   };
 
   render() {

@@ -275,7 +275,7 @@ const tutorialSteps = [
                   </li>
                 </ul>
                 <span className={classes.section}>
-                  Además se podrá visualizar el calendario de las materias impartidas en dicho
+                  Además se podrá visualizar el calendario de las asignaturas impartidas en dicho
                   periodo semestral.
                 </span>
               </li>
@@ -391,7 +391,7 @@ class MenuApp extends React.Component {
         },
 
         {
-          link: 'materias',
+          link: 'asignaturas',
           name: 'Asignaturas',
           component: Subject,
           clicked: false,

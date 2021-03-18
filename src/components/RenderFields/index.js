@@ -16,8 +16,8 @@ function RenderFields(props) {
   let desktop;
   if (Array.isArray(lineal)) desktop = lineal;
   else desktop = Array(totalFields).fill(lineal ? Math.floor(12 / totalFields) : 5);
-
-  return children.map((input, index) => {
+  const fields = children.filter((item) => item.type !== 'hidden');
+  return fields.map((input, index) => {
     switch (input.type) {
       case 'text':
         return (

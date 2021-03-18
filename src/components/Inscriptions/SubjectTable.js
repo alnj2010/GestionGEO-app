@@ -43,7 +43,7 @@ function SubjectTable({ subjects, setSubjectsSelected, message }) {
         data={transformData()}
         localization={{
           body: {
-            emptyDataSourceMessage: message || 'No hay materias disponibles para inscribir',
+            emptyDataSourceMessage: message || 'No hay asignaturas disponibles para inscribir',
           },
         }}
         options={{

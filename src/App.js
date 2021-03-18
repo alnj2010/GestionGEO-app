@@ -86,9 +86,9 @@ function App() {
                 />
                 <Route exact path="/programas-academicos/agregar" component={SchoolProgramDetail} />
 
-                <Route exact path="/materias/" component={SubjectsList} />
-                <Route exact path="/materias/modificar/:id" component={SubjectDetail} />
-                <Route exact path="/materias/agregar" component={SubjectDetail} />
+                <Route exact path="/asignaturas/" component={SubjectsList} />
+                <Route exact path="/asignaturas/modificar/:id" component={SubjectDetail} />
+                <Route exact path="/asignaturas/agregar" component={SubjectDetail} />
 
                 <Route exact path="/usuarios/estudiantes/" component={StudentsList} />
                 <Route exact path="/usuarios/estudiantes/modificar/:id" component={StudentDetail} />
