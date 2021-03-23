@@ -23,7 +23,7 @@ class StudentHomeContainer extends Component {
       // eslint-disable-next-line no-param-reassign
       column.innerText = WEEKDAYS[index];
     });
-    defineDispatch('materia');
+    defineDispatch('asignatura');
   };
 
   componentWillUnmount = () => {

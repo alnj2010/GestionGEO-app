@@ -46,7 +46,7 @@ class TableEnrolledSubjects extends Component {
           columns={[
             { title: 'id', field: 'id', hidden: true },
             { title: 'Codigo', field: 'code' },
-            { title: 'Materia', field: 'name' },
+            { title: 'Asignatura', field: 'name' },
             { title: 'Profesor', field: 'teacher' },
             { title: 'Calificacion', field: 'qualification' },
             { title: 'Estado', field: 'status' },
@@ -77,7 +77,7 @@ class TableEnrolledSubjects extends Component {
               ? [
                   (rowData) => ({
                     icon: () => <Cancel />,
-                    tooltip: 'Retirar materia',
+                    tooltip: 'Retirar asignatura',
                     disabled: rowData.status === reverseJson(SUBJECT_STATE)[SUBJECT_STATE.RETIRADO],
                     onClick: () =>
                       this.handleDialogShow('retirar', () => handleRetireSubject(rowData.id)),

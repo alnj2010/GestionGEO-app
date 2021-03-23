@@ -22,7 +22,7 @@ class SubjectDetailContainer extends Component {
     } = this.props;
     if (match.params.id) findSubjectByIdDispatch(match.params.id);
     getSchoolProgramListDispatch();
-    defineDispatch('materia');
+    defineDispatch('asignatura');
   };
 
   componentWillUnmount = () => {

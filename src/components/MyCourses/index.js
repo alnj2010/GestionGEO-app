@@ -47,7 +47,7 @@ class SubjectsList extends Component {
             columns={[
               { title: '#', field: 'id', hidden: true },
               { title: 'Codigo', field: 'courseCode' },
-              { title: 'Materia', field: 'courseName' },
+              { title: 'Asignatura', field: 'courseName' },
               { title: 'Unidades de Credito', field: 'uc' },
               { title: 'Cursando', field: 'enrolled' },
               { title: 'limite', field: 'limit' },

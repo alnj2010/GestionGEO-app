@@ -174,11 +174,11 @@ class StudentInscription extends Component {
                           field: `subjectId`,
                           id: `subjectId`,
                           type: 'select',
-                          label: 'Materia',
+                          label: 'Asignatura',
                           repeatOption: false,
                         },
                         {
-                          label: 'Estado Materia',
+                          label: 'Estado Asignatura',
                           field: `status`,
                           id: `status`,
                           type: 'select',
@@ -239,7 +239,7 @@ class StudentInscription extends Component {
                           field: `subjectId`,
                           id: `subjectId`,
                           type: 'select',
-                          label: 'Materia',
+                          label: 'Asignatura',
                           repeatOption: false,
                         },
                         {
@@ -418,7 +418,7 @@ const studentInscriptionValidation = (values) => {
     values.subjects.forEach((subj, subjIndex) => {
       const subjErrors = {};
       if (!subj || !subj.subjectId) {
-        subjErrors.subjectId = '*Materia es requerido';
+        subjErrors.subjectId = '*Asignatura es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.status) {

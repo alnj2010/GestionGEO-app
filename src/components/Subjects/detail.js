@@ -156,7 +156,7 @@ class SubjectDetail extends Component {
       <Form onSubmit={handleSubmit(saveSubject)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {subjectId ? `Materia: ${subject.name}` : 'Nuevo Materia'}</h3>
+            <h3> {subjectId ? `Asignatura: ${subject.name}` : 'Nuevo Asignatura'}</h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -164,13 +164,13 @@ class SubjectDetail extends Component {
               <RenderFields>
                 {[
                   {
-                    label: 'Codigo de la materia',
+                    label: 'Codigo de la asignatura',
                     field: 'subjectCode',
                     id: 'subjectCode',
                     type: 'text',
                   },
                   {
-                    label: 'Nombre de la materia',
+                    label: 'Nombre de la asignatura',
                     field: 'subjectName',
                     id: 'subjectName',
                     type: 'text',
@@ -205,13 +205,15 @@ class SubjectDetail extends Component {
                   },
 
                   {
-                    label: '¿Prela a una materia final?',
+                    label: '¿Prela a una asignatura final?',
                     field: 'isProjectSubject',
                     id: 'isProjectSubject',
                     type: 'switch',
+                    tooltipText:
+                      'Esta opción hace referencia a las materias de tipo proyecto que deben cursarse antes de presentar Trabajos Especiales de Grado',
                   },
                   {
-                    label: '¿Es materia final? Ej: TEG, Tesis',
+                    label: '¿Es asignatura final? Ej: TEG, Tesis',
                     field: 'isFinalSubject',
                     id: 'isFinalSubject',
                     type: 'switch',
@@ -220,7 +222,7 @@ class SubjectDetail extends Component {
               </RenderFields>
               <Grid item xs={12} className={classes.subtitle}>
                 <Typography variant="h6" gutterBottom>
-                  Programa academicos a los que pertenece la materia
+                  Programa academicos a los que pertenece la asignatura
                 </Typography>
               </Grid>
               <FieldArray name="schoolPrograms" component={this.renderSchoolPrograms} />
@@ -240,7 +242,7 @@ class SubjectDetail extends Component {
                       onClick={() =>
                         subjectId
                           ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('materia')
+                          : submitDispatch('asignatura')
                       }
                       disabled={!valid || pristine || submitting}
                     >
@@ -321,11 +323,11 @@ SubjectDetail.defaultProps = {
 const subjectValidation = (values) => {
   const errors = {};
   if (!values.subjectCode) {
-    errors.subjectCode = 'Codigo de Materia es requerido';
+    errors.subjectCode = 'Codigo de asignatura es requerido';
   }
 
   if (!values.subjectName) {
-    errors.subjectName = 'Nombre de Materia es requerido';
+    errors.subjectName = 'Nombre de asignatura es requerido';
   }
 
   if (!values.uc) {
@@ -354,11 +356,11 @@ const subjectValidation = (values) => {
 };
 
 let SubjectDetailWrapper = reduxForm({
-  form: 'materia',
+  form: 'asignatura',
   validate: subjectValidation,
   enableReinitialize: true,
 })(SubjectDetail);
-const selector = formValueSelector('materia');
+const selector = formValueSelector('asignatura');
 
 SubjectDetailWrapper = connect(
   (state) => ({

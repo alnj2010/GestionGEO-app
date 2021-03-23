@@ -74,12 +74,12 @@ class SubjectsList extends Component {
                     </div>
                     <div>
                       Son los cursos que se dictan en los diferentes Programas Academicos del
-                      postgrado de Geoquimica
+                      postgrado de Geoquímica
                     </div>
                     <br />
                     <div>
                       Abajo se listan los distintos asignaturas existenten en el Postgrado de
-                      Geoquimica
+                      Geoquímica
                     </div>
                   </HelpButton>
                 </>
@@ -97,7 +97,7 @@ class SubjectsList extends Component {
               },
               {
                 icon: 'delete',
-                tooltip: 'Borrar materia',
+                tooltip: 'Borrar asignatura',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', () => handleDeleteSubject(rowData.id));
                 },

@@ -80,7 +80,7 @@ class SchoolProgramsList extends Component {
                     <br />
                     <div>
                       Abajo se listan los distintos programas academicos existenten en el Postgrado
-                      de Geoquimica
+                      de Geoquímica
                     </div>
                   </HelpButton>
                 </>

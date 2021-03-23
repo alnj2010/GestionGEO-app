@@ -97,7 +97,7 @@ class AdminsList extends Component {
                     <br />
                     <div>
                       Abajo se listan los distintos administradores existenten en el Postgrado de
-                      Geoquimica
+                      Geoquímica
                     </div>
                   </HelpButton>
                 </>

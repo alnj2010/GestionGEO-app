@@ -34,7 +34,7 @@ function SubjectTable({ subjects, setSubjectsSelected, message }) {
             field: 'school_period_subject_teacher_id',
             hidden: true,
           },
-          { title: 'Materia', field: 'subject' },
+          { title: 'Asignatura', field: 'subject' },
           { title: 'Profesor', field: 'teacher' },
           { title: 'Aranceles', field: 'duty' },
           { title: 'Unidades de credito', field: 'uc' },

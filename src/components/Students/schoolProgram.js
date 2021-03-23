@@ -114,22 +114,28 @@ class StudentSchoolProgram extends Component {
                     disabled: rol !== 'A' || schoolProgram,
                   },
                   {
-                    label: 'Postgrado actual (Externo al Postgrado de Geoquimica)',
+                    label: 'Postgrado actual (Externo al Postgrado de Geoquímica)',
                     field: 'currentPostgraduate',
                     id: 'currentPostgraduate',
                     type: 'text',
+                    tooltipText:
+                      'Si es estudiante por convenio, ingrese el postgrado al que pertenece. Ej: Postgrado de Ingeniería',
                   },
                   {
                     label: 'Univesidad de origen',
                     field: 'homeUniversity',
                     id: 'homeUniversity',
                     type: 'text',
+                    tooltipText:
+                      'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simon Bolivar, Universidad de Carabobo, etc... ',
                   },
                   {
                     label: 'Tipo de ingreso',
                     field: 'typeIncome',
                     id: 'typeIncome',
                     type: 'text',
+                    tooltipText:
+                      'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Opsu',
                   },
                   {
                     label: 'Creditos otorgados',
@@ -137,6 +143,8 @@ class StudentSchoolProgram extends Component {
                     id: 'creditsGranted',
                     type: 'number',
                     min: 0,
+                    tooltipText:
+                      'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquímica',
                   },
                   {
                     label: 'Estado del estudiante',
@@ -191,6 +199,8 @@ class StudentSchoolProgram extends Component {
                     id: 'testPeriod',
                     type: rol === 'A' ? 'switch' : 'hidden',
                     disabled: rol !== 'A',
+                    tooltipText:
+                      'Si esta opción esta activa es porque el estudiante tiene un promedio menor a 14',
                   },
                 ]}
               </RenderFields>
@@ -218,7 +228,7 @@ class StudentSchoolProgram extends Component {
                       field: `subject_id`,
                       id: `subject_id`,
                       type: 'select',
-                      label: 'Materia',
+                      label: 'Asignatura',
                       repeatOption: false,
                     },
                     {
@@ -343,7 +353,7 @@ const schoolProgramValidation = (values) => {
       }
 
       if (!equivalence || !equivalence.subject_id) {
-        equivalenceErrors.subject_id = '*Materia es requerido';
+        equivalenceErrors.subject_id = '*Asignatura es requerido';
         equivalenceArrayErrors[equivalenceIndex] = equivalenceErrors;
       }
     });

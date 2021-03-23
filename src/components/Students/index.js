@@ -95,7 +95,7 @@ class StudentsList extends Component {
                     <br />
                     <div>
                       Abajo se listan los distintos estudiantes existenten en el Postgrado de
-                      Geoquimica
+                      Geoquímica
                     </div>
                   </HelpButton>
                 </>

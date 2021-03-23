@@ -159,7 +159,7 @@ class SchoolPeriodDetail extends Component {
                       field: `${subject}.subjectId`,
                       id: `${subject}.subjectId`,
                       type: 'select',
-                      label: 'Materia',
+                      label: 'Asignatura',
                       options: this.unselectedSubjects(index).map((item) => {
                         return {
                           key: item.name,
@@ -506,7 +506,7 @@ const schoolPeriodValidation = (values) => {
     values.subjects.forEach((subj, subjIndex) => {
       const subjErrors = {};
       if (!subj || !subj.subjectId) {
-        subjErrors.subjectId = '*Materia es requerido';
+        subjErrors.subjectId = '*Asignatura es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.teacherId) {

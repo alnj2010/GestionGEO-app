@@ -7,6 +7,8 @@ import { Grid, Button, Typography } from '@material-ui/core';
 import { Form, reduxForm, FieldArray, submit, formValueSelector, Field } from 'redux-form';
 import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
+import Chip from '@material-ui/core/Chip';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -100,7 +102,7 @@ class StudentDetail extends Component {
                       field: `${subject}.subjectId`,
                       id: `${subject}.subjectId`,
                       type: 'select',
-                      label: 'Materia',
+                      label: 'Asignatura',
                       options: this.unselectedSubjects(index).map((item) => {
                         return {
                           key: item.name,
@@ -292,7 +294,7 @@ class StudentDetail extends Component {
                     id: 'typeIncome',
                     type: !userId && rol === 'A' ? 'text' : 'hidden',
                     tooltipText:
-                      'Medio por el cual el estudiante ingreso al Postgrado de Geoquimica. Ej. Opsu',
+                      'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Opsu',
                   },
                   {
                     label: 'Creditos otorgados',
@@ -301,7 +303,7 @@ class StudentDetail extends Component {
                     type: !userId && rol === 'A' ? 'number' : 'hidden',
                     min: 0,
                     tooltipText:
-                      'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquimica',
+                      'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquímica',
                   },
 
                   {
@@ -438,44 +440,50 @@ class StudentDetail extends Component {
                     switch (id) {
                       case 'edit':
                         return (
-                          <EditIcon
-                            style={{ cursor: 'pointer', marginLeft: '30px' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Editar informacion del estudiante en el Programa Academico">
+                            <EditIcon
+                              style={{ cursor: 'pointer', marginLeft: '30px' }}
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       case 'inscription':
                         return (
-                          <Inscription
-                            style={{ cursor: 'pointer' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Inscribir al estudiante en el Programa Academico">
+                            <Inscription
+                              style={{ cursor: 'pointer' }}
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       case 'constances':
                         return (
                           <div>
-                            <FormControl>
-                              <InputLabel
-                                htmlFor={`select-contance-${data.id}-label`}
-                                style={{ top: 0, transform: 'none' }}
-                              >
-                                <Download />
-                              </InputLabel>
-                              <Select
-                                label={`select-contance-${data.id}-label`}
-                                id={`select-contance-${data.id}`}
-                                input={<InputBase />}
-                                value=""
-                                onChange={(event) =>
-                                  getConstance(data.id, USER_INSTANCE.S, event.target.value)
-                                }
-                              >
-                                {CONSTANCES.S.map(({ name, constanceType }) => (
-                                  <MenuItem key={constanceType} value={constanceType}>
-                                    {name}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
+                            <Tooltip title="Descargar constancias">
+                              <FormControl>
+                                <InputLabel
+                                  htmlFor={`select-contance-${data.id}-label`}
+                                  style={{ top: 0, transform: 'none' }}
+                                >
+                                  <Download />
+                                </InputLabel>
+                                <Select
+                                  label={`select-contance-${data.id}-label`}
+                                  id={`select-contance-${data.id}`}
+                                  input={<InputBase />}
+                                  value=""
+                                  onChange={(event) =>
+                                    getConstance(data.id, USER_INSTANCE.S, event.target.value)
+                                  }
+                                >
+                                  {CONSTANCES.S.map(({ name, constanceType }) => (
+                                    <MenuItem key={constanceType} value={constanceType}>
+                                      {name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                            </Tooltip>
                           </div>
                         );
                       case 'delete':
@@ -483,17 +491,23 @@ class StudentDetail extends Component {
                           return '';
                         }
                         return (
-                          <DeleteIcon
-                            style={{ cursor: 'pointer' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Remover al estudiante del Programa Academico">
+                            <DeleteIcon
+                              style={{ cursor: 'pointer' }}
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       case 'add':
                         return (
-                          <AddIcon
-                            style={{ cursor: 'pointer' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Agregar al estudiante un nuevo programa academico">
+                            <Chip
+                              style={{ fontWeight: 'bold' }}
+                              color="primary"
+                              label="+ Agregar"
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       default:
                         return 'x';
