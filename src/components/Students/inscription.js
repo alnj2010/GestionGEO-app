@@ -3,18 +3,19 @@ import { connect } from 'react-redux';
 import * as moment from 'moment';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, Paper } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector, change } from 'redux-form';
 import RenderFields from '../RenderFields';
 import RenderFieldsArray from '../RenderFieldsArray';
 import Dialog from '../Dialog';
 import { show } from '../../actions/dialog';
-import { jsonToOptions } from '../../helpers';
+import { jsonToOptions, reverseJson } from '../../helpers';
 import {
   SUBJECT_STATE,
   FINANCING_TYPE,
   FINAL_WORK_STATUS,
   DOCTORAL_STATUS,
+  STUDENT_STATUS,
 } from '../../services/constants';
 
 const styles = () => ({
@@ -37,6 +38,12 @@ const styles = () => ({
     marginTop: 30,
   },
   button: {
+    width: '100%',
+  },
+  paper: {
+    height: 300,
+    display: 'flex',
+    alignItems: 'center',
     width: '100%',
   },
 });
@@ -80,6 +87,7 @@ class StudentInscription extends Component {
       finalWorkSubjects,
       availableDoctoralExam,
       finalWorkSubjectsSelected,
+      current_status: currentStatus,
     } = this.props;
     let rolledSubjects = [];
     if (availableSubjects.length && subjectsSelected) {
@@ -101,249 +109,301 @@ class StudentInscription extends Component {
             <h3> Inscripcion: {fullname}</h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    field: `schoolPeriodId`,
-                    disabled: !!idSchoolPeriod,
-                    id: `schoolPeriodId`,
-                    type: 'select',
-                    label: 'Periodo semestral',
-                    options: schoolPeriods.map((sp) => {
-                      return {
-                        key: sp.cod_school_period,
-                        value: sp.id,
-                      };
-                    }),
-                    onchange: (schoolPeriodId) => {
-                      changeDispatch('inscripcion', 'subjects', []);
-                      getAvailableSubjects(studentId, schoolPeriodId);
+          {idSchoolPeriod ||
+          (currentStatus &&
+            [
+              STUDENT_STATUS.GRADUADO,
+              STUDENT_STATUS['RETIRO TIPO A'],
+              STUDENT_STATUS['RETIRO TIPO B'],
+              STUDENT_STATUS['DESINCORPORADO TIPO A'],
+              STUDENT_STATUS['DESINCORPORADO TIPO B'],
+            ].indexOf(currentStatus) === -1) ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
+                    {
+                      field: `schoolPeriodId`,
+                      disabled: !!idSchoolPeriod || STUDENT_STATUS.GRADUADO === currentStatus,
+                      id: `schoolPeriodId`,
+                      type: 'select',
+                      label: 'Periodo semestral',
+                      options: schoolPeriods.map((sp) => {
+                        return {
+                          key: sp.cod_school_period,
+                          value: sp.id,
+                        };
+                      }),
+                      onchange: (schoolPeriodId) => {
+                        changeDispatch('inscripcion', 'subjects', []);
+                        getAvailableSubjects(studentId, schoolPeriodId);
+                      },
                     },
-                  },
-                  {
-                    field: `payRef`,
-                    id: `payRef`,
-                    type: 'text',
-                    label: 'Referencia de pago',
-                  },
-                  {
-                    label: 'Financiamiento',
-                    field: 'financing',
-                    id: 'financing',
-                    type: 'select',
-                    options: jsonToOptions(FINANCING_TYPE),
-                  },
-                  {
-                    field: `financingDescription`,
-                    id: `financingDescription`,
-                    type: 'text',
-                    label: 'Descripcion del financiamiento',
-                  },
-                  {
-                    field: `amountPaid`,
-                    id: `amountPaid`,
-                    type: 'number',
-                    min: 0,
-                    label: 'Cantidad cancelada (bs)',
-                  },
-                  {
-                    field: `doctoralExam`,
-                    id: `doctoralExam`,
-                    type: availableDoctoralExam ? 'select' : 'hidden',
-                    label: 'Examen doctoral',
-                    options: jsonToOptions(DOCTORAL_STATUS),
-                  },
-                ]}
-              </RenderFields>
+                    {
+                      field: `payRef`,
+                      id: `payRef`,
+                      type: 'text',
+                      label: 'Referencia de pago',
+                      disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                    },
+                    {
+                      label: 'Financiamiento',
+                      field: 'financing',
+                      id: 'financing',
+                      type: 'select',
+                      options: jsonToOptions(FINANCING_TYPE),
+                      disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                    },
+                    {
+                      field: `financingDescription`,
+                      id: `financingDescription`,
+                      type: 'text',
+                      label: 'Descripcion del financiamiento',
+                      disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                    },
+                    {
+                      field: `amountPaid`,
+                      id: `amountPaid`,
+                      type: 'number',
+                      min: 0,
+                      label: 'Cantidad cancelada (bs)',
+                      disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                    },
+                    {
+                      field: `doctoralExam`,
+                      id: `doctoralExam`,
+                      type: availableDoctoralExam ? 'select' : 'hidden',
+                      label: 'Examen doctoral',
+                      options: jsonToOptions(DOCTORAL_STATUS),
+                      disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                    },
+                  ]}
+                </RenderFields>
 
-              {subjectsSelected.length || availableSubjects.length ? (
-                <Grid container item xs={12} className={classes.listSubjects}>
-                  <Typography variant="h6" gutterBottom>
-                    Asignaturas
-                  </Typography>
-                  <RenderFieldsArray
-                    name="subjects"
-                    nonRepeatOptions={availableSubjects}
-                    distributions={[4, 4, 4]}
-                  >
-                    {(subjectSelected) => {
-                      return [
-                        {
-                          field: `subjectId`,
-                          id: `subjectId`,
-                          type: 'select',
-                          label: 'Asignatura',
-                          repeatOption: false,
-                        },
-                        {
-                          label: 'Estado Asignatura',
-                          field: `status`,
-                          id: `status`,
-                          type: 'select',
-                          options: jsonToOptions(SUBJECT_STATE),
-                        },
-                        {
-                          label: 'Nota',
-                          field: `nota`,
-                          id: `nota`,
-                          type: 'number',
-                          min: 0,
-                          max: 20,
-                          disabled:
-                            subjectSelected && subjectSelected.status === SUBJECT_STATE.CURSANDO,
-                        },
-                      ];
-                    }}
-                  </RenderFieldsArray>
-                </Grid>
-              ) : null}
-
-              {finalWorkSubjectsSelected.length || finalWorkSubjects.length ? (
-                <Grid container item xs={12} className={classes.listSubjects}>
-                  <Typography variant="h6" gutterBottom>
-                    {fws[0].is_final_subject ||
-                    (fws[0].isProject !== undefined && !fws[0].isProject)
-                      ? 'Trabajo final'
-                      : 'Proyecto y seminario'}
-                  </Typography>
-                  <RenderFieldsArray
-                    name="finalWorks"
-                    nonRepeatOptions={finalWorkSubjects}
-                    distributions={
-                      fws[0].is_final_subject ||
-                      (fws[0].isProject !== undefined && !fws[0].isProject)
-                        ? [2, 1, 1, 2, 2, 2, 2]
-                        : [3, 1, 3, 3, 2]
-                    }
-                  >
-                    {(finalWorkSelected) => {
-                      return [
-                        {
-                          field: `title`,
-                          id: `title`,
-
-                          type: 'text',
-                          label: 'Titulo',
-                        },
-                        {
-                          field: `status`,
-                          id: `status`,
-                          type: 'select',
-                          label: 'Estado',
-                          options: jsonToOptions(FINAL_WORK_STATUS),
-                        },
-
-                        {
-                          field: `subjectId`,
-                          id: `subjectId`,
-                          type: 'select',
-                          label: 'Asignatura',
-                          repeatOption: false,
-                        },
-                        {
-                          field: `descriptionStatus`,
-                          id: `descriptionStatus`,
-                          type: 'text',
-                          label: 'Descripcion del estado',
-                        },
-                        {
-                          field: `approvalDate`,
-                          id: `approvalDate`,
-                          type: 'date',
-                          label: 'Fecha de aprobacion',
-                          disabled:
-                            !finalWorkSelected ||
-                            finalWorkSelected.status !== FINAL_WORK_STATUS.APROBADO,
-                        },
-                        {
-                          field: `projectId`,
-                          id: `projectId`,
-                          type:
-                            fws[0].is_final_subject ||
-                            (fws[0].isProject !== undefined && !fws[0].isProject)
-                              ? 'select'
-                              : 'hidden',
-                          label: 'Proyecto',
-                          options: approvedProjects.map((item) => ({
-                            key: item.title,
-                            value: item.id,
-                          })),
-                        },
-                        {
-                          field: `advisors`,
-                          id: `advisors`,
-                          type:
-                            fws[0].is_final_subject ||
-                            (fws[0].isProject !== undefined && !fws[0].isProject)
-                              ? 'select'
-                              : 'hidden',
-                          multiple: true,
-                          label: 'Tutor',
-                          options: teachers.map((item) => ({
-                            key: `${item.first_name} ${item.first_surname}`,
-                            value: item.id,
-                          })),
-                        },
-                      ];
-                    }}
-                  </RenderFieldsArray>
-                </Grid>
-              ) : null}
-
-              <Grid item xs={12}>
-                <div>
-                  <h4>
-                    Total de creditos inscritos:{' '}
-                    <span style={{ color: '#2196f3' }}>
-                      {rolledSubjects.reduce((total, item) => total + parseInt(item.uc, 10), 0)} uc
-                    </span>{' '}
-                  </h4>
-                  <h4>
-                    Costo total:{' '}
-                    <span style={{ color: '#9e9d24' }}>
-                      {rolledSubjects
-                        .reduce((total, item) => total + parseFloat(item.duty), 0.0)
-                        .toFixed(2)}{' '}
-                      bs
-                    </span>{' '}
-                  </h4>
-                </div>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button} `}
-                      onClick={() =>
-                        idSchoolPeriod
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('inscripcion')
-                      }
-                      disabled={!valid || pristine || submitting}
+                {subjectsSelected.length || availableSubjects.length ? (
+                  <Grid container item xs={12} className={classes.listSubjects}>
+                    <Typography variant="h6" gutterBottom>
+                      Asignaturas
+                    </Typography>
+                    <RenderFieldsArray
+                      name="subjects"
+                      nonRepeatOptions={availableSubjects}
+                      distributions={[4, 4, 4]}
                     >
-                      Guardar Cambios
-                    </Button>
+                      {(subjectSelected) => {
+                        return [
+                          {
+                            field: `subjectId`,
+                            id: `subjectId`,
+                            type: 'select',
+                            label: 'Asignatura',
+                            repeatOption: false,
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                          {
+                            label: 'Estado Asignatura',
+                            field: `status`,
+                            id: `status`,
+                            type: 'select',
+                            options: jsonToOptions(SUBJECT_STATE),
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                          {
+                            label: 'Nota',
+                            field: `nota`,
+                            id: `nota`,
+                            type: 'number',
+                            min: 0,
+                            max: 20,
+                            disabled:
+                              (subjectSelected &&
+                                subjectSelected.status === SUBJECT_STATE.CURSANDO) ||
+                              STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                        ];
+                      }}
+                    </RenderFieldsArray>
                   </Grid>
+                ) : null}
 
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      IR AL LISTADO
-                    </Button>
+                {finalWorkSubjectsSelected.length || finalWorkSubjects.length ? (
+                  <Grid container item xs={12} className={classes.listSubjects}>
+                    <Typography variant="h6" gutterBottom>
+                      {fws[0].is_final_subject ||
+                      (fws[0].isProject !== undefined && !fws[0].isProject)
+                        ? 'Trabajo final'
+                        : 'Proyecto y seminario'}
+                    </Typography>
+                    <RenderFieldsArray
+                      name="finalWorks"
+                      nonRepeatOptions={finalWorkSubjects}
+                      distributions={
+                        fws[0].is_final_subject ||
+                        (fws[0].isProject !== undefined && !fws[0].isProject)
+                          ? [2, 1, 1, 2, 2, 2, 2]
+                          : [3, 1, 3, 3, 2]
+                      }
+                    >
+                      {(finalWorkSelected) => {
+                        return [
+                          {
+                            field: `title`,
+                            id: `title`,
+
+                            type: 'text',
+                            label: 'Titulo',
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                          {
+                            field: `status`,
+                            id: `status`,
+                            type: 'select',
+                            label: 'Estado',
+                            options: jsonToOptions(FINAL_WORK_STATUS),
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+
+                          {
+                            field: `subjectId`,
+                            id: `subjectId`,
+                            type: 'select',
+                            label: 'Asignatura',
+                            repeatOption: false,
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                          {
+                            field: `descriptionStatus`,
+                            id: `descriptionStatus`,
+                            type: 'text',
+                            label: 'Descripcion del estado',
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                          {
+                            field: `approvalDate`,
+                            id: `approvalDate`,
+                            type: 'date',
+                            label: 'Fecha de aprobacion',
+                            disabled:
+                              !finalWorkSelected ||
+                              finalWorkSelected.status !== FINAL_WORK_STATUS.APROBADO ||
+                              STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                          {
+                            field: `projectId`,
+                            id: `projectId`,
+                            type:
+                              fws[0].is_final_subject ||
+                              (fws[0].isProject !== undefined && !fws[0].isProject)
+                                ? 'select'
+                                : 'hidden',
+                            label: 'Proyecto',
+                            options: approvedProjects.map((item) => ({
+                              key: item.title,
+                              value: item.id,
+                            })),
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                          {
+                            field: `advisors`,
+                            id: `advisors`,
+                            type:
+                              fws[0].is_final_subject ||
+                              (fws[0].isProject !== undefined && !fws[0].isProject)
+                                ? 'select'
+                                : 'hidden',
+                            multiple: true,
+                            label: 'Tutor',
+                            options: teachers.map((item) => ({
+                              key: `${item.first_name} ${item.first_surname}`,
+                              value: item.id,
+                            })),
+                            disabled: STUDENT_STATUS.GRADUADO === currentStatus,
+                          },
+                        ];
+                      }}
+                    </RenderFieldsArray>
+                  </Grid>
+                ) : null}
+
+                <Grid item xs={12}>
+                  <div>
+                    <h4>
+                      Total de creditos inscritos:{' '}
+                      <span style={{ color: '#2196f3' }}>
+                        {rolledSubjects.reduce((total, item) => total + parseInt(item.uc, 10), 0)}{' '}
+                        uc
+                      </span>{' '}
+                    </h4>
+                    <h4>
+                      Costo total:{' '}
+                      <span style={{ color: '#9e9d24' }}>
+                        {rolledSubjects
+                          .reduce((total, item) => total + parseFloat(item.duty), 0.0)
+                          .toFixed(2)}{' '}
+                        bs
+                      </span>{' '}
+                    </h4>
+                  </div>
+                </Grid>
+              </Grid>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
+                      <Button
+                        variant="contained"
+                        className={`${classes.save} ${classes.button} `}
+                        onClick={() =>
+                          idSchoolPeriod
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('inscripcion')
+                        }
+                        disabled={!valid || pristine || submitting}
+                      >
+                        Guardar Cambios
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        IR AL LISTADO
+                      </Button>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Paper className={classes.paper}>
+              <Grid container justify="center">
+                <Grid item style={{ textAlign: 'center' }}>
+                  {currentStatus ? (
+                    <>
+                      <div>
+                        No es posible llevar a cabo la inscripcion debido a {fullname} se encuentra{' '}
+                        <strong>{reverseJson(STUDENT_STATUS)[currentStatus]}</strong>{' '}
+                      </div>
+                      <Button
+                        variant="contained"
+                        onClick={goBack}
+                        className={classes.button}
+                        style={{ width: '170px' }}
+                      >
+                        VOLVER AL LISTADO
+                      </Button>
+                    </>
+                  ) : (
+                    ''
+                  )}
+                </Grid>
+              </Grid>
+            </Paper>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>

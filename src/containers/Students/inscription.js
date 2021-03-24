@@ -96,7 +96,7 @@ class StudentInscriptionContainer extends Component {
     const {
       history,
       match: {
-        params: { studentId, userId },
+        params: { studentId, userId, idSchoolPeriod },
       },
     } = this.props;
     history.push(`/usuarios/estudiantes/inscripciones/${userId}/${studentId}`);
@@ -117,9 +117,11 @@ class StudentInscriptionContainer extends Component {
       availableDoctoralExam,
       teachers,
     } = this.props;
-    const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
-      student.second_surname || ''
-    }`;
+    const fullname = student.first_name
+      ? `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
+          student.second_surname || ''
+        }`
+      : 'Cargando...';
     const schoolPeriodInscripted = schoolPeriodsInscripted.find(
       (sp) => sp.school_period_id === parseInt(idSchoolPeriod, 10)
     );
@@ -131,6 +133,8 @@ class StudentInscriptionContainer extends Component {
       );
     }
 
+    const schoolPeriodByStudent =
+      student.student.find((item) => item.school_program_id === parseInt(studentId, 10)) || {};
     return (
       <StudentInscription
         teachers={teachers}
@@ -161,6 +165,7 @@ class StudentInscriptionContainer extends Component {
         getAvailableSubjects={getAvailableSubjectsDispatch}
         availableSubjects={availableSubjects}
         fullname={fullname}
+        {...schoolPeriodByStudent}
       />
     );
   }

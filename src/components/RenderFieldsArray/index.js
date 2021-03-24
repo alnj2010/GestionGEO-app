@@ -51,7 +51,8 @@ function RenderFieldsArray({
                         (item) =>
                           !selectedFields.some((s, i) => s[input.field] === item.value && index > i)
                       );
-                      propsSelectNonRepeat.disabled = selectedFields.length > index + 1;
+                      propsSelectNonRepeat.disabled =
+                        selectedFields.length > index + 1 || input.disabled;
                     }
                     return {
                       ...input,
