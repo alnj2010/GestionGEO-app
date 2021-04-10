@@ -53,7 +53,7 @@ class SubjectsList extends Component {
               { title: 'limite', field: 'limit' },
             ]}
             data={this.transformData(myCourses)}
-            title={matches ? 'Mis Cursos' : ''}
+            title={matches ? 'Asignaturas impartidas' : ''}
             actions={[
               {
                 icon: 'visibility',

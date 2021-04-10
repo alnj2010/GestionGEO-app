@@ -17,6 +17,7 @@ import {
   DOCTORAL_STATUS,
   STUDENT_STATUS,
 } from '../../services/constants';
+import HelpButton from '../HelpButton';
 
 const styles = () => ({
   form: {
@@ -45,6 +46,9 @@ const styles = () => ({
     display: 'flex',
     alignItems: 'center',
     width: '100%',
+  },
+  headerSection: {
+    display: 'flex',
   },
 });
 
@@ -87,7 +91,9 @@ class StudentInscription extends Component {
       finalWorkSubjects,
       availableDoctoralExam,
       finalWorkSubjectsSelected,
+      schoolPeriodId,
       current_status: currentStatus,
+      school_program: schoolProgram,
     } = this.props;
     let rolledSubjects = [];
     if (availableSubjects.length && subjectsSelected) {
@@ -102,11 +108,56 @@ class StudentInscription extends Component {
       fws = finalWorkSubjectsSelected;
     }
     const { func } = this.state;
+    let codShoolPeriod =
+      schoolPeriodId !== ''
+        ? schoolPeriods.find((item) => item.id === parseInt(schoolPeriodId, 10))
+        : null;
+    codShoolPeriod = codShoolPeriod && codShoolPeriod.cod_school_period;
+    console.log('------', schoolProgram);
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> Inscripcion: {fullname}</h3>
+            <div className={classes.headerSection}>
+              <h3> Inscripción: {fullname}</h3>{' '}
+              {schoolProgram && schoolProgram.conducive_to_degree && (
+                <HelpButton>
+                  <div>
+                    <b>Inscripción de Trabajos de Grado de {fullname}</b>
+                  </div>
+                  <div>
+                    Para poder inscribir el Trabajo especial de Grado el/la estudiante {fullname}{' '}
+                    deberá aprobar el Proyecto{' '}
+                    {schoolProgram.doctoral_exam ? 'y el Examen Doctoral' : ''}.
+                  </div>
+                  <br />
+                  <div>
+                    Para poder inscribir el proyecto el estudiante deberá tener una cantidad mínima
+                    de:
+                  </div>
+                  <ul>
+                    <li>UC (Unidades de Creditos): {schoolProgram.min_num_cu_final_work}</li>
+                    <li>Semestres: {schoolProgram.min_duration}</li>
+                  </ul>
+
+                  <div>en el programa académico.</div>
+                  <br />
+                  {schoolProgram.doctoral_exam ? (
+                    <div>
+                      <div>
+                        Para poder inscribir el Examen Doctoral el estudiante deberá tener una
+                        cantidad mínima de:
+                      </div>
+                      <ul>
+                        <li>UC (Unidades de Creditos): {schoolProgram.min_cu_to_doctoral_exam}</li>
+                      </ul>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </HelpButton>
+              )}
+            </div>
             <hr />
           </Grid>
           {idSchoolPeriod ||
@@ -224,7 +275,20 @@ class StudentInscription extends Component {
                       }}
                     </RenderFieldsArray>
                   </Grid>
-                ) : null}
+                ) : (
+                  codShoolPeriod && (
+                    <Paper className={classes.paper}>
+                      <Grid container justify="center">
+                        <Grid item style={{ textAlign: 'center' }}>
+                          <div>
+                            No hay materias disponibles para inscribir en{' '}
+                            <strong>{codShoolPeriod}</strong>
+                          </div>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  )
+                )}
 
                 {finalWorkSubjectsSelected.length || finalWorkSubjects.length ? (
                   <Grid container item xs={12} className={classes.listSubjects}>

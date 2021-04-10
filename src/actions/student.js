@@ -319,7 +319,7 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
           availableDoctoralExam: false,
         },
       });
-      //show(error.message, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       throw error;
     });
 };

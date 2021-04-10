@@ -344,7 +344,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'mis-cursos',
-          name: 'Mis Cursos',
+          name: 'Asignaturas impartidas',
           component: Cursos,
           clicked: false,
           roles: ['T'],

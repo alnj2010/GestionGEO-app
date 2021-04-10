@@ -21,6 +21,7 @@ export const ACTIONS = {
 export const login = ({ identification, password }) => async (dispatch) => {
   return User.login({ identification, password })
     .then((response) => {
+      console.log(response);
       setSessionGeoToken(response.token);
       setTokenExpires(response.expires);
       setInitTimeLogin(moment().unix());

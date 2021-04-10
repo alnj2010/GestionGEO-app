@@ -134,7 +134,8 @@ class StudentInscriptionContainer extends Component {
     }
 
     const schoolPeriodByStudent =
-      student.student.find((item) => item.school_program_id === parseInt(studentId, 10)) || {};
+      student.student.find((item) => item.id === parseInt(studentId, 10)) || {};
+
     return (
       <StudentInscription
         teachers={teachers}
