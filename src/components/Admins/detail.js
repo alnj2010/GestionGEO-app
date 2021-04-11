@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
@@ -71,169 +71,175 @@ class AdminDetail extends Component {
             <h3>
               {' '}
               {adminId
-                ? `Administrador: ${admin.first_surname} ${admin.first_name}`
+                ? `Administrador: ${admin.first_surname || ''} ${admin.first_name || ''}`
                 : 'Nuevo Administrador'}
             </h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Nombre',
-                    field: 'firstName',
-                    id: 'firstName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo Nombre',
-                    field: 'secondName',
-                    id: 'secondName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Apellido',
-                    field: 'firstSurname',
-                    id: 'firstSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo Apellido',
-                    field: 'secondSurname',
-                    id: 'secondSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Cedula',
-                    field: 'identification',
-                    id: 'identification',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Email',
-                    field: 'email',
-                    id: 'email',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Movil',
-                    field: 'mobile',
-                    id: 'mobile',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono de habitación',
-                    field: 'telephone',
-                    id: 'telephone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono Trabajo',
-                    field: 'workPhone',
-                    id: 'workPhone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Sexo',
-                    field: `sex`,
-                    id: `sex`,
-                    type: 'select',
-                    options: jsonToOptions(GENDER),
-                  },
-                  {
-                    label: 'Nacionalidad',
-                    field: `nationality`,
-                    id: `nationality`,
-                    type: 'select',
-                    options: jsonToOptions(NATIONALITY),
-                  },
-                  {
-                    label: 'Nivel de instruccion',
-                    field: 'levelInstruction',
-                    id: 'levelInstruction',
-                    type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
-                  },
-                  {
-                    label: 'Rol',
-                    field: `rol`,
-                    id: `rol`,
-                    type: 'select',
-                    options: jsonToOptions(COORDINATOR_ROL),
-                  },
+          {!adminId || admin.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Nombre',
+                      field: 'firstName',
+                      id: 'firstName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo Nombre',
+                      field: 'secondName',
+                      id: 'secondName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Apellido',
+                      field: 'firstSurname',
+                      id: 'firstSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo Apellido',
+                      field: 'secondSurname',
+                      id: 'secondSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Cedula',
+                      field: 'identification',
+                      id: 'identification',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Email',
+                      field: 'email',
+                      id: 'email',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Movil',
+                      field: 'mobile',
+                      id: 'mobile',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Telefono de habitación',
+                      field: 'telephone',
+                      id: 'telephone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Telefono Trabajo',
+                      field: 'workPhone',
+                      id: 'workPhone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Sexo',
+                      field: `sex`,
+                      id: `sex`,
+                      type: 'select',
+                      options: jsonToOptions(GENDER),
+                    },
+                    {
+                      label: 'Nacionalidad',
+                      field: `nationality`,
+                      id: `nationality`,
+                      type: 'select',
+                      options: jsonToOptions(NATIONALITY),
+                    },
+                    {
+                      label: 'Nivel de instruccion',
+                      field: 'levelInstruction',
+                      id: 'levelInstruction',
+                      type: 'select',
+                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                    },
+                    {
+                      label: 'Rol',
+                      field: `rol`,
+                      id: `rol`,
+                      type: 'select',
+                      options: jsonToOptions(COORDINATOR_ROL),
+                    },
 
-                  {
-                    label: '¿Posee alguna discapacidad?',
-                    field: 'withDisabilities',
-                    id: 'withDisabilities',
-                    type: 'switch',
-                  },
-                  {
-                    label: '¿Coordinador principal?',
-                    field: 'principal',
-                    id: 'principal',
-                    type:
-                      isMain && rolSesionActual !== COORDINATOR_ROL.SECRETARIO && !isActual
-                        ? 'switch'
-                        : 'hidden',
-                  },
-                  {
-                    label: '¿Usuario activo?',
-                    field: 'active',
-                    id: 'active',
-                    type: adminId ? 'switch' : 'hidden',
-                    tooltipText:
-                      'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
-                  },
-                ]}
-              </RenderFields>
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        adminId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('administrador')
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {adminId ? (
+                    {
+                      label: '¿Posee alguna discapacidad?',
+                      field: 'withDisabilities',
+                      id: 'withDisabilities',
+                      type: 'switch',
+                    },
+                    {
+                      label: '¿Coordinador principal?',
+                      field: 'principal',
+                      id: 'principal',
+                      type:
+                        isMain && rolSesionActual !== COORDINATOR_ROL.SECRETARIO && !isActual
+                          ? 'switch'
+                          : 'hidden',
+                    },
+                    {
+                      label: '¿Usuario activo?',
+                      field: 'active',
+                      id: 'active',
+                      type: adminId ? 'switch' : 'hidden',
+                      tooltipText:
+                        'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
+                    },
+                  ]}
+                </RenderFields>
+              </Grid>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleAdminDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          adminId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('administrador')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {adminId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleAdminDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>

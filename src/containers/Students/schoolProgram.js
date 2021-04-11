@@ -112,6 +112,9 @@ class StudentSchoolProgramContainer extends Component {
       student,
       schoolProgram,
       getSubjectBySchoolProgramDispatch,
+      match: {
+        params: { studentId: schoolProgramId },
+      },
     } = this.props;
     let schoolPrograms = allSchoolPrograms;
     if (!schoolProgram) {
@@ -123,6 +126,7 @@ class StudentSchoolProgramContainer extends Component {
 
     return (
       <StudentSchoolProgram
+        schoolProgramId={schoolProgramId}
         schoolPrograms={schoolPrograms}
         subjects={subjects}
         getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}

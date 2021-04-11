@@ -195,6 +195,9 @@ class AdminsList extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: 'Cargando',
+              },
             }}
             isLoading={isLoading}
           />

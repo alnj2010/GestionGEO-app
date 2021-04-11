@@ -55,13 +55,13 @@ class TeacherDetailContainer extends Component {
   };
 
   render() {
-    const { teacher, schoolPrograms } = this.props;
+    const { teacher, schoolPrograms, match } = this.props;
     return (
       <TeacherDetail
         schoolPrograms={schoolPrograms}
         saveTeacher={this.saveTeacher}
         goBack={this.goBack}
-        teacherId={teacher.id}
+        teacherId={match.params.id}
         teacher={teacher}
         handleTeacherDelete={this.handleTeacherDelete}
       />

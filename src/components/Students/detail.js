@@ -3,7 +3,7 @@ import MaterialTable from 'material-table';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, FieldArray, submit, formValueSelector, Field } from 'redux-form';
 import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
@@ -180,253 +180,259 @@ class StudentDetail extends Component {
           <Grid item xs={12}>
             <h3>
               {userId
-                ? `Estudiante: ${student.first_surname} ${student.first_name}`
+                ? `Estudiante: ${student.first_surname || ''} ${student.first_name || ''}`
                 : 'Nuevo Estudiante'}
             </h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Nombre',
-                    field: 'firstName',
-                    id: 'firstName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo Nombre',
-                    field: 'secondName',
-                    id: 'secondName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Apellido',
-                    field: 'firstSurname',
-                    id: 'firstSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo apellido',
-                    field: 'secondSurname',
-                    id: 'secondSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Cedula',
-                    field: 'identification',
-                    id: 'identification',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Email',
-                    field: 'email',
-                    id: 'email',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Movil',
-                    field: 'mobile',
-                    id: 'mobile',
-                    type: 'phone',
-                  },
+          {!userId || student.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Nombre',
+                      field: 'firstName',
+                      id: 'firstName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo Nombre',
+                      field: 'secondName',
+                      id: 'secondName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Apellido',
+                      field: 'firstSurname',
+                      id: 'firstSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo apellido',
+                      field: 'secondSurname',
+                      id: 'secondSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Cedula',
+                      field: 'identification',
+                      id: 'identification',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Email',
+                      field: 'email',
+                      id: 'email',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Movil',
+                      field: 'mobile',
+                      id: 'mobile',
+                      type: 'phone',
+                    },
 
-                  {
-                    label: 'Telefono de habitación',
-                    field: 'telephone',
-                    id: 'telephone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono Trabajo',
-                    field: 'workPhone',
-                    id: 'workPhone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Sexo',
-                    field: `sex`,
-                    id: `sex`,
-                    type: 'select',
-                    options: jsonToOptions(GENDER),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Nacionalidad',
-                    field: `nationality`,
-                    id: `nationality`,
-                    type: 'select',
-                    options: jsonToOptions(NATIONALITY),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Nivel de instruccion',
-                    field: 'levelInstruction',
-                    id: 'levelInstruction',
-                    type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
-                  },
-                  {
-                    label: 'Programa academico',
-                    field: `schoolProgram`,
-                    id: `schoolProgram`,
-                    type: userId ? 'hidden' : 'select',
-                    options: schoolPrograms.map((post) => {
-                      return {
-                        key: post.school_program_name,
-                        value: post.id,
-                      };
-                    }),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Tipo',
-                    field: `studentType`,
-                    id: `studentType`,
-                    type: userId ? 'hidden' : 'select',
-                    options: jsonToOptions(STUDENT_TYPE),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Tipo de ingreso',
-                    field: 'typeIncome',
-                    id: 'typeIncome',
-                    type: !userId && rol === 'A' ? 'text' : 'hidden',
-                    tooltipText:
-                      'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Opsu',
-                  },
-                  {
-                    label: 'Creditos otorgados',
-                    field: 'creditsGranted',
-                    id: 'creditsGranted',
-                    type: !userId && rol === 'A' ? 'number' : 'hidden',
-                    min: 0,
-                    tooltipText:
-                      'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquímica',
-                  },
+                    {
+                      label: 'Telefono de habitación',
+                      field: 'telephone',
+                      id: 'telephone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Telefono Trabajo',
+                      field: 'workPhone',
+                      id: 'workPhone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Sexo',
+                      field: `sex`,
+                      id: `sex`,
+                      type: 'select',
+                      options: jsonToOptions(GENDER),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Nacionalidad',
+                      field: `nationality`,
+                      id: `nationality`,
+                      type: 'select',
+                      options: jsonToOptions(NATIONALITY),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Nivel de instruccion',
+                      field: 'levelInstruction',
+                      id: 'levelInstruction',
+                      type: 'select',
+                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                    },
+                    {
+                      label: 'Programa academico',
+                      field: `schoolProgram`,
+                      id: `schoolProgram`,
+                      type: userId ? 'hidden' : 'select',
+                      options: schoolPrograms.map((post) => {
+                        return {
+                          key: post.school_program_name,
+                          value: post.id,
+                        };
+                      }),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Tipo',
+                      field: `studentType`,
+                      id: `studentType`,
+                      type: userId ? 'hidden' : 'select',
+                      options: jsonToOptions(STUDENT_TYPE),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Tipo de ingreso',
+                      field: 'typeIncome',
+                      id: 'typeIncome',
+                      type: !userId && rol === 'A' ? 'text' : 'hidden',
+                      tooltipText:
+                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Opsu',
+                    },
+                    {
+                      label: 'Creditos otorgados',
+                      field: 'creditsGranted',
+                      id: 'creditsGranted',
+                      type: !userId && rol === 'A' ? 'number' : 'hidden',
+                      min: 0,
+                      tooltipText:
+                        'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquímica',
+                    },
 
-                  {
-                    label: 'Universidad de Origen',
-                    field: 'homeUniversity',
-                    id: 'homeUniversity',
-                    type: !userId && rol === 'A' ? 'text' : 'hidden',
-                    disabled: rol !== 'A',
-                    tooltipText:
-                      'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simon Bolivar, Universidad de Carabobo, etc... ',
-                  },
-                  {
-                    label: 'Profesor Guia',
-                    field: `guideTeacherId`,
-                    id: `guideTeacherId`,
-                    type: !userId && rol === 'A' ? 'select' : 'hidden',
-                    options: teachersGuide.map((item) => ({
-                      key: `${item.first_name} ${item.first_surname}`,
-                      value: item.id,
-                    })),
-                    disabled: rol !== 'A',
-                  },
+                    {
+                      label: 'Universidad de Origen',
+                      field: 'homeUniversity',
+                      id: 'homeUniversity',
+                      type: !userId && rol === 'A' ? 'text' : 'hidden',
+                      disabled: rol !== 'A',
+                      tooltipText:
+                        'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simon Bolivar, Universidad de Carabobo, etc... ',
+                    },
+                    {
+                      label: 'Profesor Guia',
+                      field: `guideTeacherId`,
+                      id: `guideTeacherId`,
+                      type: !userId && rol === 'A' ? 'select' : 'hidden',
+                      options: teachersGuide.map((item) => ({
+                        key: `${item.first_name} ${item.first_surname}`,
+                        value: item.id,
+                      })),
+                      disabled: rol !== 'A',
+                    },
 
-                  {
-                    label: '¿Posee alguna discapacidad?',
-                    field: 'withDisabilities',
-                    id: 'withDisabilities',
-                    type: rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
-                    label: '¿Profesor de la UCV?',
-                    field: 'isUcvTeacher',
-                    id: 'isUcvTeacher',
-                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: '¿Posee empleo actualmente?',
-                    field: 'withWork',
-                    id: 'withWork',
-                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: '¿Usuario activo?',
-                    field: 'active',
-                    id: 'active',
-                    type: userId && rol === 'A' ? 'switch' : 'hidden',
-                    tooltipText:
-                      'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
-                  },
-                  {
-                    label: '¿Puede Inscribir tesis?',
-                    field: 'isAvailableFinalWork',
-                    id: 'isAvailableFinalWork',
-                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
-                    tooltipText:
-                      'Habilitar de forma manual la inscripcion de tesis de un estudiante en un Programa Academico',
-                  },
-                ]}
-              </RenderFields>
-              <Field component="input" name="userId" type="hidden" style={{ height: 0 }} />
-            </Grid>
-            {!userId && (
-              <>
+                    {
+                      label: '¿Posee alguna discapacidad?',
+                      field: 'withDisabilities',
+                      id: 'withDisabilities',
+                      type: rol === 'A' ? 'switch' : 'hidden',
+                    },
+                    {
+                      label: '¿Profesor de la UCV?',
+                      field: 'isUcvTeacher',
+                      id: 'isUcvTeacher',
+                      type: !userId && rol === 'A' ? 'switch' : 'hidden',
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: '¿Posee empleo actualmente?',
+                      field: 'withWork',
+                      id: 'withWork',
+                      type: !userId && rol === 'A' ? 'switch' : 'hidden',
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: '¿Usuario activo?',
+                      field: 'active',
+                      id: 'active',
+                      type: userId && rol === 'A' ? 'switch' : 'hidden',
+                      tooltipText:
+                        'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
+                    },
+                    {
+                      label: '¿Puede Inscribir tesis?',
+                      field: 'isAvailableFinalWork',
+                      id: 'isAvailableFinalWork',
+                      type: !userId && rol === 'A' ? 'switch' : 'hidden',
+                      tooltipText:
+                        'Habilitar de forma manual la inscripcion de tesis de un estudiante en un Programa Academico',
+                    },
+                  ]}
+                </RenderFields>
+                <Field component="input" name="userId" type="hidden" style={{ height: 0 }} />
+              </Grid>
+              {!userId && (
+                <>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>
+                      Asignaturas por equivalencia
+                    </Typography>
+                  </Grid>
+                  <Grid container item xs={12}>
+                    <FieldArray name="equivalence" component={this.renderSubjects} />
+                  </Grid>
+                </>
+              )}
+
+              <Grid container>
                 <Grid item xs={12}>
-                  <Typography variant="h6" gutterBottom>
-                    Asignaturas por equivalencia
-                  </Typography>
-                </Grid>
-                <Grid container item xs={12}>
-                  <FieldArray name="equivalence" component={this.renderSubjects} />
-                </Grid>
-              </>
-            )}
-
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        userId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('estudiante')
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {userId ? (
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleStudentDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          userId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('estudiante')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {userId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleStudentDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
-        {userId && (
+        {student.id && (
           <Grid container justify="center">
             <Grid item xs={12} style={{ marginTop: '30px' }}>
               <MaterialTable

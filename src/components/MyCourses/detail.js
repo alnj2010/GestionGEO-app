@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, CircularProgress } from '@material-ui/core';
+
 import MaterialTable from 'material-table';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
@@ -21,7 +22,14 @@ const styles = () => ({
   },
 });
 
-function SchoolProgramDetail({ students, updateQualifications, width, loadNotes, subject }) {
+function SchoolProgramDetail({
+  students,
+  updateQualifications,
+  width,
+  loadNotes,
+  subject,
+  isLoading,
+}) {
   const [studentsData, setStudentsData] = useState([]);
   useEffect(() => {
     if (students && students.length) {
@@ -67,7 +75,11 @@ function SchoolProgramDetail({ students, updateQualifications, width, loadNotes,
         },
 
         body: {
-          emptyDataSourceMessage: 'No hay alumnos inscritos',
+          emptyDataSourceMessage: isLoading ? (
+            <CircularProgress size={30} />
+          ) : (
+            'No hay alumnos inscritos'
+          ),
         },
       }}
       editable={
@@ -88,7 +100,7 @@ function SchoolProgramDetail({ students, updateQualifications, width, loadNotes,
       options={{
         search: false,
         paging: false,
-        actionsColumnIndex: -1,
+        actionsColumnIndex: 1,
       }}
     />
   );

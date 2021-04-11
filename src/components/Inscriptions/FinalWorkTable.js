@@ -1,8 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, CircularProgress, Grid } from '@material-ui/core';
 
-import { Grid } from '@material-ui/core';
 import Table from './Table';
 import TableBodyRow from './Row';
 
@@ -24,6 +23,7 @@ function FinalWorkTable({
   isFinalSubject,
   approvedProjects,
   teachers,
+  isLoading,
 }) {
   const [finalWorksData, setFinalWorksData] = useState([]);
   const projects = approvedProjects.reduce((accumulator, currentValue) => {
@@ -103,7 +103,11 @@ function FinalWorkTable({
         data={finalWorksData}
         localization={{
           body: {
-            emptyDataSourceMessage: 'No hay Trabajos finales disponibles',
+            emptyDataSourceMessage: isLoading ? (
+              <CircularProgress size={30} />
+            ) : (
+              'No hay Trabajos finales disponibles'
+            ),
           },
         }}
         editable={{

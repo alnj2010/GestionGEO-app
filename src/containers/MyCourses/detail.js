@@ -13,6 +13,13 @@ import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionTeacherId } from '../../storage/sessionStorage';
 
 class CourseDetailContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   componentDidMount = () => {
     const {
       match,
@@ -21,7 +28,9 @@ class CourseDetailContainer extends Component {
       findSubjectByIdDispatch,
     } = this.props;
     if (match.params.id) {
-      getEnrolledStudentsDispatch(match.params.id);
+      getEnrolledStudentsDispatch(match.params.id)
+        .then(() => this.setState({ isLoading: false }))
+        .catch(() => this.setState({ isLoading: false }));
       findSubjectByIdDispatch(match.params.subjectId);
     }
     defineDispatch('Actualizar curso');
@@ -58,9 +67,11 @@ class CourseDetailContainer extends Component {
 
   render() {
     const { students, loadNotes, subject } = this.props;
+    const { isLoading } = this.state;
     return (
       <CourseDetail
         subject={subject}
+        isLoading={isLoading}
         students={students}
         goBack={this.goBack}
         loadNotes={loadNotes}

@@ -14,10 +14,19 @@ import { getSessionStudentId } from '../../storage/sessionStorage';
 import { WEEKDAYS } from '../../services/constants';
 
 class StudentHomeContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   componentDidMount = () => {
     const { getCurrentEnrolledSubjectsDispatch, findMiPerfilDispatch, defineDispatch } = this.props;
     const id = getSessionStudentId();
-    getCurrentEnrolledSubjectsDispatch(id);
+    getCurrentEnrolledSubjectsDispatch(id)
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     findMiPerfilDispatch();
     document.querySelectorAll('.rbc-header').forEach((column, index) => {
       // eslint-disable-next-line no-param-reassign
@@ -54,9 +63,11 @@ class StudentHomeContainer extends Component {
       withdrawalDeadline,
       showDispatch,
     } = this.props;
+    const { isLoading } = this.state;
     return (
       <StudentHome
         miPerfil={miPerfil}
+        isLoading={isLoading}
         currentSubjects={currentSubjects}
         finalWorks={finalWorks}
         codSchoolPeriod={codSchoolPeriod}

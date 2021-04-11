@@ -54,13 +54,13 @@ class SchoolProgramDetailContainer extends Component {
   };
 
   render() {
-    const { schoolProgram } = this.props;
+    const { schoolProgram, match } = this.props;
     return (
       <SchoolProgramDetail
         saveSchoolProgram={this.saveSchoolProgram}
         goBack={this.goBack}
         schoolProgram={schoolProgram}
-        schoolProgramId={schoolProgram.id}
+        schoolProgramId={match.params.id}
         handleSchoolProgramDelete={this.handleSchoolProgramDelete}
       />
     );

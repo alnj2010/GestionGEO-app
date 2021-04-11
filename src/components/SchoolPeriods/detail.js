@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, CircularProgress } from '@material-ui/core';
 import * as moment from 'moment';
 import { Form, reduxForm, submit, FieldArray, formValueSelector, Field } from 'redux-form';
 import PropTypes from 'prop-types';
@@ -298,129 +298,135 @@ class SchoolPeriodDetail extends Component {
           <Grid item xs={12}>
             <h3>
               {schoolPeriodId
-                ? `Periodo semestral: ${schoolPeriod.cod_school_period}`
+                ? `Periodo semestral: ${schoolPeriod.cod_school_period || ''}`
                 : 'Nuevo Periodo semestral'}
             </h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container>
-              <Grid container justify="center" item xs={12}>
-                <RenderFields>
-                  {[
-                    {
-                      label: 'Codigo',
-                      field: 'codSchoolPeriod',
-                      id: 'codSchoolPeriod',
-                      type: 'text',
-                    },
-                  ]}
-                </RenderFields>
-              </Grid>
-              <Grid container justify="space-between" item xs={12}>
-                <RenderFields>
-                  {[
-                    {
-                      label: 'Fecha Inicio',
-                      field: 'startDate',
-                      id: 'startDate',
-                      type: 'date',
-                    },
-                    {
-                      label: 'Fecha Fin',
-                      field: 'endDate',
-                      id: 'endDate',
-                      type: 'date',
-                      minDateMessage: 'La fecha fin no debe ser anterior a la fecha de inicio',
-                      minDate: moment(startDate).add(1, 'days'),
-                    },
-                    {
-                      label: 'Fecha Limite de retiro',
-                      field: 'withdrawalDeadline',
-                      id: 'withdrawalDeadline',
-                      type: 'date',
-                      minDateMessage:
-                        'La fecha de retiro no debe ser anterior a la fecha de inicio',
-                      minDate: moment(startDate).add(1, 'days'),
-                    },
-                    {
-                      label: 'Fecha en la que inicia la inscripcion',
-                      field: 'inscriptionStartDate',
-                      id: 'inscriptionStartDate',
-                      type: 'date',
-                    },
-                    {
-                      label: 'Aranceles para el proyecto',
-                      field: `projectDuty`,
-                      id: `projectDuty`,
-                      type: 'number',
-                      min: 0,
-                    },
-                    {
-                      label: 'Aranceles para el trabajo final',
-                      field: `finalWorkDuty`,
-                      id: `finalWorkDuty`,
-                      type: 'number',
-                      min: 0,
-                    },
-                  ]}
-                </RenderFields>
-              </Grid>
+          {!schoolPeriodId || schoolPeriod.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container>
+                <Grid container justify="center" item xs={12}>
+                  <RenderFields>
+                    {[
+                      {
+                        label: 'Codigo',
+                        field: 'codSchoolPeriod',
+                        id: 'codSchoolPeriod',
+                        type: 'text',
+                      },
+                    ]}
+                  </RenderFields>
+                </Grid>
+                <Grid container justify="space-between" item xs={12}>
+                  <RenderFields>
+                    {[
+                      {
+                        label: 'Fecha Inicio',
+                        field: 'startDate',
+                        id: 'startDate',
+                        type: 'date',
+                      },
+                      {
+                        label: 'Fecha Fin',
+                        field: 'endDate',
+                        id: 'endDate',
+                        type: 'date',
+                        minDateMessage: 'La fecha fin no debe ser anterior a la fecha de inicio',
+                        minDate: moment(startDate).add(1, 'days'),
+                      },
+                      {
+                        label: 'Fecha Limite de retiro',
+                        field: 'withdrawalDeadline',
+                        id: 'withdrawalDeadline',
+                        type: 'date',
+                        minDateMessage:
+                          'La fecha de retiro no debe ser anterior a la fecha de inicio',
+                        minDate: moment(startDate).add(1, 'days'),
+                      },
+                      {
+                        label: 'Fecha en la que inicia la inscripcion',
+                        field: 'inscriptionStartDate',
+                        id: 'inscriptionStartDate',
+                        type: 'date',
+                      },
+                      {
+                        label: 'Aranceles para el proyecto',
+                        field: `projectDuty`,
+                        id: `projectDuty`,
+                        type: 'number',
+                        min: 0,
+                      },
+                      {
+                        label: 'Aranceles para el trabajo final',
+                        field: `finalWorkDuty`,
+                        id: `finalWorkDuty`,
+                        type: 'number',
+                        min: 0,
+                      },
+                    ]}
+                  </RenderFields>
+                </Grid>
 
-              <Grid item xs={12} className={classes.subtitle}>
-                <Typography variant="h6" gutterBottom>
-                  Asignaturas del periodo
-                </Typography>
+                <Grid item xs={12} className={classes.subtitle}>
+                  <Typography variant="h6" gutterBottom>
+                    Asignaturas del periodo
+                  </Typography>
+                </Grid>
+                <Grid container item xs={12}>
+                  <FieldArray name="subjects" component={this.renderSubjects} />
+                </Grid>
               </Grid>
-              <Grid container item xs={12}>
-                <FieldArray name="subjects" component={this.renderSubjects} />
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        schoolPeriodId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('Periodo semestral')
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {schoolPeriodId ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleSchoolPeriodDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          schoolPeriodId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('Periodo semestral')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {schoolPeriodId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleSchoolPeriodDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>

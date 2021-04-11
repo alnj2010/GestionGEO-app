@@ -29,6 +29,7 @@ function Inscription({
   valid,
   teachers,
   message,
+  isLoading,
 }) {
   const [finalWorkSelected, setFinalWorkSelected] = useState([]);
   const [subjectsSelected, setSubjectsSelected] = useState([]);
@@ -80,6 +81,7 @@ function Inscription({
         subjects={subjects}
         setSubjectsSelected={setSubjectsSelected}
         message={message}
+        isLoading={isLoading}
       />
       {finalWorks && finalWorks.length ? (
         <FinalWorkTable
@@ -88,6 +90,7 @@ function Inscription({
           isFinalSubject={isFinalSubject}
           setFinalWorkSelected={setFinalWorkSelected}
           approvedProjects={approvedProjects}
+          isLoading={isLoading}
         />
       ) : null}
       <Grid container className={classes.tableContainer}>

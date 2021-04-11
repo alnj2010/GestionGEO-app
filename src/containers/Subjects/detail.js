@@ -65,14 +65,14 @@ class SubjectDetailContainer extends Component {
   };
 
   render() {
-    const { subject, schoolPrograms } = this.props;
+    const { subject, schoolPrograms, match } = this.props;
     return (
       <SubjectDetail
         schoolPrograms={schoolPrograms}
         saveSubject={this.saveSubject}
         goBack={this.goBack}
         subject={subject}
-        subjectId={subject.id}
+        subjectId={match.params.id}
         handleSubjectDelete={this.handleSubjectDelete}
       />
     );

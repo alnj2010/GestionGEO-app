@@ -104,6 +104,7 @@ class StudentDetailContainer extends Component {
       listBySchoolPeriod,
       getSubjectBySchoolProgramDispatch,
       teachers,
+      match,
     } = this.props;
     return (
       <StudentDetail
@@ -113,7 +114,7 @@ class StudentDetailContainer extends Component {
         goBack={this.goBack}
         listBySchoolPeriod={listBySchoolPeriod}
         getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}
-        userId={student.id}
+        userId={match.params.id}
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}

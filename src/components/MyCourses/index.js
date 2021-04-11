@@ -38,7 +38,7 @@ class SubjectsList extends Component {
   };
 
   render = () => {
-    const { myCourses, history, width } = this.props;
+    const { myCourses, history, width, isLoading } = this.props;
     const { func } = this.state;
     const matches = isWidthUp('sm', width);
     return (
@@ -104,6 +104,7 @@ class SubjectsList extends Component {
             onChangePage={() => {
               window.scroll(0, 0);
             }}
+            isLoading={isLoading}
           />
         </Grid>
         <Dialog handleAgree={func} />

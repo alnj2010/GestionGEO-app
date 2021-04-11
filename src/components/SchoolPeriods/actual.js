@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Paper } from '@material-ui/core';
+import { Grid, Button, Paper, CircularProgress } from '@material-ui/core';
 import * as moment from 'moment';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
@@ -109,6 +109,7 @@ class SchoolPeriodActual extends Component {
       startDate,
       codSchoolPeriod,
       submitDispatch,
+      loading,
       endDate,
     } = this.props;
     const allViews = Object.keys(Views).map((k) => Views[k]);
@@ -210,7 +211,9 @@ class SchoolPeriodActual extends Component {
     ) : (
       <Paper className={classes.paper}>
         <Grid container justify="center">
-          <Grid item>Actualmente no hay periodo escolar activo</Grid>
+          <Grid item>
+            {loading ? <CircularProgress /> : 'Actualmente no hay periodo escolar activo'}
+          </Grid>
         </Grid>
       </Paper>
     );

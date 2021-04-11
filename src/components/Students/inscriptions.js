@@ -126,7 +126,7 @@ class StudentInscriptions extends Component {
                 actions: 'Acciones',
               },
               body: {
-                emptyDataSourceMessage: 'Aun no tiene historial',
+                emptyDataSourceMessage: 'Cargando',
               },
             }}
             isLoading={isLoading}

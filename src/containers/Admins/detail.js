@@ -91,13 +91,13 @@ class AdminDetailContainer extends Component {
   };
 
   render() {
-    const { admin } = this.props;
+    const { admin, match } = this.props;
     return (
       <AdminDetail
         admin={admin}
         saveAdmin={this.saveAdmin}
         goBack={this.goBack}
-        adminId={admin.id}
+        adminId={match.params.id}
         handleAdminDelete={this.handleAdminDelete}
       />
     );

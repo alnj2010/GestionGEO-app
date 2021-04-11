@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as moment from 'moment';
 import MaterialTable from 'material-table';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import Cancel from '@material-ui/icons/Cancel';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '../../Dialog';
@@ -37,6 +37,7 @@ class TableEnrolledSubjects extends Component {
       withdrawalDeadline,
       show,
       handleRetireSubject,
+      isLoading,
     } = this.props;
     const { func } = this.state;
     return (
@@ -65,7 +66,11 @@ class TableEnrolledSubjects extends Component {
           }
           localization={{
             body: {
-              emptyDataSourceMessage: 'No hay asignaturas inscritas',
+              emptyDataSourceMessage: isLoading ? (
+                <CircularProgress size={30} />
+              ) : (
+                'asignaturas inscritas'
+              ),
             },
 
             header: {

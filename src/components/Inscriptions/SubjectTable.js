@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Grid } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 
 const styles = () => ({});
-function SubjectTable({ subjects, setSubjectsSelected, message }) {
+function SubjectTable({ subjects, setSubjectsSelected, message, isLoading }) {
   const transformData = () => {
     if (subjects)
       return subjects.map((subject) => {
@@ -43,7 +43,11 @@ function SubjectTable({ subjects, setSubjectsSelected, message }) {
         data={transformData()}
         localization={{
           body: {
-            emptyDataSourceMessage: message || 'No hay asignaturas disponibles para inscribir',
+            emptyDataSourceMessage: isLoading ? (
+              <CircularProgress size={30} />
+            ) : (
+              message || 'No hay asignaturas disponibles para inscribir'
+            ),
           },
         }}
         options={{
