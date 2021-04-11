@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { getSessionUserRol } from '../../../storage/sessionStorage';
 import PresentationHome from '../PresentationHome';
-import CalendarStudent from './CalendarStudent';
+import CalendarStudent from '../CalendarSubjects';
 import TableEnrolledSubjects from './TableEnrolledSubjects';
 import TableEnrolledFinalWorks from './TableEnrolledFinalWorks';
 

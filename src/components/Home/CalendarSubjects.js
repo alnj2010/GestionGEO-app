@@ -18,10 +18,9 @@ class CalendarStudent extends Component {
   transformData = () => {
     const { currentSubjects } = this.props;
     let arr = [];
-
-    if (currentSubjects) {
+    if (Array.isArray(currentSubjects)) {
       currentSubjects.forEach((subject, index) => {
-        const aux = subject.data_subject.schedules.map((schedule, index2) => {
+        const aux = (subject.data_subject || subject).schedules.map((schedule, index2) => {
           // eslint-disable-next-line no-underscore-dangle
           let startTime = moment()
             .isoWeekday(parseInt(schedule.day, 10))
@@ -41,7 +40,7 @@ class CalendarStudent extends Component {
 
           return {
             id: parseInt(`${index}${index2}`, 10),
-            title: subject.data_subject.subject.name,
+            title: (subject.data_subject || subject).subject.name,
             start: startTime,
             end: endTime,
           };
