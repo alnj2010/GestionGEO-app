@@ -21,7 +21,7 @@ const styles = () => ({
   },
 });
 
-function SchoolProgramDetail({ students, updateQualifications, width, loadNotes }) {
+function SchoolProgramDetail({ students, updateQualifications, width, loadNotes, subject }) {
   const [studentsData, setStudentsData] = useState([]);
   useEffect(() => {
     if (students && students.length) {
@@ -42,7 +42,7 @@ function SchoolProgramDetail({ students, updateQualifications, width, loadNotes 
   const matches = isWidthUp('sm', width);
   return (
     <MaterialTable
-      title={matches ? 'Estudiantes' : ''}
+      title={matches ? `Estudiantes ${subject.name ? `de ${subject.name}` : ''}` : ''}
       columns={[
         { title: '#', field: 'id', hidden: true },
         {

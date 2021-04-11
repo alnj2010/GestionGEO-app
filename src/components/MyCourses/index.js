@@ -4,6 +4,7 @@ import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
+import HelpButton from '../HelpButton';
 
 class SubjectsList extends Component {
   constructor() {
@@ -18,6 +19,7 @@ class SubjectsList extends Component {
       return myCourses.map((course) => {
         return {
           id: course.id,
+          subjectId: course.subject_id,
           courseCode: course.subject.code,
           courseName: course.subject.name,
           uc: course.subject.uc,
@@ -39,13 +41,13 @@ class SubjectsList extends Component {
     const { myCourses, history, width } = this.props;
     const { func } = this.state;
     const matches = isWidthUp('sm', width);
-
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
+              { title: '#', field: 'subjectId', hidden: true },
               { title: 'Codigo', field: 'courseCode' },
               { title: 'Asignatura', field: 'courseName' },
               { title: 'Unidades de Credito', field: 'uc' },
@@ -53,13 +55,36 @@ class SubjectsList extends Component {
               { title: 'limite', field: 'limit' },
             ]}
             data={this.transformData(myCourses)}
-            title={matches ? 'Asignaturas impartidas' : ''}
+            title={
+              matches ? (
+                <>
+                  Asignaturas impartidas{' '}
+                  <HelpButton>
+                    <div>
+                      <b>Asignaturas impartidas</b>
+                    </div>
+                    <div>
+                      Las Asignaturas son aperturadas por el administrador de GestionGeo al inicio
+                      de cada periodo academico. Los docente son responsables de impartir y
+                      calificar a los estudiantes que estan inscritos en dichas asignaturas durante
+                      el periodo en curso.
+                    </div>
+                    <br />
+                    <div>
+                      Abajo se listan las Asignaturas ha impartir en el periodo academico en curso
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/mis-cursos/curso/${rowData.id}`);
+                  history.push(`/mis-cursos/curso/${rowData.subjectId}/${rowData.id}`);
                 },
               },
             ]}

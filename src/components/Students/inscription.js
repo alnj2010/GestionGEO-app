@@ -113,7 +113,6 @@ class StudentInscription extends Component {
         ? schoolPeriods.find((item) => item.id === parseInt(schoolPeriodId, 10))
         : null;
     codShoolPeriod = codShoolPeriod && codShoolPeriod.cod_school_period;
-    console.log('------', schoolProgram);
     return (
       <Form onSubmit={handleSubmit(saveInscription)}>
         <Grid container>

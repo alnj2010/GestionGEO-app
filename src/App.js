@@ -68,7 +68,7 @@ function App() {
                 <Route exact path="/cambio-clave" component={ChangePassword} />
                 <Route exact path="/mi-perfil/:id" component={MiPerfil} />
                 <Route exact path="/mis-cursos" component={MisCursos} />
-                <Route exact path="/mis-cursos/curso/:id" component={CourseDetail} />
+                <Route exact path="/mis-cursos/curso/:subjectId/:id" component={CourseDetail} />
 
                 <Route exact path="/usuarios/administradores/" component={AdminsList} />
                 <Route
