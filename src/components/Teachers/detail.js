@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
@@ -73,192 +73,200 @@ class TeacherDetail extends Component {
             <h3>
               {' '}
               {teacherId
-                ? `Profesor: ${teacher.first_surname} ${teacher.first_name}`
+                ? `Profesor: ${teacher.first_surname || ''} ${teacher.first_name || ''}`
                 : 'Nuevo Profesor'}
             </h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Nombre',
-                    field: 'firstName',
-                    id: 'firstName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo Nombre',
-                    field: 'secondName',
-                    id: 'secondName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Apellido',
-                    field: 'firstSurname',
-                    id: 'firstSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo apellido',
-                    field: 'secondSurname',
-                    id: 'secondSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Cedula',
-                    field: 'identification',
-                    id: 'identification',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Email',
-                    field: 'email',
-                    id: 'email',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Movil',
-                    field: 'mobile',
-                    id: 'mobile',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono de habitación',
-                    field: 'telephone',
-                    id: 'telephone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono Trabajo',
-                    field: 'workPhone',
-                    id: 'workPhone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Sexo',
-                    field: `sex`,
-                    id: `sex`,
-                    type: 'select',
-                    options: jsonToOptions(GENDER),
-                  },
-                  {
-                    label: 'Nacionalidad',
-                    field: `nationality`,
-                    id: `nationality`,
-                    type: 'select',
-                    options: jsonToOptions(NATIONALITY),
-                  },
-                  {
-                    label: 'Nivel de instruccion',
-                    field: 'levelInstruction',
-                    id: 'levelInstruction',
-                    type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
-                  },
-                  {
-                    label: 'Tipo',
-                    field: `teacherType`,
-                    id: `teacherType`,
-                    type: 'select',
-                    options: jsonToOptions(TEACHER_TYPE),
-                  },
-                  {
-                    label: 'Categoria',
-                    field: `category`,
-                    id: `category`,
-                    type: 'select',
-                    options: jsonToOptions(TEACHER_CATEGORY),
-                  },
-
-                  {
-                    label: 'Dedicacion',
-                    field: `dedication`,
-                    id: `dedication`,
-                    type: 'select',
-                    options: jsonToOptions(TEACHER_DEDICATION),
-                  },
-                  {
-                    label: '¿Posee alguna discapacidad?',
-                    field: 'withDisabilities',
-                    id: 'withDisabilities',
-                    type: 'switch',
-                  },
-                  {
-                    label: '¿Usuario activo?',
-                    field: 'active',
-                    id: 'active',
-                    type: teacherId ? 'switch' : 'hidden',
-                  },
-                ]}
-              </RenderFields>
-              {category === TEACHER_CATEGORY.INVITADO ? (
+          {!teacherId || teacher.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
                 <RenderFields>
                   {[
                     {
-                      label: 'Pais',
-                      field: 'country',
-                      id: 'country',
+                      label: 'Nombre',
+                      field: 'firstName',
+                      id: 'firstName',
                       type: 'text',
                     },
                     {
-                      label: 'Universidad proveniente',
-                      field: 'homeInstitute',
-                      id: 'homeInstitute',
+                      label: 'Segundo Nombre',
+                      field: 'secondName',
+                      id: 'secondName',
                       type: 'text',
+                    },
+                    {
+                      label: 'Apellido',
+                      field: 'firstSurname',
+                      id: 'firstSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo apellido',
+                      field: 'secondSurname',
+                      id: 'secondSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Cedula',
+                      field: 'identification',
+                      id: 'identification',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Email',
+                      field: 'email',
+                      id: 'email',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Movil',
+                      field: 'mobile',
+                      id: 'mobile',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Telefono de habitación',
+                      field: 'telephone',
+                      id: 'telephone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Telefono Trabajo',
+                      field: 'workPhone',
+                      id: 'workPhone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Sexo',
+                      field: `sex`,
+                      id: `sex`,
+                      type: 'select',
+                      options: jsonToOptions(GENDER),
+                    },
+                    {
+                      label: 'Nacionalidad',
+                      field: `nationality`,
+                      id: `nationality`,
+                      type: 'select',
+                      options: jsonToOptions(NATIONALITY),
+                    },
+                    {
+                      label: 'Nivel de instruccion',
+                      field: 'levelInstruction',
+                      id: 'levelInstruction',
+                      type: 'select',
+                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                    },
+                    {
+                      label: 'Tipo',
+                      field: `teacherType`,
+                      id: `teacherType`,
+                      type: 'select',
+                      options: jsonToOptions(TEACHER_TYPE),
+                    },
+                    {
+                      label: 'Categoria',
+                      field: `category`,
+                      id: `category`,
+                      type: 'select',
+                      options: jsonToOptions(TEACHER_CATEGORY),
+                    },
+
+                    {
+                      label: 'Dedicacion',
+                      field: `dedication`,
+                      id: `dedication`,
+                      type: 'select',
+                      options: jsonToOptions(TEACHER_DEDICATION),
+                    },
+                    {
+                      label: '¿Posee alguna discapacidad?',
+                      field: 'withDisabilities',
+                      id: 'withDisabilities',
+                      type: 'switch',
+                    },
+                    {
+                      label: '¿Usuario activo?',
+                      field: 'active',
+                      id: 'active',
+                      tooltipText:
+                        'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
+                      type: teacherId ? 'switch' : 'hidden',
                     },
                   ]}
                 </RenderFields>
-              ) : (
-                ''
-              )}
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        teacherId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('profesor')
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {teacherId ? (
+                {category === TEACHER_CATEGORY.INVITADO ? (
+                  <RenderFields>
+                    {[
+                      {
+                        label: 'Pais',
+                        field: 'country',
+                        id: 'country',
+                        type: 'text',
+                      },
+                      {
+                        label: 'Universidad proveniente',
+                        field: 'homeInstitute',
+                        id: 'homeInstitute',
+                        type: 'text',
+                      },
+                    ]}
+                  </RenderFields>
+                ) : (
+                  ''
+                )}
+              </Grid>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleTeacherDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          teacherId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('profesor')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {teacherId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleTeacherDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>

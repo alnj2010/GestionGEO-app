@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-restrid-syntax */
 export const jsonToOptions = (options) =>
   Object.entries(options).map((entry) => {
     return {

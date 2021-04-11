@@ -114,7 +114,7 @@ function WarningStudents({
             icon: 'visibility',
             tooltip: 'Ver detalles',
             onClick: (event, rowData) => {
-              history.push(`/estudiantes/modificar/${rowData.idUser}`);
+              history.push(`/usuarios/estudiantes/modificar/${rowData.idUser}`);
             },
           },
         ]}

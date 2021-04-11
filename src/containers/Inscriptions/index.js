@@ -11,10 +11,19 @@ import { getList as getTeachersList, cleanGetList } from '../../actions/teacher'
 import { getSessionStudentId, getSessionUser } from '../../storage/sessionStorage';
 
 class InscriptionContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   componentDidMount = () => {
     const { getAvailableSubjectsDispatch, getTeachersListDispatch } = this.props;
     const id = getSessionStudentId();
-    getAvailableSubjectsDispatch(id);
+    getAvailableSubjectsDispatch(id)
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     getTeachersListDispatch();
   };
 
@@ -69,12 +78,13 @@ class InscriptionContainer extends Component {
 
   render() {
     const { subjects, finalWorks, approvedProjects, teachers, message } = this.props;
-
+    const { isLoading } = this.state;
     return (
       <Inscription
         subjects={subjects}
         teachers={teachers}
         message={message}
+        isLoading={isLoading}
         finalWorks={finalWorks}
         approvedProjects={approvedProjects}
         saveInscription={this.saveInscription}

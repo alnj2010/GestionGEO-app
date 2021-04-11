@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector, change } from 'redux-form';
 import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
@@ -71,6 +71,7 @@ class StudentSchoolProgram extends Component {
       saveStudent,
       goBack,
       schoolProgram,
+      schoolProgramId,
       handleSchoolProgramDelete,
       pristine,
       submitting,
@@ -90,196 +91,214 @@ class StudentSchoolProgram extends Component {
           <Grid item xs={12}>
             <h3>
               Estudiante: {selectedStudent.first_surname} {selectedStudent.first_name} <br />
-              {schoolProgram
-                ? `Programa Academico: ${schoolProgram.school_program.school_program_name}`
+              {schoolProgramId
+                ? `Programa Academico: ${
+                    schoolProgram ? schoolProgram.school_program.school_program_name : ''
+                  }`
                 : `Agregar programa Academico`}
             </h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Programa academico',
-                    field: `schoolProgramId`,
-                    id: `schoolProgramId`,
-                    type: schoolProgram ? 'hidden' : 'select',
-                    options: schoolPrograms.map((post) => {
-                      return {
-                        key: post.school_program_name,
-                        value: post.id,
-                      };
-                    }),
-                    disabled: rol !== 'A' || schoolProgram,
-                  },
-                  {
-                    label: 'Postgrado actual (Externo al Postgrado de Geoquimica)',
-                    field: 'currentPostgraduate',
-                    id: 'currentPostgraduate',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Univesidad de origen',
-                    field: 'homeUniversity',
-                    id: 'homeUniversity',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Tipo de ingreso',
-                    field: 'typeIncome',
-                    id: 'typeIncome',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Creditos otorgados',
-                    field: 'creditsGranted',
-                    id: 'creditsGranted',
-                    type: 'number',
-                    min: 0,
-                  },
-                  {
-                    label: 'Estado del estudiante',
-                    field: `currentStatus`,
-                    id: `currentStatus`,
-                    type: 'select',
-                    options: jsonToOptions(STUDENT_STATUS),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Tipo estudiante',
-                    field: `studentType`,
-                    id: `studentType`,
-                    type: 'select',
-                    options: jsonToOptions(STUDENT_TYPE),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Profesor Guia',
-                    field: `guideTeacherId`,
-                    id: `guideTeacherId`,
-                    type: 'select',
-                    options: teachersGuide.map((item) => ({
-                      key: `${item.first_name} ${item.first_surname}`,
-                      value: item.id,
-                    })),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: '¿Puede Inscribir TEG o proyecto?',
-                    field: 'isAvailableFinalWork',
-                    id: 'isAvailableFinalWork',
-                    type: rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
-                    label: '¿Profesor de la UCV?',
-                    field: 'isUcvTeacher',
-                    id: 'isUcvTeacher',
-                    type: 'switch',
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: '¿Posee empleo actualmente?',
-                    field: 'withWork',
-                    id: 'withWork',
-                    type: 'switch',
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: '¿Esta actualmente en periodo de prueba?',
-                    field: 'testPeriod',
-                    id: 'testPeriod',
-                    type: rol === 'A' ? 'switch' : 'hidden',
-                    disabled: rol !== 'A',
-                  },
-                ]}
-              </RenderFields>
-            </Grid>
-            <>
-              <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom>
-                  Asignaturas por equivalencia
-                </Typography>
-              </Grid>
-              <Grid container item xs={12}>
-                <RenderFieldsArray
-                  name="equivalences"
-                  nonRepeatOptions={subjects.map((item) => {
-                    return {
-                      id: schoolProgramSelected,
-                      key: item.name,
-                      value: item.id,
-                    };
-                  })}
-                  distributions={[6, 6]}
-                >
-                  {() => [
+          {schoolProgramId === 'agregar' || schoolProgram ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
                     {
-                      field: `subject_id`,
-                      id: `subject_id`,
-                      type: 'select',
-                      label: 'Materia',
-                      repeatOption: false,
+                      label: 'Programa academico',
+                      field: `schoolProgramId`,
+                      id: `schoolProgramId`,
+                      type: schoolProgram ? 'hidden' : 'select',
+                      options: schoolPrograms.map((post) => {
+                        return {
+                          key: post.school_program_name,
+                          value: post.id,
+                        };
+                      }),
+                      disabled: rol !== 'A' || schoolProgram,
                     },
                     {
-                      field: `qualification`,
-                      id: `qualification`,
+                      label: 'Postgrado actual (Externo al Postgrado de Geoquímica)',
+                      field: 'currentPostgraduate',
+                      id: 'currentPostgraduate',
+                      type: 'text',
+                      tooltipText:
+                        'Si es estudiante por convenio, ingrese el postgrado al que pertenece. Ej: Postgrado de Ingeniería',
+                    },
+                    {
+                      label: 'Univesidad de origen',
+                      field: 'homeUniversity',
+                      id: 'homeUniversity',
+                      type: 'text',
+                      tooltipText:
+                        'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simon Bolivar, Universidad de Carabobo, etc... ',
+                    },
+                    {
+                      label: 'Tipo de ingreso',
+                      field: 'typeIncome',
+                      id: 'typeIncome',
+                      type: 'text',
+                      tooltipText:
+                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Opsu',
+                    },
+                    {
+                      label: 'Creditos otorgados',
+                      field: 'creditsGranted',
+                      id: 'creditsGranted',
                       type: 'number',
-                      label: 'Calificacion',
-                      min: 10,
-                      max: 20,
+                      min: 0,
+                      tooltipText:
+                        'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquímica',
+                    },
+                    {
+                      label: 'Estado del estudiante',
+                      field: `currentStatus`,
+                      id: `currentStatus`,
+                      type: 'select',
+                      options: jsonToOptions(STUDENT_STATUS),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Tipo estudiante',
+                      field: `studentType`,
+                      id: `studentType`,
+                      type: 'select',
+                      options: jsonToOptions(STUDENT_TYPE),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Profesor Guia',
+                      field: `guideTeacherId`,
+                      id: `guideTeacherId`,
+                      type: 'select',
+                      options: teachersGuide.map((item) => ({
+                        key: `${item.first_name} ${item.first_surname}`,
+                        value: item.id,
+                      })),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: '¿Puede Inscribir TEG o proyecto?',
+                      field: 'isAvailableFinalWork',
+                      id: 'isAvailableFinalWork',
+                      type: rol === 'A' ? 'switch' : 'hidden',
+                    },
+                    {
+                      label: '¿Profesor de la UCV?',
+                      field: 'isUcvTeacher',
+                      id: 'isUcvTeacher',
+                      type: 'switch',
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: '¿Posee empleo actualmente?',
+                      field: 'withWork',
+                      id: 'withWork',
+                      type: 'switch',
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: '¿Esta actualmente en periodo de prueba?',
+                      field: 'testPeriod',
+                      id: 'testPeriod',
+                      type: rol === 'A' ? 'switch' : 'hidden',
+                      disabled: rol !== 'A',
+                      tooltipText:
+                        'Si esta opción esta activa es porque el estudiante tiene un promedio menor a 14',
                     },
                   ]}
-                </RenderFieldsArray>
+                </RenderFields>
               </Grid>
-            </>
+              <>
+                <Grid item xs={12}>
+                  <Typography variant="h6" gutterBottom>
+                    Asignaturas por equivalencia
+                  </Typography>
+                </Grid>
+                <Grid container item xs={12}>
+                  <RenderFieldsArray
+                    name="equivalences"
+                    nonRepeatOptions={subjects.map((item) => {
+                      return {
+                        id: schoolProgramSelected,
+                        key: item.name,
+                        value: item.id,
+                      };
+                    })}
+                    distributions={[6, 6]}
+                  >
+                    {() => [
+                      {
+                        field: `subject_id`,
+                        id: `subject_id`,
+                        type: 'select',
+                        label: 'Asignatura',
+                        repeatOption: false,
+                      },
+                      {
+                        field: `qualification`,
+                        id: `qualification`,
+                        type: 'number',
+                        label: 'Calificacion',
+                        min: 10,
+                        max: 20,
+                      },
+                    ]}
+                  </RenderFieldsArray>
+                </Grid>
+              </>
 
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        this.handleDialogShow(
-                          schoolProgram ? 'Actualizar' : 'Agregar',
-                          submitDispatch
-                        )
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      IR AL LISTADO
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {schoolProgram && (
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleSchoolProgramDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          this.handleDialogShow(
+                            schoolProgram ? 'Actualizar' : 'Agregar',
+                            submitDispatch
+                          )
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    )}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        IR AL LISTADO
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {schoolProgram && (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleSchoolProgramDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      )}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
 
         <Dialog handleAgree={func} />
@@ -343,7 +362,7 @@ const schoolProgramValidation = (values) => {
       }
 
       if (!equivalence || !equivalence.subject_id) {
-        equivalenceErrors.subject_id = '*Materia es requerido';
+        equivalenceErrors.subject_id = '*Asignatura es requerido';
         equivalenceArrayErrors[equivalenceIndex] = equivalenceErrors;
       }
     });

@@ -10,6 +10,7 @@ import TableEnrolledFinalWorks from './TableEnrolledFinalWorks';
 const styles = () => ({});
 
 function StudentHome({
+  isLoading,
   miPerfil,
   currentSubjects,
   classes,
@@ -44,6 +45,7 @@ function StudentHome({
         currentSubjects={currentSubjects}
         codSchoolPeriod={codSchoolPeriod}
         withdrawalDeadline={withdrawalDeadline}
+        isLoading={isLoading}
         show={show}
         handleRetireSubject={handleRetireSubject}
       />

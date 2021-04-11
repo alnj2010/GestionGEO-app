@@ -28,6 +28,7 @@ const AXIOS = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Organization-Key': process.env.REACT_APP_ORGANIZATION_KEY,
+    'App-Auth': process.env.REACT_APP_AUTH,
   },
   timeout: 100000,
 });

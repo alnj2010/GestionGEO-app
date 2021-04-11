@@ -68,9 +68,11 @@ class StudentInscriptionsContainer extends Component {
       student,
     } = this.props;
 
-    const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
-      student.second_surname || ''
-    }`;
+    const fullname = student.first_name
+      ? `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
+          student.second_surname || ''
+        }`
+      : 'Cargando...';
 
     const { isLoading } = this.state;
     return (

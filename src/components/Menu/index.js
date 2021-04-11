@@ -25,7 +25,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Teacher from '@material-ui/icons/School';
 import SchoolProgram from '@material-ui/icons/Extension';
-import Admin from '@material-ui/icons/Group';
+import Users from '@material-ui/icons/Group';
+import Help from '@material-ui/icons/Help';
+import AccountBox from '@material-ui/icons/AccountBox';
 import Face from '@material-ui/icons/Face';
 import Subject from '@material-ui/icons/LocalLibrary';
 import InsertInvitation from '@material-ui/icons/InsertInvitation';
@@ -36,6 +38,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 import { Collapse } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import WelcomeModal from '../WelcomeModal';
 import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
 import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod } from '../../actions/schoolPeriod';
@@ -45,7 +48,10 @@ import {
   getSessionUserId,
   getSessionGeoToken,
   getSessionUser,
+  setHideWelcomeModal,
+  getHideWelcomeModal,
 } from '../../storage/sessionStorage';
+import { tutorialSteps } from './tooltips';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
 
 const drawerWidth = 250;
@@ -130,6 +136,7 @@ class MenuApp extends React.Component {
     this.state = {
       openDownload: false,
       open: true,
+      openWelcomeModal: !getHideWelcomeModal(),
       anchorEl: null,
       options: [
         {
@@ -152,19 +159,10 @@ class MenuApp extends React.Component {
         },
         {
           link: 'mis-cursos',
-          name: 'Mis Cursos',
+          name: 'Asignaturas impartidas',
           component: Cursos,
           clicked: false,
           roles: ['T'],
-          open: false,
-          options: false,
-        },
-        {
-          link: 'administradores',
-          name: 'Administradores',
-          component: Admin,
-          clicked: false,
-          roles: ['A'],
           open: false,
           options: false,
         },
@@ -178,25 +176,37 @@ class MenuApp extends React.Component {
           options: false,
         },
         {
-          link: 'profesores',
-          name: 'Profesores',
-          component: Teacher,
+          link: 'usuarios',
+          name: 'Usuarios',
+          component: Users,
           clicked: false,
           roles: ['A'],
           open: false,
-          options: false,
+          options: [
+            {
+              link: 'administradores',
+              name: 'Administradores',
+              component: AccountBox,
+              clicked: false,
+            },
+
+            {
+              link: 'profesores',
+              name: 'Profesores',
+              component: Teacher,
+              clicked: false,
+            },
+            {
+              link: 'estudiantes',
+              name: 'Estudiantes',
+              component: Face,
+              clicked: false,
+            },
+          ],
         },
+
         {
-          link: 'estudiantes',
-          name: 'Estudiantes',
-          component: Face,
-          clicked: false,
-          roles: ['A'],
-          open: false,
-          options: false,
-        },
-        {
-          link: 'materias',
+          link: 'asignaturas',
           name: 'Asignaturas',
           component: Subject,
           clicked: false,
@@ -230,6 +240,11 @@ class MenuApp extends React.Component {
     };
   }
 
+  handleCloseWelcomeModal = () => {
+    this.setState({ openWelcomeModal: false });
+    setHideWelcomeModal();
+  };
+
   componentDidMount = () => {
     const { findCurrentSchoolPeriodDispatch } = this.props;
     const rol = getSessionUserRol();
@@ -260,6 +275,10 @@ class MenuApp extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
+  handleOpenWelcomeModal = () => {
+    this.setState({ openWelcomeModal: true });
+  };
+
   handleOpenDownload = () => {
     this.setState((state) => {
       return { openDownload: !state.openDownload, open: true };
@@ -282,7 +301,7 @@ class MenuApp extends React.Component {
     switch (rol) {
       case 'A':
         this.handleClose();
-        history.push(`/administradores/modificar/${id}`);
+        history.push(`/usuarios/administradores/modificar/${id}`);
         break;
       default:
         this.handleClose();
@@ -324,7 +343,7 @@ class MenuApp extends React.Component {
       location,
       inscriptionVisible,
     } = this.props;
-    const { anchorEl, options, open: openOption, openDownload } = this.state;
+    const { anchorEl, options, open: openOption, openDownload, openWelcomeModal } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
     const userSession = getSessionUser();
@@ -354,6 +373,11 @@ class MenuApp extends React.Component {
             </Typography>
 
             <div>
+              {tutorialSteps[rol] && (
+                <IconButton onClick={this.handleOpenWelcomeModal} color="inherit">
+                  <Help />
+                </IconButton>
+              )}
               <IconButton
                 aria-owns={open ? 'menu-appbar' : undefined}
                 aria-haspopup="true"
@@ -521,6 +545,13 @@ class MenuApp extends React.Component {
           {children}
           {this.validateToken()}
         </main>
+        {tutorialSteps[rol] && (
+          <WelcomeModal
+            tutorialSteps={tutorialSteps[rol]}
+            open={openWelcomeModal}
+            handleCloseWelcomeModal={this.handleCloseWelcomeModal}
+          />
+        )}
       </div>
     );
   }

@@ -6,14 +6,33 @@ import {
   updateQualifications,
   cleanEnrolledStudents,
 } from '../../actions/myCourse';
+import { findSubjectById } from '../../actions/subject';
+
 import CourseDetail from '../../components/MyCourses/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionTeacherId } from '../../storage/sessionStorage';
 
 class CourseDetailContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   componentDidMount = () => {
-    const { match, getEnrolledStudentsDispatch, defineDispatch } = this.props;
-    if (match.params.id) getEnrolledStudentsDispatch(match.params.id);
+    const {
+      match,
+      getEnrolledStudentsDispatch,
+      defineDispatch,
+      findSubjectByIdDispatch,
+    } = this.props;
+    if (match.params.id) {
+      getEnrolledStudentsDispatch(match.params.id)
+        .then(() => this.setState({ isLoading: false }))
+        .catch(() => this.setState({ isLoading: false }));
+      findSubjectByIdDispatch(match.params.subjectId);
+    }
     defineDispatch('Actualizar curso');
   };
 
@@ -47,9 +66,12 @@ class CourseDetailContainer extends Component {
   };
 
   render() {
-    const { students, loadNotes } = this.props;
+    const { students, loadNotes, subject } = this.props;
+    const { isLoading } = this.state;
     return (
       <CourseDetail
+        subject={subject}
+        isLoading={isLoading}
         students={students}
         goBack={this.goBack}
         loadNotes={loadNotes}
@@ -83,12 +105,14 @@ CourseDetailContainer.defaultProps = {
 const mS = (state) => ({
   students: state.myCourseReducer.enrolledStudents,
   loadNotes: !!state.schoolPeriodReducer.selectedSchoolPeriod.load_notes,
+  subject: state.subjectReducer.selectedSubject,
 });
 
 const mD = {
   getEnrolledStudentsDispatch: getEnrolledStudents,
   updateQualificationsDispatch: updateQualifications,
   cleanEnrolledStudentsDispatch: cleanEnrolledStudents,
+  findSubjectByIdDispatch: findSubjectById,
   defineDispatch: define,
   cleanDialogDispatch: cleanDialog,
 };

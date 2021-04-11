@@ -202,7 +202,7 @@ function AuthenticationApp({ children, classes }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={pggqLogo} alt="logo postgrado de geoquimica" />
+              <img src={pggqLogo} alt="logo Postgrado de Geoquímica" />
             </a>
           </div>
         </div>

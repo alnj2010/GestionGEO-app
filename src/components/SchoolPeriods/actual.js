@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, Paper, CircularProgress } from '@material-ui/core';
 import * as moment from 'moment';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
@@ -35,6 +35,11 @@ const styles = () => ({
     '&>div': {
       minWidth: '448px',
     },
+  },
+  paper: {
+    height: 300,
+    display: 'flex',
+    alignItems: 'center',
   },
 });
 
@@ -104,6 +109,7 @@ class SchoolPeriodActual extends Component {
       startDate,
       codSchoolPeriod,
       submitDispatch,
+      loading,
       endDate,
     } = this.props;
     const allViews = Object.keys(Views).map((k) => Views[k]);
@@ -115,11 +121,11 @@ class SchoolPeriodActual extends Component {
     minTime.setHours(7, 0, 0);
     const maxTime = new Date();
     maxTime.setHours(19, 0, 0);
-    return (
+    return codSchoolPeriod ? (
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> Periodo semestral actual {codSchoolPeriod}</h3>
+            <h3> Periodo semestral actual {codSchoolPeriod} </h3>
             <hr />
           </Grid>
           <Grid item xs={12} className={classes.form}>
@@ -202,6 +208,14 @@ class SchoolPeriodActual extends Component {
         />
         <Dialog handleAgree={func} />
       </Form>
+    ) : (
+      <Paper className={classes.paper}>
+        <Grid container justify="center">
+          <Grid item>
+            {loading ? <CircularProgress /> : 'Actualmente no hay periodo escolar activo'}
+          </Grid>
+        </Grid>
+      </Paper>
     );
   };
 }

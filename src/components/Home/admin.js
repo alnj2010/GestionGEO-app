@@ -1,34 +1,11 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
-import WelcomeModal from '../WelcomeModal';
 import { getSessionUser, getSessionUserRol } from '../../storage/sessionStorage';
-
 import PresentationHome from './PresentationHome';
 import GenerateReport from '../GenerateReport';
 import WarningStudents from '../WarningStudents';
 
-const styles = (theme) => ({
-  root: {
-    maxWidth: 400,
-    flexGrow: 1,
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    height: 50,
-    paddingLeft: theme.spacing.unit * 4,
-    backgroundColor: theme.palette.background.default,
-  },
-  img: {
-    height: 255,
-    display: 'block',
-    maxWidth: 400,
-    overflow: 'hidden',
-    width: '100%',
-  },
-});
 function AdminHome({
   schoolPeriods,
   getReport,
@@ -69,7 +46,6 @@ function AdminHome({
         updateStudentStatus={updateStudentStatus}
       />
       <GenerateReport schoolPeriods={schoolPeriods} getReport={getReport} />
-      <WelcomeModal />
     </>
   );
 }
@@ -86,4 +62,4 @@ AdminHome.propTypes = {
   ]).isRequired,
 };
 
-export default React.memo(withStyles(styles)(AdminHome));
+export default React.memo(AdminHome);

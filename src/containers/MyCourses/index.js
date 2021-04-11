@@ -6,9 +6,16 @@ import { getCoursesList, cleanGetCoursesList } from '../../actions/myCourse';
 import MyCoursesList from '../../components/MyCourses';
 
 class MisCursosContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   componentDidMount = () => {
     const { getCoursesListDispatch, defineDispatch } = this.props;
-    getCoursesListDispatch();
+    getCoursesListDispatch().then(() => this.setState({ isLoading: false }));
     defineDispatch('cursos');
   };
 
@@ -20,7 +27,15 @@ class MisCursosContainer extends Component {
 
   render() {
     const { myCourses, history, showDispatch } = this.props;
-    return <MyCoursesList history={history} myCourses={myCourses} show={showDispatch} />;
+    const { isLoading } = this.state;
+    return (
+      <MyCoursesList
+        history={history}
+        myCourses={myCourses}
+        show={showDispatch}
+        isLoading={isLoading}
+      />
+    );
   }
 }
 

@@ -82,22 +82,22 @@ class AdminDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/administradores');
+    history.push('/usuarios/administradores');
   };
 
   handleAdminDelete = () => {
     const { deleteAdminDispatch, history, match } = this.props;
-    deleteAdminDispatch(match.params.id).then(() => history.push('/administradores'));
+    deleteAdminDispatch(match.params.id).then(() => history.push('/usuarios/administradores'));
   };
 
   render() {
-    const { admin } = this.props;
+    const { admin, match } = this.props;
     return (
       <AdminDetail
         admin={admin}
         saveAdmin={this.saveAdmin}
         goBack={this.goBack}
-        adminId={admin.id}
+        adminId={match.params.id}
         handleAdminDelete={this.handleAdminDelete}
       />
     );

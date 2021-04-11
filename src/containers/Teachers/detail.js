@@ -46,22 +46,22 @@ class TeacherDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/profesores');
+    history.push('/usuarios/profesores');
   };
 
   handleTeacherDelete = () => {
     const { deleteTeacherDispatch, history, match } = this.props;
-    deleteTeacherDispatch(match.params.id).then(() => history.push('/profesores'));
+    deleteTeacherDispatch(match.params.id).then(() => history.push('/usuarios/profesores'));
   };
 
   render() {
-    const { teacher, schoolPrograms } = this.props;
+    const { teacher, schoolPrograms, match } = this.props;
     return (
       <TeacherDetail
         schoolPrograms={schoolPrograms}
         saveTeacher={this.saveTeacher}
         goBack={this.goBack}
-        teacherId={teacher.id}
+        teacherId={match.params.id}
         teacher={teacher}
         handleTeacherDelete={this.handleTeacherDelete}
       />

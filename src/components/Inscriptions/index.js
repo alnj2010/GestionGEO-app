@@ -10,6 +10,7 @@ import RenderFields from '../RenderFields';
 import CustomizedSnackbar from '../Snackbar';
 import { FINANCING_TYPE } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
+import HelpButton from '../HelpButton';
 
 const styles = () => ({
   tableContainer: {
@@ -28,6 +29,7 @@ function Inscription({
   valid,
   teachers,
   message,
+  isLoading,
 }) {
   const [finalWorkSelected, setFinalWorkSelected] = useState([]);
   const [subjectsSelected, setSubjectsSelected] = useState([]);
@@ -57,13 +59,29 @@ function Inscription({
   return (
     <Grid container>
       <Typography variant="h6" gutterBottom>
-        Asignaturas disponibles para inscripción
+        Asignaturas disponibles para inscripción{' '}
+        <HelpButton>
+          <div>
+            <b>Asignaturas disponibles</b>
+          </div>
+          <div>
+            Abajo se listan las Asignaturas disponibles para inscribir según el programa académico
+            al que pertenezca. Proceda a seleccionar las asignaturas que desea inscribir y
+            posteriormente llene los campos de financiación y descripción, para luego hacer click en
+            el boton <strong>INSCRIBIR</strong>
+          </div>
+          <br />
+          <div>
+            Abajo se listan los distintos administradores existenten en el Postgrado de Geoquímica
+          </div>
+        </HelpButton>
       </Typography>
 
       <SubjectTable
         subjects={subjects}
         setSubjectsSelected={setSubjectsSelected}
         message={message}
+        isLoading={isLoading}
       />
       {finalWorks && finalWorks.length ? (
         <FinalWorkTable
@@ -72,6 +90,7 @@ function Inscription({
           isFinalSubject={isFinalSubject}
           setFinalWorkSelected={setFinalWorkSelected}
           approvedProjects={approvedProjects}
+          isLoading={isLoading}
         />
       ) : null}
       <Grid container className={classes.tableContainer}>

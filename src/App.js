@@ -68,11 +68,15 @@ function App() {
                 <Route exact path="/cambio-clave" component={ChangePassword} />
                 <Route exact path="/mi-perfil/:id" component={MiPerfil} />
                 <Route exact path="/mis-cursos" component={MisCursos} />
-                <Route exact path="/mis-cursos/curso/:id" component={CourseDetail} />
+                <Route exact path="/mis-cursos/curso/:subjectId/:id" component={CourseDetail} />
 
-                <Route exact path="/administradores/" component={AdminsList} />
-                <Route exact path="/administradores/modificar/:id" component={AdminDetail} />
-                <Route exact path="/administradores/agregar" component={AdminDetail} />
+                <Route exact path="/usuarios/administradores/" component={AdminsList} />
+                <Route
+                  exact
+                  path="/usuarios/administradores/modificar/:id"
+                  component={AdminDetail}
+                />
+                <Route exact path="/usuarios/administradores/agregar" component={AdminDetail} />
 
                 <Route exact path="/programas-academicos/" component={SchoolProgramsList} />
                 <Route
@@ -82,42 +86,42 @@ function App() {
                 />
                 <Route exact path="/programas-academicos/agregar" component={SchoolProgramDetail} />
 
-                <Route exact path="/materias/" component={SubjectsList} />
-                <Route exact path="/materias/modificar/:id" component={SubjectDetail} />
-                <Route exact path="/materias/agregar" component={SubjectDetail} />
+                <Route exact path="/asignaturas/" component={SubjectsList} />
+                <Route exact path="/asignaturas/modificar/:id" component={SubjectDetail} />
+                <Route exact path="/asignaturas/agregar" component={SubjectDetail} />
 
-                <Route exact path="/estudiantes/" component={StudentsList} />
-                <Route exact path="/estudiantes/modificar/:id" component={StudentDetail} />
+                <Route exact path="/usuarios/estudiantes/" component={StudentsList} />
+                <Route exact path="/usuarios/estudiantes/modificar/:id" component={StudentDetail} />
                 <Route
                   exact
-                  path="/estudiantes/modificar/:userId/programa-academico/:studentId"
+                  path="/usuarios/estudiantes/modificar/:userId/programa-academico/:studentId"
                   component={StudentSchoolProgramDetail}
                 />
                 <Route
                   exact
-                  path="/estudiantes/modificar/:userId/programa-academico/agregar"
+                  path="/usuarios/estudiantes/modificar/:userId/programa-academico/agregar"
                   component={StudentSchoolProgramDetail}
                 />
-                <Route exact path="/estudiantes/agregar" component={StudentDetail} />
+                <Route exact path="/usuarios/estudiantes/agregar" component={StudentDetail} />
                 <Route
                   exact
-                  path="/estudiantes/inscripciones/:userId/:studentId"
+                  path="/usuarios/estudiantes/inscripciones/:userId/:studentId"
                   component={StudentInscriptions}
                 />
                 <Route
                   exact
-                  path="/estudiantes/inscripciones/:userId/:studentId/nueva"
+                  path="/usuarios/estudiantes/inscripciones/:userId/:studentId/nueva"
                   component={StudentInscription}
                 />
                 <Route
                   exact
-                  path="/estudiantes/inscripciones/:userId/:studentId/:idSchoolPeriod"
+                  path="/usuarios/estudiantes/inscripciones/:userId/:studentId/:idSchoolPeriod"
                   component={StudentInscription}
                 />
 
-                <Route exact path="/profesores/" component={TeachersList} />
-                <Route exact path="/profesores/modificar/:id" component={TeacherDetail} />
-                <Route exact path="/profesores/agregar" component={TeacherDetail} />
+                <Route exact path="/usuarios/profesores/" component={TeachersList} />
+                <Route exact path="/usuarios/profesores/modificar/:id" component={TeacherDetail} />
+                <Route exact path="/usuarios/profesores/agregar" component={TeacherDetail} />
 
                 <Route exact path="/periodo-semestral/en-curso" component={SchoolPeriodActual} />
                 <Route exact path="/periodo-semestral/periodos" component={SchoolPeriodsList} />

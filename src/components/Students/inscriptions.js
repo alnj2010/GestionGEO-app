@@ -30,7 +30,7 @@ class StudentInscriptions extends Component {
 
   goBack = () => {
     const { history, userId } = this.props;
-    history.push(`/estudiantes/modificar/${userId}`);
+    history.push(`/usuarios/estudiantes/modificar/${userId}`);
   };
 
   handleDialogShow = (action, func) => {
@@ -60,7 +60,9 @@ class StudentInscriptions extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/estudiantes/inscripciones/${userId}/${studentId}/nueva`)}
+            onClick={() =>
+              history.push(`/usuarios/estudiantes/inscripciones/${userId}/${studentId}/nueva`)
+            }
           >
             <Add />
             Inscribir estudiante
@@ -85,12 +87,14 @@ class StudentInscriptions extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/estudiantes/inscripciones/${userId}/${studentId}/${rowData.id}`);
+                  history.push(
+                    `/usuarios/estudiantes/inscripciones/${userId}/${studentId}/${rowData.id}`
+                  );
                 },
               },
               {
                 icon: 'archive',
-                tooltip: 'Constancia de estudios',
+                tooltip: 'Constancia de inscripción',
                 onClick: (event, rowData) => {
                   getConstance(studentId, 'student', 'inscription', {
                     inscriptionId: rowData.inscriptionId,
@@ -122,7 +126,7 @@ class StudentInscriptions extends Component {
                 actions: 'Acciones',
               },
               body: {
-                emptyDataSourceMessage: 'Aun no tiene historial',
+                emptyDataSourceMessage: 'Cargando',
               },
             }}
             isLoading={isLoading}

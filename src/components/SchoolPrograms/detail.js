@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector, change } from 'redux-form';
 import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
@@ -76,127 +76,141 @@ class SchoolProgramDetail extends Component {
             <h3>
               {' '}
               {schoolProgramId
-                ? `Programa academico: ${schoolProgram.school_program_name}`
+                ? `Programa academico: ${schoolProgram.school_program_name || ''}`
                 : 'Nuevo Programa academico'}
             </h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Programa academico',
-                    field: 'schoolProgramName',
-                    id: 'schoolProgramName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Unidades de credito',
-                    field: 'numCu',
-                    id: 'numCu',
-                    type: conduciveToDegreeSelected ? 'number' : 'hidden',
-                    min: 0,
-                  },
-                  {
-                    label: 'Duracion (Semestres)',
-                    field: 'duration',
-                    id: 'duration',
-                    type: 'number',
-                    min: 0,
-                  },
-                  {
-                    label: 'min. de UC para la TEG',
-                    field: 'minNumCuFinalWork',
-                    id: 'minNumCuFinalWork',
-                    type: conduciveToDegreeSelected ? 'number' : 'hidden',
-                    min: 0,
-                    max: numCu,
-                    disabled: !numCu,
-                  },
-                  {
-                    label: 'min. de semestres para la TEG',
-                    field: 'minDuration',
-                    id: 'minDuration',
-                    type: conduciveToDegreeSelected ? 'number' : 'hidden',
-                    min: 1,
-                  },
-                  {
-                    label: 'min. de UC para examen doctoral',
-                    field: 'minCuToDoctoralExam',
-                    id: 'minCuToDoctoralExam',
-                    type: conduciveToDegreeSelected && doctoralExam ? 'number' : 'hidden',
-                    min: 0,
-                    max: numCu,
-                    disabled: !numCu || !doctoralExam,
-                  },
-                  {
-                    label: '¿Otorga un certificado de culminación?',
-                    field: 'grantCertificate',
-                    id: 'grantCertificate',
-                    type: 'switch',
-                  },
-                  {
-                    label: '¿Posee examen doctoral?',
-                    field: 'doctoralExam',
-                    id: 'doctoralExam',
-                    type: conduciveToDegreeSelected ? 'switch' : 'hidden',
-                  },
+          {!schoolProgramId || schoolProgram.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Programa academico',
+                      field: 'schoolProgramName',
+                      id: 'schoolProgramName',
+                      type: 'text',
+                      tooltipText:
+                        'Suministrar el Nombre del Programa Academico. Ej: Especializacion en Hidrocarburos, Doctorado, etc...',
+                    },
+                    {
+                      label: 'Unidades de credito',
+                      field: 'numCu',
+                      id: 'numCu',
+                      type: conduciveToDegreeSelected ? 'number' : 'hidden',
+                      min: 0,
+                    },
+                    {
+                      label: 'Duracion (Semestres)',
+                      field: 'duration',
+                      id: 'duration',
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'min. de UC para la TEG',
+                      field: 'minNumCuFinalWork',
+                      id: 'minNumCuFinalWork',
+                      type: conduciveToDegreeSelected ? 'number' : 'hidden',
+                      min: 0,
+                      max: numCu,
+                      disabled: !numCu,
+                      tooltipText:
+                        'Ingrese la minima cantidad de Unidades de Credito necesaria para presentar el Trabajo especial de Grado',
+                    },
+                    {
+                      label: 'min. de semestres para la TEG',
+                      field: 'minDuration',
+                      id: 'minDuration',
+                      type: conduciveToDegreeSelected ? 'number' : 'hidden',
+                      min: 1,
+                      tooltipText:
+                        'Ingrese la cantidad minima de semestres necesarios para presentar el Trabajo especial de Grado',
+                    },
+                    {
+                      label: 'min. de UC para examen doctoral',
+                      field: 'minCuToDoctoralExam',
+                      id: 'minCuToDoctoralExam',
+                      type: conduciveToDegreeSelected && doctoralExam ? 'number' : 'hidden',
+                      min: 0,
+                      max: numCu,
+                      disabled: !numCu || !doctoralExam,
+                      tooltipText:
+                        'Ingrese la cantidad minima de semestres necesarios para presentar el examen doctoral',
+                    },
+                    {
+                      label: '¿Otorga un certificado de culminación?',
+                      field: 'grantCertificate',
+                      id: 'grantCertificate',
+                      type: 'switch',
+                    },
+                    {
+                      label: '¿Posee examen doctoral?',
+                      field: 'doctoralExam',
+                      id: 'doctoralExam',
+                      type: conduciveToDegreeSelected ? 'switch' : 'hidden',
+                    },
 
-                  {
-                    label: '¿Otorga un grado academico?',
-                    field: 'conduciveToDegree',
-                    id: 'conduciveToDegree',
-                    type: 'switch',
-                  },
-                ]}
-              </RenderFields>
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        schoolProgramId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('programa academico')
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {schoolProgramId ? (
+                    {
+                      label: '¿Otorga un grado academico?',
+                      field: 'conduciveToDegree',
+                      id: 'conduciveToDegree',
+                      type: 'switch',
+                    },
+                  ]}
+                </RenderFields>
+              </Grid>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleSchoolProgramDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          schoolProgramId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('programa academico')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {schoolProgramId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleSchoolProgramDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>
