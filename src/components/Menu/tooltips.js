@@ -6,10 +6,11 @@ import InsertInvitation from '@material-ui/icons/InsertInvitation';
 import Actual from '@material-ui/icons/AlarmAdd';
 import ListIcon from '@material-ui/icons/List';
 import Download from '@material-ui/icons/Archive';
-
+import Inscription from '@material-ui/icons/HowToVote';
 import Cursos from '@material-ui/icons/LibraryBooks';
 import Visibility from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
+
 import adminStep1 from '../../images/adminWelcome.jpg';
 import adminStep2 from '../../images/stepUsers.jpg';
 import adminStep3 from '../../images/stepSubjects.jpg';
@@ -20,6 +21,9 @@ import adminStep6 from '../../images/stepDowload.jpg';
 import teacherStep1 from '../../images/teacherWelcome.jpg';
 import teacherStep2 from '../../images/teacherCourses.jpg';
 import teacherStep3 from '../../images/teacherClassroom.png';
+
+import studentStep1 from '../../images/studentWelcome.jpg';
+import studentStep2 from '../../images/studentInscription.jpg';
 
 import { getSessionUser } from '../../storage/sessionStorage';
 
@@ -302,5 +306,60 @@ export const tutorialSteps = {
       image: adminStep6,
     },
   ],
-  S: null,
+  S: [
+    {
+      // eslint-disable-next-line react/display-name
+      Content: ({ classes }) => {
+        const {
+          level_instruction: levelInstruction,
+          first_name: firstName,
+          second_name: secondName,
+          first_surname: firstSurname,
+          second_surname: secondSurname,
+        } = getSessionUser();
+        return (
+          <>
+            <div className={classes.title}>
+              Bienvenido{' '}
+              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
+                secondSurname || ''
+              }`}
+            </div>
+            <div className={classes.descriptionContainer}>
+              <span className={classes.introduction}>
+                Ud ha ingresado como <strong>Estudiante</strong> de GestionGeo.
+              </span>
+              En este modulo ud. podrá inscribir y visualizar las asignaturas que ha inscrito en el
+              periodo academico actual.
+            </div>
+          </>
+        );
+      },
+      image: studentStep1,
+    },
+    {
+      // eslint-disable-next-line react/display-name
+      Content: ({ classes }) => {
+        return (
+          <>
+            <div className={classes.title}>
+              Inscripción de Asignaturas
+              <Inscription />
+            </div>
+            <div className={classes.descriptionContainer}>
+              <span className={classes.introduction}>
+                Para poder realizar el proceso de inscripción de Asignaturas, previamente el
+                Postgrado de Geoquímica deberá habilitar las inscripciones del periodo académico
+                actual.
+              </span>
+              A través del menú lateral izquierdo, haciendo click en el ítem{' '}
+              <strong>Inscripción</strong> . Ud. accederá a la lista de Asignaturas disponibles a
+              inscribir en el periodo academico actual.
+            </div>
+          </>
+        );
+      },
+      image: studentStep2,
+    },
+  ],
 };
