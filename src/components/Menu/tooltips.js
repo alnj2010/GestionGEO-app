@@ -329,8 +329,8 @@ export const tutorialSteps = {
               <span className={classes.introduction}>
                 Ud ha ingresado como <strong>Estudiante</strong> de GestionGeo.
               </span>
-              En este modulo ud. podrá inscribir y visualizar las asignaturas que ha inscrito en el
-              periodo academico actual.
+              En este modulo ud. podrá inscribir, visualizar y retirar las asignaturas que ha
+              inscrito en el periodo academico actual.
             </div>
           </>
         );
