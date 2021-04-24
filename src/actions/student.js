@@ -82,6 +82,7 @@ export const updateSchoolProgram = (student) => async (dispatch) => {
     first_surname: student.first_surname,
     second_surname: student.second_surname,
     telephone: student.telephone,
+    allow_post_inscription:student.allowPostInscription,
     mobile: student.mobile,
     work_phone: student.work_phone,
     email: student.email,

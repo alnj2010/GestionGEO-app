@@ -357,6 +357,7 @@ class MenuApp extends React.Component {
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
     const userSession = getSessionUser();
+    console.log(getSessionUser());
     const userId = userSession ? userSession[USER_INSTANCE[rol]].id : null;
 
    const setOpenAnnualReportModal=(val)=>{
@@ -611,7 +612,7 @@ MenuApp.defaultProps = {
 const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
   message: state.snackbarReducer.message,
-  inscriptionVisible: !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
+  inscriptionVisible: !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible || (getSessionUserRol()==='S' && getSessionUser().student.allow_post_inscription),
   schoolPeriods: state.schoolPeriodReducer.list,
 });
 const mD = {
