@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import GenerateReport from '../GenerateReport';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -41,7 +42,9 @@ import PropTypes from 'prop-types';
 import WelcomeModal from '../WelcomeModal';
 import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
-import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod } from '../../actions/schoolPeriod';
+import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod,getList,cleanGetList } from '../../actions/schoolPeriod';
+import { getReport } from '../../actions/admin';
+
 import {
   removeSessionGeoToken,
   getSessionUserRol,
@@ -138,6 +141,7 @@ class MenuApp extends React.Component {
       open: true,
       openWelcomeModal: !getHideWelcomeModal(),
       anchorEl: null,
+      openAnnualReportModal:false,
       options: [
         {
           link: 'inicio',
@@ -246,17 +250,21 @@ class MenuApp extends React.Component {
   };
 
   componentDidMount = () => {
-    const { findCurrentSchoolPeriodDispatch } = this.props;
+    const { findCurrentSchoolPeriodDispatch,getListSchoolPeriodDispatch } = this.props;
+
     const rol = getSessionUserRol();
 
     if (rol === 'S' || rol === 'T') {
       findCurrentSchoolPeriodDispatch();
+    }else if(rol==='A'){
+      getListSchoolPeriodDispatch();
     }
   };
 
   componentWillUnmount = () => {
-    const { cleanSelectedSchoolPeriodDispatch } = this.props;
+    const { cleanSelectedSchoolPeriodDispatch,cleanGetListSchoolPeriodDispatch } = this.props;
     cleanSelectedSchoolPeriodDispatch();
+    cleanGetListSchoolPeriodDispatch();
   };
 
   componentWillMount = () => {
@@ -342,12 +350,20 @@ class MenuApp extends React.Component {
       getConstanceDispatch,
       location,
       inscriptionVisible,
+      schoolPeriods,
+      getReportDispatch,
     } = this.props;
-    const { anchorEl, options, open: openOption, openDownload, openWelcomeModal } = this.state;
+    const { anchorEl, options, open: openOption, openDownload, openWelcomeModal,openAnnualReportModal } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
     const userSession = getSessionUser();
+    console.log(getSessionUser());
     const userId = userSession ? userSession[USER_INSTANCE[rol]].id : null;
+
+   const setOpenAnnualReportModal=(val)=>{
+      this.setState({ openAnnualReportModal: val });
+    }
+
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -524,7 +540,7 @@ class MenuApp extends React.Component {
                       <ListItem
                         button
                         key={name}
-                        onClick={() => getConstanceDispatch(userId, userType, constanceType)}
+                        onClick={() => constanceType=='AnnualReport'?setOpenAnnualReportModal(true) :getConstanceDispatch(userId, userType, constanceType)}
                         className={classes.nested}
                       >
                         <ListItemIcon>
@@ -552,6 +568,7 @@ class MenuApp extends React.Component {
             handleCloseWelcomeModal={this.handleCloseWelcomeModal}
           />
         )}
+       <GenerateReport schoolPeriods={schoolPeriods} getReport={getReportDispatch} openModal={openAnnualReportModal} setOpenModal={setOpenAnnualReportModal}/>
       </div>
     );
   }
@@ -595,12 +612,16 @@ MenuApp.defaultProps = {
 const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
   message: state.snackbarReducer.message,
-  inscriptionVisible: !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
+  inscriptionVisible: !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible || (getSessionUserRol()==='S' && getSessionUser().student.allow_post_inscription),
+  schoolPeriods: state.schoolPeriodReducer.list,
 });
 const mD = {
   getConstanceDispatch: getConstance,
   findCurrentSchoolPeriodDispatch: findCurrentSchoolPeriod,
   cleanSelectedSchoolPeriodDispatch: cleanSelectedSchoolPeriod,
+  getListSchoolPeriodDispatch:getList,
+  cleanGetListSchoolPeriodDispatch:cleanGetList,
+  getReportDispatch:getReport
 };
 const MenuAppWrapper = withStyles(styles, { withTheme: true })(connect(mS, mD)(MenuApp));
 export default MenuAppWrapper;

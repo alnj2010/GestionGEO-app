@@ -33,9 +33,10 @@ function GenerateReport({
   classes: { reportContainer, paper, formControl, rangeContent },
   schoolPeriods,
   getReport,
+  openModal, 
+  setOpenModal
 }) {
   const [rangeReport, setRangeReport] = React.useState({ initial: '', final: '' });
-  const [openModal, setOpenModal] = useState(false);
   const [untilOptions, setUntilOptions] = useState([]);
   const handleChangeRangeReport = (event, { key }) => {
     if (event.target.name === 'initial') {
@@ -60,11 +61,6 @@ function GenerateReport({
   };
   return (
     <>
-      <Grid container justify="center" className={reportContainer}>
-        <Button variant="contained" color="primary" onClick={handleOpen}>
-          Generar Reporte Anual
-        </Button>
-      </Grid>
       <Modal
         open={openModal}
         onClose={handleClose}

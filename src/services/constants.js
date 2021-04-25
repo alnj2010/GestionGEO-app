@@ -26,6 +26,11 @@ export const CONSTANCES = {
       userType: 'administrator',
       constanceType: 'workAdministrator',
     },
+    {
+      name: 'Reporte Anual',
+      userType: 'administrator',
+      constanceType: 'AnnualReport',
+    },
   ],
   S: [
     { name: 'Constancia estudio', userType: 'student', constanceType: 'study' },

@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 
 import { getSessionUser, getSessionUserRol } from '../../storage/sessionStorage';
 import PresentationHome from './PresentationHome';
-import GenerateReport from '../GenerateReport';
 import WarningStudents from '../WarningStudents';
 
 function AdminHome({
-  schoolPeriods,
-  getReport,
   warningStudents,
   history,
   isLoading,
@@ -45,7 +42,7 @@ function AdminHome({
         isLoading={isLoading}
         updateStudentStatus={updateStudentStatus}
       />
-      <GenerateReport schoolPeriods={schoolPeriods} getReport={getReport} />
+      
     </>
   );
 }

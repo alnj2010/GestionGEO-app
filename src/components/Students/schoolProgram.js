@@ -198,6 +198,13 @@ class StudentSchoolProgram extends Component {
                       disabled: rol !== 'A',
                     },
                     {
+                      label: '¿Habilitar inscripcion para este estudiante?',
+                      field: 'allowPostInscription',
+                      id: 'allowPostInscription',
+                      type: 'switch',
+                      disabled: rol !== 'A',
+                    },
+                    {
                       label: '¿Esta actualmente en periodo de prueba?',
                       field: 'testPeriod',
                       id: 'testPeriod',
@@ -421,6 +428,9 @@ StudentSchoolProgramWrapper = connect(
       testPeriod: state.studentReducer.selectedSchoolProgram
         ? !!state.studentReducer.selectedSchoolProgram.test_period
         : false,
+      allowPostInscription:state.studentReducer.selectedSchoolProgram
+      ? !!state.studentReducer.selectedSchoolProgram.allow_post_inscription
+      : false,
       equivalences:
         state.studentReducer.selectedSchoolProgram &&
         !!state.studentReducer.selectedSchoolProgram.equivalence
