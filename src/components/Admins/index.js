@@ -138,7 +138,8 @@ class AdminsList extends Component {
                               getConstance(data.id, USER_INSTANCE.A, event.target.value)
                             }
                           >
-                            {CONSTANCES.A.map(({ name, constanceType }) => (
+                            {CONSTANCES.A.filter(({constanceType})=>constanceType!=='AnnualReport'
+                            ).map(({ name, constanceType }) => (
                               <MenuItem key={constanceType} value={constanceType}>
                                 {name}
                               </MenuItem>
