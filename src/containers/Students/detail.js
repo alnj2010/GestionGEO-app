@@ -65,6 +65,7 @@ class StudentDetailContainer extends Component {
         testPeriod: student.student[0].test_period,
         currentStatus: student.student[0].current_status,
         equivalence: student.student[0].equivalence,
+        allowPostInscription: student.student[0].allow_post_inscription,
         guideTeacherId: student.student[0].guide_teacher_id
           ? student.student[0].guide_teacher_id
           : undefined,
