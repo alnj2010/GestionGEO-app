@@ -218,6 +218,7 @@ export const updateStudent = (student) => async (dispatch) => {
     with_work: student.withWork,
     test_period: student.testPeriod,
     current_status: student.currentStatus,
+    allow_post_inscription:student.allowPostInscription,
     // degrees:student.degrees,
     equivalences: student.equivalence.length
       ? student.equivalence.map((item) => ({

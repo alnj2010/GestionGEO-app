@@ -72,30 +72,35 @@ class MiPerfil extends Component {
                     field: 'firstName',
                     id: 'firstName',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Segundo Nombre',
                     field: 'secondName',
                     id: 'secondName',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Apellido',
                     field: 'firstSurname',
                     id: 'firstSurname',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Segundo apellido',
                     field: 'secondSurname',
                     id: 'secondSurname',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Cedula',
                     field: 'identification',
                     id: 'identification',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Email',
@@ -144,6 +149,7 @@ class MiPerfil extends Component {
                     id: 'levelInstruction',
                     type: 'select',
                     options: jsonToOptions(LEVEL_INSTRUCTION),
+                    disabled: rol !== 'A',
                   },
                 ]}
               </RenderFields>
