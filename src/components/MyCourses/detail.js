@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, CircularProgress } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import Paper from '@material-ui/core/Paper';
+
+
 
 import MaterialTable from 'material-table';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
@@ -29,6 +34,7 @@ function SchoolProgramDetail({
   loadNotes,
   subject,
   isLoading,
+  goBack
 }) {
   const [studentsData, setStudentsData] = useState([]);
   useEffect(() => {
@@ -49,60 +55,76 @@ function SchoolProgramDetail({
   }, [students]);
   const matches = isWidthUp('sm', width);
   return (
-    <MaterialTable
-      title={matches ? `Estudiantes ${subject.name ? `de ${subject.name}` : ''}` : ''}
-      columns={[
-        { title: '#', field: 'id', hidden: true },
-        {
-          title: 'Cedula',
-          field: 'identification',
-          editable: 'never',
-        },
-        { title: 'Nombre', field: 'name', editable: 'never' },
-        { title: 'Apellido', field: 'surname', editable: 'never' },
-        {
-          title: 'calificacion',
-          field: 'qualification',
-          type: 'numeric',
-          editable: loadNotes ? 'always' : 'never',
-        },
-        { title: 'Estado', field: 'status', editable: 'never' },
-      ]}
-      data={studentsData}
-      localization={{
-        header: {
-          actions: 'Acciones',
-        },
+    <Grid container>
+      <Grid container item xs={12} justify="flex-end">
+        <Grid item xs={1}>
+          <Button
+            variant="contained"
+            onClick={goBack}
+            style={{ width: '100%' }}
+          >
+            <ArrowBack></ArrowBack>
+          </Button>
 
-        body: {
-          emptyDataSourceMessage: isLoading ? (
-            <CircularProgress size={30} />
-          ) : (
-            'No hay alumnos inscritos'
-          ),
-        },
-      }}
-      editable={
-        loadNotes && {
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
-              updateQualifications(newData).then(() => {
-                const dataUpdate = [...studentsData];
-                const index = oldData.tableData.id;
-                dataUpdate[index] = newData;
-                setStudentsData([...dataUpdate]);
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <MaterialTable
+          title={matches ? `Estudiantes ${subject.name ? `de ${subject.name}` : ''}` : ''}
+          columns={[
+            { title: '#', field: 'id', hidden: true },
+            {
+              title: 'Cedula',
+              field: 'identification',
+              editable: 'never',
+            },
+            { title: 'Nombre', field: 'name', editable: 'never' },
+            { title: 'Apellido', field: 'surname', editable: 'never' },
+            { title: 'Estado', field: 'status', editable: 'never' },
+            {
+              title: 'calificacion',
+              field: 'qualification',
+              type: 'numeric',
+              editable: loadNotes ? 'always' : 'never',
+            },
+          ]}
+          data={studentsData}
+          localization={{
+            header: {
+              actions: 'Acciones',
+            },
 
-                resolve();
-              });
-            }),
-        }
-      }
-      options={{
-        search: false,
-        paging: false,
-        actionsColumnIndex: 1,
-      }}
-    />
+            body: {
+              emptyDataSourceMessage: isLoading ? (
+                <CircularProgress size={30} />
+              ) : (
+                'No hay alumnos inscritos'
+              ),
+            },
+          }}
+          editable={
+            loadNotes && {
+              onRowUpdate: (newData, oldData) =>
+                new Promise((resolve, reject) => {
+                  updateQualifications(newData).then(() => {
+                    const dataUpdate = [...studentsData];
+                    const index = oldData.tableData.id;
+                    dataUpdate[index] = newData;
+                    setStudentsData([...dataUpdate]);
+
+                    resolve();
+                  });
+                }),
+            }
+          }
+          options={{
+            search: false,
+            paging: false,
+            actionsColumnIndex: -1,
+          }}
+        />
+      </Grid>
+    </Grid>
   );
 }
 

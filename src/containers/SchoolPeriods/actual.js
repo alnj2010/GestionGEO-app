@@ -87,6 +87,7 @@ class SchoolPeriodActualContainer extends Component {
         message,
         cod_school_period,
       },
+      history
     } = this.props;
     const { isLoading } = this.state;
 
@@ -98,6 +99,7 @@ class SchoolPeriodActualContainer extends Component {
         endDate={endDate}
         saveSchoolPeriod={this.saveSchoolPeriod}
         subjects={subjects}
+        history={history}
       />
     ) : (
       <Typography variant="h6" gutterBottom>

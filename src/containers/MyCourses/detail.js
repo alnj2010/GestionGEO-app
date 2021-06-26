@@ -28,7 +28,7 @@ class CourseDetailContainer extends Component {
       findSubjectByIdDispatch,
     } = this.props;
     if (match.params.id) {
-      getEnrolledStudentsDispatch(match.params.id)
+      getEnrolledStudentsDispatch(match.params.id, match.params.teacherId || parseInt(getSessionTeacherId()))
         .then(() => this.setState({ isLoading: false }))
         .catch(() => this.setState({ isLoading: false }));
       findSubjectByIdDispatch(match.params.subjectId);
@@ -43,15 +43,14 @@ class CourseDetailContainer extends Component {
   };
 
   goBack = () => {
-    const { history } = this.props;
-
-    history.push('/mis-cursos');
+    const { history, match } = this.props;
+    history.push(match.params.teacherId ? '/periodo-semestral/en-curso' : '/mis-cursos');
   };
 
   updateQualifications = (value) => {
     const { match, updateQualificationsDispatch, getEnrolledStudentsDispatch } = this.props;
     const payload = {
-      teacher_id: parseInt(getSessionTeacherId(), 10),
+      teacher_id: match.params.teacherId || parseInt(getSessionTeacherId(), 10),
       school_period_subject_teacher_id: parseInt(match.params.id, 10),
       student_notes: [
         {
@@ -61,9 +60,10 @@ class CourseDetailContainer extends Component {
       ],
     };
     return updateQualificationsDispatch(payload).then(() =>
-      getEnrolledStudentsDispatch(match.params.id)
+      getEnrolledStudentsDispatch(match.params.id, match.params.teacherId || parseInt(getSessionTeacherId()))
     );
   };
+
 
   render() {
     const { students, loadNotes, subject } = this.props;
@@ -75,7 +75,7 @@ class CourseDetailContainer extends Component {
         students={students}
         goBack={this.goBack}
         loadNotes={loadNotes}
-        updateQualifications={this.updateQualifications}
+        updateQualifications={(this.updateQualifications)}
       />
     );
   }
