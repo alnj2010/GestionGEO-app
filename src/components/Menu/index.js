@@ -353,6 +353,7 @@ class MenuApp extends React.Component {
       inscriptionVisible,
       schoolPeriods,
       getReportDispatch,
+      currentSubjects
     } = this.props;
     const { anchorEl, options, open: openOption, openDownload, openWelcomeModal, openAnnualReportModal } = this.state;
     const open = Boolean(anchorEl);
@@ -363,7 +364,7 @@ class MenuApp extends React.Component {
     const setOpenAnnualReportModal = (val) => {
       this.setState({ openAnnualReportModal: val });
     }
-
+    const inscriptionId = currentSubjects && currentSubjects.length ? currentSubjects[0].school_period_student_id : null;
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -524,7 +525,7 @@ class MenuApp extends React.Component {
                   ) : null}
                 </Fragment>
               ))}
-            {userSession && ['A', 'T'].indexOf(rol) !== -1 ? (
+            {userSession && ['A', 'T', 'S'].indexOf(rol) !== -1 ? (
               <>
                 <ListItem button onClick={this.handleOpenDownload}>
                   <ListItemIcon>
@@ -536,11 +537,19 @@ class MenuApp extends React.Component {
 
                 <Collapse in={openDownload} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {CONSTANCES[rol].filter(item => item.constanceType !== 'workAdministrator' || !isMain).map(({ name, userType, constanceType }) => (
+                    {CONSTANCES[rol].filter(
+                      item => ['study',
+                        'studentHistorical',
+                        'academicLoad'
+                      ].indexOf(item.constanceType) === -1
+                        && (item.constanceType !== 'workAdministrator' || !isMain)
+                    ).map(({ name, userType, constanceType }) => (
                       <ListItem
                         button
                         key={name}
-                        onClick={() => constanceType == 'AnnualReport' ? setOpenAnnualReportModal(true) : getConstanceDispatch(userId, userType, constanceType)}
+                        onClick={() => constanceType == 'AnnualReport' ? setOpenAnnualReportModal(true) : getConstanceDispatch(userId, userType, constanceType, rol === 'S' && constanceType == 'inscription' ? {
+                          inscriptionId,
+                        } : undefined)}
                         className={classes.nested}
                       >
                         <ListItemIcon>
@@ -613,6 +622,7 @@ const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
   message: state.snackbarReducer.message,
   inscriptionVisible: !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible || (getSessionUserRol() === 'S' && getSessionUser().student.allow_post_inscription),
+  currentSubjects: state.studentInscriptionReducer.currentEnrolledSubjects.enrolled_subjects,
   schoolPeriods: state.schoolPeriodReducer.list,
 });
 const mD = {
