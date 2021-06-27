@@ -53,6 +53,7 @@ import {
   getSessionUser,
   setHideWelcomeModal,
   getHideWelcomeModal,
+  getSessionIsMainUser
 } from '../../storage/sessionStorage';
 import { tutorialSteps } from './tooltips';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
@@ -358,7 +359,7 @@ class MenuApp extends React.Component {
     const rol = getSessionUserRol();
     const userSession = getSessionUser();
     const userId = userSession ? userSession[USER_INSTANCE[rol]].id : null;
-
+    const isMain = getSessionIsMainUser() === 'true';
     const setOpenAnnualReportModal = (val) => {
       this.setState({ openAnnualReportModal: val });
     }
@@ -535,7 +536,7 @@ class MenuApp extends React.Component {
 
                 <Collapse in={openDownload} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {CONSTANCES[rol].map(({ name, userType, constanceType }) => (
+                    {CONSTANCES[rol].filter(item => item.constanceType !== 'workAdministrator' || !isMain).map(({ name, userType, constanceType }) => (
                       <ListItem
                         button
                         key={name}

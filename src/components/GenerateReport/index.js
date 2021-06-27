@@ -33,7 +33,7 @@ function GenerateReport({
   classes: { reportContainer, paper, formControl, rangeContent },
   schoolPeriods,
   getReport,
-  openModal, 
+  openModal,
   setOpenModal
 }) {
   const [rangeReport, setRangeReport] = React.useState({ initial: '', final: '' });
@@ -45,9 +45,6 @@ function GenerateReport({
     } else {
       setRangeReport({ ...rangeReport, final: event.target.value });
     }
-  };
-  const handleOpen = () => {
-    setOpenModal(true);
   };
 
   const handleClose = () => {
