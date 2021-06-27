@@ -94,7 +94,7 @@ class StudentInscriptions extends Component {
               },
               {
                 icon: 'archive',
-                tooltip: 'Constancia de inscripción',
+                tooltip: 'Planilla de inscripción',
                 onClick: (event, rowData) => {
                   getConstance(studentId, 'student', 'inscription', {
                     inscriptionId: rowData.inscriptionId,

@@ -174,11 +174,9 @@ class SchoolPeriodDetail extends Component {
                       label: 'Profesor',
                       options: teachers.map((teacher) => {
                         return {
-                          key: `${teacher.first_name} ${
-                            teacher.second_name ? teacher.second_name : ''
-                          } ${teacher.first_surname} ${
-                            teacher.second_surname ? teacher.second_surname : ''
-                          }`,
+                          key: `${teacher.first_name} ${teacher.second_name ? teacher.second_name : ''
+                            } ${teacher.first_surname} ${teacher.second_surname ? teacher.second_surname : ''
+                            }`,
                           value: teacher.teacher.id,
                         };
                       }),
@@ -257,6 +255,8 @@ class SchoolPeriodDetail extends Component {
                       startHour: '00:00:00',
                     },
                   ],
+                  startDate: moment().format('YYYY-MM-DD'),
+                  endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
                 })
               }
             >
@@ -613,28 +613,30 @@ SchoolPeriodDetailWrapper = connect(
         : 0,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map((subj) => ({
-            subjectId: subj.subject_id,
-            teacherId: subj.teacher_id,
-            modality: subj.modality,
-            startDate: subj.start_date,
-            endDate: subj.end_date,
-            limit: subj.limit,
-            duty: subj.duty,
-            schedules: subj.schedules
-              ? subj.schedules.map((sche) => ({
-                  schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
-                  day: sche.day,
-                  startHour: sche.start_hour,
-                  endHour: sche.end_hour,
-                  classroom: sche.classroom,
-                }))
-              : [{}],
-          }))
+          subjectId: subj.subject_id,
+          teacherId: subj.teacher_id,
+          modality: subj.modality,
+          startDate: subj.start_date,
+          endDate: subj.end_date,
+          limit: subj.limit,
+          duty: subj.duty,
+          schedules: subj.schedules
+            ? subj.schedules.map((sche) => ({
+              schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
+              day: sche.day,
+              startHour: sche.start_hour,
+              endHour: sche.end_hour,
+              classroom: sche.classroom,
+            }))
+            : [{}],
+        }))
         : [
-            {
-              schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
-            },
-          ],
+          {
+            schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
+            startDate: moment().format('YYYY-MM-DD'),
+            endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+          },
+        ],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),

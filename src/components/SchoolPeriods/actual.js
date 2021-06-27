@@ -186,6 +186,10 @@ class SchoolPeriodActual extends Component {
               localization={{
                 header: {
                   actions: 'Acciones',
+
+                },
+                body: {
+                  emptyDataSourceMessage: 'No hay registro de asignaturas',
                 },
               }}
               actions={[

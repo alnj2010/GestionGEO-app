@@ -43,7 +43,7 @@ function RenderFields(props) {
             item
             xs={movil}
             sm={totalFields > 1 ? desktop[index] : 12}
-            style={{ paddingTop: 16, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            style={{ paddingTop: 16, display: 'flex', justifyContent: input.tooltipText && 'center', alignItems: input.tooltipText && 'center' }}
 
           >
             <Select {...input} />
