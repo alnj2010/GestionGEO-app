@@ -44,6 +44,10 @@ import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
 import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod, getList, cleanGetList } from '../../actions/schoolPeriod';
 import { getReport } from '../../actions/admin';
+import {
+  getCurrentEnrolledSubjects,
+  cleanGetCurrentEnrolledSubjects,
+} from '../../actions/studentInscription';
 
 import {
   removeSessionGeoToken,
@@ -53,7 +57,8 @@ import {
   getSessionUser,
   setHideWelcomeModal,
   getHideWelcomeModal,
-  getSessionIsMainUser
+  getSessionIsMainUser,
+  getSessionStudentId
 } from '../../storage/sessionStorage';
 import { tutorialSteps } from './tooltips';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
@@ -251,21 +256,26 @@ class MenuApp extends React.Component {
   };
 
   componentDidMount = () => {
-    const { findCurrentSchoolPeriodDispatch, getListSchoolPeriodDispatch } = this.props;
+    const { findCurrentSchoolPeriodDispatch, getListSchoolPeriodDispatch, getCurrentEnrolledSubjectsDispatch } = this.props;
 
     const rol = getSessionUserRol();
 
     if (rol === 'S' || rol === 'T') {
       findCurrentSchoolPeriodDispatch();
+      if (rol === 'S') {
+        const id = getSessionStudentId();
+        getCurrentEnrolledSubjectsDispatch(id);
+      }
     } else if (rol === 'A') {
       getListSchoolPeriodDispatch();
     }
   };
 
   componentWillUnmount = () => {
-    const { cleanSelectedSchoolPeriodDispatch, cleanGetListSchoolPeriodDispatch } = this.props;
+    const { cleanSelectedSchoolPeriodDispatch, cleanGetListSchoolPeriodDispatch, cleanGetCurrentEnrolledSubjectsDispatch } = this.props;
     cleanSelectedSchoolPeriodDispatch();
     cleanGetListSchoolPeriodDispatch();
+    cleanGetCurrentEnrolledSubjectsDispatch();
   };
 
   componentWillMount = () => {
@@ -525,7 +535,7 @@ class MenuApp extends React.Component {
                   ) : null}
                 </Fragment>
               ))}
-            {userSession && ['A', 'T', 'S'].indexOf(rol) !== -1 ? (
+            {userSession && ['A', 'T', inscriptionId ? 'S' : undefined].indexOf(rol) !== -1 ? (
               <>
                 <ListItem button onClick={this.handleOpenDownload}>
                   <ListItemIcon>
@@ -614,6 +624,8 @@ MenuApp.propTypes = {
   inscriptionVisible: PropTypes.bool,
   findCurrentSchoolPeriodDispatch: PropTypes.func.isRequired,
   cleanSelectedSchoolPeriodDispatch: PropTypes.func.isRequired,
+  getCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
+  cleanGetCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
 };
 MenuApp.defaultProps = {
   inscriptionVisible: false,
@@ -631,7 +643,10 @@ const mD = {
   cleanSelectedSchoolPeriodDispatch: cleanSelectedSchoolPeriod,
   getListSchoolPeriodDispatch: getList,
   cleanGetListSchoolPeriodDispatch: cleanGetList,
-  getReportDispatch: getReport
+  getReportDispatch: getReport,
+  getCurrentEnrolledSubjectsDispatch: getCurrentEnrolledSubjects,
+  cleanGetCurrentEnrolledSubjectsDispatch: cleanGetCurrentEnrolledSubjects,
+
 };
 const MenuAppWrapper = withStyles(styles, { withTheme: true })(connect(mS, mD)(MenuApp));
 export default MenuAppWrapper;

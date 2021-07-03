@@ -17,6 +17,10 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
+      dispatch({
+        type: ACTIONS.CURRENT_ENROLLED_SUBJECTS,
+        payload: { currentEnrolledSubjects: { enrolled_subjects: {} } },
+      });
       throw error;
     });
 };
