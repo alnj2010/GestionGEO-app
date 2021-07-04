@@ -106,7 +106,7 @@ class AdminDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'Cedula',
+                      label: 'cédula',
                       field: 'identification',
                       id: 'identification',
                       type: 'text',
@@ -295,7 +295,7 @@ const adminValidation = (values) => {
     errors.firstSurname = 'El Apellido no debe contener numeros';
 
   if (!values.identification) {
-    errors.identification = 'Cedula es requerido';
+    errors.identification = 'cédula es requerido';
   }
 
   if (!values.email) {

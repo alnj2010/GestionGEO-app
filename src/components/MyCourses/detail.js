@@ -74,7 +74,7 @@ function SchoolProgramDetail({
           columns={[
             { title: '#', field: 'id', hidden: true },
             {
-              title: 'Cedula',
+              title: 'cédula',
               field: 'identification',
               editable: 'never',
             },

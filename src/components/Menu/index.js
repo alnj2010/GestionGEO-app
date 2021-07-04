@@ -44,6 +44,7 @@ import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
 import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod, getList, cleanGetList } from '../../actions/schoolPeriod';
 import { getReport } from '../../actions/admin';
+import Footer from '../Footer'
 import {
   getCurrentEnrolledSubjects,
   cleanGetCurrentEnrolledSubjects,
@@ -133,6 +134,10 @@ const styles = (theme) => ({
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
     maxWidth: '94%',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    justifyContent: 'space-between'
   },
   itemText: {
     textTransform: 'capitalize',
@@ -575,10 +580,13 @@ class MenuApp extends React.Component {
           </List>
         </Drawer>
         <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <CustomizedSnackbar />
-          {children}
-          {this.validateToken()}
+          <section>
+            <div className={classes.toolbar} />
+            <CustomizedSnackbar />
+            {children}
+            {this.validateToken()}
+          </section>
+          <Footer></Footer>
         </main>
         {tutorialSteps[rol] && (
           <WelcomeModal
