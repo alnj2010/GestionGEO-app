@@ -40,6 +40,7 @@ class AdminsList extends Component {
             rol: admin.administrator
               ? reverseJson(COORDINATOR_ROL)[admin.administrator.rol]
               : false,
+            isMain: admin.administrator.principal
           };
         })
         .filter((admin) => parseInt(id, 10) !== parseInt(admin.id, 10));
@@ -75,6 +76,7 @@ class AdminsList extends Component {
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
+              { title: '#', field: 'isMain', hidden: true },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
               { title: 'Email', field: 'email' },
@@ -120,7 +122,7 @@ class AdminsList extends Component {
                       />
                     );
                   case 'constances':
-                    return (
+                    return (!data.isMain &&
                       <div>
                         <FormControl>
                           <InputLabel
@@ -138,7 +140,7 @@ class AdminsList extends Component {
                               getConstance(data.id, USER_INSTANCE.A, event.target.value)
                             }
                           >
-                            {CONSTANCES.A.filter(({constanceType})=>constanceType!=='AnnualReport'
+                            {CONSTANCES.A.filter(({ constanceType }) => constanceType !== 'AnnualReport' && (constanceType !== 'workAdministrator' || !data.isMain)
                             ).map(({ name, constanceType }) => (
                               <MenuItem key={constanceType} value={constanceType}>
                                 {name}

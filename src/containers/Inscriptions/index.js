@@ -55,18 +55,18 @@ class InscriptionContainer extends Component {
       final_works:
         enrolledFinalWorks && enrolledFinalWorks.length
           ? enrolledFinalWorks.map((item) => ({
-              title: item.title,
-              subject_id: item.id,
-              project_id: item.projectId,
-              advisors: [{ teacher_id: item.advisors }],
-            }))
+            title: item.title,
+            subject_id: item.id,
+            project_id: item.projectId,
+            advisors: [{ teacher_id: item.advisors }],
+          }))
           : undefined,
       projects:
         enrolledProjects && enrolledProjects.length
           ? enrolledProjects.map((item) => ({
-              title: item.title,
-              subject_id: item.id,
-            }))
+            title: item.title,
+            subject_id: item.id,
+          }))
           : undefined,
     };
     inscriptionDispatch(payload).then((res) => {

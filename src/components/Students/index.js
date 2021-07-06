@@ -75,7 +75,7 @@ class StudentsList extends Component {
               },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
-              { title: 'Cedula', field: 'identification' },
+              { title: 'cédula', field: 'identification' },
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(students)}

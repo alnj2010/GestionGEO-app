@@ -24,8 +24,8 @@ export const getCoursesList = () => async (dispatch) => {
 export const cleanGetCoursesList = () => async (dispatch) => {
   dispatch({ type: ACTIONS.LIST, payload: { list: [] } });
 };
-export const getEnrolledStudents = (id) => async (dispatch) => {
-  return MyCourse.getEnrolledStudents(getSessionTeacherId(), id)
+export const getEnrolledStudents = (id, teacherId) => async (dispatch) => {
+  return MyCourse.getEnrolledStudents(teacherId, id)
     .then((response) => {
       dispatch({
         type: ACTIONS.ENROLLED_STUDENTS,

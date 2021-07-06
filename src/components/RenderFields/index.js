@@ -8,6 +8,8 @@ import Select from './Fields/Select';
 import Phone from './Fields/Phone';
 import Number from './Fields/Number';
 import Switch from './Fields/Switch';
+import { Tooltip } from '@material-ui/core';
+import Help from '@material-ui/icons/Help';
 
 function RenderFields(props) {
   const { children, lineal } = props;
@@ -41,9 +43,14 @@ function RenderFields(props) {
             item
             xs={movil}
             sm={totalFields > 1 ? desktop[index] : 12}
-            style={{ paddingTop: 16 }}
+            style={{ paddingTop: 16, display: 'flex', justifyContent: input.tooltipText && 'center', alignItems: input.tooltipText && 'center' }}
+
           >
             <Select {...input} />
+            {input.tooltipText &&
+              <Tooltip title={input.tooltipText} aria-label="Add" placement="right">
+                <Help />
+              </Tooltip>}
           </Grid>
         );
       case 'phone':

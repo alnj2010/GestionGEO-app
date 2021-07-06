@@ -108,7 +108,7 @@ class TeacherDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'Cedula',
+                      label: 'cédula',
                       field: 'identification',
                       id: 'identification',
                       type: 'text',
@@ -310,7 +310,7 @@ TeacherDetail.defaultProps = {
 const teacherValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'Cedula es requerida';
+    errors.identification = 'cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';

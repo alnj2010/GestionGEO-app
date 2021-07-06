@@ -70,6 +70,7 @@ export default withStyles(styles)(
   memo(
     SubjectTable,
     (prevProps, nextProps) =>
+      prevProps.isLoading === nextProps.isLoading &&
       prevProps.subjects.length === nextProps.subjects.length &&
       prevProps.message === nextProps.message
   )

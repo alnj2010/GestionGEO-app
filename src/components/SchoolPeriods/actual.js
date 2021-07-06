@@ -3,15 +3,14 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, Paper, CircularProgress } from '@material-ui/core';
 import * as moment from 'moment';
+import MaterialTable from 'material-table';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
-import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import { show } from '../../actions/dialog';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const localizer = momentLocalizer(moment);
 
 const styles = () => ({
   pdf: {
@@ -57,45 +56,21 @@ class SchoolPeriodActual extends Component {
       showDispatch(action);
     });
   };
-
-  transformData = () => {
-    const { subjects } = this.props;
-    let arr = [];
-
+  transformData = (subjects) => {
     if (subjects) {
-      subjects.forEach((subject, index) => {
-        const aux = subject.schedules.map((schedule, index2) => {
-          // eslint-disable-next-line no-underscore-dangle
-          let startTime = moment()
-            .isoWeekday(parseInt(schedule.day, 10))
-            .hours(parseInt(schedule.start_hour.split(':')[0], 10))
-            .minutes(parseInt(schedule.start_hour.split(':')[1], 10))._d;
-
-          // eslint-disable-next-line no-underscore-dangle
-          let endTime = moment()
-            .isoWeekday(parseInt(schedule.day, 10))
-            .hours(parseInt(schedule.end_hour.split(':')[0], 10))
-            .minutes(schedule.end_hour.split(':')[1])._d;
-          if (moment().day() === 0) {
-            // eslint-disable-next-line no-underscore-dangle
-            startTime = moment(startTime).add(7, 'day')._d;
-            // eslint-disable-next-line no-underscore-dangle
-            endTime = moment(endTime).add(7, 'day')._d;
-          }
-
-          return {
-            id: parseInt(`${index}${index2}`, 10),
-            title: subject.subject.name,
-            start: startTime,
-            end: endTime,
-          };
-        });
-        arr = arr.concat(aux);
-      });
-      return arr;
+      return subjects.map(item => ({
+        id: item.id,
+        subjectId: item.subject_id,
+        teacherId: item.teacher_id,
+        courseCode: item.subject.code,
+        courseName: item.subject.name,
+        uc: item.subject.uc,
+        teacherName: `${item.teacher.user.first_name} ${item.teacher.user.first_surname}`,
+        limit: item.limit,
+      }))
     }
-    return [{}];
-  };
+    return [];
+  }
 
   render = () => {
     const {
@@ -111,16 +86,13 @@ class SchoolPeriodActual extends Component {
       submitDispatch,
       loading,
       endDate,
+      subjects,
+      history
     } = this.props;
-    const allViews = Object.keys(Views).map((k) => Views[k]);
     const { func } = this.state;
     const final = moment(endDate);
     const today = moment();
     const finishedPeriod = today > final;
-    const minTime = new Date();
-    minTime.setHours(7, 0, 0);
-    const maxTime = new Date();
-    maxTime.setHours(19, 0, 0);
     return codSchoolPeriod ? (
       <Form onSubmit={handleSubmit(saveSchoolPeriod)}>
         <Grid container>
@@ -195,17 +167,44 @@ class SchoolPeriodActual extends Component {
             </Grid>
           </Grid>
         </Grid>
-        <Calendar
-          className={classes.calendar}
-          events={this.transformData()}
-          defaultView={Views.WORK_WEEK}
-          views={allViews}
-          toolbar={false}
-          culture="es"
-          max={maxTime}
-          min={minTime}
-          localizer={localizer}
-        />
+        <Grid container justify="center">
+          <Grid item xs={12} style={{ marginTop: '30px' }}>
+            <MaterialTable
+              title={'Asignaturas en curso'}
+              columns={[
+                { title: '#', field: 'id', hidden: true },
+                { title: '#', field: 'subjectId', hidden: true },
+                { title: '#', field: 'teacherId', hidden: true },
+                { title: 'Codigo', field: 'courseCode' },
+                { title: 'Asignatura', field: 'courseName' },
+                { title: 'Unidades de Credito', field: 'uc' },
+                { title: 'profesor', field: 'teacherName' },
+                { title: 'UC', field: 'uc' },
+                { title: 'limite', field: 'limit' },
+              ]}
+              data={this.transformData(subjects)}
+              localization={{
+                header: {
+                  actions: 'Acciones',
+
+                },
+                body: {
+                  emptyDataSourceMessage: 'No hay registro de asignaturas',
+                },
+              }}
+              actions={[
+                {
+                  icon: 'visibility',
+                  tooltip: 'Ver detalles',
+                  onClick: (event, rowData) => {
+                    history.push(`/periodo-semestral/en-curso/${rowData.subjectId}/${rowData.teacherId}/${rowData.id}`);
+                  },
+                },
+
+              ]}
+            />
+          </Grid>
+        </Grid>
         <Dialog handleAgree={func} />
       </Form>
     ) : (

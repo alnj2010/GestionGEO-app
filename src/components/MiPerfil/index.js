@@ -96,7 +96,7 @@ class MiPerfil extends Component {
                     disabled: rol !== 'A',
                   },
                   {
-                    label: 'Cedula',
+                    label: 'cédula',
                     field: 'identification',
                     id: 'identification',
                     type: 'text',
@@ -210,7 +210,7 @@ MiPerfil.propTypes = {
 const studentValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'Cedula es requerida';
+    errors.identification = 'cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';

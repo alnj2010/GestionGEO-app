@@ -215,7 +215,7 @@ class StudentDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'Cedula',
+                      label: 'cédula',
                       field: 'identification',
                       id: 'identification',
                       type: 'text',
@@ -658,7 +658,7 @@ StudentDetail.defaultProps = {
 const studentValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'Cedula es requerida';
+    errors.identification = 'cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';

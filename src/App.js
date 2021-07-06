@@ -123,6 +123,7 @@ function App() {
                 <Route exact path="/usuarios/profesores/modificar/:id" component={TeacherDetail} />
                 <Route exact path="/usuarios/profesores/agregar" component={TeacherDetail} />
 
+                <Route exact path="/periodo-semestral/en-curso/:subjectId/:teacherId/:id" component={CourseDetail} />
                 <Route exact path="/periodo-semestral/en-curso" component={SchoolPeriodActual} />
                 <Route exact path="/periodo-semestral/periodos" component={SchoolPeriodsList} />
                 <Route

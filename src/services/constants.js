@@ -34,7 +34,7 @@ export const CONSTANCES = {
   ],
   S: [
     { name: 'Constancia estudio', userType: 'student', constanceType: 'study' },
-    /* { name: 'Constancia inscripción', userType: 'student', constanceType: 'inscription' }, */
+    { name: 'Planilla inscripción', userType: 'student', constanceType: 'inscription' },
     { name: 'Historial Academico', userType: 'student', constanceType: 'studentHistorical' },
     { name: 'Carga Academica', userType: 'student', constanceType: 'academicLoad' },
   ],
