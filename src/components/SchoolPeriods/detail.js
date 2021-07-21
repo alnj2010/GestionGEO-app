@@ -9,6 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Visibility from '@material-ui/icons/Visibility';
 import { WEEK_DAYS, SUBJECT_PERIOD_MODALITY } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 import { show } from '../../actions/dialog';
@@ -140,12 +141,11 @@ class SchoolPeriodDetail extends Component {
   };
 
   renderSubjects = ({ fields }) => {
-    const { teachers, classes, subjects, subjectsSelected } = this.props;
+    const { teachers, classes, subjects, subjectsSelected, history } = this.props;
     return (
       <>
         {fields.map((subject, index) => {
           let distributionItems = [2, 2, 2, 1, 1, 2, 2];
-
           if (subjectsSelected[index].modality === SUBJECT_PERIOD_MODALITY.REGULAR) {
             distributionItems = [3, 3, 2, 2, 2];
           }
@@ -174,9 +174,11 @@ class SchoolPeriodDetail extends Component {
                       label: 'Profesor',
                       options: teachers.map((teacher) => {
                         return {
-                          key: `${teacher.first_name} ${teacher.second_name ? teacher.second_name : ''
-                            } ${teacher.first_surname} ${teacher.second_surname ? teacher.second_surname : ''
-                            }`,
+                          key: `${teacher.first_name} ${
+                            teacher.second_name ? teacher.second_name : ''
+                          } ${teacher.first_surname} ${
+                            teacher.second_surname ? teacher.second_surname : ''
+                          }`,
                           value: teacher.teacher.id,
                         };
                       }),
@@ -233,6 +235,19 @@ class SchoolPeriodDetail extends Component {
                 >
                   <DeleteIcon />
                 </IconButton>
+                {subjectsSelected[index].subjectId && (
+                  <IconButton
+                    aria-label="ver"
+                    color="primary"
+                    onClick={() =>
+                      history.push(
+                        `/periodo-semestral/en-curso/${subjectsSelected[index].subjectId}/${subjectsSelected[index].teacherId}/${subjectsSelected[index].id}`
+                      )
+                    }
+                  >
+                    <Visibility />
+                  </IconButton>
+                )}
               </Grid>
               <Grid item xs={10}>
                 <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
@@ -613,30 +628,31 @@ SchoolPeriodDetailWrapper = connect(
         : 0,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map((subj) => ({
-          subjectId: subj.subject_id,
-          teacherId: subj.teacher_id,
-          modality: subj.modality,
-          startDate: subj.start_date,
-          endDate: subj.end_date,
-          limit: subj.limit,
-          duty: subj.duty,
-          schedules: subj.schedules
-            ? subj.schedules.map((sche) => ({
-              schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
-              day: sche.day,
-              startHour: sche.start_hour,
-              endHour: sche.end_hour,
-              classroom: sche.classroom,
-            }))
-            : [{}],
-        }))
+            id: subj.id,
+            subjectId: subj.subject_id,
+            teacherId: subj.teacher_id,
+            modality: subj.modality,
+            startDate: subj.start_date,
+            endDate: subj.end_date,
+            limit: subj.limit,
+            duty: subj.duty,
+            schedules: subj.schedules
+              ? subj.schedules.map((sche) => ({
+                  schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
+                  day: sche.day,
+                  startHour: sche.start_hour,
+                  endHour: sche.end_hour,
+                  classroom: sche.classroom,
+                }))
+              : [{}],
+          }))
         : [
-          {
-            schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
-            startDate: moment().format('YYYY-MM-DD'),
-            endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
-          },
-        ],
+            {
+              schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
+              startDate: moment().format('YYYY-MM-DD'),
+              endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+            },
+          ],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),
