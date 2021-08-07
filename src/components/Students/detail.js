@@ -482,7 +482,9 @@ class StudentDetail extends Component {
                                     getConstance(data.id, USER_INSTANCE.S, event.target.value)
                                   }
                                 >
-                                  {CONSTANCES.S.map(({ name, constanceType }) => (
+                                  {CONSTANCES.S.filter(
+                                    (item) => item.constanceType !== 'inscription'
+                                  ).map(({ name, constanceType }) => (
                                     <MenuItem key={constanceType} value={constanceType}>
                                       {name}
                                     </MenuItem>

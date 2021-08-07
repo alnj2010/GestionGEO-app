@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, CircularProgress } from '@material-ui/core';
-import { Grid, Button } from '@material-ui/core';
+import { withStyles, CircularProgress, Grid, Button } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Paper from '@material-ui/core/Paper';
 
-
-
 import MaterialTable from 'material-table';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
+import { reverseJson } from '../../helpers/index';
+import { SUBJECT_STATE } from '../../services/constants';
 
 const styles = () => ({
   form: {
@@ -34,7 +33,7 @@ function SchoolProgramDetail({
   loadNotes,
   subject,
   isLoading,
-  goBack
+  goBack,
 }) {
   const [studentsData, setStudentsData] = useState([]);
   useEffect(() => {
@@ -47,7 +46,7 @@ function SchoolProgramDetail({
             name: student.data_student.student.user.first_name,
             surname: student.data_student.student.user.first_surname,
             qualification: student.qualification ? student.qualification : 'sin calificar',
-            status: student.data_student.status,
+            status: reverseJson(SUBJECT_STATE)[student.status],
           };
         })
       );
@@ -58,14 +57,9 @@ function SchoolProgramDetail({
     <Grid container>
       <Grid container item xs={12} justify="flex-end">
         <Grid item xs={1}>
-          <Button
-            variant="contained"
-            onClick={goBack}
-            style={{ width: '100%' }}
-          >
-            <ArrowBack></ArrowBack>
+          <Button variant="contained" onClick={goBack} style={{ width: '100%' }}>
+            <ArrowBack />
           </Button>
-
         </Grid>
       </Grid>
       <Grid item xs={12}>
