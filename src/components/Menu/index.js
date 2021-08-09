@@ -585,7 +585,7 @@ class MenuApp extends React.Component {
                   ) : null}
                 </Fragment>
               ))}
-            {userSession && ['A', 'T', inscriptionId ? 'S' : undefined].indexOf(rol) !== -1 ? (
+            {userSession && ['A', inscriptionId ? 'S' : undefined].indexOf(rol) !== -1 ? (
               <>
                 <ListItem button onClick={this.handleOpenDownload}>
                   <ListItemIcon>
