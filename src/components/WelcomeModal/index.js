@@ -8,6 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import Close from '@material-ui/icons/Close';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
@@ -45,6 +46,13 @@ const styles = (theme) => ({
     },
   },
   containerContent: { padding: 30, maxHeight: 316, overflow: 'scroll' },
+  closeDialog: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 18,
+    cursor: 'pointer',
+  },
 });
 
 const stylesTutorialSteps = (theme) => ({
@@ -87,6 +95,9 @@ function WelcomeModal({
       fullScreen={fullScreen}
       maxWidth="lg"
     >
+      <div className={classes.closeDialog}>
+        <Close onClick={handleCloseWelcomeModal} />
+      </div>
       <DialogContent className={classes.dialog}>
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
