@@ -116,6 +116,9 @@ class SubjectsList extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay asignaturas disponibles',
+              },
             }}
             isLoading={isLoading}
           />

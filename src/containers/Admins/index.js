@@ -16,7 +16,9 @@ class AdminsListContainer extends Component {
 
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
-    getListDispatch().then(() => this.setState({ isLoading: false }));
+    getListDispatch()
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     defineDispatch('administrador');
   };
 
@@ -37,11 +39,6 @@ class AdminsListContainer extends Component {
     return (
       <AdminsList
         admins={admins}
-        localization={{
-          header: {
-            actions: 'Acciones',
-          },
-        }}
         getConstance={getConstanceDispatch}
         isLoading={isLoading}
         history={history}

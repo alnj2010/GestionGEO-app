@@ -15,7 +15,9 @@ class SubjectsListContainer extends Component {
 
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
-    getListDispatch().then(() => this.setState({ isLoading: false }));
+    getListDispatch()
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     defineDispatch('asignatura');
   };
 
@@ -35,11 +37,6 @@ class SubjectsListContainer extends Component {
     return (
       <SubjectsList
         subjects={subjects}
-        localization={{
-          header: {
-            actions: 'Acciones',
-          },
-        }}
         isLoading={isLoading}
         history={history}
         handleSubjectDetail={this.handleSubjectDetail}

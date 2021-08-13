@@ -29,7 +29,9 @@ class StudentInscriptionsContainer extends Component {
       },
       defineDispatch,
     } = this.props;
-    getInscribedSchoolPeriodsDispatch(studentId).then(() => this.setState({ isLoading: false }));
+    getInscribedSchoolPeriodsDispatch(studentId)
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     findStudentByIdDispatch(userId);
     defineDispatch('inscripcion');
   };
@@ -82,11 +84,6 @@ class StudentInscriptionsContainer extends Component {
         studentId={studentId}
         userId={userId}
         getConstance={getConstanceDispatch}
-        localization={{
-          header: {
-            actions: 'Acciones',
-          },
-        }}
         isLoading={isLoading}
         history={history}
         fullname={fullname}
