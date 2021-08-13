@@ -181,6 +181,9 @@ class TeachersList extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay profesores disponibles',
+              },
             }}
             isLoading={isLoading}
           />

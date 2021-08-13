@@ -17,7 +17,9 @@ class TeachersListContainer extends Component {
 
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
-    getListDispatch().then(() => this.setState({ isLoading: false }));
+    getListDispatch()
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     defineDispatch('profesor');
   };
 
@@ -41,6 +43,9 @@ class TeachersListContainer extends Component {
         localization={{
           header: {
             actions: 'Acciones',
+          },
+          body: {
+            emptyDataSourceMessage: isLoading ? '' : 'No hay profesores disponibles',
           },
         }}
         isLoading={isLoading}

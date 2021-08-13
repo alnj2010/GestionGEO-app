@@ -40,7 +40,7 @@ class AdminsList extends Component {
             rol: admin.administrator
               ? reverseJson(COORDINATOR_ROL)[admin.administrator.rol]
               : false,
-            isMain: admin.administrator.principal
+            isMain: admin.administrator.principal,
           };
         })
         .filter((admin) => parseInt(id, 10) !== parseInt(admin.id, 10));
@@ -122,33 +122,38 @@ class AdminsList extends Component {
                       />
                     );
                   case 'constances':
-                    return (!data.isMain &&
-                      <div>
-                        <FormControl>
-                          <InputLabel
-                            htmlFor={`select-contance-${data.id}-label`}
-                            style={{ top: 0, transform: 'none' }}
-                          >
-                            <Download />
-                          </InputLabel>
-                          <Select
-                            label={`select-contance-${data.id}-label`}
-                            id={`select-contance-${data.id}`}
-                            input={<InputBase />}
-                            value=""
-                            onChange={(event) =>
-                              getConstance(data.id, USER_INSTANCE.A, event.target.value)
-                            }
-                          >
-                            {CONSTANCES.A.filter(({ constanceType }) => constanceType !== 'AnnualReport' && (constanceType !== 'workAdministrator' || !data.isMain)
-                            ).map(({ name, constanceType }) => (
-                              <MenuItem key={constanceType} value={constanceType}>
-                                {name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </div>
+                    return (
+                      !data.isMain && (
+                        <div>
+                          <FormControl>
+                            <InputLabel
+                              htmlFor={`select-contance-${data.id}-label`}
+                              style={{ top: 0, transform: 'none' }}
+                            >
+                              <Download />
+                            </InputLabel>
+                            <Select
+                              label={`select-contance-${data.id}-label`}
+                              id={`select-contance-${data.id}`}
+                              input={<InputBase />}
+                              value=""
+                              onChange={(event) =>
+                                getConstance(data.id, USER_INSTANCE.A, event.target.value)
+                              }
+                            >
+                              {CONSTANCES.A.filter(
+                                ({ constanceType }) =>
+                                  constanceType !== 'AnnualReport' &&
+                                  (constanceType !== 'workAdministrator' || !data.isMain)
+                              ).map(({ name, constanceType }) => (
+                                <MenuItem key={constanceType} value={constanceType}>
+                                  {name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </div>
+                      )
                     );
                   case 'delete':
                     return (
@@ -199,7 +204,7 @@ class AdminsList extends Component {
                 actions: 'Acciones',
               },
               body: {
-                emptyDataSourceMessage: 'Cargando',
+                emptyDataSourceMessage: isLoading ? '' : 'No hay profesores disponibles',
               },
             }}
             isLoading={isLoading}

@@ -15,7 +15,9 @@ class StudentsListContainer extends Component {
 
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
-    getListDispatch().then(() => this.setState({ isLoading: false }));
+    getListDispatch()
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     defineDispatch('estudiante');
   };
 
@@ -35,11 +37,6 @@ class StudentsListContainer extends Component {
     return (
       <StudentsList
         students={students}
-        localization={{
-          header: {
-            actions: 'Acciones',
-          },
-        }}
         isLoading={isLoading}
         history={history}
         handleStudentDetail={this.handleStudentDetail}

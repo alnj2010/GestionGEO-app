@@ -117,6 +117,9 @@ class SchoolPeriodsList extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay periodos escolares disponibles',
+              },
             }}
             isLoading={isLoading}
           />

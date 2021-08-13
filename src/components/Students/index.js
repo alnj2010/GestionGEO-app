@@ -132,6 +132,9 @@ class StudentsList extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay estudiantes disponibles',
+              },
             }}
             isLoading={isLoading}
           />

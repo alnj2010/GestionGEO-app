@@ -118,6 +118,9 @@ class SchoolProgramsList extends Component {
               header: {
                 actions: 'Acciones',
               },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay programas escolares disponibles',
+              },
             }}
             isLoading={isLoading}
           />

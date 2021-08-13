@@ -15,7 +15,9 @@ class SchoolPeriodsListContainer extends Component {
 
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
-    getListDispatch().then(() => this.setState({ isLoading: false }));
+    getListDispatch()
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     defineDispatch('periodo semestral');
   };
 
@@ -36,11 +38,6 @@ class SchoolPeriodsListContainer extends Component {
     return (
       <SchoolPeriodsList
         schoolPeriods={schoolPeriods}
-        localization={{
-          header: {
-            actions: 'Acciones',
-          },
-        }}
         isLoading={isLoading}
         history={history}
         handleSchoolPeriodDetail={this.handleSchoolPeriodDetail}
