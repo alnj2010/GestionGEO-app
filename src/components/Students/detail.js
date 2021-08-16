@@ -295,7 +295,7 @@ class StudentDetail extends Component {
                       id: 'typeIncome',
                       type: !userId && rol === 'A' ? 'text' : 'hidden',
                       tooltipText:
-                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Opsu',
+                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Evaluación por comité',
                     },
                     {
                       label: 'Creditos otorgados',

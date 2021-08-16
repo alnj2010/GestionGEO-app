@@ -92,9 +92,8 @@ class StudentSchoolProgram extends Component {
             <h3>
               Estudiante: {selectedStudent.first_surname} {selectedStudent.first_name} <br />
               {schoolProgramId
-                ? `Programa Academico: ${
-                    schoolProgram ? schoolProgram.school_program.school_program_name : ''
-                  }`
+                ? `Programa Academico: ${schoolProgram ? schoolProgram.school_program.school_program_name : ''
+                }`
                 : `Agregar programa Academico`}
             </h3>
             <hr />
@@ -139,7 +138,7 @@ class StudentSchoolProgram extends Component {
                       id: 'typeIncome',
                       type: 'text',
                       tooltipText:
-                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Opsu',
+                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Evaluación por comité',
                     },
                     {
                       label: 'Creditos otorgados',
@@ -428,16 +427,16 @@ StudentSchoolProgramWrapper = connect(
       testPeriod: state.studentReducer.selectedSchoolProgram
         ? !!state.studentReducer.selectedSchoolProgram.test_period
         : false,
-      allowPostInscription:state.studentReducer.selectedSchoolProgram
-      ? !!state.studentReducer.selectedSchoolProgram.allow_post_inscription
-      : false,
+      allowPostInscription: state.studentReducer.selectedSchoolProgram
+        ? !!state.studentReducer.selectedSchoolProgram.allow_post_inscription
+        : false,
       equivalences:
         state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.equivalence
+          !!state.studentReducer.selectedSchoolProgram.equivalence
           ? state.studentReducer.selectedSchoolProgram.equivalence.map((subj) => ({
-              subject_id: subj.subject_id,
-              qualification: subj.qualification,
-            }))
+            subject_id: subj.subject_id,
+            qualification: subj.qualification,
+          }))
           : [],
     },
     action: state.dialogReducer.action,
