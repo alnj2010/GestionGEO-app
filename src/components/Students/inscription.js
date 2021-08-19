@@ -218,7 +218,7 @@ class StudentInscription extends Component {
                       id: `amountPaid`,
                       type: 'number',
                       min: 0,
-                      label: 'Cantidad cancelada (bs)',
+                      label: 'Cantidad cancelada ($)',
                       disabled: STUDENT_STATUS.GRADUADO === currentStatus,
                     },
                     {
@@ -405,7 +405,7 @@ class StudentInscription extends Component {
                         {rolledSubjects
                           .reduce((total, item) => total + parseFloat(item.duty), 0.0)
                           .toFixed(2)}{' '}
-                        bs
+                        $
                       </span>{' '}
                     </h4>
                   </div>
