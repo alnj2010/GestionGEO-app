@@ -11,6 +11,7 @@ import miPerfilReducer from './miPerfil';
 import myCourseReducer from './myCourse';
 import schoolPeriodReducer from './schoolPeriod';
 import studentInscriptionReducer from './studentInscription';
+import userToConvertReducer from './userToConvert';
 
 const rootReducer = combineReducers({
   snackbarReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   schoolPeriodReducer,
   miPerfilReducer,
   studentInscriptionReducer,
+  userToConvertReducer,
   form: formReducer,
 });
 

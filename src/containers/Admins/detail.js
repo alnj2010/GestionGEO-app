@@ -8,6 +8,7 @@ import {
   cleanSelectedAdmin,
   saveAdmin,
 } from '../../actions/admin';
+import { cleanUserToConvert, setUserToConvert } from '../../actions/userToConvert';
 import AdminDetail from '../../components/Admins/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import {
@@ -15,6 +16,7 @@ import {
   getSessionIsMainUser,
   removeSessionGeoToken,
 } from '../../storage/sessionStorage';
+
 import { COORDINATOR_ROL } from '../../services/constants';
 
 class AdminDetailContainer extends Component {
@@ -41,9 +43,15 @@ class AdminDetailContainer extends Component {
   }
 
   componentWillUnmount = () => {
-    const { cleanSelectedAdminDispatch, cleanDialogDispatch } = this.props;
+    const {
+      cleanSelectedAdminDispatch,
+      cleanDialogDispatch,
+      cleanUserToConvertDispatch,
+      match,
+    } = this.props;
     cleanSelectedAdminDispatch();
     cleanDialogDispatch();
+    if (!match.params.id) cleanUserToConvertDispatch();
   };
 
   saveAdmin = (values) => {
@@ -85,6 +93,12 @@ class AdminDetailContainer extends Component {
     history.push('/usuarios/administradores');
   };
 
+  convertUserTo = ({ userType, userData }) => {
+    const { history, setUserToConvertDispatch } = this.props;
+    setUserToConvertDispatch(userData);
+    history.push(`/usuarios/${userType}/agregar`);
+  };
+
   handleAdminDelete = () => {
     const { deleteAdminDispatch, history, match } = this.props;
     deleteAdminDispatch(match.params.id).then(() => history.push('/usuarios/administradores'));
@@ -94,6 +108,7 @@ class AdminDetailContainer extends Component {
     const { admin, match } = this.props;
     return (
       <AdminDetail
+        convertUserTo={this.convertUserTo}
         admin={admin}
         saveAdmin={this.saveAdmin}
         goBack={this.goBack}
@@ -126,7 +141,9 @@ AdminDetailContainer.propTypes = {
   deleteAdminDispatch: PropTypes.func.isRequired,
   cleanSelectedAdminDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
+  cleanUserToConvertDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
+  setUserToConvertDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -141,6 +158,8 @@ const mD = {
   defineDispatch: define,
   cleanSelectedAdminDispatch: cleanSelectedAdmin,
   cleanDialogDispatch: cleanDialog,
+  cleanUserToConvertDispatch: cleanUserToConvert,
+  setUserToConvertDispatch: setUserToConvert,
 };
 
 export default connect(mS, mD)(AdminDetailContainer);

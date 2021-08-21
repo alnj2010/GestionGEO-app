@@ -204,7 +204,7 @@ class AdminsList extends Component {
                 actions: 'Acciones',
               },
               body: {
-                emptyDataSourceMessage: isLoading ? '' : 'No hay profesores disponibles',
+                emptyDataSourceMessage: isLoading ? '' : 'No hay administradores disponibles',
               },
             }}
             isLoading={isLoading}
