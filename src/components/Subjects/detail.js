@@ -156,7 +156,7 @@ class SubjectDetail extends Component {
       <Form onSubmit={handleSubmit(saveSubject)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {subjectId ? `Asignatura: ${subject.name || ''}` : 'Nuevo Asignatura'}</h3>
+            <h3> {subjectId ? `Asignatura: ${subject.name || ''}` : 'Nueva Asignatura'}</h3>
             <hr />
           </Grid>
           {!subjectId || subject.id ? (
@@ -184,21 +184,21 @@ class SubjectDetail extends Component {
                       min: 0,
                     },
                     {
-                      label: 'Horas de laboratorio',
+                      label: 'Horas de laboratorio (total por semana)',
                       field: 'laboratoryHours',
                       id: 'laboratoryHours',
                       type: 'number',
                       min: 0,
                     },
                     {
-                      label: 'Horas practica',
+                      label: 'Horas practica (total por semana)',
                       field: 'practicalHours',
                       id: 'practicalHours',
                       type: 'number',
                       min: 0,
                     },
                     {
-                      label: 'Horas teoricas',
+                      label: 'Horas teoricas (total por semana)',
                       field: 'theoreticalHours',
                       id: 'theoreticalHours',
                       type: 'number',
@@ -395,9 +395,9 @@ SubjectDetailWrapper = connect(
         : false,
       schoolPrograms: state.subjectReducer.selectedSubject.school_programs
         ? state.subjectReducer.selectedSubject.school_programs.map((sp) => ({
-            id: sp.id,
-            type: sp.school_program_subject.type,
-          }))
+          id: sp.id,
+          type: sp.school_program_subject.type,
+        }))
         : [{}],
     },
     schoolProgramsSelected: selector(state, 'schoolPrograms'),
