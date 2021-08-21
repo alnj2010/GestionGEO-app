@@ -9,6 +9,7 @@ import {
   saveTeacher,
 } from '../../actions/teacher';
 import { getList } from '../../actions/schoolProgram';
+import { cleanUserToConvert, setUserToConvert } from '../../actions/userToConvert';
 import TeacherDetail from '../../components/Teachers/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 
@@ -21,9 +22,15 @@ class TeacherDetailContainer extends Component {
   };
 
   componentWillUnmount = () => {
-    const { cleanSelectedTeacherDispatch, cleanDialogDispatch } = this.props;
+    const {
+      cleanSelectedTeacherDispatch,
+      cleanDialogDispatch,
+      cleanUserToConvertDispatch,
+      match,
+    } = this.props;
     cleanSelectedTeacherDispatch();
     cleanDialogDispatch();
+    if (!match.params.id) cleanUserToConvertDispatch();
   };
 
   saveTeacher = (values) => {
@@ -49,6 +56,12 @@ class TeacherDetailContainer extends Component {
     history.push('/usuarios/profesores');
   };
 
+  convertUserTo = ({ userType, userData }) => {
+    const { history, setUserToConvertDispatch } = this.props;
+    setUserToConvertDispatch(userData);
+    history.push(`/usuarios/${userType}/agregar`);
+  };
+
   handleTeacherDelete = () => {
     const { deleteTeacherDispatch, history, match } = this.props;
     deleteTeacherDispatch(match.params.id).then(() => history.push('/usuarios/profesores'));
@@ -58,6 +71,7 @@ class TeacherDetailContainer extends Component {
     const { teacher, schoolPrograms, match } = this.props;
     return (
       <TeacherDetail
+        convertUserTo={this.convertUserTo}
         schoolPrograms={schoolPrograms}
         saveTeacher={this.saveTeacher}
         goBack={this.goBack}
@@ -95,6 +109,8 @@ TeacherDetailContainer.propTypes = {
   cleanSelectedTeacherDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   getListDispatch: PropTypes.func.isRequired,
+  setUserToConvertDispatch: PropTypes.func.isRequired,
+  cleanUserToConvertDispatch: PropTypes.func.isRequired,
 };
 
 const mS = (state) => ({
@@ -111,6 +127,8 @@ const mD = {
   cleanSelectedTeacherDispatch: cleanSelectedTeacher,
   cleanDialogDispatch: cleanDialog,
   getListDispatch: getList,
+  cleanUserToConvertDispatch: cleanUserToConvert,
+  setUserToConvertDispatch: setUserToConvert,
 };
 
 export default connect(mS, mD)(TeacherDetailContainer);

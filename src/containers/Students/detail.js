@@ -16,6 +16,7 @@ import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import StudentDetail from '../../components/Students/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionUserRol } from '../../storage/sessionStorage';
+import { cleanUserToConvert, setUserToConvert } from '../../actions/userToConvert';
 
 class StudentDetailContainer extends Component {
   componentDidMount = () => {
@@ -26,8 +27,14 @@ class StudentDetailContainer extends Component {
       defineDispatch,
       getSchoolProgramListDispatch,
       getTeacherListDispatch,
+      cleanUserToConvertDispatch,
     } = this.props;
-    if (match.params.id) findStudentByIdDispatch(match.params.id);
+    if (match.params.id) {
+      findStudentByIdDispatch(match.params.id);
+    } else {
+      cleanUserToConvertDispatch();
+    }
+
     getSchoolProgramListDispatch();
     getTeacherListDispatch();
     defineDispatch(rol !== 'A' ? 'perfil' : 'estudiante');
@@ -37,6 +44,12 @@ class StudentDetailContainer extends Component {
     const { cleanSelectedStudentDispatch, cleanDialogDispatch } = this.props;
     cleanSelectedStudentDispatch();
     cleanDialogDispatch();
+  };
+
+  convertUserTo = ({ userType, userData }) => {
+    const { history, setUserToConvertDispatch } = this.props;
+    setUserToConvertDispatch(userData);
+    history.push(`/usuarios/${userType}/agregar`);
   };
 
   saveStudent = (values) => {
@@ -109,6 +122,7 @@ class StudentDetailContainer extends Component {
     } = this.props;
     return (
       <StudentDetail
+        convertUserTo={this.convertUserTo}
         schoolPrograms={schoolPrograms}
         teachersGuide={teachers}
         saveStudent={this.saveStudent}
@@ -175,6 +189,8 @@ StudentDetailContainer.propTypes = {
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
   getConstanceDispatch: PropTypes.func.isRequired,
   getTeacherListDispatch: PropTypes.func.isRequired,
+  setUserToConvertDispatch: PropTypes.func.isRequired,
+  cleanUserToConvertDispatch: PropTypes.func.isRequired,
 };
 
 StudentDetailContainer.defaultProps = {
@@ -203,6 +219,8 @@ const mD = {
   getSchoolProgramListDispatch: getSchoolProgramList,
   deleteSchoolProgramDispatch: deleteSchoolProgram,
   getConstanceDispatch: getConstance,
+  cleanUserToConvertDispatch: cleanUserToConvert,
+  setUserToConvertDispatch: setUserToConvert,
 };
 
 export default connect(mS, mD)(StudentDetailContainer);

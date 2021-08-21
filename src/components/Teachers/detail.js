@@ -64,18 +64,35 @@ class TeacherDetail extends Component {
       submitDispatch,
       teacher,
       category,
+      convertUserTo,
+      initialValues,
     } = this.props;
     const { func } = this.state;
     return (
       <Form onSubmit={handleSubmit(saveTeacher)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>
-              {' '}
-              {teacherId
-                ? `Profesor: ${teacher.first_surname || ''} ${teacher.first_name || ''}`
-                : 'Nuevo Profesor'}
-            </h3>
+            <Grid container justify="space-between">
+              <h3>
+                {' '}
+                {teacherId
+                  ? `Profesor: ${teacher.first_surname || ''} ${teacher.first_name || ''}`
+                  : 'Nuevo Profesor'}
+              </h3>
+              {teacherId && (
+                <Button
+                  variant="outlined"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    convertUserTo({ userType: 'administradores', userData: initialValues });
+                  }}
+                  disabled={teacherId && !teacher.id}
+                >
+                  Convertir en Administrador
+                </Button>
+              )}
+            </Grid>
+
             <hr />
           </Grid>
           {!teacherId || teacher.id ? (
@@ -350,46 +367,60 @@ let TeacherDetailWrapper = reduxForm({
 TeacherDetailWrapper = connect(
   (state) => ({
     initialValues: {
-      identification: state.teacherReducer.selectedTeacher.identification
-        ? state.teacherReducer.selectedTeacher.identification
-        : '',
-      firstName: state.teacherReducer.selectedTeacher.first_name
-        ? state.teacherReducer.selectedTeacher.first_name
-        : '',
-      secondName: state.teacherReducer.selectedTeacher.second_name
-        ? state.teacherReducer.selectedTeacher.second_name
-        : '',
-      firstSurname: state.teacherReducer.selectedTeacher.first_surname
-        ? state.teacherReducer.selectedTeacher.first_surname
-        : '',
-      secondSurname: state.teacherReducer.selectedTeacher.second_surname
-        ? state.teacherReducer.selectedTeacher.second_surname
-        : '',
-      email: state.teacherReducer.selectedTeacher.email
-        ? state.teacherReducer.selectedTeacher.email
-        : '',
-      mobile: state.teacherReducer.selectedTeacher.mobile
-        ? state.teacherReducer.selectedTeacher.mobile
-        : '(   )    -    ',
-      telephone: state.teacherReducer.selectedTeacher.telephone
-        ? state.teacherReducer.selectedTeacher.telephone
-        : '(   )    -    ',
-      workPhone: state.teacherReducer.selectedTeacher.work_phone
-        ? state.teacherReducer.selectedTeacher.work_phone
-        : '(   )    -    ',
+      identification:
+        state.teacherReducer.selectedTeacher.identification ??
+        state.userToConvertReducer.selectedUserToConvert.identification ??
+        '',
+      firstName:
+        state.teacherReducer.selectedTeacher.first_name ??
+        state.userToConvertReducer.selectedUserToConvert.first_name ??
+        '',
+      secondName:
+        state.teacherReducer.selectedTeacher.second_name ??
+        state.userToConvertReducer.selectedUserToConvert.second_name ??
+        '',
+      firstSurname:
+        state.teacherReducer.selectedTeacher.first_surname ??
+        state.userToConvertReducer.selectedUserToConvert.first_surname ??
+        '',
+      secondSurname:
+        state.teacherReducer.selectedTeacher.second_surname ??
+        state.userToConvertReducer.selectedUserToConvert.second_surname ??
+        '',
+      email:
+        state.teacherReducer.selectedTeacher.email ??
+        state.userToConvertReducer.selectedUserToConvert.email ??
+        '',
+      mobile:
+        state.teacherReducer.selectedTeacher.mobile ??
+        state.userToConvertReducer.selectedUserToConvert.mobile ??
+        '(   )    -    ',
+      telephone:
+        state.teacherReducer.selectedTeacher.telephone ??
+        state.userToConvertReducer.selectedUserToConvert.telephone ??
+        '(   )    -    ',
+      workPhone:
+        state.teacherReducer.selectedTeacher.work_phone ??
+        state.userToConvertReducer.selectedUserToConvert.work_phone ??
+        '(   )    -    ',
       teacherType: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.teacher_type
         : '',
       category: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.category
         : '',
-      nationality: state.teacherReducer.selectedTeacher.nationality
-        ? state.teacherReducer.selectedTeacher.nationality
-        : '',
-      sex: state.teacherReducer.selectedTeacher.sex ? state.teacherReducer.selectedTeacher.sex : '',
-      levelInstruction: state.teacherReducer.selectedTeacher.level_instruction
-        ? state.teacherReducer.selectedTeacher.level_instruction
-        : '',
+      nationality:
+        state.teacherReducer.selectedTeacher.nationality ??
+        state.userToConvertReducer.selectedUserToConvert.nationality ??
+        '',
+      sex:
+        state.teacherReducer.selectedTeacher.sex ??
+        state.userToConvertReducer.selectedUserToConvert.sex ??
+        '',
+      levelInstruction:
+        state.teacherReducer.selectedTeacher.level_instruction ??
+        state.userToConvertReducer.selectedUserToConvert.level_instruction ??
+        '',
       dedication: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.dedication
         : '',

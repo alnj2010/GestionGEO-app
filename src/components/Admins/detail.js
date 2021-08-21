@@ -57,6 +57,8 @@ class AdminDetail extends Component {
       valid,
       submitDispatch,
       admin,
+      convertUserTo,
+      initialValues,
     } = this.props;
     const { func } = this.state;
     const isMain = getSessionIsMainUser() === 'true';
@@ -68,12 +70,26 @@ class AdminDetail extends Component {
       <Form onSubmit={handleSubmit(saveAdmin)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>
-              {' '}
-              {adminId
-                ? `Administrador: ${admin.first_surname || ''} ${admin.first_name || ''}`
-                : 'Nuevo Administrador'}
-            </h3>
+            <Grid container justify="space-between">
+              <h3>
+                {' '}
+                {adminId
+                  ? `Administrador: ${admin.first_surname || ''} ${admin.first_name || ''}`
+                  : 'Nuevo Administrador'}
+              </h3>
+              {adminId && (
+                <Button
+                  variant="outlined"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    convertUserTo({ userType: 'profesores', userData: initialValues });
+                  }}
+                  disabled={adminId && !admin.id}
+                >
+                  Convertir en Profesor
+                </Button>
+              )}
+            </Grid>
             <hr />
           </Grid>
           {!adminId || admin.id ? (
@@ -328,41 +344,56 @@ const selector = formValueSelector('administrador');
 AdminDetailWrapper = connect(
   (state) => ({
     initialValues: {
-      firstName: state.adminReducer.selectedAdmin.first_name
-        ? state.adminReducer.selectedAdmin.first_name
-        : '',
-      secondName: state.adminReducer.selectedAdmin.second_name
-        ? state.adminReducer.selectedAdmin.second_name
-        : '',
-      firstSurname: state.adminReducer.selectedAdmin.first_surname
-        ? state.adminReducer.selectedAdmin.first_surname
-        : '',
-      secondSurname: state.adminReducer.selectedAdmin.second_surname
-        ? state.adminReducer.selectedAdmin.second_surname
-        : '',
-      identification: state.adminReducer.selectedAdmin.identification
-        ? state.adminReducer.selectedAdmin.identification
-        : '',
-      email: state.adminReducer.selectedAdmin.email ? state.adminReducer.selectedAdmin.email : '',
-      mobile: state.adminReducer.selectedAdmin.mobile
-        ? state.adminReducer.selectedAdmin.mobile
-        : '(   )    -    ',
-      telephone: state.adminReducer.selectedAdmin.telephone
-        ? state.adminReducer.selectedAdmin.telephone
-        : '(   )    -    ',
+      firstName:
+        state.adminReducer.selectedAdmin.first_name ??
+        state.userToConvertReducer.selectedUserToConvert.first_name ??
+        '',
+      secondName:
+        state.adminReducer.selectedAdmin.second_name ??
+        state.userToConvertReducer.selectedUserToConvert.second_name ??
+        '',
+      firstSurname:
+        state.adminReducer.selectedAdmin.first_surname ??
+        state.userToConvertReducer.selectedUserToConvert.first_surname ??
+        '',
+      secondSurname:
+        state.adminReducer.selectedAdmin.second_surname ??
+        state.userToConvertReducer.selectedUserToConvert.second_surname ??
+        '',
+      identification:
+        state.adminReducer.selectedAdmin.identification ??
+        state.userToConvertReducer.selectedUserToConvert.identification ??
+        '',
+      email:
+        state.adminReducer.selectedAdmin.email ??
+        state.userToConvertReducer.selectedUserToConvert.email ??
+        '',
+      mobile:
+        state.adminReducer.selectedAdmin.mobile ??
+        state.userToConvertReducer.selectedUserToConvert.mobile ??
+        '(   )    -    ',
+      telephone:
+        state.adminReducer.selectedAdmin.telephone ??
+        state.userToConvertReducer.selectedUserToConvert.telephone ??
+        '(   )    -    ',
       workPhone: state.adminReducer.selectedAdmin.work_phone
         ? state.adminReducer.selectedAdmin.work_phone
         : '(   )    -    ',
       rol: state.adminReducer.selectedAdmin.administrator
         ? state.adminReducer.selectedAdmin.administrator.rol
         : '',
-      sex: state.adminReducer.selectedAdmin.sex ? state.adminReducer.selectedAdmin.sex : '',
-      nationality: state.adminReducer.selectedAdmin.nationality
-        ? state.adminReducer.selectedAdmin.nationality
-        : '',
-      levelInstruction: state.adminReducer.selectedAdmin.level_instruction
-        ? state.adminReducer.selectedAdmin.level_instruction
-        : '',
+      sex:
+        state.adminReducer.selectedAdmin.sex ??
+        state.userToConvertReducer.selectedUserToConvert.sex ??
+        '',
+      nationality:
+        state.adminReducer.selectedAdmin.nationality ??
+        state.userToConvertReducer.selectedUserToConvert.nationality ??
+        '',
+      levelInstruction:
+        state.adminReducer.selectedAdmin.level_instruction ??
+        state.userToConvertReducer.selectedUserToConvert.level_instruction ??
+        '',
       principal: state.adminReducer.selectedAdmin.administrator
         ? state.adminReducer.selectedAdmin.administrator.principal
         : false,

@@ -168,6 +168,8 @@ class StudentDetail extends Component {
       getConstance,
       teachersGuide,
       width,
+      convertUserTo,
+      initialValues,
     } = this.props;
     const { func } = this.state;
     const rol = getSessionUserRol();
@@ -178,11 +180,25 @@ class StudentDetail extends Component {
       <Form onSubmit={handleSubmit(saveStudent)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>
-              {userId
-                ? `Estudiante: ${student.first_surname || ''} ${student.first_name || ''}`
-                : 'Nuevo Estudiante'}
-            </h3>
+            <Grid container justify="space-between">
+              <h3>
+                {userId
+                  ? `Estudiante: ${student.first_surname || ''} ${student.first_name || ''}`
+                  : 'Nuevo Estudiante'}
+              </h3>
+              {userId && (
+                <Button
+                  variant="outlined"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    convertUserTo({ userType: 'profesores', userData: initialValues });
+                  }}
+                  disabled={userId && !student.id}
+                >
+                  Convertir en Profesor
+                </Button>
+              )}
+            </Grid>
             <hr />
           </Grid>
           {!userId || student.id ? (
