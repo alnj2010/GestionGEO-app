@@ -309,7 +309,7 @@ class StudentDetail extends Component {
                       label: 'Tipo de ingreso',
                       field: 'typeIncome',
                       id: 'typeIncome',
-                      type: !userId && rol === 'A' ? 'text' : 'hidden',
+                      type: 'hidden',
                       tooltipText:
                         'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Evaluación por comité',
                     },
@@ -768,9 +768,7 @@ StudentDetailWrapper = connect(
       studentType: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.student_type
         : '',
-      typeIncome: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.type_income
-        : '',
+      typeIncome: 'Comité Académico',
       creditsGranted: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.credits_granted
         : 0,
