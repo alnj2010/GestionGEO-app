@@ -169,11 +169,18 @@ class TeacherDetail extends Component {
                       options: jsonToOptions(NATIONALITY),
                     },
                     {
-                      label: 'Nivel de instruccion',
-                      field: 'levelInstruction',
-                      id: 'levelInstruction',
-                      type: 'select',
-                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                      select: {
+                        label: 'Nivel de instruccion',
+                        field: 'levelInstruction',
+                        id: 'levelInstruction',
+                        options: jsonToOptions(LEVEL_INSTRUCTION),
+                      },
+                      text: {
+                        label: 'Titulo',
+                        field: 'levelInstructionName',
+                        id: 'levelInstructionName',
+                      },
+                      type: 'instruction',
                     },
                     {
                       label: 'Tipo',
@@ -420,6 +427,10 @@ TeacherDetailWrapper = connect(
       levelInstruction:
         state.teacherReducer.selectedTeacher.level_instruction ??
         state.userToConvertReducer.selectedUserToConvert.level_instruction ??
+        '',
+      levelInstructionName:
+        state.teacherReducer.selectedTeacher.level_instruction_name ??
+        state.userToConvertReducer.selectedUserToConvert.level_instruction_name ??
         '',
       dedication: state.teacherReducer.selectedTeacher.teacher
         ? state.teacherReducer.selectedTeacher.teacher.dedication

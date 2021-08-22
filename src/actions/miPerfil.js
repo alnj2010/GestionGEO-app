@@ -36,6 +36,7 @@ export const updateMiPerfil = (perfil) => async (dispatch) => {
     sex: perfil.sex,
     nationality: perfil.nationality,
     level_instruction: perfil.levelInstruction,
+    level_instruction_name: perfil.levelInstructionName,
   };
   return MiPerfil.update(payload)
     .then(() => {

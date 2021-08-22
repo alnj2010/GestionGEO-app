@@ -275,6 +275,9 @@ MiPerfilWrapper = connect(
       levelInstruction: state.miPerfilReducer.selectedMiPerfil.level_instruction
         ? state.miPerfilReducer.selectedMiPerfil.level_instruction
         : '',
+      levelInstructionName: state.miPerfilReducer.selectedMiPerfil.level_instruction_name
+        ? state.miPerfilReducer.selectedMiPerfil.level_instruction_name
+        : '',
       sex: state.miPerfilReducer.selectedMiPerfil.sex
         ? state.miPerfilReducer.selectedMiPerfil.sex
         : '',

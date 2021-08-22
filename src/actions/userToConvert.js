@@ -25,6 +25,7 @@ export const setUserToConvert = (user) => async (dispatch) => {
     sex: user.sex,
     country: user.country,
     level_instruction: user.levelInstruction,
+    level_instruction_name: user.levelInstructionName,
     with_disabilities: user.withDisabilities,
     active: user.active,
   };
