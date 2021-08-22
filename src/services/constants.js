@@ -62,13 +62,13 @@ export const GENDER = {
 };
 
 export const LEVEL_INSTRUCTION = {
-  DOCTOR: 'Dr',
-  'MAGISTER SCIENTIARUM': 'MSc',
-  ESPECIALISTA: 'Esp',
-  LICENCIADO: 'Lic',
-  INGENIERO: 'Ing',
-  TSU: 'TSU',
-  'TEC MEDIO': 'TCM',
+  'DOCTOR EN': 'Dr',
+  'MAGISTER SCIENTIARUM EN': 'MSc',
+  'ESPECIALISTA EN': 'Esp',
+  'LICENCIADO EN': 'Lic',
+  'INGENIERO EN': 'Ing',
+  'TSU EN': 'TSU',
+  'TEC MEDIO EN': 'TCM',
 };
 
 export const LEVEL_INSTRUCTION_4TO_LEVEL = {

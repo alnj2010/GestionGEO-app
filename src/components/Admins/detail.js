@@ -166,11 +166,18 @@ class AdminDetail extends Component {
                       options: jsonToOptions(NATIONALITY),
                     },
                     {
-                      label: 'Nivel de instruccion',
-                      field: 'levelInstruction',
-                      id: 'levelInstruction',
-                      type: 'select',
-                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                      select: {
+                        label: 'Nivel de instruccion',
+                        field: 'levelInstruction',
+                        id: 'levelInstruction',
+                        options: jsonToOptions(LEVEL_INSTRUCTION),
+                      },
+                      text: {
+                        label: 'Titulo',
+                        field: 'levelInstructionName',
+                        id: 'levelInstructionName',
+                      },
+                      type: 'instruction',
                     },
                     {
                       label: 'Rol',
@@ -393,6 +400,10 @@ AdminDetailWrapper = connect(
       levelInstruction:
         state.adminReducer.selectedAdmin.level_instruction ??
         state.userToConvertReducer.selectedUserToConvert.level_instruction ??
+        '',
+      levelInstructionName:
+        state.adminReducer.selectedAdmin.level_instruction_name ??
+        state.userToConvertReducer.selectedUserToConvert.level_instruction_name ??
         '',
       principal: state.adminReducer.selectedAdmin.administrator
         ? state.adminReducer.selectedAdmin.administrator.principal

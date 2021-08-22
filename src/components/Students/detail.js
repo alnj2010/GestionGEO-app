@@ -278,11 +278,18 @@ class StudentDetail extends Component {
                       disabled: rol !== 'A',
                     },
                     {
-                      label: 'Nivel de instruccion',
-                      field: 'levelInstruction',
-                      id: 'levelInstruction',
-                      type: 'select',
-                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                      select: {
+                        label: 'Nivel de instruccion',
+                        field: 'levelInstruction',
+                        id: 'levelInstruction',
+                        options: jsonToOptions(LEVEL_INSTRUCTION),
+                      },
+                      text: {
+                        label: 'Titulo',
+                        field: 'levelInstructionName',
+                        id: 'levelInstructionName',
+                      },
+                      type: 'instruction',
                     },
                     {
                       label: 'Programa academico',
@@ -309,7 +316,7 @@ class StudentDetail extends Component {
                       label: 'Tipo de ingreso',
                       field: 'typeIncome',
                       id: 'typeIncome',
-                      type: !userId && rol === 'A' ? 'text' : 'hidden',
+                      type: 'hidden',
                       tooltipText:
                         'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Evaluación por comité',
                     },
@@ -768,9 +775,7 @@ StudentDetailWrapper = connect(
       studentType: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.student_type
         : '',
-      typeIncome: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.type_income
-        : '',
+      typeIncome: 'Comité Académico',
       creditsGranted: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.credits_granted
         : 0,
@@ -796,6 +801,9 @@ StudentDetailWrapper = connect(
         : false,
       levelInstruction: state.studentReducer.selectedStudent.level_instruction
         ? state.studentReducer.selectedStudent.level_instruction
+        : '',
+      levelInstructionName: state.studentReducer.selectedStudent.level_instruction_name
+        ? state.studentReducer.selectedStudent.level_instruction_name
         : '',
       equivalence: [],
 

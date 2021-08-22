@@ -65,6 +65,7 @@ export const updateAdmin = (admin) => async (dispatch) => {
     active: admin.active,
     nationality: admin.nationality,
     level_instruction: admin.levelInstruction,
+    level_instruction_name: admin.levelInstructionName,
     principal: admin.principal,
     with_disabilities: admin.withDisabilities,
   };
@@ -111,6 +112,7 @@ export const saveAdmin = (admin) => async (dispatch) => {
     active: admin.active,
     nationality: admin.nationality,
     level_instruction: admin.levelInstruction,
+    level_instruction_name: admin.levelInstructionName,
     principal: admin.principal,
     with_disabilities: admin.withDisabilities,
   };
