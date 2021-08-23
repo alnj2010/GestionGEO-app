@@ -21,8 +21,8 @@ class StudentInscriptions extends Component {
           id: schoolPeriod.school_period_id,
           inscriptionId: schoolPeriod.id,
           code: schoolPeriod.school_period.cod_school_period,
-          startDate: schoolPeriod.school_period.end_date,
-          endDate: schoolPeriod.school_period.start_date,
+          endDate: schoolPeriod.school_period.end_date,
+          startDate: schoolPeriod.school_period.start_date,
         };
       });
     return [];
