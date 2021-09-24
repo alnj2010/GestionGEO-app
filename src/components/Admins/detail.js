@@ -333,6 +333,7 @@ const adminValidation = (values) => {
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
   if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
   if (!values.rol) {
     errors.rol = ' Rol Requerido';
   } else if (values.rol === COORDINATOR_ROL.SECRETARIO && values.principal) {
