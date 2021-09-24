@@ -144,12 +144,20 @@ class MiPerfil extends Component {
                     disabled: rol !== 'A',
                   },
                   {
-                    label: 'Nivel de instruccion',
-                    field: 'levelInstruction',
-                    id: 'levelInstruction',
-                    type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
-                    disabled: rol !== 'A',
+                    select: {
+                      label: 'Nivel de instruccion',
+                      field: 'levelInstruction',
+                      id: 'levelInstruction',
+                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                      disabled: rol !== 'A',
+                    },
+                    text: {
+                      label: 'Titulo',
+                      field: 'levelInstructionName',
+                      id: 'levelInstructionName',
+                      disabled: rol !== 'A',
+                    },
+                    type: 'instruction',
                   },
                 ]}
               </RenderFields>
@@ -232,6 +240,9 @@ const studentValidation = (values) => {
 
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
+
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
 
   return errors;
 };

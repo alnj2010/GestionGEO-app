@@ -359,7 +359,9 @@ const teacherValidation = (values) => {
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
   if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
   if (!values.dedication) errors.dedication = ' Dedicacion Requerido';
+  if (!values.category) errors.category = ' Categoria Requerido';
 
   return errors;
 };

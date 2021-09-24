@@ -400,7 +400,7 @@ StudentSchoolProgramWrapper = connect(
         : null,
       typeIncome: 'Comité Académico',
       creditsGranted: state.studentReducer.selectedSchoolProgram
-        ? state.studentReducer.selectedSchoolProgram.credits_granted
+        ? state.studentReducer.selectedSchoolProgram.credits_granted ?? 0
         : 0,
       currentStatus: state.studentReducer.selectedSchoolProgram
         ? state.studentReducer.selectedSchoolProgram.current_status
