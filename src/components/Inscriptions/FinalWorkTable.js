@@ -127,7 +127,7 @@ function FinalWorkTable({
         {isFinalSubject ? (
           <>
             <div className={classes.fieldRequired}>** Proyecto es requerido</div>
-            <div className={classes.fieldRequired}>** Tutor es requerido</div>
+            {/*<div className={classes.fieldRequired}>** Tutor es requerido</div>*/}
           </>
         ) : null}
       </div>

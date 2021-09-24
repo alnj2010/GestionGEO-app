@@ -728,6 +728,7 @@ const studentValidation = (values) => {
   if (!values.studentType) errors.studentType = ' Tipo Requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen Requerido';
   if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
 
   return errors;
 };
@@ -777,7 +778,7 @@ StudentDetailWrapper = connect(
         : '',
       typeIncome: 'Comité Académico',
       creditsGranted: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.credits_granted
+        ? state.studentReducer.selectedStudent.student.credits_granted ?? 0
         : 0,
       userId: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.id
