@@ -359,6 +359,12 @@ const schoolProgramValidation = (values) => {
   if (!values.schoolProgramId) errors.schoolProgramId = 'Programa academico es requerido';
   if (!values.studentType) errors.studentType = 'Tipo de estudiante es requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen es requerido';
+  if (
+    values.creditsGranted === null ||
+    values.creditsGranted === undefined ||
+    values.creditsGranted === ''
+  )
+    errors.creditsGranted = 'Suministre un numero mayor o igua a 0';
   if (values.equivalences && values.equivalences.length) {
     const equivalenceArrayErrors = [];
     values.equivalences.forEach((equivalence, equivalenceIndex) => {

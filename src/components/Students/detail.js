@@ -730,6 +730,13 @@ const studentValidation = (values) => {
   if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
   if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
 
+  if (
+    values.creditsGranted === null ||
+    values.creditsGranted === undefined ||
+    values.creditsGranted === ''
+  )
+    errors.creditsGranted = 'Suministre un numero mayor o igua a 0';
+
   return errors;
 };
 
