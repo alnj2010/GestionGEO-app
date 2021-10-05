@@ -45,7 +45,7 @@ function SchoolProgramDetail({
             identification: student.data_student.student.user.identification,
             name: student.data_student.student.user.first_name,
             surname: student.data_student.student.user.first_surname,
-            qualification: student.qualification ? student.qualification : 'sin calificar',
+            qualification: student.qualification !== null ? student.qualification : 'sin calificar',
             status: reverseJson(SUBJECT_STATE)[student.status],
           };
         })
@@ -100,10 +100,18 @@ function SchoolProgramDetail({
             loadNotes && {
               onRowUpdate: (newData, oldData) =>
                 new Promise((resolve, reject) => {
-                  updateQualifications(newData).then(() => {
+                  updateQualifications(newData).then((res) => {
                     const dataUpdate = [...studentsData];
                     const index = oldData.tableData.id;
-                    dataUpdate[index] = newData;
+                    dataUpdate[index] = {
+                      ...newData,
+                      status:
+                        newData.status === SUBJECT_STATE.RETIRADO
+                          ? newData.status
+                          : newData.qualification < 10
+                            ? reverseJson(SUBJECT_STATE)[SUBJECT_STATE.REPROBADO]
+                            : reverseJson(SUBJECT_STATE)[SUBJECT_STATE.APROBADO],
+                    };
                     setStudentsData([...dataUpdate]);
 
                     resolve();
