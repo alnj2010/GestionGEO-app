@@ -81,7 +81,7 @@ function FinalWorkTable({
             editable: 'never',
           },
           {
-            title: 'Titulo',
+            title: 'Título',
             field: 'title',
             editable: 'onUpdate',
           },
@@ -98,7 +98,7 @@ function FinalWorkTable({
             hidden: !isFinalSubject,
           },
           { title: 'Nombre', field: 'name', editable: 'never' },
-          { title: 'Unidades de Credito', field: 'uc', editable: 'never' },
+          { title: 'Unidades de Crédito', field: 'uc', editable: 'never' },
         ]}
         data={finalWorksData}
         localization={{
@@ -123,7 +123,7 @@ function FinalWorkTable({
         }}
       />
       <div className={classes.fieldsRequiredContainer}>
-        <div className={classes.fieldRequired}>** Titulo es requerido</div>
+        <div className={classes.fieldRequired}>** Título es requerido</div>
         {isFinalSubject ? (
           <>
             <div className={classes.fieldRequired}>** Proyecto es requerido</div>

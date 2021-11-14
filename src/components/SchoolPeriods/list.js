@@ -73,12 +73,12 @@ class SchoolPeriodsList extends Component {
                       <b> Periodos Semestral</b>
                     </div>
                     <div>
-                      Se define como el tiempo durante el cual el Postgrado de Geoquímica imparte
+                      Se define como el tiempo durante el cual el Postgrado en Geoquímica imparte
                       clases a los estudiantes que cursan una o más asignaturas.
                     </div>
                     <br />
                     <div>
-                      Abajo se listan los distintos Periodos Semestrales existenten en el Postgrado
+                      Abajo se listan los distintos Periodos Semestrales existentes en el Postgrado
                       de Geoquímica
                     </div>
                   </HelpButton>

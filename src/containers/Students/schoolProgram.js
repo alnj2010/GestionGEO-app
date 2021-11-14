@@ -41,7 +41,7 @@ class StudentSchoolProgramContainer extends Component {
       }
     });
 
-    defineDispatch('programa academico del estudiante');
+    defineDispatch('programa académico del estudiante');
   };
 
   componentWillUnmount = () => {

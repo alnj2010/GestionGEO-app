@@ -137,19 +137,19 @@ class TeacherDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'Movil',
+                      label: 'Móvil',
                       field: 'mobile',
                       id: 'mobile',
                       type: 'phone',
                     },
                     {
-                      label: 'Telefono de habitación',
+                      label: 'Teléfono de habitación',
                       field: 'telephone',
                       id: 'telephone',
                       type: 'phone',
                     },
                     {
-                      label: 'Telefono Trabajo',
+                      label: 'Teléfono Trabajo',
                       field: 'workPhone',
                       id: 'workPhone',
                       type: 'phone',
@@ -170,13 +170,13 @@ class TeacherDetail extends Component {
                     },
                     {
                       select: {
-                        label: 'Nivel de instruccion',
+                        label: 'Nivel de instrucción',
                         field: 'levelInstruction',
                         id: 'levelInstruction',
                         options: jsonToOptions(LEVEL_INSTRUCTION),
                       },
                       text: {
-                        label: 'Titulo',
+                        label: 'Título',
                         field: 'levelInstructionName',
                         id: 'levelInstructionName',
                       },
@@ -198,7 +198,7 @@ class TeacherDetail extends Component {
                     },
 
                     {
-                      label: 'Dedicacion',
+                      label: 'Dedicación',
                       field: `dedication`,
                       id: `dedication`,
                       type: 'select',
@@ -346,7 +346,7 @@ const teacherValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'movil es requerido';
+    errors.mobile = 'móvil es requerido';
   }
 
   if (!values.email) {
@@ -358,9 +358,9 @@ const teacherValidation = (values) => {
   if (!values.teacherType) errors.teacherType = ' Tipo Requerido';
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
-  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
-  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
-  if (!values.dedication) errors.dedication = ' Dedicacion Requerido';
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instrucción Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instrucción Requerido';
+  if (!values.dedication) errors.dedication = ' Dedicación Requerido';
   if (!values.category) errors.category = ' Categoria Requerido';
 
   return errors;

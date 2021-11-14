@@ -50,7 +50,7 @@ class SubjectsList extends Component {
               { title: '#', field: 'subjectId', hidden: true },
               { title: 'Codigo', field: 'courseCode' },
               { title: 'Asignatura', field: 'courseName' },
-              { title: 'Unidades de Credito', field: 'uc' },
+              { title: 'Unidades de Crédito', field: 'uc' },
               { title: 'Cursando', field: 'enrolled' },
               { title: 'limite', field: 'limit' },
             ]}
@@ -65,13 +65,13 @@ class SubjectsList extends Component {
                     </div>
                     <div>
                       Las Asignaturas son aperturadas por el administrador de GestionGeo al inicio
-                      de cada periodo academico. Los docente son responsables de impartir y
-                      calificar a los estudiantes que estan inscritos en dichas asignaturas durante
+                      de cada periodo académico. Los docente son responsables de impartir y
+                      calificar a los estudiantes que están inscritos en dichas asignaturas durante
                       el periodo en curso.
                     </div>
                     <br />
                     <div>
-                      Abajo se listan las Asignaturas ha impartir en el periodo academico en curso
+                      Abajo se listan las Asignaturas ha impartir en el periodo académico en curso
                     </div>
                   </HelpButton>
                 </>

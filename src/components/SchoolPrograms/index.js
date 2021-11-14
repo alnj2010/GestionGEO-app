@@ -51,7 +51,7 @@ class SchoolProgramsList extends Component {
             onClick={() => history.push(`/programas-academicos/agregar`)}
           >
             <Add />
-            Agregar programa academico
+            Agregar programa académico
           </Fab>
         </Grid>
         <Grid item xs={12}>
@@ -59,16 +59,16 @@ class SchoolProgramsList extends Component {
             columns={[
               { title: '#', field: 'id', hidden: true },
               { title: 'Nombre', field: 'schoolProgramName' },
-              { title: '# Unidades de credito', field: 'numCu' },
+              { title: '# Unidades de crédito', field: 'numCu' },
             ]}
             data={this.transformData(schoolPrograms)}
             title={
               matches ? (
                 <>
-                  Programas Academicos
+                  Programas Académicos
                   <HelpButton>
                     <div>
-                      <b>Programas Academicos</b>
+                      <b>Programas Académicos</b>
                     </div>
                     <div>
                       Son sistemas compuestos por actividades académicas, estudiantes, profesores,
@@ -79,7 +79,7 @@ class SchoolProgramsList extends Component {
                     </div>
                     <br />
                     <div>
-                      Abajo se listan los distintos programas academicos existenten en el Postgrado
+                      Abajo se listan los distintos Programas Académicos existentes en el Postgrado
                       de Geoquímica
                     </div>
                   </HelpButton>
@@ -98,7 +98,7 @@ class SchoolProgramsList extends Component {
               },
               {
                 icon: 'delete',
-                tooltip: 'Borrar programa academico',
+                tooltip: 'Borrar programa académico',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', () => handleDeleteSchoolProgram(rowData.id));
                 },

@@ -116,7 +116,6 @@ const styles = (theme) => ({
       justifyContent: 'space-evenly',
     },
   },
-
 });
 
 function AuthenticationApp({ children, classes }) {
@@ -139,7 +138,7 @@ function AuthenticationApp({ children, classes }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={pggqLogo} alt="logo Postgrado de Geoquímica" />
+              <img src={pggqLogo} alt="logo Postgrado en Geoquímica" />
             </a>
           </div>
         </div>
@@ -159,13 +158,13 @@ function AuthenticationApp({ children, classes }) {
       <section className={classes.section}>
         <article>
           <p>
-            GestionGeo es una aplicacion web que hace posible la automatización de los procesos
-            presentes en la gestión académica – administrativa del Postgrado de Geoquímica de la
+            GestionGeo es una aplicación web que hace posible la automatización de los procesos
+            presentes en la gestión académica – administrativa del Postgrado en Geoquímica de la
             UCV.
           </p>
           <p>
             La aplicación es dirigida a la comunidad estudiantil, profesoral y administrativa del
-            Postgrado de Geoquímica de la UCV, e incluye estudiantes de convenios con la Escuela de
+            Postgrado en Geoquímica de la UCV, e incluye estudiantes de convenios con la Escuela de
             Geología de la Facultad de Ingeniería y externos de empresas.
           </p>
         </article>

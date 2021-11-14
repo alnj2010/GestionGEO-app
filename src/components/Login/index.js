@@ -79,7 +79,7 @@ let LoginForm = (props) => {
       <div className={classes.titleContainer}>
         <div className={classes.titleLogin}>Inicio de sesión</div>
         <div className={classes.subtitleLogin}>
-          Procede a iniciar sesión y asi gestionar tus procesos academicos.
+          Procede a iniciar sesión y así gestionar tus procesos académicos.
         </div>
       </div>
 
@@ -90,7 +90,7 @@ let LoginForm = (props) => {
               field: 'identification',
               id: 'identification',
               type: 'text',
-              label: 'cédula',
+              label: 'Cédula',
               placeholder: 'Ingresa tu cédula',
             },
             {
@@ -120,7 +120,7 @@ let LoginForm = (props) => {
               className={classes.forgotPassword}
               onClick={handleForgotPassword}
             >
-              ¿Olvido su contraseña?
+              ¿Olvidó su contraseña?
             </Link>
           </Typography>
         </Grid>
@@ -133,7 +133,7 @@ let LoginForm = (props) => {
             open={!!studentsTypes}
           >
             <DialogTitle id="simple-dialog-student-type">
-              Seleccione el programa academico
+              Seleccione el programa académico
             </DialogTitle>
             <List>
               {studentsTypes.map((student, index) => (
@@ -211,10 +211,10 @@ const loginValidator = (values) => {
     errors.identification = 'cédula es requerida';
   }
   if (!values.userType) {
-    errors.userType = 'Rol es requerido';
+    errors.userType = 'rol es requerido';
   }
   if (!values.password) {
-    errors.password = 'Clave es requerida';
+    errors.password = 'clave es requerida';
   }
   return errors;
 };

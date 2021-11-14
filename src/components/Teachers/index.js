@@ -85,7 +85,7 @@ class TeachersList extends Component {
                   </div>
                   <br />
                   <div>
-                    Abajo se listan los distintos Profesores existenten en el Postgrado de
+                    Abajo se listan los distintos Profesores existentes en el Postgrado en
                     Geoquímica
                   </div>
                 </HelpButton>

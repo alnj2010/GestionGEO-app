@@ -49,7 +49,7 @@ class TableEnrolledSubjects extends Component {
             { title: 'Codigo', field: 'code' },
             { title: 'Asignatura', field: 'name' },
             { title: 'Profesor', field: 'teacher' },
-            { title: 'Calificacion', field: 'qualification' },
+            { title: 'Calificación', field: 'qualification' },
             { title: 'Estado', field: 'status' },
           ]}
           data={

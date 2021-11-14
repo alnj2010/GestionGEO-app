@@ -72,7 +72,7 @@ function Inscription({
           </div>
           <br />
           <div>
-            Abajo se listan los distintos administradores existenten en el Postgrado de Geoquímica
+            Abajo se listan los distintos administradores existentes en el Postgrado en Geoquímica
           </div>
         </HelpButton>
       </Typography>
@@ -114,8 +114,9 @@ function Inscription({
               <RenderFields>
                 {[
                   {
-                    label: 'Descripcion financiación',
-                    tooltipText: '(Campo opcional) Describe los detalles del pago del periodo escolar.',
+                    label: 'Descripción financiación',
+                    tooltipText:
+                      '(Campo opcional) Describe los detalles del pago del periodo escolar.',
                     field: 'financingDescription',
                     id: 'financingDescription',
                     type: 'text',
@@ -164,10 +165,10 @@ Inscription.propTypes = {
 const inscriptionStudentValidator = (values) => {
   const errors = {};
   if (!values.financingDescription) {
-    errors.financingDescription = 'descripcion requerida';
+    errors.financingDescription = 'descripción requerida';
   }
   if (!values.financing) {
-    errors.financing = 'financiacion requerida';
+    errors.financing = 'financiación requerida';
   }
   return errors;
 };

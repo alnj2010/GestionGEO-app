@@ -61,7 +61,7 @@ class SubjectsList extends Component {
               { title: '#', field: 'id', hidden: true },
               { title: 'Codigo', field: 'subjectCode' },
               { title: 'Nombre', field: 'subjectName' },
-              { title: 'Unidades de Credito', field: 'uc' },
+              { title: 'Unidades de Crédito', field: 'uc' },
             ]}
             data={this.transformData(subjects)}
             title={
@@ -73,12 +73,12 @@ class SubjectsList extends Component {
                       <b> Asignaturas</b>
                     </div>
                     <div>
-                      Son los cursos que se dictan en los diferentes Programas Academicos del
-                      postgrado de Geoquímica
+                      Son los cursos que se dictan en los diferentes Programas Académicos del
+                      Postgrado en Geoquímica
                     </div>
                     <br />
                     <div>
-                      Abajo se listan los distintos asignaturas existenten en el Postgrado de
+                      Abajo se listan los distintos asignaturas existentes en el Postgrado de
                       Geoquímica
                     </div>
                   </HelpButton>

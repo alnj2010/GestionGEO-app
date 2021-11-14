@@ -109,19 +109,19 @@ class MiPerfil extends Component {
                     type: 'text',
                   },
                   {
-                    label: 'Movil',
+                    label: 'Móvil',
                     field: 'mobile',
                     id: 'mobile',
                     type: 'phone',
                   },
                   {
-                    label: 'Telefono de habitación',
+                    label: 'Teléfono de habitación',
                     field: 'telephone',
                     id: 'telephone',
                     type: 'phone',
                   },
                   {
-                    label: 'Telefono Trabajo',
+                    label: 'Teléfono Trabajo',
                     field: 'workPhone',
                     id: 'workPhone',
                     type: 'phone',
@@ -145,14 +145,14 @@ class MiPerfil extends Component {
                   },
                   {
                     select: {
-                      label: 'Nivel de instruccion',
+                      label: 'Nivel de instrucción',
                       field: 'levelInstruction',
                       id: 'levelInstruction',
                       options: jsonToOptions(LEVEL_INSTRUCTION),
                       disabled: rol !== 'A',
                     },
                     text: {
-                      label: 'Titulo',
+                      label: 'Título',
                       field: 'levelInstructionName',
                       id: 'levelInstructionName',
                       disabled: rol !== 'A',
@@ -230,7 +230,7 @@ const studentValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'movil es requerido';
+    errors.mobile = 'móvil es requerido';
   }
   if (!values.email) {
     errors.email = 'Email es requerido';
@@ -241,8 +241,8 @@ const studentValidation = (values) => {
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
 
-  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
-  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instrucción Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instrucción Requerido';
 
   return errors;
 };

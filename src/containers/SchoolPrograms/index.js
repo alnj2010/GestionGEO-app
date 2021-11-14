@@ -18,7 +18,7 @@ class SchoolProgramsListContainer extends Component {
     getListDispatch()
       .then(() => this.setState({ isLoading: false }))
       .catch(() => this.setState({ isLoading: false }));
-    defineDispatch('programa academico');
+    defineDispatch('programa académico');
   };
 
   componentWillUnmount = () => {

@@ -135,7 +135,7 @@ class StudentInscription extends Component {
                     de:
                   </div>
                   <ul>
-                    <li>UC (Unidades de Creditos): {schoolProgram.min_num_cu_final_work}</li>
+                    <li>UC (Unidades de Créditos): {schoolProgram.min_num_cu_final_work}</li>
                     <li>Semestres: {schoolProgram.min_duration}</li>
                   </ul>
 
@@ -148,7 +148,7 @@ class StudentInscription extends Component {
                         cantidad mínima de:
                       </div>
                       <ul>
-                        <li>UC (Unidades de Creditos): {schoolProgram.min_cu_to_doctoral_exam}</li>
+                        <li>UC (Unidades de Créditos): {schoolProgram.min_cu_to_doctoral_exam}</li>
                       </ul>
                     </div>
                   ) : (
@@ -209,8 +209,9 @@ class StudentInscription extends Component {
                       field: `financingDescription`,
                       id: `financingDescription`,
                       type: 'text',
-                      label: 'Descripcion del financiamiento',
-                      tooltipText: '(Campo opcional) Describe los detalles del pago del periodo escolar.',
+                      label: 'Descripción del financiamiento',
+                      tooltipText:
+                        '(Campo opcional) Describe los detalles del pago del periodo escolar.',
                       disabled: STUDENT_STATUS.GRADUADO === currentStatus,
                     },
                     {
@@ -316,7 +317,7 @@ class StudentInscription extends Component {
                             id: `title`,
 
                             type: 'text',
-                            label: 'Titulo',
+                            label: 'Título',
                             disabled: STUDENT_STATUS.GRADUADO === currentStatus,
                           },
                           {
@@ -340,14 +341,14 @@ class StudentInscription extends Component {
                             field: `descriptionStatus`,
                             id: `descriptionStatus`,
                             type: 'text',
-                            label: 'Descripcion del estado',
+                            label: 'Descripción del estado',
                             disabled: STUDENT_STATUS.GRADUADO === currentStatus,
                           },
                           {
                             field: `approvalDate`,
                             id: `approvalDate`,
                             type: 'date',
-                            label: 'Fecha de aprobacion',
+                            label: 'Fecha de aprobación',
                             disabled:
                               !finalWorkSelected ||
                               finalWorkSelected.status !== FINAL_WORK_STATUS.APROBADO ||
@@ -393,7 +394,7 @@ class StudentInscription extends Component {
                 <Grid item xs={12}>
                   <div>
                     <h4>
-                      Total de creditos inscritos:{' '}
+                      Total de créditos inscritos:{' '}
                       <span style={{ color: '#2196f3' }}>
                         {rolledSubjects.reduce((total, item) => total + parseInt(item.uc, 10), 0)}{' '}
                         uc
@@ -450,7 +451,7 @@ class StudentInscription extends Component {
                   {currentStatus ? (
                     <>
                       <div>
-                        No es posible llevar a cabo la inscripcion debido a {fullname} se encuentra{' '}
+                        No es posible llevar a cabo la inscripción debido a {fullname} se encuentra{' '}
                         <strong>{reverseJson(STUDENT_STATUS)[currentStatus]}</strong>{' '}
                       </div>
                       <Button
@@ -565,7 +566,7 @@ const studentInscriptionValidation = (values) => {
     values.finalWorks.forEach((finalWork, finalWorkIndex) => {
       const finalWorkErrors = {};
       if (!finalWork || !finalWork.title) {
-        finalWorkErrors.title = '*Titulo es requerido';
+        finalWorkErrors.title = '*Título es requerido';
         finalWorkArrayErrors[finalWorkIndex] = finalWorkErrors;
       }
 

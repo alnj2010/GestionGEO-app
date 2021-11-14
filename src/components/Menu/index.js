@@ -204,7 +204,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'programas-academicos',
-          name: 'Programas Academicos',
+          name: 'Programas Académicos',
           component: SchoolProgram,
           clicked: false,
           roles: ['A'],
@@ -613,15 +613,15 @@ class MenuApp extends React.Component {
                             constanceType == 'AnnualReport'
                               ? setOpenAnnualReportModal(true)
                               : getConstanceDispatch(
-                                  userId,
-                                  userType,
-                                  constanceType,
-                                  rol === 'S' && constanceType == 'inscription'
-                                    ? {
-                                        inscriptionId,
-                                      }
-                                    : undefined
-                                )
+                                userId,
+                                userType,
+                                constanceType,
+                                rol === 'S' && constanceType == 'inscription'
+                                  ? {
+                                    inscriptionId,
+                                  }
+                                  : undefined
+                              )
                           }
                           className={classes.nested}
                         >

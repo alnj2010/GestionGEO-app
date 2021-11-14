@@ -52,7 +52,7 @@ let RequestResetPassword = (props) => {
       <div className={classes.titleContainer}>
         <div className={classes.titleLogin}>Recuperación de contraseña</div>
         <div className={classes.subtitleLogin}>
-          Procede a recuperar tu contraseña y asi gestionar tus procesos academicos.
+          Procede a recuperar tu contraseña y así gestionar tus procesos académicos.
         </div>
       </div>
       <Form onSubmit={handleSubmit(handleForgotPassword)} style={{ width: '100%' }}>

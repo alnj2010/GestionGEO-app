@@ -1,2 +1,2 @@
 # GestionGEO-app
-Aplicacion de control de estudios 
+Aplicación de control de estudios 

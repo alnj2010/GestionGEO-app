@@ -76,7 +76,7 @@ function SchoolProgramDetail({
             { title: 'Apellido', field: 'surname', editable: 'never' },
             { title: 'Estado', field: 'status', editable: 'never' },
             {
-              title: 'calificacion',
+              title: 'calificación',
               field: 'qualification',
               type: 'numeric',
               editable: loadNotes ? 'always' : 'never',
