@@ -88,13 +88,13 @@ class StudentsList extends Component {
                       <b>Estudiantes</b>
                     </div>
                     <div>
-                      Son las entidades mas importantes del sistema. Estan asociados directamente a
-                      un Programa Academico. Pueden inscribir asignaturas y solicitar constancias
-                      tanto de inscripcion como de estudio.
+                      Son las entidades más importantes del sistema. Están asociados directamente a
+                      un Programa académico. Pueden inscribir asignaturas y solicitar constancias
+                      tanto de inscripción como de estudio.
                     </div>
                     <br />
                     <div>
-                      Abajo se listan los distintos estudiantes existenten en el Postgrado de
+                      Abajo se listan los distintos estudiantes existentes en el Postgrado de
                       Geoquímica
                     </div>
                   </HelpButton>

@@ -67,7 +67,7 @@ export const updateSchoolProgram = (schoolProgram) => async (dispatch) => {
         type: ACTIONS.SELECT,
         payload: { selectedSchoolProgram: response },
       });
-      show('Programa academico actualizado', 'success')(dispatch);
+      show('Programa académico actualizado', 'success')(dispatch);
       return true;
     })
     .catch((error) => {
@@ -93,7 +93,7 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
 
   return SchoolProgram.saveSchoolProgram(payload)
     .then((res) => {
-      show('Programa academico guardado', 'success')(dispatch);
+      show('Programa académico guardado', 'success')(dispatch);
       return res.id;
     })
     .catch((error) => {
@@ -105,7 +105,7 @@ export const saveSchoolProgram = (schoolProgram) => async (dispatch) => {
 export const deleteSchoolProgram = (schoolProgramId) => async (dispatch) => {
   return SchoolProgram.delete(schoolProgramId)
     .then(() => {
-      show('Programa academico eliminado', 'success')(dispatch);
+      show('Programa académico eliminado', 'success')(dispatch);
       return true;
     })
     .catch((error) => {

@@ -54,6 +54,9 @@ const styles = () => ({
     display: 'flex',
     alignItems: 'flex-end',
   },
+  headerOptions: {
+    display: 'flex',
+  },
 });
 
 class StudentDetail extends Component {
@@ -114,7 +117,7 @@ class StudentDetail extends Component {
                       field: `${subject}.qualification`,
                       id: `${subject}.qualification`,
                       type: 'number',
-                      label: 'Calificacion',
+                      label: 'Calificación',
                       min: 0,
                       max: 20,
                     },
@@ -168,6 +171,7 @@ class StudentDetail extends Component {
       getConstance,
       teachersGuide,
       width,
+      handleRestoreUser,
       convertUserTo,
       initialValues,
     } = this.props;
@@ -187,16 +191,32 @@ class StudentDetail extends Component {
                   : 'Nuevo Estudiante'}
               </h3>
               {userId && (
-                <Button
-                  variant="outlined"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    convertUserTo({ userType: 'profesores', userData: initialValues });
-                  }}
-                  disabled={userId && !student.id}
-                >
-                  Convertir en Profesor
-                </Button>
+                <div className={classes.headerOptions}>
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        userId
+                          ? this.handleDialogShow('reestaurar contraseña del', handleRestoreUser)
+                          : false
+                      }
+                      disabled={userId && !student.id}
+                    >
+                      Reestablecer contraseña
+                    </Button>
+                  </Tooltip>
+
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      convertUserTo({ userType: 'profesores', userData: initialValues });
+                    }}
+                    disabled={userId && !student.id}
+                  >
+                    Convertir en Profesor
+                  </Button>
+                </div>
               )}
             </Grid>
             <hr />
@@ -243,20 +263,20 @@ class StudentDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'Movil',
+                      label: 'Móvil',
                       field: 'mobile',
                       id: 'mobile',
                       type: 'phone',
                     },
 
                     {
-                      label: 'Telefono de habitación',
+                      label: 'Teléfono de habitación',
                       field: 'telephone',
                       id: 'telephone',
                       type: 'phone',
                     },
                     {
-                      label: 'Telefono Trabajo',
+                      label: 'Teléfono Trabajo',
                       field: 'workPhone',
                       id: 'workPhone',
                       type: 'phone',
@@ -279,20 +299,20 @@ class StudentDetail extends Component {
                     },
                     {
                       select: {
-                        label: 'Nivel de instruccion',
+                        label: 'Nivel de instrucción',
                         field: 'levelInstruction',
                         id: 'levelInstruction',
                         options: jsonToOptions(LEVEL_INSTRUCTION),
                       },
                       text: {
-                        label: 'Titulo',
+                        label: 'Título',
                         field: 'levelInstructionName',
                         id: 'levelInstructionName',
                       },
                       type: 'instruction',
                     },
                     {
-                      label: 'Programa academico',
+                      label: 'Programa académico',
                       field: `schoolProgram`,
                       id: `schoolProgram`,
                       type: userId ? 'hidden' : 'select',
@@ -318,16 +338,16 @@ class StudentDetail extends Component {
                       id: 'typeIncome',
                       type: 'hidden',
                       tooltipText:
-                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Evaluación por comité',
+                        'Medio por el cual el estudiante ingreso al Postgrado en Geoquímica. Ej. Evaluación por comité',
                     },
                     {
-                      label: 'Creditos otorgados',
+                      label: 'Créditos otorgados',
                       field: 'creditsGranted',
                       id: 'creditsGranted',
                       type: !userId && rol === 'A' ? 'number' : 'hidden',
                       min: 0,
                       tooltipText:
-                        'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquímica',
+                        'Unidades de Crédito reconocidas antes de ingresar al Postgrado en Geoquímica',
                     },
 
                     {
@@ -337,7 +357,7 @@ class StudentDetail extends Component {
                       type: !userId && rol === 'A' ? 'text' : 'hidden',
                       disabled: rol !== 'A',
                       tooltipText:
-                        'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simon Bolivar, Universidad de Carabobo, etc... ',
+                        'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simón Bolívar, Universidad de Carabobo, etc... ',
                     },
                     {
                       label: 'Profesor Guia',
@@ -385,7 +405,7 @@ class StudentDetail extends Component {
                       id: 'isAvailableFinalWork',
                       type: !userId && rol === 'A' ? 'switch' : 'hidden',
                       tooltipText:
-                        'Habilitar de forma manual la inscripcion de tesis de un estudiante en un Programa Academico',
+                        'Habilitar de forma manual la inscripción de tesis de un estudiante en un Programa académico',
                     },
                   ]}
                 </RenderFields>
@@ -459,7 +479,7 @@ class StudentDetail extends Component {
           <Grid container justify="center">
             <Grid item xs={12} style={{ marginTop: '30px' }}>
               <MaterialTable
-                title={matches ? 'Programas Academicos del estudiante' : ''}
+                title={matches ? 'Programas Académicos del estudiante' : ''}
                 components={{
                   Action: (props) => {
                     const {
@@ -469,7 +489,7 @@ class StudentDetail extends Component {
                     switch (id) {
                       case 'edit':
                         return (
-                          <Tooltip title="Editar informacion del estudiante en el Programa Academico">
+                          <Tooltip title="Editar información del estudiante en el Programa académico">
                             <EditIcon
                               style={{ cursor: 'pointer', marginLeft: '30px' }}
                               onClick={(event) => onClick(event, data)}
@@ -478,7 +498,7 @@ class StudentDetail extends Component {
                         );
                       case 'inscription':
                         return (
-                          <Tooltip title="Inscribir al estudiante en el Programa Academico">
+                          <Tooltip title="Inscribir al estudiante en el Programa académico">
                             <Inscription
                               style={{ cursor: 'pointer' }}
                               onClick={(event) => onClick(event, data)}
@@ -522,7 +542,7 @@ class StudentDetail extends Component {
                           return '';
                         }
                         return (
-                          <Tooltip title="Remover al estudiante del Programa Academico">
+                          <Tooltip title="Remover al estudiante del Programa académico">
                             <DeleteIcon
                               style={{ cursor: 'pointer' }}
                               onClick={(event) => onClick(event, data)}
@@ -531,7 +551,7 @@ class StudentDetail extends Component {
                         );
                       case 'add':
                         return (
-                          <Tooltip title="Agregar al estudiante un nuevo programa academico">
+                          <Tooltip title="Agregar al estudiante un nuevo programa académico">
                             <Chip
                               style={{ fontWeight: 'bold' }}
                               color="primary"
@@ -547,7 +567,7 @@ class StudentDetail extends Component {
                 }}
                 columns={[
                   { title: '#', field: 'id', hidden: true },
-                  { title: 'Programa Academico', field: 'schoolProgram' },
+                  { title: 'Programa académico', field: 'schoolProgram' },
                   { title: 'Estatus Actual', field: 'current_status' },
                 ]}
                 data={student.student.map((item) => ({
@@ -564,7 +584,7 @@ class StudentDetail extends Component {
                   {
                     id: 'edit',
                     icon: 'visibility',
-                    tooltip: 'Ver programa academico',
+                    tooltip: 'Ver programa académico',
                     onClick: (_, rowData) => {
                       const selectedSchoolProgram = student.student.find(
                         (item) => item.id === rowData.id
@@ -604,7 +624,7 @@ class StudentDetail extends Component {
                   {
                     id: 'add',
                     icon: 'add',
-                    tooltip: 'Agregar programa academico',
+                    tooltip: 'Agregar programa académico',
                     isFreeAction: true,
                     onClick: () =>
                       history.push(`${history.location.pathname}/programa-academico/agregar`, {
@@ -695,7 +715,7 @@ const studentValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'movil es requerido';
+    errors.mobile = 'móvil es requerido';
   }
   if (!values.email) {
     errors.email = 'Email es requerido';
@@ -712,7 +732,7 @@ const studentValidation = (values) => {
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.qualification) {
-        subjErrors.qualification = '*calificacion es requerido';
+        subjErrors.qualification = '*calificación es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
     });
@@ -724,11 +744,11 @@ const studentValidation = (values) => {
 
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
-  if (!values.schoolProgram) errors.schoolProgram = 'Programa academico del estudiante Requerido';
+  if (!values.schoolProgram) errors.schoolProgram = 'Programa académico del estudiante Requerido';
   if (!values.studentType) errors.studentType = ' Tipo Requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen Requerido';
-  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
-  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instrucción Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instrucción Requerido';
 
   return errors;
 };

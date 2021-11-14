@@ -11,7 +11,6 @@ import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-
 const styles = () => ({
   pdf: {
     backgroundColor: 'red',
@@ -56,9 +55,10 @@ class SchoolPeriodActual extends Component {
       showDispatch(action);
     });
   };
+
   transformData = (subjects) => {
     if (subjects) {
-      return subjects.map(item => ({
+      return subjects.map((item) => ({
         id: item.id,
         subjectId: item.subject_id,
         teacherId: item.teacher_id,
@@ -67,10 +67,10 @@ class SchoolPeriodActual extends Component {
         uc: item.subject.uc,
         teacherName: `${item.teacher.user.first_name} ${item.teacher.user.first_surname}`,
         limit: item.limit,
-      }))
+      }));
     }
     return [];
-  }
+  };
 
   render = () => {
     const {
@@ -87,7 +87,7 @@ class SchoolPeriodActual extends Component {
       loading,
       endDate,
       subjects,
-      history
+      history,
     } = this.props;
     const { func } = this.state;
     const final = moment(endDate);
@@ -128,7 +128,7 @@ class SchoolPeriodActual extends Component {
                   },
                   { type: 'hidden' },
                   {
-                    label: 'Habilitar inscripcion',
+                    label: 'Habilitar inscripción',
                     field: 'incriptionVisible',
                     id: 'incriptionVisible',
                     type: 'switch',
@@ -170,14 +170,14 @@ class SchoolPeriodActual extends Component {
         <Grid container justify="center">
           <Grid item xs={12} style={{ marginTop: '30px' }}>
             <MaterialTable
-              title={'Asignaturas en curso'}
+              title="Asignaturas en curso"
               columns={[
                 { title: '#', field: 'id', hidden: true },
                 { title: '#', field: 'subjectId', hidden: true },
                 { title: '#', field: 'teacherId', hidden: true },
                 { title: 'Codigo', field: 'courseCode' },
                 { title: 'Asignatura', field: 'courseName' },
-                { title: 'Unidades de Credito', field: 'uc' },
+                { title: 'Unidades de Crédito', field: 'uc' },
                 { title: 'profesor', field: 'teacherName' },
                 { title: 'UC', field: 'uc' },
                 { title: 'limite', field: 'limit' },
@@ -186,7 +186,6 @@ class SchoolPeriodActual extends Component {
               localization={{
                 header: {
                   actions: 'Acciones',
-
                 },
                 body: {
                   emptyDataSourceMessage: 'No hay registro de asignaturas',
@@ -197,10 +196,11 @@ class SchoolPeriodActual extends Component {
                   icon: 'visibility',
                   tooltip: 'Ver detalles',
                   onClick: (event, rowData) => {
-                    history.push(`/periodo-semestral/en-curso/${rowData.subjectId}/${rowData.teacherId}/${rowData.id}`);
+                    history.push(
+                      `/periodo-semestral/en-curso/${rowData.subjectId}/${rowData.teacherId}/${rowData.id}`
+                    );
                   },
                 },
-
               ]}
             />
           </Grid>
@@ -211,7 +211,7 @@ class SchoolPeriodActual extends Component {
       <Paper className={classes.paper}>
         <Grid container justify="center">
           <Grid item>
-            {loading ? <CircularProgress /> : 'Actualmente no hay periodo escolar activo'}
+            {loading ? <CircularProgress /> : 'Actualmente, no hay periodo escolar activo'}
           </Grid>
         </Grid>
       </Paper>

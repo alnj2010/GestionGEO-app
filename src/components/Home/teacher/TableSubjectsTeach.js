@@ -34,7 +34,7 @@ class TableSubjectsTeach extends Component {
         <MaterialTable
           title={
             codSchoolPeriod
-              ? `Materias que imparto en el periodo academico: ${codSchoolPeriod}`
+              ? `Materias que imparto en el periodo académico: ${codSchoolPeriod}`
               : ''
           }
           columns={[
@@ -45,10 +45,10 @@ class TableSubjectsTeach extends Component {
           data={
             Array.isArray(currentSubjects)
               ? currentSubjects.map((subj) => ({
-                  id: subj.id,
-                  code: subj.subject.code,
-                  name: subj.subject.name,
-                }))
+                id: subj.id,
+                code: subj.subject.code,
+                name: subj.subject.name,
+              }))
               : []
           }
           localization={{

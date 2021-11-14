@@ -3,14 +3,11 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
-import Email from '@material-ui/icons/Email';
-import Phone from '@material-ui/icons/Phone';
 
 import logo from '../../images/gestiongeo.svg';
 import engineerLogo from '../../images/ing.svg';
 import scienceLogo from '../../images/logo_ciencias.svg';
 import ucvLogo from '../../images/logo-ucv.svg';
-import peopleLogo from '../../images/people.svg';
 import pggqLogo from '../../images/pggq.svg';
 
 import Footer from '../Footer';
@@ -119,15 +116,6 @@ const styles = (theme) => ({
       justifyContent: 'space-evenly',
     },
   },
-  peopleContainer: {
-    userSelect: 'none',
-    position: 'relative',
-    bottom: 70,
-    left: 2,
-    [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
-  },
 });
 
 function AuthenticationApp({ children, classes }) {
@@ -150,7 +138,7 @@ function AuthenticationApp({ children, classes }) {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={pggqLogo} alt="logo Postgrado de Geoquímica" />
+              <img src={pggqLogo} alt="logo Postgrado en Geoquímica" />
             </a>
           </div>
         </div>
@@ -162,7 +150,6 @@ function AuthenticationApp({ children, classes }) {
           </div>
           <div className={classes.headerRight}>
             <div className={classes.loginContainer}>
-              <img src={peopleLogo} className={classes.peopleContainer} alt="Estudiantes" />
               <Paper className={classes.loginPaper}>{children}</Paper>
             </div>
           </div>
@@ -171,13 +158,13 @@ function AuthenticationApp({ children, classes }) {
       <section className={classes.section}>
         <article>
           <p>
-            GestionGeo es una aplicacion web que hace posible la automatización de los procesos
-            presentes en la gestión académica – administrativa del Postgrado de Geoquímica de la
+            GestionGeo es una aplicación web que hace posible la automatización de los procesos
+            presentes en la gestión académica – administrativa del Postgrado en Geoquímica de la
             UCV.
           </p>
           <p>
             La aplicación es dirigida a la comunidad estudiantil, profesoral y administrativa del
-            Postgrado de Geoquímica de la UCV, e incluye estudiantes de convenios con la Escuela de
+            Postgrado en Geoquímica de la UCV, e incluye estudiantes de convenios con la Escuela de
             Geología de la Facultad de Ingeniería y externos de empresas.
           </p>
         </article>

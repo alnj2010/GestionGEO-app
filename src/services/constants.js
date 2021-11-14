@@ -14,6 +14,7 @@ export const URL = {
   CONSTANCE: '/constance',
   ANNUALREPORT: '/annualReport',
   CHANGE_PASSWORD: '/changePassword',
+  RESTORE_PASSWORD: '/resetPassword',
   PASSWORD_EMAIL: '/password/email',
   PASSWORD_RESET: '/password/reset',
 };
@@ -35,8 +36,8 @@ export const CONSTANCES = {
   S: [
     { name: 'Constancia estudio', userType: 'student', constanceType: 'study' },
     { name: 'Planilla inscripción', userType: 'student', constanceType: 'inscription' },
-    { name: 'Historial Academico', userType: 'student', constanceType: 'studentHistorical' },
-    { name: 'Carga Academica', userType: 'student', constanceType: 'academicLoad' },
+    { name: 'Historial Académico', userType: 'student', constanceType: 'studentHistorical' },
+    { name: 'Carga Académica', userType: 'student', constanceType: 'academicLoad' },
   ],
   T: [{ name: 'Constancia trabajo', userType: 'teacher', constanceType: 'workTeacher' }],
 };

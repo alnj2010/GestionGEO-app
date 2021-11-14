@@ -103,7 +103,7 @@ class SchoolPeriodActualContainer extends Component {
       />
     ) : (
       <Typography variant="h6" gutterBottom>
-        Actualmente no existe un periodo semestral abierto
+        Actualmente, no existe un periodo semestral abierto
       </Typography>
     );
   }

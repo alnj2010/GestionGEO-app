@@ -30,8 +30,8 @@ function TableEnrolledFinalWorks({ finalWorks, classes }) {
       <MaterialTable
         title={titleTable.toUpperCase()}
         columns={[
-          { title: 'Titulo', field: 'title' },
-          { title: 'Calificacion', field: 'qualification' },
+          { title: 'Título', field: 'title' },
+          { title: 'Calificación', field: 'qualification' },
         ]}
         data={transforData()}
         localization={{

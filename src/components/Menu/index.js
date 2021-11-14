@@ -73,7 +73,9 @@ import UcvIcon from '../../icons/Ucv';
 import IngIcon from '../../icons/Ing';
 import PggqIcon from '../../icons/Pggq';
 import CienciasIcon from '../../icons/Ciencias';
-import GestionGeoLogo from '../../icons/GestionGeo';
+import manualA from '../../docs/manualA.pdf';
+import manualE from '../../docs/manualE.pdf';
+import manualP from '../../docs/manualP.pdf';
 
 const drawerWidth = 250;
 
@@ -186,7 +188,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'inscripcion',
-          name: 'Inscripcion',
+          name: 'Inscripción',
           component: Inscription,
           clicked: false,
           roles: ['S'],
@@ -204,7 +206,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'programas-academicos',
-          name: 'Programas Academicos',
+          name: 'Programas Académicos',
           component: SchoolProgram,
           clicked: false,
           roles: ['A'],
@@ -515,8 +517,8 @@ class MenuApp extends React.Component {
             {options
               .filter(
                 (option) =>
-                  (option.roles.some((item) => item === rol) && option.name !== 'Inscripcion') ||
-                  (option.name === 'Inscripcion' && rol === 'S' && inscriptionVisible)
+                  (option.roles.some((item) => item === rol) && option.name !== 'Inscripción') ||
+                  (option.name === 'Inscripción' && rol === 'S' && inscriptionVisible)
               )
               .map((option) => (
                 <Fragment key={option.name}>
@@ -585,7 +587,7 @@ class MenuApp extends React.Component {
                   ) : null}
                 </Fragment>
               ))}
-            {userSession && ['A', inscriptionId ? 'S' : undefined].indexOf(rol) !== -1 ? (
+            {userSession && ['T', 'A', 'S'].indexOf(rol) !== -1 ? (
               <>
                 <ListItem button onClick={this.handleOpenDownload}>
                   <ListItemIcon>
@@ -600,9 +602,13 @@ class MenuApp extends React.Component {
                     {CONSTANCES[rol]
                       .filter(
                         (item) =>
-                          ['study', 'studentHistorical', 'academicLoad'].indexOf(
-                            item.constanceType
-                          ) === -1 &&
+                          [
+                            'study',
+                            'studentHistorical',
+                            'academicLoad',
+                            'workTeacher',
+                            !inscriptionId ? 'inscription' : undefined,
+                          ].indexOf(item.constanceType) === -1 &&
                           (item.constanceType !== 'workAdministrator' || !isMain)
                       )
                       .map(({ name, userType, constanceType }) => (
@@ -631,6 +637,26 @@ class MenuApp extends React.Component {
                           <ListItemText primary={name} className={classes.itemText} />
                         </ListItem>
                       ))}
+                    <ListItem
+                      button
+                      className={classes.nested}
+                      onClick={() => {
+                        let manual = null;
+                        if (rol === 'A') {
+                          manual = manualA;
+                        } else if (rol === 'S') {
+                          manual = manualE;
+                        } else {
+                          manual = manualP;
+                        }
+                        window.open(manual, '_blank');
+                      }}
+                    >
+                      <ListItemIcon>
+                        <div style={{ width: '10px' }} />
+                      </ListItemIcon>
+                      <ListItemText primary="Manual de usuario" className={classes.itemText} />
+                    </ListItem>
                   </List>
                 </Collapse>
               </>

@@ -8,6 +8,7 @@ import {
   cleanSelectedAdmin,
   saveAdmin,
 } from '../../actions/admin';
+import { restorePassword } from '../../actions/user';
 import { cleanUserToConvert, setUserToConvert } from '../../actions/userToConvert';
 import AdminDetail from '../../components/Admins/detail';
 import { define, cleanDialog } from '../../actions/dialog';
@@ -104,6 +105,11 @@ class AdminDetailContainer extends Component {
     deleteAdminDispatch(match.params.id).then(() => history.push('/usuarios/administradores'));
   };
 
+  handleRestoreUser = () => {
+    const { restorePasswordDispatch, match } = this.props;
+    restorePasswordDispatch(match.params.id);
+  };
+
   render() {
     const { admin, match } = this.props;
     return (
@@ -113,6 +119,7 @@ class AdminDetailContainer extends Component {
         saveAdmin={this.saveAdmin}
         goBack={this.goBack}
         adminId={match.params.id}
+        handleRestoreUser={this.handleRestoreUser}
         handleAdminDelete={this.handleAdminDelete}
       />
     );
@@ -142,6 +149,7 @@ AdminDetailContainer.propTypes = {
   cleanSelectedAdminDispatch: PropTypes.func.isRequired,
   cleanDialogDispatch: PropTypes.func.isRequired,
   cleanUserToConvertDispatch: PropTypes.func.isRequired,
+  restorePasswordDispatch: PropTypes.func.isRequired,
   defineDispatch: PropTypes.func.isRequired,
   setUserToConvertDispatch: PropTypes.func.isRequired,
 };
@@ -158,6 +166,7 @@ const mD = {
   defineDispatch: define,
   cleanSelectedAdminDispatch: cleanSelectedAdmin,
   cleanDialogDispatch: cleanDialog,
+  restorePasswordDispatch: restorePassword,
   cleanUserToConvertDispatch: cleanUserToConvert,
   setUserToConvertDispatch: setUserToConvert,
 };

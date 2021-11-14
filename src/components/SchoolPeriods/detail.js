@@ -358,7 +358,7 @@ class SchoolPeriodDetail extends Component {
                         minDate: moment(startDate).add(1, 'days'),
                       },
                       {
-                        label: 'Fecha en la que inicia la inscripcion',
+                        label: 'Fecha en la que inicia la inscripción',
                         field: 'inscriptionStartDate',
                         id: 'inscriptionStartDate',
                         type: 'date',

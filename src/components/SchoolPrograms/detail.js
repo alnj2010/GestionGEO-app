@@ -36,11 +36,11 @@ class SchoolProgramDetail extends Component {
   componentWillReceiveProps(nextProps) {
     const { conduciveToDegree, grantCertificate, changeDispatch } = this.props;
     if (conduciveToDegree !== nextProps.conduciveToDegree && nextProps.conduciveToDegree) {
-      changeDispatch('programa academico', 'grantCertificate', false);
+      changeDispatch('programa académico', 'grantCertificate', false);
     }
 
     if (grantCertificate !== nextProps.grantCertificate && nextProps.grantCertificate) {
-      changeDispatch('programa academico', 'conduciveToDegree', false);
+      changeDispatch('programa académico', 'conduciveToDegree', false);
     }
   }
 
@@ -76,8 +76,8 @@ class SchoolProgramDetail extends Component {
             <h3>
               {' '}
               {schoolProgramId
-                ? `Programa academico: ${schoolProgram.school_program_name || ''}`
-                : 'Nuevo Programa academico'}
+                ? `Programa académico: ${schoolProgram.school_program_name || ''}`
+                : 'Nuevo Programa académico'}
             </h3>
             <hr />
           </Grid>
@@ -87,22 +87,22 @@ class SchoolProgramDetail extends Component {
                 <RenderFields>
                   {[
                     {
-                      label: 'Programa academico',
+                      label: 'Programa académico',
                       field: 'schoolProgramName',
                       id: 'schoolProgramName',
                       type: 'text',
                       tooltipText:
-                        'Suministrar el Nombre del Programa Academico. Ej: Especializacion en Hidrocarburos, Doctorado, etc...',
+                        'Suministrar el nombre del Programa académico. Ej: Especialización en Hidrocarburos, Doctorado, etc...',
                     },
                     {
-                      label: 'Unidades de credito',
+                      label: 'Unidades de crédito',
                       field: 'numCu',
                       id: 'numCu',
                       type: conduciveToDegreeSelected ? 'number' : 'hidden',
                       min: 0,
                     },
                     {
-                      label: 'Duracion (Semestres)',
+                      label: 'Duración (Semestres)',
                       field: 'duration',
                       id: 'duration',
                       type: 'number',
@@ -117,7 +117,7 @@ class SchoolProgramDetail extends Component {
                       max: numCu,
                       disabled: !numCu,
                       tooltipText:
-                        'Ingrese la minima cantidad de Unidades de Credito necesaria para presentar el Trabajo especial de Grado',
+                        'Ingrese la mínima cantidad de Unidades de Crédito necesaria para presentar el Trabajo especial de Grado',
                     },
                     {
                       label: 'min. de semestres para la TEG',
@@ -126,7 +126,7 @@ class SchoolProgramDetail extends Component {
                       type: conduciveToDegreeSelected ? 'number' : 'hidden',
                       min: 1,
                       tooltipText:
-                        'Ingrese la cantidad minima de semestres necesarios para presentar el Trabajo especial de Grado',
+                        'Ingrese la cantidad mínima de semestres necesarios para presentar el Trabajo especial de Grado',
                     },
                     {
                       label: 'min. de UC para examen doctoral',
@@ -137,7 +137,7 @@ class SchoolProgramDetail extends Component {
                       max: numCu,
                       disabled: !numCu || !doctoralExam,
                       tooltipText:
-                        'Ingrese la cantidad minima de semestres necesarios para presentar el examen doctoral',
+                        'Ingrese la cantidad mínima de semestres necesarios para presentar el examen doctoral',
                     },
                     {
                       label: '¿Otorga un certificado de culminación?',
@@ -153,7 +153,7 @@ class SchoolProgramDetail extends Component {
                     },
 
                     {
-                      label: '¿Otorga un grado academico?',
+                      label: '¿Otorga un grado académico?',
                       field: 'conduciveToDegree',
                       id: 'conduciveToDegree',
                       type: 'switch',
@@ -176,7 +176,7 @@ class SchoolProgramDetail extends Component {
                         onClick={() =>
                           schoolProgramId
                             ? this.handleDialogShow('actualizar', submitDispatch)
-                            : submitDispatch('programa academico')
+                            : submitDispatch('programa académico')
                         }
                         disabled={!valid || pristine || submitting}
                       >
@@ -255,7 +255,7 @@ const schoolProgramValidation = (values) => {
   const errors = {};
 
   if (!values.schoolProgramName) {
-    errors.schoolProgramName = 'Nombre del Programa academico es requerido';
+    errors.schoolProgramName = 'Nombre del Programa académico es requerido';
   }
 
   if (values.conduciveToDegree) {
@@ -272,9 +272,9 @@ const schoolProgramValidation = (values) => {
 
   return errors;
 };
-const selector = formValueSelector('programa academico');
+const selector = formValueSelector('programa académico');
 let SchoolProgramDetailWrapper = reduxForm({
-  form: 'programa academico',
+  form: 'programa académico',
   validate: schoolProgramValidation,
   enableReinitialize: true,
 })(SchoolProgramDetail);

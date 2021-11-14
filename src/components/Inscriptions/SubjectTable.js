@@ -37,7 +37,7 @@ function SubjectTable({ subjects, setSubjectsSelected, message, isLoading }) {
           { title: 'Asignatura', field: 'subject' },
           { title: 'Profesor', field: 'teacher' },
           { title: 'Aranceles', field: 'duty' },
-          { title: 'Unidades de credito', field: 'uc' },
+          { title: 'Unidades de crédito', field: 'uc' },
           { title: 'Inscritos', field: 'enrolled_students' },
         ]}
         data={transformData()}

@@ -52,7 +52,7 @@ class StudentSchoolProgram extends Component {
       nextProps.schoolProgramSelected !== schoolProgramSelected &&
       nextProps.schoolProgramSelected !== ''
     ) {
-      if (!schoolProgram) changeDispatch('programa academico del estudiante', 'equivalences', []);
+      if (!schoolProgram) changeDispatch('programa académico del estudiante', 'equivalences', []);
       getSubjectBySchoolProgram(nextProps.schoolProgramSelected);
     }
   }
@@ -92,10 +92,9 @@ class StudentSchoolProgram extends Component {
             <h3>
               Estudiante: {selectedStudent.first_surname} {selectedStudent.first_name} <br />
               {schoolProgramId
-                ? `Programa Academico: ${
-                    schoolProgram ? schoolProgram.school_program.school_program_name : ''
-                  }`
-                : `Agregar programa Academico`}
+                ? `Programa académico: ${schoolProgram ? schoolProgram.school_program.school_program_name : ''
+                }`
+                : `Agregar programa académico`}
             </h3>
             <hr />
           </Grid>
@@ -105,7 +104,7 @@ class StudentSchoolProgram extends Component {
                 <RenderFields>
                   {[
                     {
-                      label: 'Programa academico',
+                      label: 'Programa académico',
                       field: `schoolProgramId`,
                       id: `schoolProgramId`,
                       type: schoolProgram ? 'hidden' : 'select',
@@ -118,7 +117,7 @@ class StudentSchoolProgram extends Component {
                       disabled: rol !== 'A' || schoolProgram,
                     },
                     {
-                      label: 'Postgrado actual (Externo al Postgrado de Geoquímica)',
+                      label: 'Postgrado actual (Externo al Postgrado en Geoquímica)',
                       field: 'currentPostgraduate',
                       id: 'currentPostgraduate',
                       type: 'text',
@@ -131,7 +130,7 @@ class StudentSchoolProgram extends Component {
                       id: 'homeUniversity',
                       type: 'text',
                       tooltipText:
-                        'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simon Bolivar, Universidad de Carabobo, etc... ',
+                        'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simón Bolívar, Universidad de Carabobo, etc... ',
                     },
                     {
                       label: 'Tipo de ingreso',
@@ -139,16 +138,16 @@ class StudentSchoolProgram extends Component {
                       id: 'typeIncome',
                       type: 'hidden',
                       tooltipText:
-                        'Medio por el cual el estudiante ingreso al Postgrado de Geoquímica. Ej. Evaluación por comité',
+                        'Medio por el cual el estudiante ingreso al Postgrado en Geoquímica. Ej. Evaluación por comité',
                     },
                     {
-                      label: 'Creditos otorgados',
+                      label: 'Créditos otorgados',
                       field: 'creditsGranted',
                       id: 'creditsGranted',
                       type: 'number',
                       min: 0,
                       tooltipText:
-                        'Unidades de Credito reconocidas antes de ingresar al Postgrado de Geoquímica',
+                        'Unidades de Crédito reconocidas antes de ingresar al Postgrado en Geoquímica',
                     },
                     {
                       label: 'Estado del estudiante',
@@ -198,7 +197,7 @@ class StudentSchoolProgram extends Component {
                       disabled: rol !== 'A',
                     },
                     {
-                      label: '¿Habilitar inscripcion para este estudiante?',
+                      label: '¿Habilitar inscripción para este estudiante?',
                       field: 'allowPostInscription',
                       id: 'allowPostInscription',
                       type: 'switch',
@@ -246,7 +245,7 @@ class StudentSchoolProgram extends Component {
                         field: `qualification`,
                         id: `qualification`,
                         type: 'number',
-                        label: 'Calificacion',
+                        label: 'Calificación',
                         min: 10,
                         max: 20,
                       },
@@ -356,7 +355,7 @@ StudentSchoolProgram.defaultProps = {
 
 const schoolProgramValidation = (values) => {
   const errors = {};
-  if (!values.schoolProgramId) errors.schoolProgramId = 'Programa academico es requerido';
+  if (!values.schoolProgramId) errors.schoolProgramId = 'Programa académico es requerido';
   if (!values.studentType) errors.studentType = 'Tipo de estudiante es requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen es requerido';
   if (values.equivalences && values.equivalences.length) {
@@ -364,7 +363,7 @@ const schoolProgramValidation = (values) => {
     values.equivalences.forEach((equivalence, equivalenceIndex) => {
       const equivalenceErrors = {};
       if (!equivalence || !equivalence.qualification) {
-        equivalenceErrors.qualification = '*Calificacion es requerido';
+        equivalenceErrors.qualification = '*Calificación es requerido';
         equivalenceArrayErrors[equivalenceIndex] = equivalenceErrors;
       }
 
@@ -383,11 +382,11 @@ const schoolProgramValidation = (values) => {
 };
 
 let StudentSchoolProgramWrapper = reduxForm({
-  form: 'programa academico del estudiante',
+  form: 'programa académico del estudiante',
   validate: schoolProgramValidation,
   enableReinitialize: true,
 })(StudentSchoolProgram);
-const selector = formValueSelector('programa academico del estudiante');
+const selector = formValueSelector('programa académico del estudiante');
 
 StudentSchoolProgramWrapper = connect(
   (state) => ({
@@ -431,11 +430,11 @@ StudentSchoolProgramWrapper = connect(
         : false,
       equivalences:
         state.studentReducer.selectedSchoolProgram &&
-        !!state.studentReducer.selectedSchoolProgram.equivalence
+          !!state.studentReducer.selectedSchoolProgram.equivalence
           ? state.studentReducer.selectedSchoolProgram.equivalence.map((subj) => ({
-              subject_id: subj.subject_id,
-              qualification: subj.qualification,
-            }))
+            subject_id: subj.subject_id,
+            qualification: subj.qualification,
+          }))
           : [],
     },
     action: state.dialogReducer.action,

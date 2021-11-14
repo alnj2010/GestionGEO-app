@@ -83,7 +83,7 @@ class SubjectDetail extends Component {
                     field: `${schoolProgram}.id`,
                     id: `${schoolProgram}.id`,
                     type: 'select',
-                    label: 'Programa academico',
+                    label: 'Programa académico',
                     options: this.unselectedSchoolPrograms(index).map((post) => {
                       return {
                         key: post.school_program_name,
@@ -177,7 +177,7 @@ class SubjectDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'Unidades de credito',
+                      label: 'Unidades de crédito',
                       field: 'uc',
                       id: 'uc',
                       type: 'number',
@@ -223,7 +223,7 @@ class SubjectDetail extends Component {
                 </RenderFields>
                 <Grid item xs={12} className={classes.subtitle}>
                   <Typography variant="h6" gutterBottom>
-                    Programa academicos a los que pertenece la asignatura
+                    Programa académico a los que pertenece la asignatura
                   </Typography>
                 </Grid>
                 <FieldArray name="schoolPrograms" component={this.renderSchoolPrograms} />
@@ -337,7 +337,7 @@ const subjectValidation = (values) => {
   }
 
   if (!values.uc) {
-    errors.uc = 'Unidades de credito es requerido';
+    errors.uc = 'Unidades de crédito es requerido';
   }
 
   if (values.schoolPrograms && values.schoolPrograms.length) {

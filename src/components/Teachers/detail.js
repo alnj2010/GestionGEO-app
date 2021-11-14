@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
+import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
 import {
@@ -32,6 +33,9 @@ const styles = () => ({
   },
   button: {
     width: '100%',
+  },
+  headerOptions: {
+    display: 'flex',
   },
 });
 
@@ -64,6 +68,7 @@ class TeacherDetail extends Component {
       submitDispatch,
       teacher,
       category,
+      handleRestoreUser,
       convertUserTo,
       initialValues,
     } = this.props;
@@ -80,16 +85,31 @@ class TeacherDetail extends Component {
                   : 'Nuevo Profesor'}
               </h3>
               {teacherId && (
-                <Button
-                  variant="outlined"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    convertUserTo({ userType: 'administradores', userData: initialValues });
-                  }}
-                  disabled={teacherId && !teacher.id}
-                >
-                  Convertir en Administrador
-                </Button>
+                <div className={classes.headerOptions}>
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        teacherId
+                          ? this.handleDialogShow('reestaurar contraseña del', handleRestoreUser)
+                          : false
+                      }
+                      disabled={teacherId && !teacher.id}
+                    >
+                      Reestablecer contraseña
+                    </Button>
+                  </Tooltip>
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      convertUserTo({ userType: 'administradores', userData: initialValues });
+                    }}
+                    disabled={teacherId && !teacher.id}
+                  >
+                    Convertir en Administrador
+                  </Button>
+                </div>
               )}
             </Grid>
 
@@ -137,19 +157,19 @@ class TeacherDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'Movil',
+                      label: 'Móvil',
                       field: 'mobile',
                       id: 'mobile',
                       type: 'phone',
                     },
                     {
-                      label: 'Telefono de habitación',
+                      label: 'Teléfono de habitación',
                       field: 'telephone',
                       id: 'telephone',
                       type: 'phone',
                     },
                     {
-                      label: 'Telefono Trabajo',
+                      label: 'Teléfono Trabajo',
                       field: 'workPhone',
                       id: 'workPhone',
                       type: 'phone',
@@ -170,13 +190,13 @@ class TeacherDetail extends Component {
                     },
                     {
                       select: {
-                        label: 'Nivel de instruccion',
+                        label: 'Nivel de instrucción',
                         field: 'levelInstruction',
                         id: 'levelInstruction',
                         options: jsonToOptions(LEVEL_INSTRUCTION),
                       },
                       text: {
-                        label: 'Titulo',
+                        label: 'Título',
                         field: 'levelInstructionName',
                         id: 'levelInstructionName',
                       },
@@ -198,7 +218,7 @@ class TeacherDetail extends Component {
                     },
 
                     {
-                      label: 'Dedicacion',
+                      label: 'Dedicación',
                       field: `dedication`,
                       id: `dedication`,
                       type: 'select',
@@ -346,7 +366,7 @@ const teacherValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'movil es requerido';
+    errors.mobile = 'móvil es requerido';
   }
 
   if (!values.email) {
@@ -358,9 +378,9 @@ const teacherValidation = (values) => {
   if (!values.teacherType) errors.teacherType = ' Tipo Requerido';
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
-  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
-  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instruccion Requerido';
-  if (!values.dedication) errors.dedication = ' Dedicacion Requerido';
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instrucción Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instrucción Requerido';
+  if (!values.dedication) errors.dedication = ' Dedicación Requerido';
   if (!values.category) errors.category = ' Categoria Requerido';
 
   return errors;

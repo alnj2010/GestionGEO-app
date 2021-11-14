@@ -104,7 +104,7 @@ class StudentInscriptions extends Component {
               {
                 icon: 'delete',
                 id: 'delete',
-                tooltip: 'Borrar Inscripcion',
+                tooltip: 'Borrar Inscripción',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', () =>
                     handleDeleteInscription(rowData.inscriptionId)

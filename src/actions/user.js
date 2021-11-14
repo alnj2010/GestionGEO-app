@@ -80,7 +80,22 @@ export const resetPassword = (data) => async (dispatch) => {
   };
   return User.resetPassword(payload)
     .then(() => {
-      show('Contraseña cambiada sastifactoriamente', 'success')(dispatch);
+      show('Contraseña cambiada satisfactoriamente', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
+    });
+};
+
+export const restorePassword = (id) => async (dispatch) => {
+  const payload = {
+    userId: id,
+  };
+  return User.restorePassword(payload)
+    .then(() => {
+      show('Contraseña restaurada satisfactoriamente', 'success')(dispatch);
       return true;
     })
     .catch((error) => {

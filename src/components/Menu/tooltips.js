@@ -44,18 +44,17 @@ export const tutorialSteps = {
           <>
             <div className={classes.title}>
               Bienvenido{' '}
-              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
-                secondSurname || ''
-              }`}
+              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${secondSurname || ''
+                }`}
             </div>
             <div className={classes.descriptionContainer}>
               <span className={classes.introduction}>
                 Ud ha ingresado como <strong>Administrador</strong> de GestionGeo.
               </span>
-              En este modulo podra gestionar cada una de las entidades que conforman el sistema:
+              En este módulo podrá gestionar cada una de las entidades que conforman el sistema:
               <ul>
                 <li>Usuarios (Administradores, Profesores y Estudiantes)</li>
-                <li>Programas Academicos</li>
+                <li>Programas Académicos</li>
                 <li>Asignaturas</li>
                 <li>Periodos Semestrales</li>
               </ul>
@@ -224,15 +223,14 @@ export const tutorialSteps = {
           <>
             <div className={classes.title}>
               Bienvenido{' '}
-              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
-                secondSurname || ''
-              }`}
+              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${secondSurname || ''
+                }`}
             </div>
             <div className={classes.descriptionContainer}>
               <span className={classes.introduction}>
                 Ud ha ingresado como <strong>Docente</strong> de GestionGeo.
               </span>
-              En este modulo ud. podrá gestionar sus asignaturas impartidas. Esta comprendido por
+              En este módulo Ud. podrá gestionar sus asignaturas impartidas. Está comprendido por
               las siguientes secciones:
               <ul>
                 <li>
@@ -276,10 +274,10 @@ export const tutorialSteps = {
             <div className={classes.descriptionContainer}>
               Luego de haber seleccionado, por medio de <Visibility />, una asignatura de la lista
               en <strong>Asignaturas Impartidas</strong> Ud. accederá a la lista de los estudiantes
-              en donde podra ver, en la columna <em>Calificacion</em>, su estatus, inicialmente
+              en donde podrá ver, en la columna <em>Calificación</em>, su estatus, inicialmente
               estará en 'sin calificar', pero cuando el administrador de GestionGeo habilite la
-              carga de notas podra observar la columna <em>Acciones</em> y haciendo click en el
-              icono <EditIcon /> podra cargar la nota del estudiante.
+              carga de notas podrá observar la columna <em>Acciones</em> y haciendo click en el
+              icono <EditIcon /> podrá cargar la nota del estudiante.
             </div>
           </>
         );
@@ -321,16 +319,15 @@ export const tutorialSteps = {
           <>
             <div className={classes.title}>
               Bienvenido{' '}
-              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
-                secondSurname || ''
-              }`}
+              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${secondSurname || ''
+                }`}
             </div>
             <div className={classes.descriptionContainer}>
               <span className={classes.introduction}>
                 Ud ha ingresado como <strong>Estudiante</strong> de GestionGeo.
               </span>
-              En este modulo ud. podrá inscribir, visualizar y retirar las asignaturas que ha
-              inscrito en el periodo academico actual.
+              En este módulo Ud. podrá inscribir, visualizar y retirar las asignaturas que ha
+              inscrito en el periodo académico actual.
             </div>
           </>
         );
@@ -349,12 +346,12 @@ export const tutorialSteps = {
             <div className={classes.descriptionContainer}>
               <span className={classes.introduction}>
                 Para poder realizar el proceso de inscripción de Asignaturas, previamente el
-                Postgrado de Geoquímica deberá habilitar las inscripciones del periodo académico
+                Postgrado en Geoquímica deberá habilitar las inscripciones del periodo académico
                 actual.
               </span>
               A través del menú lateral izquierdo, haciendo click en el ítem{' '}
               <strong>Inscripción</strong> . Ud. accederá a la lista de Asignaturas disponibles a
-              inscribir en el periodo academico actual.
+              inscribir en el periodo académico actual.
             </div>
           </>
         );

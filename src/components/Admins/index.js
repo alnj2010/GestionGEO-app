@@ -93,12 +93,12 @@ class AdminsList extends Component {
                     </div>
                     <div>
                       El administrador de la plataforma es responsable de gestionar y conservar los
-                      datos de gestionGeo, por lo que podra incorporar, modificar y dar de baja a
+                      datos de GestionGeo, por lo que podrá incorporar, modificar y dar de baja a
                       cada una de las entidades existentes en la plataforma
                     </div>
                     <br />
                     <div>
-                      Abajo se listan los distintos administradores existenten en el Postgrado de
+                      Abajo se listan los distintos administradores existentes en el Postgrado de
                       Geoquímica
                     </div>
                   </HelpButton>
