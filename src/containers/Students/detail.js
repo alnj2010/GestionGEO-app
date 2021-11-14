@@ -10,6 +10,7 @@ import {
   deleteSchoolProgram,
   getConstance,
 } from '../../actions/student';
+import { restorePassword } from '../../actions/user';
 import { getList as getTeacherList } from '../../actions/teacher';
 import { getSubjectBySchoolProgram } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
@@ -108,6 +109,10 @@ class StudentDetailContainer extends Component {
       findStudentByIdDispatch(match.params.id)
     );
   };
+  handleRestoreUser = () => {
+    const { restorePasswordDispatch, match } = this.props;
+    restorePasswordDispatch(match.params.id);
+  };
 
   render() {
     const {
@@ -123,6 +128,7 @@ class StudentDetailContainer extends Component {
     return (
       <StudentDetail
         convertUserTo={this.convertUserTo}
+        handleRestoreUser={this.handleRestoreUser}
         schoolPrograms={schoolPrograms}
         teachersGuide={teachers}
         saveStudent={this.saveStudent}
@@ -191,6 +197,7 @@ StudentDetailContainer.propTypes = {
   getTeacherListDispatch: PropTypes.func.isRequired,
   setUserToConvertDispatch: PropTypes.func.isRequired,
   cleanUserToConvertDispatch: PropTypes.func.isRequired,
+  restorePasswordDispatch: PropTypes.func.isRequired,
 };
 
 StudentDetailContainer.defaultProps = {
@@ -220,6 +227,7 @@ const mD = {
   deleteSchoolProgramDispatch: deleteSchoolProgram,
   getConstanceDispatch: getConstance,
   cleanUserToConvertDispatch: cleanUserToConvert,
+  restorePasswordDispatch: restorePassword,
   setUserToConvertDispatch: setUserToConvert,
 };
 

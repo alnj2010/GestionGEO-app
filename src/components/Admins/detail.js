@@ -4,12 +4,12 @@ import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 import { show } from '../../actions/dialog';
 import { COORDINATOR_ROL, GENDER, LEVEL_INSTRUCTION, NATIONALITY } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
-
 import { getSessionIsMainUser, getSessionUser } from '../../storage/sessionStorage';
 
 const styles = () => ({
@@ -26,6 +26,9 @@ const styles = () => ({
   },
   button: {
     width: '100%',
+  },
+  headerOptions: {
+    display: 'flex',
   },
 });
 
@@ -51,6 +54,7 @@ class AdminDetail extends Component {
       saveAdmin,
       goBack,
       adminId,
+      handleRestoreUser,
       handleAdminDelete,
       pristine,
       submitting,
@@ -78,16 +82,32 @@ class AdminDetail extends Component {
                   : 'Nuevo Administrador'}
               </h3>
               {adminId && (
-                <Button
-                  variant="outlined"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    convertUserTo({ userType: 'profesores', userData: initialValues });
-                  }}
-                  disabled={adminId && !admin.id}
-                >
-                  Convertir en Profesor
-                </Button>
+                <div className={classes.headerOptions}>
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        adminId
+                          ? this.handleDialogShow('reestaurar contraseña del', handleRestoreUser)
+                          : false
+                      }
+                      disabled={adminId && !admin.id}
+                    >
+                      Reestablecer contraseña
+                    </Button>
+                  </Tooltip>
+
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      convertUserTo({ userType: 'profesores', userData: initialValues });
+                    }}
+                    disabled={adminId && !admin.id}
+                  >
+                    Convertir en Profesor
+                  </Button>
+                </div>
               )}
             </Grid>
             <hr />

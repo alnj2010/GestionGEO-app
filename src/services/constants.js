@@ -14,6 +14,7 @@ export const URL = {
   CONSTANCE: '/constance',
   ANNUALREPORT: '/annualReport',
   CHANGE_PASSWORD: '/changePassword',
+  RESTORE_PASSWORD: '/resetPassword',
   PASSWORD_EMAIL: '/password/email',
   PASSWORD_RESET: '/password/reset',
 };

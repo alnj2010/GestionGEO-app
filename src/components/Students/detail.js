@@ -54,6 +54,9 @@ const styles = () => ({
     display: 'flex',
     alignItems: 'flex-end',
   },
+  headerOptions: {
+    display: 'flex',
+  },
 });
 
 class StudentDetail extends Component {
@@ -168,6 +171,7 @@ class StudentDetail extends Component {
       getConstance,
       teachersGuide,
       width,
+      handleRestoreUser,
       convertUserTo,
       initialValues,
     } = this.props;
@@ -187,16 +191,32 @@ class StudentDetail extends Component {
                   : 'Nuevo Estudiante'}
               </h3>
               {userId && (
-                <Button
-                  variant="outlined"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    convertUserTo({ userType: 'profesores', userData: initialValues });
-                  }}
-                  disabled={userId && !student.id}
-                >
-                  Convertir en Profesor
-                </Button>
+                <div className={classes.headerOptions}>
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        userId
+                          ? this.handleDialogShow('reestaurar contraseña del', handleRestoreUser)
+                          : false
+                      }
+                      disabled={userId && !student.id}
+                    >
+                      Reestablecer contraseña
+                    </Button>
+                  </Tooltip>
+
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      convertUserTo({ userType: 'profesores', userData: initialValues });
+                    }}
+                    disabled={userId && !student.id}
+                  >
+                    Convertir en Profesor
+                  </Button>
+                </div>
               )}
             </Grid>
             <hr />

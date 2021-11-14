@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid, Button, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
+import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import { show } from '../../actions/dialog';
 import {
@@ -32,6 +33,9 @@ const styles = () => ({
   },
   button: {
     width: '100%',
+  },
+  headerOptions: {
+    display: 'flex',
   },
 });
 
@@ -64,6 +68,7 @@ class TeacherDetail extends Component {
       submitDispatch,
       teacher,
       category,
+      handleRestoreUser,
       convertUserTo,
       initialValues,
     } = this.props;
@@ -80,16 +85,31 @@ class TeacherDetail extends Component {
                   : 'Nuevo Profesor'}
               </h3>
               {teacherId && (
-                <Button
-                  variant="outlined"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    convertUserTo({ userType: 'administradores', userData: initialValues });
-                  }}
-                  disabled={teacherId && !teacher.id}
-                >
-                  Convertir en Administrador
-                </Button>
+                <div className={classes.headerOptions}>
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                    <Button
+                      variant="outlined"
+                      onClick={() =>
+                        teacherId
+                          ? this.handleDialogShow('reestaurar contraseña del', handleRestoreUser)
+                          : false
+                      }
+                      disabled={teacherId && !teacher.id}
+                    >
+                      Reestablecer contraseña
+                    </Button>
+                  </Tooltip>
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      convertUserTo({ userType: 'administradores', userData: initialValues });
+                    }}
+                    disabled={teacherId && !teacher.id}
+                  >
+                    Convertir en Administrador
+                  </Button>
+                </div>
               )}
             </Grid>
 

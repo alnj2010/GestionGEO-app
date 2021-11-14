@@ -8,6 +8,7 @@ import {
   cleanSelectedTeacher,
   saveTeacher,
 } from '../../actions/teacher';
+import { restorePassword } from '../../actions/user';
 import { getList } from '../../actions/schoolProgram';
 import { cleanUserToConvert, setUserToConvert } from '../../actions/userToConvert';
 import TeacherDetail from '../../components/Teachers/detail';
@@ -67,12 +68,18 @@ class TeacherDetailContainer extends Component {
     deleteTeacherDispatch(match.params.id).then(() => history.push('/usuarios/profesores'));
   };
 
+  handleRestoreUser = () => {
+    const { restorePasswordDispatch, match } = this.props;
+    restorePasswordDispatch(match.params.id);
+  };
+
   render() {
     const { teacher, schoolPrograms, match } = this.props;
     return (
       <TeacherDetail
         convertUserTo={this.convertUserTo}
         schoolPrograms={schoolPrograms}
+        handleRestoreUser={this.handleRestoreUser}
         saveTeacher={this.saveTeacher}
         goBack={this.goBack}
         teacherId={match.params.id}
@@ -110,6 +117,7 @@ TeacherDetailContainer.propTypes = {
   cleanDialogDispatch: PropTypes.func.isRequired,
   getListDispatch: PropTypes.func.isRequired,
   setUserToConvertDispatch: PropTypes.func.isRequired,
+  restorePasswordDispatch: PropTypes.func.isRequired,
   cleanUserToConvertDispatch: PropTypes.func.isRequired,
 };
 
@@ -127,6 +135,7 @@ const mD = {
   cleanSelectedTeacherDispatch: cleanSelectedTeacher,
   cleanDialogDispatch: cleanDialog,
   getListDispatch: getList,
+  restorePasswordDispatch: restorePassword,
   cleanUserToConvertDispatch: cleanUserToConvert,
   setUserToConvertDispatch: setUserToConvert,
 };
