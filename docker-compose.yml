@@ -5,6 +5,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: gestion-geo
+    restart: unless-stopped
     container_name: gestion-geo-app
     ports:
       - "80:80"
