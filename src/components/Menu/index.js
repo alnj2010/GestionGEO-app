@@ -186,7 +186,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'inscripcion',
-          name: 'Inscripcion',
+          name: 'Inscripción',
           component: Inscription,
           clicked: false,
           roles: ['S'],
@@ -515,8 +515,8 @@ class MenuApp extends React.Component {
             {options
               .filter(
                 (option) =>
-                  (option.roles.some((item) => item === rol) && option.name !== 'Inscripcion') ||
-                  (option.name === 'Inscripcion' && rol === 'S' && inscriptionVisible)
+                  (option.roles.some((item) => item === rol) && option.name !== 'Inscripción') ||
+                  (option.name === 'Inscripción' && rol === 'S' && inscriptionVisible)
               )
               .map((option) => (
                 <Fragment key={option.name}>

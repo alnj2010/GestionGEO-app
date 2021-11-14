@@ -15,7 +15,7 @@ class SchoolProgramDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSchoolProgramByIdDispatch, defineDispatch } = this.props;
     if (match.params.id) findSchoolProgramByIdDispatch(match.params.id);
-    defineDispatch('programa academico');
+    defineDispatch('programa académico');
   };
 
   componentWillUnmount = () => {
