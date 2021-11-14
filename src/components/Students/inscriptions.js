@@ -21,8 +21,8 @@ class StudentInscriptions extends Component {
           id: schoolPeriod.school_period_id,
           inscriptionId: schoolPeriod.id,
           code: schoolPeriod.school_period.cod_school_period,
-          startDate: schoolPeriod.school_period.end_date,
-          endDate: schoolPeriod.school_period.start_date,
+          endDate: schoolPeriod.school_period.end_date,
+          startDate: schoolPeriod.school_period.start_date,
         };
       });
     return [];
@@ -30,7 +30,7 @@ class StudentInscriptions extends Component {
 
   goBack = () => {
     const { history, userId } = this.props;
-    history.push(`/estudiantes/modificar/${userId}`);
+    history.push(`/usuarios/estudiantes/modificar/${userId}`);
   };
 
   handleDialogShow = (action, func) => {
@@ -49,6 +49,7 @@ class StudentInscriptions extends Component {
       userId,
       fullname,
       handleDeleteInscription,
+      getConstance,
     } = this.props;
     const { func } = this.state;
     return (
@@ -59,7 +60,9 @@ class StudentInscriptions extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/estudiantes/inscripciones/${userId}/${studentId}/nueva`)}
+            onClick={() =>
+              history.push(`/usuarios/estudiantes/inscripciones/${userId}/${studentId}/nueva`)
+            }
           >
             <Add />
             Inscribir estudiante
@@ -84,13 +87,24 @@ class StudentInscriptions extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/estudiantes/inscripciones/${userId}/${studentId}/${rowData.id}`);
+                  history.push(
+                    `/usuarios/estudiantes/inscripciones/${userId}/${studentId}/${rowData.id}`
+                  );
+                },
+              },
+              {
+                icon: 'archive',
+                tooltip: 'Planilla de inscripción',
+                onClick: (event, rowData) => {
+                  getConstance(studentId, 'student', 'inscription', {
+                    inscriptionId: rowData.inscriptionId,
+                  });
                 },
               },
               {
                 icon: 'delete',
                 id: 'delete',
-                tooltip: 'Borrar Inscripcion',
+                tooltip: 'Borrar Inscripción',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', () =>
                     handleDeleteInscription(rowData.inscriptionId)
@@ -112,7 +126,7 @@ class StudentInscriptions extends Component {
                 actions: 'Acciones',
               },
               body: {
-                emptyDataSourceMessage: 'Aun no tiene historial',
+                emptyDataSourceMessage: isLoading ? '' : 'No hay inscripciones disponibles',
               },
             }}
             isLoading={isLoading}

@@ -25,7 +25,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Teacher from '@material-ui/icons/School';
 import SchoolProgram from '@material-ui/icons/Extension';
-import Admin from '@material-ui/icons/Group';
+import Users from '@material-ui/icons/Group';
+import Help from '@material-ui/icons/Help';
+import AccountBox from '@material-ui/icons/AccountBox';
 import Face from '@material-ui/icons/Face';
 import Subject from '@material-ui/icons/LocalLibrary';
 import InsertInvitation from '@material-ui/icons/InsertInvitation';
@@ -36,17 +38,44 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 import { Collapse } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import GenerateReport from '../GenerateReport';
+import WelcomeModal from '../WelcomeModal';
 import CustomizedSnackbar from '../Snackbar';
 import { getConstance } from '../../actions/student';
-import { findCurrentSchoolPeriod, cleanSelectedSchoolPeriod } from '../../actions/schoolPeriod';
+import {
+  findCurrentSchoolPeriod,
+  cleanSelectedSchoolPeriod,
+  getList,
+  cleanGetList,
+} from '../../actions/schoolPeriod';
+import { getReport } from '../../actions/admin';
+import Footer from '../Footer';
+import {
+  getCurrentEnrolledSubjects,
+  cleanGetCurrentEnrolledSubjects,
+} from '../../actions/studentInscription';
+
 import {
   removeSessionGeoToken,
   getSessionUserRol,
   getSessionUserId,
   getSessionGeoToken,
   getSessionUser,
+  setHideWelcomeModal,
+  getHideWelcomeModal,
+  getSessionIsMainUser,
+  getSessionStudentId,
 } from '../../storage/sessionStorage';
+import { tutorialSteps } from './tooltips';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
+import Banner from '../../images/banner.jpg';
+import UcvIcon from '../../icons/Ucv';
+import IngIcon from '../../icons/Ing';
+import PggqIcon from '../../icons/Pggq';
+import CienciasIcon from '../../icons/Ciencias';
+import manualA from '../../docs/manualA.pdf';
+import manualE from '../../docs/manualE.pdf';
+import manualP from '../../docs/manualP.pdf';
 
 const drawerWidth = 250;
 
@@ -70,6 +99,12 @@ const styles = (theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+  },
+  emblem: {
+    width: 400,
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   menuButton: {
     marginLeft: 12,
@@ -113,11 +148,19 @@ const styles = (theme) => ({
   AppBarInside: {
     justifyContent: 'space-between',
     paddingRight: 0,
+    backgroundImage: `url(${Banner})`,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing.unit * 3,
     maxWidth: '94%',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100vh',
+    justifyContent: 'space-between',
   },
   itemText: {
     textTransform: 'capitalize',
@@ -129,8 +172,10 @@ class MenuApp extends React.Component {
     super();
     this.state = {
       openDownload: false,
-      open: false,
+      open: true,
+      openWelcomeModal: !getHideWelcomeModal(),
       anchorEl: null,
+      openAnnualReportModal: false,
       options: [
         {
           link: 'inicio',
@@ -143,7 +188,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'inscripcion',
-          name: 'Inscripcion',
+          name: 'Inscripción',
           component: Inscription,
           clicked: false,
           roles: ['S'],
@@ -152,7 +197,7 @@ class MenuApp extends React.Component {
         },
         {
           link: 'mis-cursos',
-          name: 'Mis Cursos',
+          name: 'Asignaturas impartidas',
           component: Cursos,
           clicked: false,
           roles: ['T'],
@@ -160,17 +205,8 @@ class MenuApp extends React.Component {
           options: false,
         },
         {
-          link: 'administradores',
-          name: 'Administradores',
-          component: Admin,
-          clicked: false,
-          roles: ['A'],
-          open: false,
-          options: false,
-        },
-        {
           link: 'programas-academicos',
-          name: 'Programas Academicos',
+          name: 'Programas Académicos',
           component: SchoolProgram,
           clicked: false,
           roles: ['A'],
@@ -178,26 +214,38 @@ class MenuApp extends React.Component {
           options: false,
         },
         {
-          link: 'profesores',
-          name: 'Profesores',
-          component: Teacher,
+          link: 'usuarios',
+          name: 'Usuarios',
+          component: Users,
           clicked: false,
           roles: ['A'],
           open: false,
-          options: false,
+          options: [
+            {
+              link: 'administradores',
+              name: 'Administradores',
+              component: AccountBox,
+              clicked: false,
+            },
+
+            {
+              link: 'profesores',
+              name: 'Profesores',
+              component: Teacher,
+              clicked: false,
+            },
+            {
+              link: 'estudiantes',
+              name: 'Estudiantes',
+              component: Face,
+              clicked: false,
+            },
+          ],
         },
+
         {
-          link: 'estudiantes',
-          name: 'Estudiantes',
-          component: Face,
-          clicked: false,
-          roles: ['A'],
-          open: false,
-          options: false,
-        },
-        {
-          link: 'materias',
-          name: 'Materias',
+          link: 'asignaturas',
+          name: 'Asignaturas',
           component: Subject,
           clicked: false,
           roles: ['A'],
@@ -230,18 +278,40 @@ class MenuApp extends React.Component {
     };
   }
 
+  handleCloseWelcomeModal = () => {
+    this.setState({ openWelcomeModal: false });
+    setHideWelcomeModal();
+  };
+
   componentDidMount = () => {
-    const { findCurrentSchoolPeriodDispatch } = this.props;
+    const {
+      findCurrentSchoolPeriodDispatch,
+      getListSchoolPeriodDispatch,
+      getCurrentEnrolledSubjectsDispatch,
+    } = this.props;
+
     const rol = getSessionUserRol();
 
     if (rol === 'S' || rol === 'T') {
       findCurrentSchoolPeriodDispatch();
+      if (rol === 'S') {
+        const id = getSessionStudentId();
+        getCurrentEnrolledSubjectsDispatch(id);
+      }
+    } else if (rol === 'A') {
+      getListSchoolPeriodDispatch();
     }
   };
 
   componentWillUnmount = () => {
-    const { cleanSelectedSchoolPeriodDispatch } = this.props;
+    const {
+      cleanSelectedSchoolPeriodDispatch,
+      cleanGetListSchoolPeriodDispatch,
+      cleanGetCurrentEnrolledSubjectsDispatch,
+    } = this.props;
     cleanSelectedSchoolPeriodDispatch();
+    cleanGetListSchoolPeriodDispatch();
+    cleanGetCurrentEnrolledSubjectsDispatch();
   };
 
   componentWillMount = () => {
@@ -258,6 +328,10 @@ class MenuApp extends React.Component {
 
   handleMenu = (event) => {
     this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleOpenWelcomeModal = () => {
+    this.setState({ openWelcomeModal: true });
   };
 
   handleOpenDownload = () => {
@@ -282,7 +356,7 @@ class MenuApp extends React.Component {
     switch (rol) {
       case 'A':
         this.handleClose();
-        history.push(`/administradores/modificar/${id}`);
+        history.push(`/usuarios/administradores/modificar/${id}`);
         break;
       default:
         this.handleClose();
@@ -323,12 +397,30 @@ class MenuApp extends React.Component {
       getConstanceDispatch,
       location,
       inscriptionVisible,
+      schoolPeriods,
+      getReportDispatch,
+      currentSubjects,
     } = this.props;
-    const { anchorEl, options, open: openOption, openDownload } = this.state;
+    const {
+      anchorEl,
+      options,
+      open: openOption,
+      openDownload,
+      openWelcomeModal,
+      openAnnualReportModal,
+    } = this.state;
     const open = Boolean(anchorEl);
     const rol = getSessionUserRol();
     const userSession = getSessionUser();
     const userId = userSession ? userSession[USER_INSTANCE[rol]].id : null;
+    const isMain = getSessionIsMainUser() === 'true';
+    const setOpenAnnualReportModal = (val) => {
+      this.setState({ openAnnualReportModal: val });
+    };
+    const inscriptionId =
+      currentSubjects && currentSubjects.length
+        ? currentSubjects[0].school_period_student_id
+        : null;
     return (
       <div className={classes.root}>
         <CssBaseline />
@@ -349,11 +441,22 @@ class MenuApp extends React.Component {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              GestionGEO
-            </Typography>
-
+            {openOption && <div />}
+            <div className={classes.emblem}>
+              <UcvIcon size={40} />
+              <IngIcon size={45} />
+              <Typography variant="h6" color="inherit" noWrap>
+                GestionGEO
+              </Typography>
+              <CienciasIcon size={40} />
+              <PggqIcon size={45} />
+            </div>
             <div>
+              {tutorialSteps[rol] && (
+                <IconButton onClick={this.handleOpenWelcomeModal} color="inherit">
+                  <Help />
+                </IconButton>
+              )}
               <IconButton
                 aria-owns={open ? 'menu-appbar' : undefined}
                 aria-haspopup="true"
@@ -414,8 +517,8 @@ class MenuApp extends React.Component {
             {options
               .filter(
                 (option) =>
-                  (option.roles.some((item) => item === rol) && option.name !== 'Inscripcion') ||
-                  (option.name === 'Inscripcion' && rol === 'S' && inscriptionVisible)
+                  (option.roles.some((item) => item === rol) && option.name !== 'Inscripción') ||
+                  (option.name === 'Inscripción' && rol === 'S' && inscriptionVisible)
               )
               .map((option) => (
                 <Fragment key={option.name}>
@@ -484,7 +587,7 @@ class MenuApp extends React.Component {
                   ) : null}
                 </Fragment>
               ))}
-            {userSession && ['A', 'T'].indexOf(rol) !== -1 ? (
+            {userSession && ['T', 'A', 'S'].indexOf(rol) !== -1 ? (
               <>
                 <ListItem button onClick={this.handleOpenDownload}>
                   <ListItemIcon>
@@ -496,19 +599,64 @@ class MenuApp extends React.Component {
 
                 <Collapse in={openDownload} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
-                    {CONSTANCES[rol].map(({ name, userType, constanceType }) => (
-                      <ListItem
-                        button
-                        key={name}
-                        onClick={() => getConstanceDispatch(userId, userType, constanceType)}
-                        className={classes.nested}
-                      >
-                        <ListItemIcon>
-                          <div style={{ width: '10px' }} />
-                        </ListItemIcon>
-                        <ListItemText primary={name} className={classes.itemText} />
-                      </ListItem>
-                    ))}
+                    {CONSTANCES[rol]
+                      .filter(
+                        (item) =>
+                          [
+                            'study',
+                            'studentHistorical',
+                            'academicLoad',
+                            'workTeacher',
+                            !inscriptionId ? 'inscription' : undefined,
+                          ].indexOf(item.constanceType) === -1 &&
+                          (item.constanceType !== 'workAdministrator' || !isMain)
+                      )
+                      .map(({ name, userType, constanceType }) => (
+                        <ListItem
+                          button
+                          key={name}
+                          onClick={() =>
+                            constanceType == 'AnnualReport'
+                              ? setOpenAnnualReportModal(true)
+                              : getConstanceDispatch(
+                                  userId,
+                                  userType,
+                                  constanceType,
+                                  rol === 'S' && constanceType == 'inscription'
+                                    ? {
+                                        inscriptionId,
+                                      }
+                                    : undefined
+                                )
+                          }
+                          className={classes.nested}
+                        >
+                          <ListItemIcon>
+                            <div style={{ width: '10px' }} />
+                          </ListItemIcon>
+                          <ListItemText primary={name} className={classes.itemText} />
+                        </ListItem>
+                      ))}
+                    <ListItem
+                      button
+                      className={classes.nested}
+                      onClick={() => {
+                        let manual = null;
+                        if (rol === 'A') {
+                          manual = manualA;
+                        } else if (rol === 'S') {
+                          manual = manualE;
+                        } else {
+                          manual = manualP;
+                        }
+                        window.open(manual, '_blank');
+                      }}
+                    >
+                      <ListItemIcon>
+                        <div style={{ width: '10px' }} />
+                      </ListItemIcon>
+                      <ListItemText primary="Manual de usuario" className={classes.itemText} />
+                    </ListItem>
                   </List>
                 </Collapse>
               </>
@@ -516,11 +664,27 @@ class MenuApp extends React.Component {
           </List>
         </Drawer>
         <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <CustomizedSnackbar />
-          {children}
-          {this.validateToken()}
+          <section style={{ marginBottom: 20 }}>
+            <div className={classes.toolbar} />
+            <CustomizedSnackbar />
+            {children}
+            {this.validateToken()}
+          </section>
+          <Footer />
         </main>
+        {tutorialSteps[rol] && (
+          <WelcomeModal
+            tutorialSteps={tutorialSteps[rol]}
+            open={openWelcomeModal}
+            handleCloseWelcomeModal={this.handleCloseWelcomeModal}
+          />
+        )}
+        <GenerateReport
+          schoolPeriods={schoolPeriods}
+          getReport={getReportDispatch}
+          openModal={openAnnualReportModal}
+          setOpenModal={setOpenAnnualReportModal}
+        />
       </div>
     );
   }
@@ -541,6 +705,7 @@ MenuApp.propTypes = {
     AppBarInside: PropTypes.string,
     content: PropTypes.string,
     itemText: PropTypes.string,
+    emblem: PropTypes.string,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -557,6 +722,8 @@ MenuApp.propTypes = {
   inscriptionVisible: PropTypes.bool,
   findCurrentSchoolPeriodDispatch: PropTypes.func.isRequired,
   cleanSelectedSchoolPeriodDispatch: PropTypes.func.isRequired,
+  getCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
+  cleanGetCurrentEnrolledSubjectsDispatch: PropTypes.func.isRequired,
 };
 MenuApp.defaultProps = {
   inscriptionVisible: false,
@@ -564,12 +731,21 @@ MenuApp.defaultProps = {
 const mS = (state) => ({
   showMessage: state.snackbarReducer.show,
   message: state.snackbarReducer.message,
-  inscriptionVisible: !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible,
+  inscriptionVisible:
+    !!state.schoolPeriodReducer.selectedSchoolPeriod.inscription_visible ||
+    (getSessionUserRol() === 'S' && getSessionUser().student.allow_post_inscription),
+  currentSubjects: state.studentInscriptionReducer.currentEnrolledSubjects.enrolled_subjects,
+  schoolPeriods: state.schoolPeriodReducer.list,
 });
 const mD = {
   getConstanceDispatch: getConstance,
   findCurrentSchoolPeriodDispatch: findCurrentSchoolPeriod,
   cleanSelectedSchoolPeriodDispatch: cleanSelectedSchoolPeriod,
+  getListSchoolPeriodDispatch: getList,
+  cleanGetListSchoolPeriodDispatch: cleanGetList,
+  getReportDispatch: getReport,
+  getCurrentEnrolledSubjectsDispatch: getCurrentEnrolledSubjects,
+  cleanGetCurrentEnrolledSubjectsDispatch: cleanGetCurrentEnrolledSubjects,
 };
 const MenuAppWrapper = withStyles(styles, { withTheme: true })(connect(mS, mD)(MenuApp));
 export default MenuAppWrapper;

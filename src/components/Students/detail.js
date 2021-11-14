@@ -3,10 +3,12 @@ import MaterialTable from 'material-table';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, FieldArray, submit, formValueSelector, Field } from 'redux-form';
 import PropTypes from 'prop-types';
 import AddIcon from '@material-ui/icons/Add';
+import Chip from '@material-ui/core/Chip';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -51,6 +53,9 @@ const styles = () => ({
   buttonDelete: {
     display: 'flex',
     alignItems: 'flex-end',
+  },
+  headerOptions: {
+    display: 'flex',
   },
 });
 
@@ -100,7 +105,7 @@ class StudentDetail extends Component {
                       field: `${subject}.subjectId`,
                       id: `${subject}.subjectId`,
                       type: 'select',
-                      label: 'Materia',
+                      label: 'Asignatura',
                       options: this.unselectedSubjects(index).map((item) => {
                         return {
                           key: item.name,
@@ -112,7 +117,7 @@ class StudentDetail extends Component {
                       field: `${subject}.qualification`,
                       id: `${subject}.qualification`,
                       type: 'number',
-                      label: 'Calificacion',
+                      label: 'Calificación',
                       min: 0,
                       max: 20,
                     },
@@ -166,6 +171,9 @@ class StudentDetail extends Component {
       getConstance,
       teachersGuide,
       width,
+      handleRestoreUser,
+      convertUserTo,
+      initialValues,
     } = this.props;
     const { func } = this.state;
     const rol = getSessionUserRol();
@@ -176,249 +184,302 @@ class StudentDetail extends Component {
       <Form onSubmit={handleSubmit(saveStudent)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>
-              {userId
-                ? `Estudiante: ${student.first_surname} ${student.first_name}`
-                : 'Nuevo Estudiante'}
-            </h3>
-            <hr />
-          </Grid>
-          <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Nombre',
-                    field: 'firstName',
-                    id: 'firstName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo Nombre',
-                    field: 'secondName',
-                    id: 'secondName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Apellido',
-                    field: 'firstSurname',
-                    id: 'firstSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo apellido',
-                    field: 'secondSurname',
-                    id: 'secondSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Cedula',
-                    field: 'identification',
-                    id: 'identification',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Email',
-                    field: 'email',
-                    id: 'email',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Movil',
-                    field: 'mobile',
-                    id: 'mobile',
-                    type: 'phone',
-                  },
-
-                  {
-                    label: 'Telefono de habitación',
-                    field: 'telephone',
-                    id: 'telephone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono Trabajo',
-                    field: 'workPhone',
-                    id: 'workPhone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Sexo',
-                    field: `sex`,
-                    id: `sex`,
-                    type: 'select',
-                    options: jsonToOptions(GENDER),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Nacionalidad',
-                    field: `nationality`,
-                    id: `nationality`,
-                    type: 'select',
-                    options: jsonToOptions(NATIONALITY),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Nivel de instruccion',
-                    field: 'levelInstruction',
-                    id: 'levelInstruction',
-                    type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
-                  },
-                  {
-                    label: 'Programa academico',
-                    field: `schoolProgram`,
-                    id: `schoolProgram`,
-                    type: userId ? 'hidden' : 'select',
-                    options: schoolPrograms.map((post) => {
-                      return {
-                        key: post.school_program_name,
-                        value: post.id,
-                      };
-                    }),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Tipo',
-                    field: `studentType`,
-                    id: `studentType`,
-                    type: userId ? 'hidden' : 'select',
-                    options: jsonToOptions(STUDENT_TYPE),
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Tipo de ingreso',
-                    field: 'typeIncome',
-                    id: 'typeIncome',
-                    type: !userId && rol === 'A' ? 'text' : 'hidden',
-                  },
-                  {
-                    label: 'Creditos otorgados',
-                    field: 'creditsGranted',
-                    id: 'creditsGranted',
-                    type: !userId && rol === 'A' ? 'number' : 'hidden',
-                    min: 0,
-                  },
-
-                  {
-                    label: 'Universidad de Origen',
-                    field: 'homeUniversity',
-                    id: 'homeUniversity',
-                    type: !userId && rol === 'A' ? 'text' : 'hidden',
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: 'Profesor Guia',
-                    field: `guideTeacherId`,
-                    id: `guideTeacherId`,
-                    type: !userId && rol === 'A' ? 'select' : 'hidden',
-                    options: teachersGuide.map((item) => ({
-                      key: `${item.first_name} ${item.first_surname}`,
-                      value: item.id,
-                    })),
-                    disabled: rol !== 'A',
-                  },
-
-                  {
-                    label: '¿Posee alguna discapacidad?',
-                    field: 'withDisabilities',
-                    id: 'withDisabilities',
-                    type: rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
-                    label: '¿Profesor de la UCV?',
-                    field: 'isUcvTeacher',
-                    id: 'isUcvTeacher',
-                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: '¿Posee empleo actualmente?',
-                    field: 'withWork',
-                    id: 'withWork',
-                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
-                    disabled: rol !== 'A',
-                  },
-                  {
-                    label: '¿Usuario activo?',
-                    field: 'active',
-                    id: 'active',
-                    type: userId && rol === 'A' ? 'switch' : 'hidden',
-                  },
-                  {
-                    label: '¿Puede Inscribir tesis?',
-                    field: 'isAvailableFinalWork',
-                    id: 'isAvailableFinalWork',
-                    type: !userId && rol === 'A' ? 'switch' : 'hidden',
-                  },
-                ]}
-              </RenderFields>
-              <Field component="input" name="userId" type="hidden" style={{ height: 0 }} />
-            </Grid>
-            {!userId && (
-              <>
-                <Grid item xs={12}>
-                  <Typography variant="h6" gutterBottom>
-                    Materias por equivalencia
-                  </Typography>
-                </Grid>
-                <Grid container item xs={12}>
-                  <FieldArray name="equivalence" component={this.renderSubjects} />
-                </Grid>
-              </>
-            )}
-
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
+              <h3>
+                {userId
+                  ? `Estudiante: ${student.first_surname || ''} ${student.first_name || ''}`
+                  : 'Nuevo Estudiante'}
+              </h3>
+              {userId && (
+                <div className={classes.headerOptions}>
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
                     <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
+                      variant="outlined"
                       onClick={() =>
                         userId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('estudiante')
+                          ? this.handleDialogShow('reestaurar contraseña del', handleRestoreUser)
+                          : false
                       }
-                      disabled={!valid || pristine || submitting}
+                      disabled={userId && !student.id}
                     >
-                      Guardar Cambios
+                      Reestablecer contraseña
                     </Button>
-                  </Grid>
+                  </Tooltip>
 
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      convertUserTo({ userType: 'profesores', userData: initialValues });
+                    }}
+                    disabled={userId && !student.id}
+                  >
+                    Convertir en Profesor
+                  </Button>
+                </div>
+              )}
+            </Grid>
+            <hr />
+          </Grid>
+          {!userId || student.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Nombre',
+                      field: 'firstName',
+                      id: 'firstName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo Nombre',
+                      field: 'secondName',
+                      id: 'secondName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Apellido',
+                      field: 'firstSurname',
+                      id: 'firstSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo apellido',
+                      field: 'secondSurname',
+                      id: 'secondSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'cédula',
+                      field: 'identification',
+                      id: 'identification',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Email',
+                      field: 'email',
+                      id: 'email',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Móvil',
+                      field: 'mobile',
+                      id: 'mobile',
+                      type: 'phone',
+                    },
 
-                  <Grid item xs={12} sm={3}>
-                    {userId ? (
+                    {
+                      label: 'Teléfono de habitación',
+                      field: 'telephone',
+                      id: 'telephone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Teléfono Trabajo',
+                      field: 'workPhone',
+                      id: 'workPhone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Sexo',
+                      field: `sex`,
+                      id: `sex`,
+                      type: 'select',
+                      options: jsonToOptions(GENDER),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Nacionalidad',
+                      field: `nationality`,
+                      id: `nationality`,
+                      type: 'select',
+                      options: jsonToOptions(NATIONALITY),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      select: {
+                        label: 'Nivel de instrucción',
+                        field: 'levelInstruction',
+                        id: 'levelInstruction',
+                        options: jsonToOptions(LEVEL_INSTRUCTION),
+                      },
+                      text: {
+                        label: 'Título',
+                        field: 'levelInstructionName',
+                        id: 'levelInstructionName',
+                      },
+                      type: 'instruction',
+                    },
+                    {
+                      label: 'Programa académico',
+                      field: `schoolProgram`,
+                      id: `schoolProgram`,
+                      type: userId ? 'hidden' : 'select',
+                      options: schoolPrograms.map((post) => {
+                        return {
+                          key: post.school_program_name,
+                          value: post.id,
+                        };
+                      }),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Tipo',
+                      field: `studentType`,
+                      id: `studentType`,
+                      type: userId ? 'hidden' : 'select',
+                      options: jsonToOptions(STUDENT_TYPE),
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: 'Tipo de ingreso',
+                      field: 'typeIncome',
+                      id: 'typeIncome',
+                      type: 'hidden',
+                      tooltipText:
+                        'Medio por el cual el estudiante ingreso al Postgrado en Geoquímica. Ej. Evaluación por comité',
+                    },
+                    {
+                      label: 'Créditos otorgados',
+                      field: 'creditsGranted',
+                      id: 'creditsGranted',
+                      type: !userId && rol === 'A' ? 'number' : 'hidden',
+                      min: 0,
+                      tooltipText:
+                        'Unidades de Crédito reconocidas antes de ingresar al Postgrado en Geoquímica',
+                    },
+
+                    {
+                      label: 'Universidad de Origen',
+                      field: 'homeUniversity',
+                      id: 'homeUniversity',
+                      type: !userId && rol === 'A' ? 'text' : 'hidden',
+                      disabled: rol !== 'A',
+                      tooltipText:
+                        'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simón Bolívar, Universidad de Carabobo, etc... ',
+                    },
+                    {
+                      label: 'Profesor Guia',
+                      field: `guideTeacherId`,
+                      id: `guideTeacherId`,
+                      type: !userId && rol === 'A' ? 'select' : 'hidden',
+                      options: teachersGuide.map((item) => ({
+                        key: `${item.first_name} ${item.first_surname}`,
+                        value: item.id,
+                      })),
+                      disabled: rol !== 'A',
+                    },
+
+                    {
+                      label: '¿Posee alguna discapacidad?',
+                      field: 'withDisabilities',
+                      id: 'withDisabilities',
+                      type: rol === 'A' ? 'switch' : 'hidden',
+                    },
+                    {
+                      label: '¿Profesor de la UCV?',
+                      field: 'isUcvTeacher',
+                      id: 'isUcvTeacher',
+                      type: !userId && rol === 'A' ? 'switch' : 'hidden',
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: '¿Posee empleo actualmente?',
+                      field: 'withWork',
+                      id: 'withWork',
+                      type: !userId && rol === 'A' ? 'switch' : 'hidden',
+                      disabled: rol !== 'A',
+                    },
+                    {
+                      label: '¿Usuario activo?',
+                      field: 'active',
+                      id: 'active',
+                      type: userId && rol === 'A' ? 'switch' : 'hidden',
+                      tooltipText:
+                        'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
+                    },
+                    {
+                      label: '¿Puede Inscribir tesis?',
+                      field: 'isAvailableFinalWork',
+                      id: 'isAvailableFinalWork',
+                      type: !userId && rol === 'A' ? 'switch' : 'hidden',
+                      tooltipText:
+                        'Habilitar de forma manual la inscripción de tesis de un estudiante en un Programa académico',
+                    },
+                  ]}
+                </RenderFields>
+                <Field component="input" name="userId" type="hidden" style={{ height: 0 }} />
+              </Grid>
+              {!userId && (
+                <>
+                  <Grid item xs={12}>
+                    <Typography variant="h6" gutterBottom>
+                      Asignaturas por equivalencia
+                    </Typography>
+                  </Grid>
+                  <Grid container item xs={12}>
+                    <FieldArray name="equivalence" component={this.renderSubjects} />
+                  </Grid>
+                </>
+              )}
+
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleStudentDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          userId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('estudiante')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {userId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleStudentDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
-        {userId && (
+        {student.id && (
           <Grid container justify="center">
             <Grid item xs={12} style={{ marginTop: '30px' }}>
               <MaterialTable
-                title={matches ? 'Programas Academicos del estudiante' : ''}
+                title={matches ? 'Programas Académicos del estudiante' : ''}
                 components={{
                   Action: (props) => {
                     const {
@@ -428,44 +489,52 @@ class StudentDetail extends Component {
                     switch (id) {
                       case 'edit':
                         return (
-                          <EditIcon
-                            style={{ cursor: 'pointer', marginLeft: '30px' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Editar información del estudiante en el Programa académico">
+                            <EditIcon
+                              style={{ cursor: 'pointer', marginLeft: '30px' }}
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       case 'inscription':
                         return (
-                          <Inscription
-                            style={{ cursor: 'pointer' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Inscribir al estudiante en el Programa académico">
+                            <Inscription
+                              style={{ cursor: 'pointer' }}
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       case 'constances':
                         return (
                           <div>
-                            <FormControl>
-                              <InputLabel
-                                htmlFor={`select-contance-${data.id}-label`}
-                                style={{ top: 0, transform: 'none' }}
-                              >
-                                <Download />
-                              </InputLabel>
-                              <Select
-                                label={`select-contance-${data.id}-label`}
-                                id={`select-contance-${data.id}`}
-                                input={<InputBase />}
-                                value=""
-                                onChange={(event) =>
-                                  getConstance(data.id, USER_INSTANCE.S, event.target.value)
-                                }
-                              >
-                                {CONSTANCES.S.map(({ name, constanceType }) => (
-                                  <MenuItem key={constanceType} value={constanceType}>
-                                    {name}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
+                            <Tooltip title="Descargar constancias">
+                              <FormControl>
+                                <InputLabel
+                                  htmlFor={`select-contance-${data.id}-label`}
+                                  style={{ top: 0, transform: 'none' }}
+                                >
+                                  <Download />
+                                </InputLabel>
+                                <Select
+                                  label={`select-contance-${data.id}-label`}
+                                  id={`select-contance-${data.id}`}
+                                  input={<InputBase />}
+                                  value=""
+                                  onChange={(event) =>
+                                    getConstance(data.id, USER_INSTANCE.S, event.target.value)
+                                  }
+                                >
+                                  {CONSTANCES.S.filter(
+                                    (item) => item.constanceType !== 'inscription'
+                                  ).map(({ name, constanceType }) => (
+                                    <MenuItem key={constanceType} value={constanceType}>
+                                      {name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                            </Tooltip>
                           </div>
                         );
                       case 'delete':
@@ -473,17 +542,23 @@ class StudentDetail extends Component {
                           return '';
                         }
                         return (
-                          <DeleteIcon
-                            style={{ cursor: 'pointer' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Remover al estudiante del Programa académico">
+                            <DeleteIcon
+                              style={{ cursor: 'pointer' }}
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       case 'add':
                         return (
-                          <AddIcon
-                            style={{ cursor: 'pointer' }}
-                            onClick={(event) => onClick(event, data)}
-                          />
+                          <Tooltip title="Agregar al estudiante un nuevo programa académico">
+                            <Chip
+                              style={{ fontWeight: 'bold' }}
+                              color="primary"
+                              label="+ Agregar"
+                              onClick={(event) => onClick(event, data)}
+                            />
+                          </Tooltip>
                         );
                       default:
                         return 'x';
@@ -492,7 +567,7 @@ class StudentDetail extends Component {
                 }}
                 columns={[
                   { title: '#', field: 'id', hidden: true },
-                  { title: 'Programa Academico', field: 'schoolProgram' },
+                  { title: 'Programa académico', field: 'schoolProgram' },
                   { title: 'Estatus Actual', field: 'current_status' },
                 ]}
                 data={student.student.map((item) => ({
@@ -509,7 +584,7 @@ class StudentDetail extends Component {
                   {
                     id: 'edit',
                     icon: 'visibility',
-                    tooltip: 'Ver programa academico',
+                    tooltip: 'Ver programa académico',
                     onClick: (_, rowData) => {
                       const selectedSchoolProgram = student.student.find(
                         (item) => item.id === rowData.id
@@ -529,7 +604,7 @@ class StudentDetail extends Component {
                     icon: Inscription,
                     tooltip: 'Inscribir',
                     onClick: (_, rowData) =>
-                      history.push(`/estudiantes/inscripciones/${userId}/${rowData.id}`),
+                      history.push(`/usuarios/estudiantes/inscripciones/${userId}/${rowData.id}`),
                   },
                   {
                     id: 'constances',
@@ -549,7 +624,7 @@ class StudentDetail extends Component {
                   {
                     id: 'add',
                     icon: 'add',
-                    tooltip: 'Agregar programa academico',
+                    tooltip: 'Agregar programa académico',
                     isFreeAction: true,
                     onClick: () =>
                       history.push(`${history.location.pathname}/programa-academico/agregar`, {
@@ -628,7 +703,7 @@ StudentDetail.defaultProps = {
 const studentValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'Cedula es requerida';
+    errors.identification = 'cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';
@@ -640,7 +715,7 @@ const studentValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'movil es requerido';
+    errors.mobile = 'móvil es requerido';
   }
   if (!values.email) {
     errors.email = 'Email es requerido';
@@ -657,7 +732,7 @@ const studentValidation = (values) => {
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.qualification) {
-        subjErrors.qualification = '*calificacion es requerido';
+        subjErrors.qualification = '*calificación es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
     });
@@ -669,10 +744,11 @@ const studentValidation = (values) => {
 
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
-  if (!values.schoolProgram) errors.schoolProgram = 'Programa academico del estudiante Requerido';
+  if (!values.schoolProgram) errors.schoolProgram = 'Programa académico del estudiante Requerido';
   if (!values.studentType) errors.studentType = ' Tipo Requerido';
   if (!values.homeUniversity) errors.homeUniversity = 'Universidad de origen Requerido';
-  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instrucción Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instrucción Requerido';
 
   return errors;
 };
@@ -720,11 +796,9 @@ StudentDetailWrapper = connect(
       studentType: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.student_type
         : '',
-      typeIncome: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.type_income
-        : '',
+      typeIncome: 'Comité Académico',
       creditsGranted: state.studentReducer.selectedStudent.student
-        ? state.studentReducer.selectedStudent.student.credits_granted
+        ? state.studentReducer.selectedStudent.student.credits_granted ?? 0
         : 0,
       userId: state.studentReducer.selectedStudent.student
         ? state.studentReducer.selectedStudent.student.id
@@ -748,6 +822,9 @@ StudentDetailWrapper = connect(
         : false,
       levelInstruction: state.studentReducer.selectedStudent.level_instruction
         ? state.studentReducer.selectedStudent.level_instruction
+        : '',
+      levelInstructionName: state.studentReducer.selectedStudent.level_instruction_name
+        ? state.studentReducer.selectedStudent.level_instruction_name
         : '',
       equivalence: [],
 

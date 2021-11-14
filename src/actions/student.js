@@ -82,10 +82,12 @@ export const updateSchoolProgram = (student) => async (dispatch) => {
     first_surname: student.first_surname,
     second_surname: student.second_surname,
     telephone: student.telephone,
+    allow_post_inscription: student.allowPostInscription,
     mobile: student.mobile,
     work_phone: student.work_phone,
     email: student.email,
     level_instruction: student.level_instruction,
+    level_instruction_name: student.levelInstructionName,
     active: student.active,
     with_disabilities: student.with_disabilities,
     sex: student.sex,
@@ -134,6 +136,7 @@ export const saveSchoolProgram = (student) => async (dispatch) => {
     work_phone: student.work_phone,
     email: student.email,
     level_instruction: student.level_instruction,
+    level_instruction_name: student.levelInstructionName,
     active: student.active,
     with_disabilities: student.with_disabilities,
     sex: student.sex,
@@ -201,6 +204,7 @@ export const updateStudent = (student) => async (dispatch) => {
     work_phone: student.workPhone,
     email: student.email,
     level_instruction: student.levelInstruction,
+    level_instruction_name: student.levelInstructionName,
     active: student.active,
     with_disabilities: student.withDisabilities,
     sex: student.sex,
@@ -217,12 +221,13 @@ export const updateStudent = (student) => async (dispatch) => {
     with_work: student.withWork,
     test_period: student.testPeriod,
     current_status: student.currentStatus,
+    allow_post_inscription: student.allowPostInscription,
     // degrees:student.degrees,
     equivalences: student.equivalence.length
       ? student.equivalence.map((item) => ({
-          subject_id: item.subjectId,
-          qualification: item.qualification,
-        }))
+        subject_id: item.subjectId,
+        qualification: item.qualification,
+      }))
       : undefined,
   };
   return Student.update(payload)
@@ -252,6 +257,7 @@ export const saveStudent = (student) => async (dispatch) => {
     work_phone: student.workPhone,
     email: student.email,
     level_instruction: student.levelInstruction,
+    level_instruction_name: student.levelInstructionName,
     with_disabilities: student.withDisabilities,
     sex: student.sex,
     nationality: student.nationality,
@@ -267,9 +273,9 @@ export const saveStudent = (student) => async (dispatch) => {
     // degrees:student.degrees,
     equivalences: student.equivalence.length
       ? student.equivalence.map((item) => ({
-          subject_id: item.subjectId,
-          qualification: item.qualification,
-        }))
+        subject_id: item.subjectId,
+        qualification: item.qualification,
+      }))
       : undefined,
   };
 
@@ -319,7 +325,7 @@ export const getAvailableSubjects = (studentId, schoolPeriodId) => async (dispat
           availableDoctoralExam: false,
         },
       });
-      //show(error.message, 'error')(dispatch);
+      show(error.message, 'error')(dispatch);
       throw error;
     });
 };
@@ -336,8 +342,10 @@ export const cleanAvailableSubjects = () => async (dispatch) => {
   });
 };
 
-export const getConstance = (studentId, userType, constanceType) => async (dispatch) => {
-  return Constance.getConstance(studentId, userType, constanceType)
+export const getConstance = (studentId, userType, constanceType, others = null) => async (
+  dispatch
+) => {
+  return Constance.getConstance(studentId, userType, constanceType, others)
     .then(() => {
       return true;
     })
@@ -357,30 +365,30 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
     amount_paid: value.amountPaid,
     doctoral_exam: value.doctoralExam
       ? {
-          status: value.doctoralExam,
-        }
+        status: value.doctoralExam,
+      }
       : undefined,
     final_works:
       value.finalWorks && value.finalWorks.length
         ? value.finalWorks.map((finalWork) => ({
-            title: finalWork.title,
-            status: finalWork.status,
-            project_id: finalWork.projectId || undefined,
-            subject_id: finalWork.subjectId,
-            description_status: finalWork.descriptionStatus || undefined,
-            approval_date: finalWork.approvalDate || undefined,
-            advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
-          }))
+          title: finalWork.title,
+          status: finalWork.status,
+          project_id: finalWork.projectId || undefined,
+          subject_id: finalWork.subjectId,
+          description_status: finalWork.descriptionStatus || undefined,
+          approval_date: finalWork.approvalDate || undefined,
+          advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
+        }))
         : undefined,
     projects:
       value.projects && value.projects.length
         ? value.projects.map((project) => ({
-            title: project.title,
-            status: project.status,
-            subject_id: project.subjectId,
-            description_status: project.descriptionStatus || undefined,
-            approval_date: project.approvalDate || undefined,
-          }))
+          title: project.title,
+          status: project.status,
+          subject_id: project.subjectId,
+          description_status: project.descriptionStatus || undefined,
+          approval_date: project.approvalDate || undefined,
+        }))
         : undefined,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
@@ -390,7 +398,7 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
   };
   return Student.addStudentPeriodSchool(payload)
     .then(() => {
-      show('Inscripcion sastifactoria', 'success')(dispatch);
+      show('Inscripción satisfactoria', 'success')(dispatch);
       return true;
     })
     .catch((error) => {
@@ -401,7 +409,7 @@ export const addStudentPeriodSchool = (value) => async (dispatch) => {
 export const deleteInscription = (id) => async (dispatch) => {
   return Student.deleteInscription(id)
     .then(() => {
-      show('Inscripcion, eliminada!', 'success')(dispatch);
+      show('Inscripción, eliminada!', 'success')(dispatch);
       return true;
     })
     .catch((error) => {
@@ -420,30 +428,30 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
     amount_paid: value.amountPaid,
     doctoral_exam: value.doctoralExam
       ? {
-          status: value.doctoralExam,
-        }
+        status: value.doctoralExam,
+      }
       : undefined,
     final_works:
       value.finalWorks && value.finalWorks.length
         ? value.finalWorks.map((finalWork) => ({
-            title: finalWork.title,
-            status: finalWork.status,
-            description_status: finalWork.descriptionStatus || undefined,
-            approval_date: finalWork.approvalDate || undefined,
-            project_id: finalWork.projectId || undefined,
-            subject_id: finalWork.subjectId,
-            advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
-          }))
+          title: finalWork.title,
+          status: finalWork.status,
+          description_status: finalWork.descriptionStatus || undefined,
+          approval_date: finalWork.approvalDate || undefined,
+          project_id: finalWork.projectId || undefined,
+          subject_id: finalWork.subjectId,
+          advisors: finalWork.advisors ? [{ teacher_id: finalWork.advisors }] : undefined,
+        }))
         : undefined,
     projects:
       value.projects && value.projects.length
         ? value.projects.map((project) => ({
-            description_status: project.descriptionStatus || undefined,
-            approval_date: project.approvalDate || undefined,
-            title: project.title,
-            status: project.status,
-            subject_id: project.subjectId,
-          }))
+          description_status: project.descriptionStatus || undefined,
+          approval_date: project.approvalDate || undefined,
+          title: project.title,
+          status: project.status,
+          subject_id: project.subjectId,
+        }))
         : undefined,
     subjects: value.subjects.map((subject) => ({
       school_period_subject_teacher_id: subject.subjectId,
@@ -453,7 +461,7 @@ export const editStudentPeriodSchool = (value) => async (dispatch) => {
   };
   return Student.editStudentPeriodSchool(payload)
     .then(() => {
-      show('Inscripcion modificada sastifactoriamente', 'success')(dispatch);
+      show('Inscripción modificada satisfactoriamente', 'success')(dispatch);
       return true;
     })
     .catch((error) => {

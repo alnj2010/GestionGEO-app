@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Grid } from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 
 const styles = () => ({});
-function SubjectTable({ subjects, setSubjectsSelected, message }) {
+function SubjectTable({ subjects, setSubjectsSelected, message, isLoading }) {
   const transformData = () => {
     if (subjects)
       return subjects.map((subject) => {
@@ -34,16 +34,20 @@ function SubjectTable({ subjects, setSubjectsSelected, message }) {
             field: 'school_period_subject_teacher_id',
             hidden: true,
           },
-          { title: 'Materia', field: 'subject' },
+          { title: 'Asignatura', field: 'subject' },
           { title: 'Profesor', field: 'teacher' },
           { title: 'Aranceles', field: 'duty' },
-          { title: 'Unidades de credito', field: 'uc' },
+          { title: 'Unidades de crédito', field: 'uc' },
           { title: 'Inscritos', field: 'enrolled_students' },
         ]}
         data={transformData()}
         localization={{
           body: {
-            emptyDataSourceMessage: message || 'No hay materias disponibles para inscribir',
+            emptyDataSourceMessage: isLoading ? (
+              <CircularProgress size={30} />
+            ) : (
+              message || 'No hay asignaturas disponibles para inscribir'
+            ),
           },
         }}
         options={{
@@ -66,6 +70,7 @@ export default withStyles(styles)(
   memo(
     SubjectTable,
     (prevProps, nextProps) =>
+      prevProps.isLoading === nextProps.isLoading &&
       prevProps.subjects.length === nextProps.subjects.length &&
       prevProps.message === nextProps.message
   )

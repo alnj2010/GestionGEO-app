@@ -15,8 +15,10 @@ class SchoolProgramsListContainer extends Component {
 
   componentDidMount = () => {
     const { getListDispatch, defineDispatch } = this.props;
-    getListDispatch().then(() => this.setState({ isLoading: false }));
-    defineDispatch('programa academico');
+    getListDispatch()
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
+    defineDispatch('programa académico');
   };
 
   componentWillUnmount = () => {
@@ -36,11 +38,6 @@ class SchoolProgramsListContainer extends Component {
     return (
       <SchoolProgramsList
         schoolPrograms={schoolPrograms}
-        localization={{
-          header: {
-            actions: 'Acciones',
-          },
-        }}
         isLoading={isLoading}
         history={history}
         handleSchoolProgramDetail={this.handleSchoolProgramDetail}

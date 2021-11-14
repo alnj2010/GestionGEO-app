@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as moment from 'moment';
 import MaterialTable from 'material-table';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, CircularProgress } from '@material-ui/core';
 import Cancel from '@material-ui/icons/Cancel';
 import { withStyles } from '@material-ui/core/styles';
 import Dialog from '../../Dialog';
@@ -37,6 +37,7 @@ class TableEnrolledSubjects extends Component {
       withdrawalDeadline,
       show,
       handleRetireSubject,
+      isLoading,
     } = this.props;
     const { func } = this.state;
     return (
@@ -46,26 +47,30 @@ class TableEnrolledSubjects extends Component {
           columns={[
             { title: 'id', field: 'id', hidden: true },
             { title: 'Codigo', field: 'code' },
-            { title: 'Materia', field: 'name' },
+            { title: 'Asignatura', field: 'name' },
             { title: 'Profesor', field: 'teacher' },
-            { title: 'Calificacion', field: 'qualification' },
+            { title: 'Calificación', field: 'qualification' },
             { title: 'Estado', field: 'status' },
           ]}
           data={
             currentSubjects
               ? currentSubjects.map((subj) => ({
-                  id: subj.id,
-                  code: subj.data_subject.subject.code,
-                  name: subj.data_subject.subject.name,
-                  teacher: `${subj.data_subject.teacher.user.first_name} ${subj.data_subject.teacher.user.first_surname}`,
-                  qualification: subj.qualification || 'Sin calificar',
-                  status: reverseJson(SUBJECT_STATE)[subj.status],
-                }))
+                id: subj.id,
+                code: subj.data_subject.subject.code,
+                name: subj.data_subject.subject.name,
+                teacher: `${subj.data_subject.teacher.user.first_name} ${subj.data_subject.teacher.user.first_surname}`,
+                qualification: subj.qualification || 'Sin calificar',
+                status: reverseJson(SUBJECT_STATE)[subj.status],
+              }))
               : []
           }
           localization={{
             body: {
-              emptyDataSourceMessage: 'No hay materias inscritas',
+              emptyDataSourceMessage: isLoading ? (
+                <CircularProgress size={30} />
+              ) : (
+                'no hay asignaturas inscritas'
+              ),
             },
 
             header: {
@@ -75,14 +80,14 @@ class TableEnrolledSubjects extends Component {
           actions={
             withdrawalDeadline && moment().isBefore(withdrawalDeadline)
               ? [
-                  (rowData) => ({
-                    icon: () => <Cancel />,
-                    tooltip: 'Retirar materia',
-                    disabled: rowData.status === reverseJson(SUBJECT_STATE)[SUBJECT_STATE.RETIRADO],
-                    onClick: () =>
-                      this.handleDialogShow('retirar', () => handleRetireSubject(rowData.id)),
-                  }),
-                ]
+                (rowData) => ({
+                  icon: () => <Cancel />,
+                  tooltip: 'Retirar asignatura',
+                  disabled: rowData.status === reverseJson(SUBJECT_STATE)[SUBJECT_STATE.RETIRADO],
+                  onClick: () =>
+                    this.handleDialogShow('retirar', () => handleRetireSubject(rowData.id)),
+                }),
+              ]
               : null
           }
           options={{

@@ -25,7 +25,7 @@ class MiPerfilContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/administradores');
+    history.push('/inicio');
   };
 
   render() {

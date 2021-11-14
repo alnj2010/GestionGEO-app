@@ -6,6 +6,7 @@ import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import handleExportCsv from '../../utils/handleExportCsv';
+import HelpButton from '../HelpButton';
 
 class SchoolProgramsList extends Component {
   constructor() {
@@ -38,6 +39,7 @@ class SchoolProgramsList extends Component {
     const { schoolPrograms, isLoading, history, handleDeleteSchoolProgram, width } = this.props;
     const { func } = this.state;
     const matches = isWidthUp('sm', width);
+
     return (
       <Grid container spacing={8}>
         <Grid item xs={12}>
@@ -49,7 +51,7 @@ class SchoolProgramsList extends Component {
             onClick={() => history.push(`/programas-academicos/agregar`)}
           >
             <Add />
-            Agregar programa academico
+            Agregar programa académico
           </Fab>
         </Grid>
         <Grid item xs={12}>
@@ -57,10 +59,35 @@ class SchoolProgramsList extends Component {
             columns={[
               { title: '#', field: 'id', hidden: true },
               { title: 'Nombre', field: 'schoolProgramName' },
-              { title: '# Unidades de credito', field: 'numCu' },
+              { title: '# Unidades de crédito', field: 'numCu' },
             ]}
             data={this.transformData(schoolPrograms)}
-            title={matches ? 'Programas Academicos' : ''}
+            title={
+              matches ? (
+                <>
+                  Programas Académicos
+                  <HelpButton>
+                    <div>
+                      <b>Programas Académicos</b>
+                    </div>
+                    <div>
+                      Son sistemas compuestos por actividades académicas, estudiantes, profesores,
+                      egresados, recursos, líneas de investigación, estrategias de evaluación y
+                      actividades de extensión, mediante las cuales se desarrolla un proceso que
+                      busca cumplir los objetivos de formación de los estudiantes por medio de sus
+                      planes de estudio.
+                    </div>
+                    <br />
+                    <div>
+                      Abajo se listan los distintos Programas Académicos existentes en el Postgrado
+                      de Geoquímica
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             actions={[
               {
                 icon: 'visibility',
@@ -71,7 +98,7 @@ class SchoolProgramsList extends Component {
               },
               {
                 icon: 'delete',
-                tooltip: 'Borrar programa academico',
+                tooltip: 'Borrar programa académico',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', () => handleDeleteSchoolProgram(rowData.id));
                 },
@@ -90,6 +117,9 @@ class SchoolProgramsList extends Component {
             localization={{
               header: {
                 actions: 'Acciones',
+              },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay programas escolares disponibles',
               },
             }}
             isLoading={isLoading}

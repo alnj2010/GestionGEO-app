@@ -38,6 +38,7 @@ function WarningStudents({
             work_phone: item.user.work_phone,
             email: item.user.email,
             level_instruction: item.user.level_instruction,
+            level_instruction_name: item.user.levelInstructionName,
             active: item.user.active,
             with_disabilities: item.user.with_disabilities,
             sex: item.user.sex,
@@ -66,7 +67,7 @@ function WarningStudents({
         columns={[
           { title: '#User', field: 'idUser', hidden: true, editable: 'never' },
           { title: '#SchoolProgram', field: 'idSchoolProgram', hidden: true, editable: 'never' },
-          { title: 'Cedula', field: 'identification', editable: 'never' },
+          { title: 'cédula', field: 'identification', editable: 'never' },
           { title: 'Nombre', field: 'first_name', editable: 'never' },
           { title: 'apellido', field: 'first_surname', editable: 'never' },
           { title: 'estado', field: 'currentStatus', lookup: studenStatus },
@@ -114,7 +115,7 @@ function WarningStudents({
             icon: 'visibility',
             tooltip: 'Ver detalles',
             onClick: (event, rowData) => {
-              history.push(`/estudiantes/modificar/${rowData.idUser}`);
+              history.push(`/usuarios/estudiantes/modificar/${rowData.idUser}`);
             },
           },
         ]}

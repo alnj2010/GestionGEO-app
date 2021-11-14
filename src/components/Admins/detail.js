@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 import { show } from '../../actions/dialog';
 import { COORDINATOR_ROL, GENDER, LEVEL_INSTRUCTION, NATIONALITY } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 import Dialog from '../Dialog';
 import RenderFields from '../RenderFields';
-
 import { getSessionIsMainUser, getSessionUser } from '../../storage/sessionStorage';
 
 const styles = () => ({
@@ -26,6 +26,9 @@ const styles = () => ({
   },
   button: {
     width: '100%',
+  },
+  headerOptions: {
+    display: 'flex',
   },
 });
 
@@ -51,12 +54,15 @@ class AdminDetail extends Component {
       saveAdmin,
       goBack,
       adminId,
+      handleRestoreUser,
       handleAdminDelete,
       pristine,
       submitting,
       valid,
       submitDispatch,
       admin,
+      convertUserTo,
+      initialValues,
     } = this.props;
     const { func } = this.state;
     const isMain = getSessionIsMainUser() === 'true';
@@ -68,170 +74,215 @@ class AdminDetail extends Component {
       <Form onSubmit={handleSubmit(saveAdmin)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3>
-              {' '}
-              {adminId
-                ? `Administrador: ${admin.first_surname} ${admin.first_name}`
-                : 'Nuevo Administrador'}
-            </h3>
-            <hr />
-          </Grid>
-          <Grid item xs={12} className={classes.form}>
             <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Nombre',
-                    field: 'firstName',
-                    id: 'firstName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo Nombre',
-                    field: 'secondName',
-                    id: 'secondName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Apellido',
-                    field: 'firstSurname',
-                    id: 'firstSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Segundo Apellido',
-                    field: 'secondSurname',
-                    id: 'secondSurname',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Cedula',
-                    field: 'identification',
-                    id: 'identification',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Email',
-                    field: 'email',
-                    id: 'email',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Movil',
-                    field: 'mobile',
-                    id: 'mobile',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono de habitación',
-                    field: 'telephone',
-                    id: 'telephone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Telefono Trabajo',
-                    field: 'workPhone',
-                    id: 'workPhone',
-                    type: 'phone',
-                  },
-                  {
-                    label: 'Sexo',
-                    field: `sex`,
-                    id: `sex`,
-                    type: 'select',
-                    options: jsonToOptions(GENDER),
-                  },
-                  {
-                    label: 'Nacionalidad',
-                    field: `nationality`,
-                    id: `nationality`,
-                    type: 'select',
-                    options: jsonToOptions(NATIONALITY),
-                  },
-                  {
-                    label: 'Nivel de instruccion',
-                    field: 'levelInstruction',
-                    id: 'levelInstruction',
-                    type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
-                  },
-                  {
-                    label: 'Rol',
-                    field: `rol`,
-                    id: `rol`,
-                    type: 'select',
-                    options: jsonToOptions(COORDINATOR_ROL),
-                  },
-
-                  {
-                    label: '¿Posee alguna discapacidad?',
-                    field: 'withDisabilities',
-                    id: 'withDisabilities',
-                    type: 'switch',
-                  },
-                  {
-                    label: '¿Coordinador principal?',
-                    field: 'principal',
-                    id: 'principal',
-                    type:
-                      isMain && rolSesionActual !== COORDINATOR_ROL.SECRETARIO && !isActual
-                        ? 'switch'
-                        : 'hidden',
-                  },
-                  {
-                    label: '¿Usuario activo?',
-                    field: 'active',
-                    id: 'active',
-                    type: adminId ? 'switch' : 'hidden',
-                  },
-                ]}
-              </RenderFields>
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
+              <h3>
+                {' '}
+                {adminId
+                  ? `Administrador: ${admin.first_surname || ''} ${admin.first_name || ''}`
+                  : 'Nuevo Administrador'}
+              </h3>
+              {adminId && (
+                <div className={classes.headerOptions}>
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
                     <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
+                      variant="outlined"
                       onClick={() =>
                         adminId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('administrador')
+                          ? this.handleDialogShow('reestaurar contraseña del', handleRestoreUser)
+                          : false
                       }
-                      disabled={!valid || pristine || submitting}
+                      disabled={adminId && !admin.id}
                     >
-                      Guardar Cambios
+                      Reestablecer contraseña
                     </Button>
-                  </Grid>
+                  </Tooltip>
 
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
+                  <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      convertUserTo({ userType: 'profesores', userData: initialValues });
+                    }}
+                    disabled={adminId && !admin.id}
+                  >
+                    Convertir en Profesor
+                  </Button>
+                </div>
+              )}
+            </Grid>
+            <hr />
+          </Grid>
+          {!adminId || admin.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Nombre',
+                      field: 'firstName',
+                      id: 'firstName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo Nombre',
+                      field: 'secondName',
+                      id: 'secondName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Apellido',
+                      field: 'firstSurname',
+                      id: 'firstSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Segundo Apellido',
+                      field: 'secondSurname',
+                      id: 'secondSurname',
+                      type: 'text',
+                    },
+                    {
+                      label: 'cédula',
+                      field: 'identification',
+                      id: 'identification',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Email',
+                      field: 'email',
+                      id: 'email',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Móvil',
+                      field: 'mobile',
+                      id: 'mobile',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Teléfono de habitación',
+                      field: 'telephone',
+                      id: 'telephone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Teléfono Trabajo',
+                      field: 'workPhone',
+                      id: 'workPhone',
+                      type: 'phone',
+                    },
+                    {
+                      label: 'Sexo',
+                      field: `sex`,
+                      id: `sex`,
+                      type: 'select',
+                      options: jsonToOptions(GENDER),
+                    },
+                    {
+                      label: 'Nacionalidad',
+                      field: `nationality`,
+                      id: `nationality`,
+                      type: 'select',
+                      options: jsonToOptions(NATIONALITY),
+                    },
+                    {
+                      select: {
+                        label: 'Nivel de instrucción',
+                        field: 'levelInstruction',
+                        id: 'levelInstruction',
+                        options: jsonToOptions(LEVEL_INSTRUCTION),
+                      },
+                      text: {
+                        label: 'Título',
+                        field: 'levelInstructionName',
+                        id: 'levelInstructionName',
+                      },
+                      type: 'instruction',
+                    },
+                    {
+                      label: 'Rol',
+                      field: `rol`,
+                      id: `rol`,
+                      type: 'select',
+                      options: jsonToOptions(COORDINATOR_ROL),
+                    },
 
-                  <Grid item xs={12} sm={3}>
-                    {adminId ? (
+                    {
+                      label: '¿Posee alguna discapacidad?',
+                      field: 'withDisabilities',
+                      id: 'withDisabilities',
+                      type: 'switch',
+                    },
+                    {
+                      label: '¿Coordinador principal?',
+                      field: 'principal',
+                      id: 'principal',
+                      type:
+                        isMain && rolSesionActual !== COORDINATOR_ROL.SECRETARIO && !isActual
+                          ? 'switch'
+                          : 'hidden',
+                    },
+                    {
+                      label: '¿Usuario activo?',
+                      field: 'active',
+                      id: 'active',
+                      type: adminId ? 'switch' : 'hidden',
+                      tooltipText:
+                        'Campo que habilita al usuario el poder ingresar al sistema GestionGeo. Por defecto es SI',
+                    },
+                  ]}
+                </RenderFields>
+              </Grid>
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleAdminDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          adminId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('administrador')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {adminId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleAdminDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>
@@ -287,7 +338,7 @@ const adminValidation = (values) => {
     errors.firstSurname = 'El Apellido no debe contener numeros';
 
   if (!values.identification) {
-    errors.identification = 'Cedula es requerido';
+    errors.identification = 'cédula es requerido';
   }
 
   if (!values.email) {
@@ -297,11 +348,12 @@ const adminValidation = (values) => {
   }
 
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'movil es requerido';
+    errors.mobile = 'móvil es requerido';
   }
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
-  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instruccion Requerido';
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instrucción Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instrucción Requerido';
   if (!values.rol) {
     errors.rol = ' Rol Requerido';
   } else if (values.rol === COORDINATOR_ROL.SECRETARIO && values.principal) {
@@ -320,41 +372,60 @@ const selector = formValueSelector('administrador');
 AdminDetailWrapper = connect(
   (state) => ({
     initialValues: {
-      firstName: state.adminReducer.selectedAdmin.first_name
-        ? state.adminReducer.selectedAdmin.first_name
-        : '',
-      secondName: state.adminReducer.selectedAdmin.second_name
-        ? state.adminReducer.selectedAdmin.second_name
-        : '',
-      firstSurname: state.adminReducer.selectedAdmin.first_surname
-        ? state.adminReducer.selectedAdmin.first_surname
-        : '',
-      secondSurname: state.adminReducer.selectedAdmin.second_surname
-        ? state.adminReducer.selectedAdmin.second_surname
-        : '',
-      identification: state.adminReducer.selectedAdmin.identification
-        ? state.adminReducer.selectedAdmin.identification
-        : '',
-      email: state.adminReducer.selectedAdmin.email ? state.adminReducer.selectedAdmin.email : '',
-      mobile: state.adminReducer.selectedAdmin.mobile
-        ? state.adminReducer.selectedAdmin.mobile
-        : '(   )    -    ',
-      telephone: state.adminReducer.selectedAdmin.telephone
-        ? state.adminReducer.selectedAdmin.telephone
-        : '(   )    -    ',
+      firstName:
+        state.adminReducer.selectedAdmin.first_name ??
+        state.userToConvertReducer.selectedUserToConvert.first_name ??
+        '',
+      secondName:
+        state.adminReducer.selectedAdmin.second_name ??
+        state.userToConvertReducer.selectedUserToConvert.second_name ??
+        '',
+      firstSurname:
+        state.adminReducer.selectedAdmin.first_surname ??
+        state.userToConvertReducer.selectedUserToConvert.first_surname ??
+        '',
+      secondSurname:
+        state.adminReducer.selectedAdmin.second_surname ??
+        state.userToConvertReducer.selectedUserToConvert.second_surname ??
+        '',
+      identification:
+        state.adminReducer.selectedAdmin.identification ??
+        state.userToConvertReducer.selectedUserToConvert.identification ??
+        '',
+      email:
+        state.adminReducer.selectedAdmin.email ??
+        state.userToConvertReducer.selectedUserToConvert.email ??
+        '',
+      mobile:
+        state.adminReducer.selectedAdmin.mobile ??
+        state.userToConvertReducer.selectedUserToConvert.mobile ??
+        '(   )    -    ',
+      telephone:
+        state.adminReducer.selectedAdmin.telephone ??
+        state.userToConvertReducer.selectedUserToConvert.telephone ??
+        '(   )    -    ',
       workPhone: state.adminReducer.selectedAdmin.work_phone
         ? state.adminReducer.selectedAdmin.work_phone
         : '(   )    -    ',
       rol: state.adminReducer.selectedAdmin.administrator
         ? state.adminReducer.selectedAdmin.administrator.rol
         : '',
-      sex: state.adminReducer.selectedAdmin.sex ? state.adminReducer.selectedAdmin.sex : '',
-      nationality: state.adminReducer.selectedAdmin.nationality
-        ? state.adminReducer.selectedAdmin.nationality
-        : '',
-      levelInstruction: state.adminReducer.selectedAdmin.level_instruction
-        ? state.adminReducer.selectedAdmin.level_instruction
-        : '',
+      sex:
+        state.adminReducer.selectedAdmin.sex ??
+        state.userToConvertReducer.selectedUserToConvert.sex ??
+        '',
+      nationality:
+        state.adminReducer.selectedAdmin.nationality ??
+        state.userToConvertReducer.selectedUserToConvert.nationality ??
+        '',
+      levelInstruction:
+        state.adminReducer.selectedAdmin.level_instruction ??
+        state.userToConvertReducer.selectedUserToConvert.level_instruction ??
+        '',
+      levelInstructionName:
+        state.adminReducer.selectedAdmin.level_instruction_name ??
+        state.userToConvertReducer.selectedUserToConvert.level_instruction_name ??
+        '',
       principal: state.adminReducer.selectedAdmin.administrator
         ? state.adminReducer.selectedAdmin.administrator.principal
         : false,

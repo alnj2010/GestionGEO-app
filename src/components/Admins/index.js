@@ -17,6 +17,7 @@ import { reverseJson } from '../../helpers/index';
 import { CONSTANCES, USER_INSTANCE, COORDINATOR_ROL } from '../../services/constants';
 import handleExportCsv from '../../utils/handleExportCsv';
 import { getSessionUserId } from '../../storage/sessionStorage';
+import HelpButton from '../HelpButton';
 
 class AdminsList extends Component {
   constructor() {
@@ -39,6 +40,7 @@ class AdminsList extends Component {
             rol: admin.administrator
               ? reverseJson(COORDINATOR_ROL)[admin.administrator.rol]
               : false,
+            isMain: admin.administrator.principal,
           };
         })
         .filter((admin) => parseInt(id, 10) !== parseInt(admin.id, 10));
@@ -64,7 +66,7 @@ class AdminsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/administradores/agregar`)}
+            onClick={() => history.push(`/usuarios/administradores/agregar`)}
           >
             <Add />
             Agregar Administrador
@@ -74,13 +76,37 @@ class AdminsList extends Component {
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
+              { title: '#', field: 'isMain', hidden: true },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
               { title: 'Email', field: 'email' },
               { title: 'Rol', field: 'rol' },
             ]}
             data={this.transformData(admins)}
-            title={matches ? 'Administradores' : ''}
+            title={
+              matches ? (
+                <>
+                  Administradores{' '}
+                  <HelpButton>
+                    <div>
+                      <b>Administrador</b>
+                    </div>
+                    <div>
+                      El administrador de la plataforma es responsable de gestionar y conservar los
+                      datos de GestionGeo, por lo que podrá incorporar, modificar y dar de baja a
+                      cada una de las entidades existentes en la plataforma
+                    </div>
+                    <br />
+                    <div>
+                      Abajo se listan los distintos administradores existentes en el Postgrado de
+                      Geoquímica
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             components={{
               Action: (props) => {
                 const {
@@ -97,31 +123,37 @@ class AdminsList extends Component {
                     );
                   case 'constances':
                     return (
-                      <div>
-                        <FormControl>
-                          <InputLabel
-                            htmlFor={`select-contance-${data.id}-label`}
-                            style={{ top: 0, transform: 'none' }}
-                          >
-                            <Download />
-                          </InputLabel>
-                          <Select
-                            label={`select-contance-${data.id}-label`}
-                            id={`select-contance-${data.id}`}
-                            input={<InputBase />}
-                            value=""
-                            onChange={(event) =>
-                              getConstance(data.id, USER_INSTANCE.A, event.target.value)
-                            }
-                          >
-                            {CONSTANCES.A.map(({ name, constanceType }) => (
-                              <MenuItem key={constanceType} value={constanceType}>
-                                {name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </div>
+                      !data.isMain && (
+                        <div>
+                          <FormControl>
+                            <InputLabel
+                              htmlFor={`select-contance-${data.id}-label`}
+                              style={{ top: 0, transform: 'none' }}
+                            >
+                              <Download />
+                            </InputLabel>
+                            <Select
+                              label={`select-contance-${data.id}-label`}
+                              id={`select-contance-${data.id}`}
+                              input={<InputBase />}
+                              value=""
+                              onChange={(event) =>
+                                getConstance(data.id, USER_INSTANCE.A, event.target.value)
+                              }
+                            >
+                              {CONSTANCES.A.filter(
+                                ({ constanceType }) =>
+                                  constanceType !== 'AnnualReport' &&
+                                  (constanceType !== 'workAdministrator' || !data.isMain)
+                              ).map(({ name, constanceType }) => (
+                                <MenuItem key={constanceType} value={constanceType}>
+                                  {name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </div>
+                      )
                     );
                   case 'delete':
                     return (
@@ -141,7 +173,7 @@ class AdminsList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/administradores/modificar/${rowData.id}`);
+                  history.push(`/usuarios/administradores/modificar/${rowData.id}`);
                 },
               },
               {
@@ -170,6 +202,9 @@ class AdminsList extends Component {
             localization={{
               header: {
                 actions: 'Acciones',
+              },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay administradores disponibles',
               },
             }}
             isLoading={isLoading}

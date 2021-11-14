@@ -15,7 +15,7 @@ class SchoolProgramDetailContainer extends Component {
   componentDidMount = () => {
     const { match, findSchoolProgramByIdDispatch, defineDispatch } = this.props;
     if (match.params.id) findSchoolProgramByIdDispatch(match.params.id);
-    defineDispatch('programa academico');
+    defineDispatch('programa académico');
   };
 
   componentWillUnmount = () => {
@@ -54,13 +54,13 @@ class SchoolProgramDetailContainer extends Component {
   };
 
   render() {
-    const { schoolProgram } = this.props;
+    const { schoolProgram, match } = this.props;
     return (
       <SchoolProgramDetail
         saveSchoolProgram={this.saveSchoolProgram}
         goBack={this.goBack}
         schoolProgram={schoolProgram}
-        schoolProgramId={schoolProgram.id}
+        schoolProgramId={match.params.id}
         handleSchoolProgramDelete={this.handleSchoolProgramDelete}
       />
     );

@@ -22,7 +22,7 @@ class SubjectDetailContainer extends Component {
     } = this.props;
     if (match.params.id) findSubjectByIdDispatch(match.params.id);
     getSchoolProgramListDispatch();
-    defineDispatch('materia');
+    defineDispatch('asignatura');
   };
 
   componentWillUnmount = () => {
@@ -56,23 +56,23 @@ class SubjectDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/materias');
+    history.push('/asignaturas');
   };
 
   handleSubjectDelete = () => {
     const { deleteSubjectDispatch, history, match } = this.props;
-    deleteSubjectDispatch(match.params.id).then(() => history.push('/materias'));
+    deleteSubjectDispatch(match.params.id).then(() => history.push('/asignaturas'));
   };
 
   render() {
-    const { subject, schoolPrograms } = this.props;
+    const { subject, schoolPrograms, match } = this.props;
     return (
       <SubjectDetail
         schoolPrograms={schoolPrograms}
         saveSubject={this.saveSubject}
         goBack={this.goBack}
         subject={subject}
-        subjectId={subject.id}
+        subjectId={match.params.id}
         handleSubjectDelete={this.handleSubjectDelete}
       />
     );

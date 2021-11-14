@@ -77,7 +77,7 @@ class ChangePassword extends Component {
                     type: 'password',
                   },
                   {
-                    label: 'Confirmacion de contraseña',
+                    label: 'Confirmación de contraseña',
                     field: 'passwordConfirmation',
                     id: 'passwordConfirmation',
                     type: 'password',
@@ -159,7 +159,7 @@ const changePasswordValidation = (values) => {
     values.password &&
     values.passwordConfirmation !== values.password
   )
-    errors.passwordConfirmation = 'La contraseña de confirmacion no coincide';
+    errors.passwordConfirmation = 'La contraseña de confirmación no coincide';
 
   return errors;
 };

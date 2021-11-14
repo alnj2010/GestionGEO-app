@@ -6,7 +6,6 @@ import { findMiPerfil, cleanSelectedMiPerfil } from '../../actions/miPerfil';
 import { define, cleanDialog, show } from '../../actions/dialog';
 import {
   getCurrentEnrolledSubjects,
-  cleanGetCurrentEnrolledSubjects,
   withdrawSubjects,
 } from '../../actions/studentInscription';
 
@@ -14,6 +13,10 @@ import { getSessionStudentId } from '../../storage/sessionStorage';
 import { WEEKDAYS } from '../../services/constants';
 
 class StudentHomeContainer extends Component {
+  constructor() {
+    super();
+  }
+
   componentDidMount = () => {
     const { getCurrentEnrolledSubjectsDispatch, findMiPerfilDispatch, defineDispatch } = this.props;
     const id = getSessionStudentId();
@@ -23,17 +26,15 @@ class StudentHomeContainer extends Component {
       // eslint-disable-next-line no-param-reassign
       column.innerText = WEEKDAYS[index];
     });
-    defineDispatch('materia');
+    defineDispatch('asignatura');
   };
 
   componentWillUnmount = () => {
     const {
       cleanDialogDispatch,
       cleanSelectedMiPerfilDispatch,
-      cleanGetCurrentEnrolledSubjectsDispatch,
     } = this.props;
     cleanSelectedMiPerfilDispatch();
-    cleanGetCurrentEnrolledSubjectsDispatch();
     cleanDialogDispatch();
   };
 
@@ -54,10 +55,18 @@ class StudentHomeContainer extends Component {
       withdrawalDeadline,
       showDispatch,
     } = this.props;
+    let isLoading = true;
+    if (currentSubjects) {
+      if (Object.keys(currentSubjects).length === 0 && currentSubjects.constructor === Object) {
+        isLoading = false
+      }
+    }
+
     return (
       <StudentHome
         miPerfil={miPerfil}
-        currentSubjects={currentSubjects}
+        isLoading={isLoading}
+        currentSubjects={currentSubjects && Object.keys(currentSubjects).length === 0 && currentSubjects.constructor === Object ? null : currentSubjects}
         finalWorks={finalWorks}
         codSchoolPeriod={codSchoolPeriod}
         withdrawalDeadline={withdrawalDeadline}
@@ -105,7 +114,6 @@ const mD = {
   withdrawSubjectsDispatch: withdrawSubjects,
   cleanDialogDispatch: cleanDialog,
   cleanSelectedMiPerfilDispatch: cleanSelectedMiPerfil,
-  cleanGetCurrentEnrolledSubjectsDispatch: cleanGetCurrentEnrolledSubjects,
   defineDispatch: define,
   showDispatch: show,
 };

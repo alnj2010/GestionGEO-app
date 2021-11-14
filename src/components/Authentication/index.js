@@ -1,54 +1,176 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
-import backImage from '../../images/pif.jpg';
-import logo from '../../images/icon-gestionGeo.svg';
+
+import logo from '../../images/gestiongeo.svg';
+import engineerLogo from '../../images/ing.svg';
+import scienceLogo from '../../images/logo_ciencias.svg';
+import ucvLogo from '../../images/logo-ucv.svg';
+import pggqLogo from '../../images/pggq.svg';
+
+import Footer from '../Footer';
 
 const styles = (theme) => ({
   container: {
-    height: '100vh',
-    background: `url(${backImage})`,
-    backgroundPosition: 'center center',
-    backgroundRepeat: 'no-repeat',
-    backgroundAttachment: 'fixed',
-    backgroundSize: 'cover',
-    [theme.breakpoints.down('sm')]: {
-      padding: '0',
-      height: '0',
+    minHeight: '100vh',
+    backgroundColor: '#FBFBFB',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  header: {
+    height: 325,
+    background: 'linear-gradient(180deg, rgba(3,161,244,1) 50%, rgba(0,123,230,1) 100%)',
+  },
+  headerTop: {
+    height: '25%',
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
     },
   },
-  form: {
+  headerBottom: {
+    height: '75%',
+    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center',
+      flexDirection: 'column',
+    },
+  },
+  headerLeft: {
+    width: '50%',
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+    },
+  },
+  headerRight: {
+    width: '50%',
+    position: 'relative',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+  section: {
+    flexGrow: 1,
+    paddingLeft: 78,
+    paddingRight: 550,
+    '& article': {
+      textAlign: 'justify',
+      color: '#707070',
+      height: 350,
+      maxWidth: 727,
+      fontSize: 14,
+      fontFamily: 'Roboto',
+      lineHeight: '30px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+  loginContainer: {
+    position: 'absolute',
+    height: 434,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    top: -25,
+    right: 42,
+    zIndex: 1,
+    [theme.breakpoints.down('sm')]: {
+      position: 'static',
+    },
   },
-  formContainer: {
-    width: '550px',
-    padding: '1% 5%',
-    margin: ' 0 auto',
-    backgroundColor: 'white',
-    borderRadius: '10px',
+  loginPaper: {
+    width: 479,
+    padding: '42px 50px',
+    boxSizing: 'border-box',
+    flexShrink: 0,
+    [theme.breakpoints.down('xs')]: {
+      flexShrink: 1,
+      boxShadow: 'none',
+      borderRadius: 0,
+      padding: '42px 25px',
+    },
   },
-  logo: {
-    width: '60%',
-    height: 'auto',
+  logoContainer: {
+    paddingLeft: 78,
+    userSelect: 'none',
+    '& img': {
+      [theme.breakpoints.down('sm')]: {
+        height: 150,
+      },
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: 0,
+    },
+  },
+  partners: {
+    padding: '10px 0 0 44px',
+    '& a': {
+      paddingRight: 27,
+      userSelect: 'none',
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: '10px 0 0 0',
+      display: 'flex',
+      justifyContent: 'space-evenly',
+    },
   },
 });
 
 function AuthenticationApp({ children, classes }) {
   return (
-    <Grid container className={classes.container}>
-      <Grid className={classes.form} item xs={12}>
-        <Grid container spacing={8} className={classes.formContainer} id="loginForm">
-          <Grid container item xs={12} justify="center" direction="column" alignItems="center">
-            <img src={logo} alt="GestionGEO" className={classes.logo} />
-          </Grid>
-          {children}
-        </Grid>
-      </Grid>
-    </Grid>
+    <div className={classes.container}>
+      <header className={classes.header}>
+        <div className={classes.headerTop}>
+          <div className={classes.partners}>
+            <a href="http://www.ucv.ve/" target="_blank" rel="noopener noreferrer">
+              <img src={ucvLogo} alt="logo ucv" />
+            </a>
+            <a href="http://fiucv.ing.ucv.ve/" target="_blank" rel="noopener noreferrer">
+              <img src={engineerLogo} alt="logo facultad ingenieria" />
+            </a>
+            <a href="http://www.ciens.ucv.ve/ciens/" target="_blank" rel="noopener noreferrer">
+              <img src={scienceLogo} alt="logo facultad ciencias" />
+            </a>
+            <a
+              href="http://gea.ciens.ucv.ve/geopostgrado/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={pggqLogo} alt="logo Postgrado en Geoquímica" />
+            </a>
+          </div>
+        </div>
+        <div className={classes.headerBottom}>
+          <div className={classes.headerLeft}>
+            <div className={classes.logoContainer}>
+              <img src={logo} alt="GestionGEO" />
+            </div>
+          </div>
+          <div className={classes.headerRight}>
+            <div className={classes.loginContainer}>
+              <Paper className={classes.loginPaper}>{children}</Paper>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section className={classes.section}>
+        <article>
+          <p>
+            GestionGeo es una aplicación web que hace posible la automatización de los procesos
+            presentes en la gestión académica – administrativa del Postgrado en Geoquímica de la
+            UCV.
+          </p>
+          <p>
+            La aplicación es dirigida a la comunidad estudiantil, profesoral y administrativa del
+            Postgrado en Geoquímica de la UCV, e incluye estudiantes de convenios con la Escuela de
+            Geología de la Facultad de Ingeniería y externos de empresas.
+          </p>
+        </article>
+      </section>
+      <Footer />
+    </div>
   );
 }
 
@@ -56,8 +178,19 @@ AuthenticationApp.propTypes = {
   classes: PropTypes.shape({
     form: PropTypes.string,
     container: PropTypes.string,
+    header: PropTypes.string,
+    section: PropTypes.string,
     formContainer: PropTypes.string,
+    partners: PropTypes.string,
+    loginContainer: PropTypes.string,
+    loginPaper: PropTypes.string,
+    logoContainer: PropTypes.string,
     logo: PropTypes.string,
+    peopleContainer: PropTypes.string,
+    headerTop: PropTypes.string,
+    headerBottom: PropTypes.string,
+    headerLeft: PropTypes.string,
+    headerRight: PropTypes.string,
   }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,

@@ -72,30 +72,35 @@ class MiPerfil extends Component {
                     field: 'firstName',
                     id: 'firstName',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Segundo Nombre',
                     field: 'secondName',
                     id: 'secondName',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Apellido',
                     field: 'firstSurname',
                     id: 'firstSurname',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Segundo apellido',
                     field: 'secondSurname',
                     id: 'secondSurname',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
-                    label: 'Cedula',
+                    label: 'cédula',
                     field: 'identification',
                     id: 'identification',
                     type: 'text',
+                    disabled: rol !== 'A',
                   },
                   {
                     label: 'Email',
@@ -104,19 +109,19 @@ class MiPerfil extends Component {
                     type: 'text',
                   },
                   {
-                    label: 'Movil',
+                    label: 'Móvil',
                     field: 'mobile',
                     id: 'mobile',
                     type: 'phone',
                   },
                   {
-                    label: 'Telefono de habitación',
+                    label: 'Teléfono de habitación',
                     field: 'telephone',
                     id: 'telephone',
                     type: 'phone',
                   },
                   {
-                    label: 'Telefono Trabajo',
+                    label: 'Teléfono Trabajo',
                     field: 'workPhone',
                     id: 'workPhone',
                     type: 'phone',
@@ -139,11 +144,20 @@ class MiPerfil extends Component {
                     disabled: rol !== 'A',
                   },
                   {
-                    label: 'Nivel de instruccion',
-                    field: 'levelInstruction',
-                    id: 'levelInstruction',
-                    type: 'select',
-                    options: jsonToOptions(LEVEL_INSTRUCTION),
+                    select: {
+                      label: 'Nivel de instrucción',
+                      field: 'levelInstruction',
+                      id: 'levelInstruction',
+                      options: jsonToOptions(LEVEL_INSTRUCTION),
+                      disabled: rol !== 'A',
+                    },
+                    text: {
+                      label: 'Título',
+                      field: 'levelInstructionName',
+                      id: 'levelInstructionName',
+                      disabled: rol !== 'A',
+                    },
+                    type: 'instruction',
                   },
                 ]}
               </RenderFields>
@@ -204,7 +218,7 @@ MiPerfil.propTypes = {
 const studentValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'Cedula es requerida';
+    errors.identification = 'cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';
@@ -216,7 +230,7 @@ const studentValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'movil es requerido';
+    errors.mobile = 'móvil es requerido';
   }
   if (!values.email) {
     errors.email = 'Email es requerido';
@@ -226,6 +240,9 @@ const studentValidation = (values) => {
 
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';
+
+  if (!values.levelInstruction) errors.levelInstruction = ' Nivel de instrucción Requerido';
+  if (!values.levelInstructionName) errors.levelInstructionName = ' Nivel de instrucción Requerido';
 
   return errors;
 };
@@ -268,6 +285,9 @@ MiPerfilWrapper = connect(
         : '(   )    -    ',
       levelInstruction: state.miPerfilReducer.selectedMiPerfil.level_instruction
         ? state.miPerfilReducer.selectedMiPerfil.level_instruction
+        : '',
+      levelInstructionName: state.miPerfilReducer.selectedMiPerfil.level_instruction_name
+        ? state.miPerfilReducer.selectedMiPerfil.level_instruction_name
         : '',
       sex: state.miPerfilReducer.selectedMiPerfil.sex
         ? state.miPerfilReducer.selectedMiPerfil.sex

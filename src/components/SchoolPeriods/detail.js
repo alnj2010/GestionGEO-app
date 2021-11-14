@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, CircularProgress } from '@material-ui/core';
 import * as moment from 'moment';
 import { Form, reduxForm, submit, FieldArray, formValueSelector, Field } from 'redux-form';
 import PropTypes from 'prop-types';
@@ -9,6 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Visibility from '@material-ui/icons/Visibility';
 import { WEEK_DAYS, SUBJECT_PERIOD_MODALITY } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
 import { show } from '../../actions/dialog';
@@ -140,12 +141,11 @@ class SchoolPeriodDetail extends Component {
   };
 
   renderSubjects = ({ fields }) => {
-    const { teachers, classes, subjects, subjectsSelected } = this.props;
+    const { teachers, classes, subjects, subjectsSelected, history } = this.props;
     return (
       <>
         {fields.map((subject, index) => {
           let distributionItems = [2, 2, 2, 1, 1, 2, 2];
-
           if (subjectsSelected[index].modality === SUBJECT_PERIOD_MODALITY.REGULAR) {
             distributionItems = [3, 3, 2, 2, 2];
           }
@@ -159,7 +159,7 @@ class SchoolPeriodDetail extends Component {
                       field: `${subject}.subjectId`,
                       id: `${subject}.subjectId`,
                       type: 'select',
-                      label: 'Materia',
+                      label: 'Asignatura',
                       options: this.unselectedSubjects(index).map((item) => {
                         return {
                           key: item.name,
@@ -174,11 +174,9 @@ class SchoolPeriodDetail extends Component {
                       label: 'Profesor',
                       options: teachers.map((teacher) => {
                         return {
-                          key: `${teacher.first_name} ${
-                            teacher.second_name ? teacher.second_name : ''
-                          } ${teacher.first_surname} ${
-                            teacher.second_surname ? teacher.second_surname : ''
-                          }`,
+                          key: `${teacher.first_name} ${teacher.second_name ? teacher.second_name : ''
+                            } ${teacher.first_surname} ${teacher.second_surname ? teacher.second_surname : ''
+                            }`,
                           value: teacher.teacher.id,
                         };
                       }),
@@ -199,7 +197,7 @@ class SchoolPeriodDetail extends Component {
                       min: 0,
                     },
                     {
-                      label: 'Arancel (Bs)',
+                      label: 'Arancel ($)',
                       field: `${subject}.duty`,
                       id: `${subject}.duty`,
                       type: 'number',
@@ -235,6 +233,19 @@ class SchoolPeriodDetail extends Component {
                 >
                   <DeleteIcon />
                 </IconButton>
+                {subjectsSelected[index].subjectId && (
+                  <IconButton
+                    aria-label="ver"
+                    color="primary"
+                    onClick={() =>
+                      history.push(
+                        `/periodo-semestral/en-curso/${subjectsSelected[index].subjectId}/${subjectsSelected[index].teacherId}/${subjectsSelected[index].id}`
+                      )
+                    }
+                  >
+                    <Visibility />
+                  </IconButton>
+                )}
               </Grid>
               <Grid item xs={10}>
                 <FieldArray name={`${subject}.schedules`} component={this.renderSchedule} />
@@ -257,6 +268,8 @@ class SchoolPeriodDetail extends Component {
                       startHour: '00:00:00',
                     },
                   ],
+                  startDate: moment().format('YYYY-MM-DD'),
+                  endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
                 })
               }
             >
@@ -298,129 +311,135 @@ class SchoolPeriodDetail extends Component {
           <Grid item xs={12}>
             <h3>
               {schoolPeriodId
-                ? `Periodo semestral: ${schoolPeriod.cod_school_period}`
+                ? `Periodo semestral: ${schoolPeriod.cod_school_period || ''}`
                 : 'Nuevo Periodo semestral'}
             </h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container>
-              <Grid container justify="center" item xs={12}>
-                <RenderFields>
-                  {[
-                    {
-                      label: 'Codigo',
-                      field: 'codSchoolPeriod',
-                      id: 'codSchoolPeriod',
-                      type: 'text',
-                    },
-                  ]}
-                </RenderFields>
-              </Grid>
-              <Grid container justify="space-between" item xs={12}>
-                <RenderFields>
-                  {[
-                    {
-                      label: 'Fecha Inicio',
-                      field: 'startDate',
-                      id: 'startDate',
-                      type: 'date',
-                    },
-                    {
-                      label: 'Fecha Fin',
-                      field: 'endDate',
-                      id: 'endDate',
-                      type: 'date',
-                      minDateMessage: 'La fecha fin no debe ser anterior a la fecha de inicio',
-                      minDate: moment(startDate).add(1, 'days'),
-                    },
-                    {
-                      label: 'Fecha Limite de retiro',
-                      field: 'withdrawalDeadline',
-                      id: 'withdrawalDeadline',
-                      type: 'date',
-                      minDateMessage:
-                        'La fecha de retiro no debe ser anterior a la fecha de inicio',
-                      minDate: moment(startDate).add(1, 'days'),
-                    },
-                    {
-                      label: 'Fecha en la que inicia la inscripcion',
-                      field: 'inscriptionStartDate',
-                      id: 'inscriptionStartDate',
-                      type: 'date',
-                    },
-                    {
-                      label: 'Aranceles para el proyecto',
-                      field: `projectDuty`,
-                      id: `projectDuty`,
-                      type: 'number',
-                      min: 0,
-                    },
-                    {
-                      label: 'Aranceles para el trabajo final',
-                      field: `finalWorkDuty`,
-                      id: `finalWorkDuty`,
-                      type: 'number',
-                      min: 0,
-                    },
-                  ]}
-                </RenderFields>
-              </Grid>
+          {!schoolPeriodId || schoolPeriod.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container>
+                <Grid container justify="center" item xs={12}>
+                  <RenderFields>
+                    {[
+                      {
+                        label: 'Codigo',
+                        field: 'codSchoolPeriod',
+                        id: 'codSchoolPeriod',
+                        type: 'text',
+                      },
+                    ]}
+                  </RenderFields>
+                </Grid>
+                <Grid container justify="space-between" item xs={12}>
+                  <RenderFields>
+                    {[
+                      {
+                        label: 'Fecha Inicio',
+                        field: 'startDate',
+                        id: 'startDate',
+                        type: 'date',
+                      },
+                      {
+                        label: 'Fecha Fin',
+                        field: 'endDate',
+                        id: 'endDate',
+                        type: 'date',
+                        minDateMessage: 'La fecha fin no debe ser anterior a la fecha de inicio',
+                        minDate: moment(startDate).add(1, 'days'),
+                      },
+                      {
+                        label: 'Fecha Limite de retiro',
+                        field: 'withdrawalDeadline',
+                        id: 'withdrawalDeadline',
+                        type: 'date',
+                        minDateMessage:
+                          'La fecha de retiro no debe ser anterior a la fecha de inicio',
+                        minDate: moment(startDate).add(1, 'days'),
+                      },
+                      {
+                        label: 'Fecha en la que inicia la inscripción',
+                        field: 'inscriptionStartDate',
+                        id: 'inscriptionStartDate',
+                        type: 'date',
+                      },
+                      {
+                        label: 'Aranceles para el proyecto',
+                        field: `projectDuty`,
+                        id: `projectDuty`,
+                        type: 'number',
+                        min: 0,
+                      },
+                      {
+                        label: 'Aranceles para el trabajo final',
+                        field: `finalWorkDuty`,
+                        id: `finalWorkDuty`,
+                        type: 'number',
+                        min: 0,
+                      },
+                    ]}
+                  </RenderFields>
+                </Grid>
 
-              <Grid item xs={12} className={classes.subtitle}>
-                <Typography variant="h6" gutterBottom>
-                  Materias del periodo
-                </Typography>
+                <Grid item xs={12} className={classes.subtitle}>
+                  <Typography variant="h6" gutterBottom>
+                    Asignaturas del periodo
+                  </Typography>
+                </Grid>
+                <Grid container item xs={12}>
+                  <FieldArray name="subjects" component={this.renderSubjects} />
+                </Grid>
               </Grid>
-              <Grid container item xs={12}>
-                <FieldArray name="subjects" component={this.renderSubjects} />
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        schoolPeriodId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('Periodo semestral')
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {schoolPeriodId ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleSchoolPeriodDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          schoolPeriodId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('Periodo semestral')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {schoolPeriodId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleSchoolPeriodDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>
@@ -506,7 +525,7 @@ const schoolPeriodValidation = (values) => {
     values.subjects.forEach((subj, subjIndex) => {
       const subjErrors = {};
       if (!subj || !subj.subjectId) {
-        subjErrors.subjectId = '*Materia es requerido';
+        subjErrors.subjectId = '*Asignatura es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.teacherId) {
@@ -607,28 +626,31 @@ SchoolPeriodDetailWrapper = connect(
         : 0,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map((subj) => ({
-            subjectId: subj.subject_id,
-            teacherId: subj.teacher_id,
-            modality: subj.modality,
-            startDate: subj.start_date,
-            endDate: subj.end_date,
-            limit: subj.limit,
-            duty: subj.duty,
-            schedules: subj.schedules
-              ? subj.schedules.map((sche) => ({
-                  schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
-                  day: sche.day,
-                  startHour: sche.start_hour,
-                  endHour: sche.end_hour,
-                  classroom: sche.classroom,
-                }))
-              : [{}],
-          }))
+          id: subj.id,
+          subjectId: subj.subject_id,
+          teacherId: subj.teacher_id,
+          modality: subj.modality,
+          startDate: subj.start_date,
+          endDate: subj.end_date,
+          limit: subj.limit,
+          duty: subj.duty,
+          schedules: subj.schedules
+            ? subj.schedules.map((sche) => ({
+              schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
+              day: sche.day,
+              startHour: sche.start_hour,
+              endHour: sche.end_hour,
+              classroom: sche.classroom,
+            }))
+            : [{}],
+        }))
         : [
-            {
-              schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
-            },
-          ],
+          {
+            schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
+            startDate: moment().format('YYYY-MM-DD'),
+            endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+          },
+        ],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),

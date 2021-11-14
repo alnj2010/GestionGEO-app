@@ -35,13 +35,7 @@ let ResetPassword = (props) => {
               id: 'email',
               type: 'text',
             },
-            {
-              field: 'userType',
-              id: 'userType',
-              type: 'select',
-              label: 'Seleccione su rol',
-              options: jsonToOptions(USER_ROL),
-            },
+
             {
               label: 'Nueva contraseña',
               field: 'password',
@@ -49,7 +43,7 @@ let ResetPassword = (props) => {
               type: 'password',
             },
             {
-              label: 'Confirmacion de contraseña',
+              label: 'Confirmación de contraseña',
               field: 'passwordConfirmation',
               id: 'passwordConfirmation',
               type: 'password',
@@ -92,9 +86,6 @@ ResetPassword.defaultProps = {};
 
 const ResetPasswordValidator = (values) => {
   const errors = {};
-  if (!values.userType) {
-    errors.userType = 'Rol es requerido';
-  }
   if (!values.email) {
     errors.email = 'Email es requerido';
   } else if (!/(.+)@(.+){2,}\.(.+){2,}/i.test(values.email)) {
@@ -108,7 +99,7 @@ const ResetPasswordValidator = (values) => {
     values.password &&
     values.passwordConfirmation !== values.password
   )
-    errors.passwordConfirmation = 'La contraseña de confirmacion no coincide';
+    errors.passwordConfirmation = 'La contraseña de confirmación no coincide';
   return errors;
 };
 

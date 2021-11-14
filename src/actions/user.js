@@ -10,33 +10,45 @@ import {
   setSessionIsMainUser,
   setTokenExpires,
   setInitTimeLogin,
+  getSessionUser,
+  setSessionStudentId,
 } from '../storage/sessionStorage';
 
 export const ACTIONS = {
   LOGIN: 'user/login',
 };
 
-export const login = ({ identification, password, userType }) => async (dispatch) => {
-  return User.login({ identification, password, user_type: userType })
+export const login = ({ identification, password }) => async (dispatch) => {
+  return User.login({ identification, password })
     .then((response) => {
       setSessionGeoToken(response.token);
-      setSessionUser(response.user);
-      setSessionUserRol(response.user.user_type);
-      setSessionUserId(response.user.id);
       setTokenExpires(response.expires);
       setInitTimeLogin(moment().unix());
-
-      if (response.user.user_type === 'S') {
-        return response.user.student;
-      }
-
-      if (response.user.user_type === 'T') setSessionTeacherId(response.user.teacher.id);
-
-      if (response.user.user_type === 'A')
-        setSessionIsMainUser(!!response.user.administrator.principal);
-
+      setSessionUser(response.user);
+      setSessionUserId(response.user.id);
       dispatch({ type: ACTIONS.LOGIN, payload: { logged: true } });
-      return true;
+      if (response.user.roles.length === 1) {
+        const [{ user_type: userType }] = response.user.roles;
+        setSessionUserRol(userType);
+
+        if (userType === 'S') {
+          if (response.user.student.length !== 1) {
+            return response.user.student;
+          }
+          const [student] = response.user.student;
+          const user = getSessionUser();
+          user.student = student;
+          setSessionUser(user);
+          setSessionStudentId(student.id);
+        }
+
+        if (userType === 'T') setSessionTeacherId(response.user.teacher.id);
+
+        if (userType === 'A') setSessionIsMainUser(!!response.user.administrator.principal);
+
+        return userType;
+      }
+      return response.user;
     })
     .catch((error) => {
       show(error.message, 'error')(dispatch);
@@ -47,7 +59,6 @@ export const login = ({ identification, password, userType }) => async (dispatch
 export const requestResetPassword = (data) => async (dispatch) => {
   const payload = {
     email: data.email,
-    user_type: data.userType,
   };
   return User.requestResetPassword(payload)
     .then(() => {
@@ -63,14 +74,28 @@ export const requestResetPassword = (data) => async (dispatch) => {
 export const resetPassword = (data) => async (dispatch) => {
   const payload = {
     email: data.email,
-    user_type: data.userType,
     password: data.password,
     password_confirmation: data.passwordConfirmation,
     token: data.token,
   };
   return User.resetPassword(payload)
     .then(() => {
-      show('Contraseña cambiada sastifactoriamente', 'success')(dispatch);
+      show('Contraseña cambiada satisfactoriamente', 'success')(dispatch);
+      return true;
+    })
+    .catch((error) => {
+      show(error.message, 'error')(dispatch);
+      throw error;
+    });
+};
+
+export const restorePassword = (id) => async (dispatch) => {
+  const payload = {
+    userId: id,
+  };
+  return User.restorePassword(payload)
+    .then(() => {
+      show('Contraseña restaurada satisfactoriamente', 'success')(dispatch);
       return true;
     })
     .catch((error) => {

@@ -10,6 +10,7 @@ import RenderFields from '../RenderFields';
 import CustomizedSnackbar from '../Snackbar';
 import { FINANCING_TYPE } from '../../services/constants';
 import { jsonToOptions } from '../../helpers';
+import HelpButton from '../HelpButton';
 
 const styles = () => ({
   tableContainer: {
@@ -28,6 +29,7 @@ function Inscription({
   valid,
   teachers,
   message,
+  isLoading,
 }) {
   const [finalWorkSelected, setFinalWorkSelected] = useState([]);
   const [subjectsSelected, setSubjectsSelected] = useState([]);
@@ -57,13 +59,29 @@ function Inscription({
   return (
     <Grid container>
       <Typography variant="h6" gutterBottom>
-        Materias disponibles para inscripción
+        Asignaturas disponibles para inscripción{' '}
+        <HelpButton>
+          <div>
+            <b>Asignaturas disponibles</b>
+          </div>
+          <div>
+            Abajo se listan las Asignaturas disponibles para inscribir según el programa académico
+            al que pertenezca. Proceda a seleccionar las asignaturas que desea inscribir y
+            posteriormente llene los campos de financiación y descripción, para luego hacer click en
+            el boton <strong>INSCRIBIR</strong>
+          </div>
+          <br />
+          <div>
+            Abajo se listan los distintos administradores existentes en el Postgrado en Geoquímica
+          </div>
+        </HelpButton>
       </Typography>
 
       <SubjectTable
         subjects={subjects}
         setSubjectsSelected={setSubjectsSelected}
         message={message}
+        isLoading={isLoading}
       />
       {finalWorks && finalWorks.length ? (
         <FinalWorkTable
@@ -72,6 +90,7 @@ function Inscription({
           isFinalSubject={isFinalSubject}
           setFinalWorkSelected={setFinalWorkSelected}
           approvedProjects={approvedProjects}
+          isLoading={isLoading}
         />
       ) : null}
       <Grid container className={classes.tableContainer}>
@@ -85,6 +104,7 @@ function Inscription({
                     id: 'financing',
                     type: 'select',
                     label: 'financiación',
+                    tooltipText: 'Modalidad en la que se realizara el pago del periodo escolar.',
                     options: jsonToOptions(FINANCING_TYPE),
                   },
                 ]}
@@ -94,7 +114,9 @@ function Inscription({
               <RenderFields>
                 {[
                   {
-                    label: 'Descripcion financiación',
+                    label: 'Descripción financiación',
+                    tooltipText:
+                      '(Campo opcional) Describe los detalles del pago del periodo escolar.',
                     field: 'financingDescription',
                     id: 'financingDescription',
                     type: 'text',
@@ -143,10 +165,10 @@ Inscription.propTypes = {
 const inscriptionStudentValidator = (values) => {
   const errors = {};
   if (!values.financingDescription) {
-    errors.financingDescription = 'descripcion requerida';
+    errors.financingDescription = 'descripción requerida';
   }
   if (!values.financing) {
-    errors.financing = 'financiacion requerida';
+    errors.financing = 'financiación requerida';
   }
   return errors;
 };

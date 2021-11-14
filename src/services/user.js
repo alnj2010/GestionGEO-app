@@ -21,6 +21,12 @@ export const User = {
       .catch(handleErrorMsg);
   },
 
+  restorePassword(formData) {
+    return AXIOS.post(`${URL.RESTORE_PASSWORD}`, formData, { headers: headers() })
+      .then(handleResponseService)
+      .catch(handleErrorMsg);
+  },
+
   getAdminList() {
     return AXIOS.get(`${URL.ADMIN}`, {
       headers: headers(),

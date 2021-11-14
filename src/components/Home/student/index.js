@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { getSessionUserRol } from '../../../storage/sessionStorage';
 import PresentationHome from '../PresentationHome';
-import CalendarStudent from './CalendarStudent';
+import CalendarStudent from '../CalendarSubjects';
 import TableEnrolledSubjects from './TableEnrolledSubjects';
 import TableEnrolledFinalWorks from './TableEnrolledFinalWorks';
 
 const styles = () => ({});
 
 function StudentHome({
+  isLoading,
   miPerfil,
   currentSubjects,
   classes,
@@ -44,6 +45,7 @@ function StudentHome({
         currentSubjects={currentSubjects}
         codSchoolPeriod={codSchoolPeriod}
         withdrawalDeadline={withdrawalDeadline}
+        isLoading={isLoading}
         show={show}
         handleRetireSubject={handleRetireSubject}
       />

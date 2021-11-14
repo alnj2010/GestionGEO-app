@@ -6,6 +6,7 @@ import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import handleExportCsv from '../../utils/handleExportCsv';
+import HelpButton from '../HelpButton';
 
 class StudentsList extends Component {
   constructor() {
@@ -51,7 +52,7 @@ class StudentsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/estudiantes/agregar`)}
+            onClick={() => history.push(`/usuarios/estudiantes/agregar`)}
           >
             <Add />
             Agregar estudiante
@@ -74,17 +75,40 @@ class StudentsList extends Component {
               },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
-              { title: 'Cedula', field: 'identification' },
+              { title: 'cédula', field: 'identification' },
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(students)}
-            title={matches ? 'Estudiantes' : ''}
+            title={
+              matches ? (
+                <>
+                  Estudiantes{' '}
+                  <HelpButton>
+                    <div>
+                      <b>Estudiantes</b>
+                    </div>
+                    <div>
+                      Son las entidades más importantes del sistema. Están asociados directamente a
+                      un Programa académico. Pueden inscribir asignaturas y solicitar constancias
+                      tanto de inscripción como de estudio.
+                    </div>
+                    <br />
+                    <div>
+                      Abajo se listan los distintos estudiantes existentes en el Postgrado de
+                      Geoquímica
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/estudiantes/modificar/${rowData.id}`);
+                  history.push(`/usuarios/estudiantes/modificar/${rowData.id}`);
                 },
               },
               {
@@ -107,6 +131,9 @@ class StudentsList extends Component {
             localization={{
               header: {
                 actions: 'Acciones',
+              },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay estudiantes disponibles',
               },
             }}
             isLoading={isLoading}

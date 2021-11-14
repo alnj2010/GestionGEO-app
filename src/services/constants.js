@@ -14,6 +14,7 @@ export const URL = {
   CONSTANCE: '/constance',
   ANNUALREPORT: '/annualReport',
   CHANGE_PASSWORD: '/changePassword',
+  RESTORE_PASSWORD: '/resetPassword',
   PASSWORD_EMAIL: '/password/email',
   PASSWORD_RESET: '/password/reset',
 };
@@ -26,12 +27,17 @@ export const CONSTANCES = {
       userType: 'administrator',
       constanceType: 'workAdministrator',
     },
+    {
+      name: 'Reporte Anual',
+      userType: 'administrator',
+      constanceType: 'AnnualReport',
+    },
   ],
   S: [
     { name: 'Constancia estudio', userType: 'student', constanceType: 'study' },
-    { name: 'Constancia inscripción', userType: 'student', constanceType: 'inscription' },
-    { name: 'Historial Academico', userType: 'student', constanceType: 'studentHistorical' },
-    { name: 'Carga Academica', userType: 'student', constanceType: 'academicLoad' },
+    { name: 'Planilla inscripción', userType: 'student', constanceType: 'inscription' },
+    { name: 'Historial Académico', userType: 'student', constanceType: 'studentHistorical' },
+    { name: 'Carga Académica', userType: 'student', constanceType: 'academicLoad' },
   ],
   T: [{ name: 'Constancia trabajo', userType: 'teacher', constanceType: 'workTeacher' }],
 };
@@ -57,13 +63,13 @@ export const GENDER = {
 };
 
 export const LEVEL_INSTRUCTION = {
-  DOCTOR: 'Dr',
-  'MAGISTER SCIENTIARUM': 'MSc',
-  ESPECIALISTA: 'Esp',
-  LICENCIADO: 'Lic',
-  INGENIERO: 'Ing',
-  TSU: 'TSU',
-  'TEC MEDIO': 'TCM',
+  'DOCTOR EN': 'Dr',
+  'MAGISTER SCIENTIARUM EN': 'MSc',
+  'ESPECIALISTA EN': 'Esp',
+  'LICENCIADO EN': 'Lic',
+  'INGENIERO EN': 'Ing',
+  'TSU EN': 'TSU',
+  'TEC MEDIO EN': 'TCM',
 };
 
 export const LEVEL_INSTRUCTION_4TO_LEVEL = {

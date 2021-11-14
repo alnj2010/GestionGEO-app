@@ -12,10 +12,19 @@ import { define, cleanDialog } from '../../actions/dialog';
 import { WEEKDAYS } from '../../services/constants';
 
 class SchoolPeriodActualContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   componentDidMount = () => {
     const { defineDispatch, findCurrentSchoolPeriodDispatch } = this.props;
     defineDispatch('periodo semestral');
-    findCurrentSchoolPeriodDispatch();
+    findCurrentSchoolPeriodDispatch()
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     document.querySelectorAll('.rbc-header').forEach((column, index) => {
       // eslint-disable-next-line no-param-reassign
       column.innerText = WEEKDAYS[index];
@@ -78,18 +87,23 @@ class SchoolPeriodActualContainer extends Component {
         message,
         cod_school_period,
       },
+      history
     } = this.props;
+    const { isLoading } = this.state;
+
     return !message ? (
       <SchoolPeriodActual
         codSchoolPeriod={cod_school_period}
+        loading={isLoading}
         startDate={startDate}
         endDate={endDate}
         saveSchoolPeriod={this.saveSchoolPeriod}
         subjects={subjects}
+        history={history}
       />
     ) : (
       <Typography variant="h6" gutterBottom>
-        Actualmente no existe un periodo semestral abierto
+        Actualmente, no existe un periodo semestral abierto
       </Typography>
     );
   }

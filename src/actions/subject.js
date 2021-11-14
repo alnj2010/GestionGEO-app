@@ -86,7 +86,7 @@ export const updateSubject = (subject) => async (dispatch) => {
         type: ACTIONS.SELECT,
         payload: { selectedSubject: response },
       });
-      show('Materia actualizada', 'success')(dispatch);
+      show('Asignatura actualizada', 'success')(dispatch);
       return true;
     })
     .catch((error) => {
@@ -109,7 +109,7 @@ export const saveSubject = (subject) => async (dispatch) => {
   };
   return Subject.saveSubject(payload)
     .then((res) => {
-      show('Materia guardada', 'success')(dispatch);
+      show('Asignatura guardada', 'success')(dispatch);
       return res.id;
     })
     .catch((error) => {
@@ -121,7 +121,7 @@ export const saveSubject = (subject) => async (dispatch) => {
 export const deleteSubject = (subjectId) => async (dispatch) => {
   return Subject.delete(subjectId)
     .then(() => {
-      show('Materia eliminada', 'success')(dispatch);
+      show('Asignatura eliminada', 'success')(dispatch);
       return true;
     })
     .catch((error) => {

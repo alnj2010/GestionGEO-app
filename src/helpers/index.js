@@ -1,4 +1,4 @@
-/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-restrid-syntax */
 export const jsonToOptions = (options) =>
   Object.entries(options).map((entry) => {
     return {
@@ -33,7 +33,7 @@ export const handleErrorMsg = (error) => {
     throw err;
   }
 
-  return Promise.reject(new Error('Hubo un error, intente mas tarde.'));
+  return Promise.reject(new Error('Hubo un error, intente más tarde.'));
 };
 
 export const handleResponseService = (response) => {

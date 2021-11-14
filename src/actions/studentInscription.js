@@ -17,6 +17,10 @@ export const getCurrentEnrolledSubjects = (id) => async (dispatch) => {
       return true;
     })
     .catch((error) => {
+      dispatch({
+        type: ACTIONS.CURRENT_ENROLLED_SUBJECTS,
+        payload: { currentEnrolledSubjects: { enrolled_subjects: {} } },
+      });
       throw error;
     });
 };
@@ -38,7 +42,7 @@ export const withdrawSubjects = (id, studentId) => async (dispatch) => {
   };
   return StudentInscription.withdrawSubjects(payload)
     .then((response) => {
-      show('Retiro sastifactorio', 'success')(dispatch);
+      show('Retiro satisfactorio', 'success')(dispatch);
       return response;
     })
     .catch((error) => {
@@ -78,7 +82,7 @@ export const getAvailableSubjects = (id) => async (dispatch) => {
 export const inscription = (value) => async (dispatch) => {
   return StudentInscription.inscription(value)
     .then((response) => {
-      show('Inscripcion realizada sastifactoriamente', 'success')(dispatch);
+      show('Inscripción realizada satisfactoriamente', 'success')(dispatch);
       return response;
     })
     .catch((error) => {

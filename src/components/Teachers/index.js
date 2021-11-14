@@ -14,6 +14,7 @@ import Visibility from '@material-ui/icons/Visibility';
 import Dialog from '../Dialog';
 import { CONSTANCES, USER_INSTANCE } from '../../services/constants';
 import handleExportCsv from '../../utils/handleExportCsv';
+import HelpButton from '../HelpButton';
 
 class TeachersList extends Component {
   constructor() {
@@ -55,7 +56,7 @@ class TeachersList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/profesores/agregar`)}
+            onClick={() => history.push(`/usuarios/profesores/agregar`)}
           >
             <Add />
             Agregar profesor
@@ -67,11 +68,29 @@ class TeachersList extends Component {
               { title: '#', field: 'id', hidden: true },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
-              { title: 'Cedula', field: 'identification' },
+              { title: 'cédula', field: 'identification' },
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(teachers)}
-            title="Profesores"
+            title={
+              <>
+                Profesores{' '}
+                <HelpButton>
+                  <div>
+                    <b>Profesores</b>
+                  </div>
+                  <div>
+                    Los profesores tienen como rol administrar y calificar los estudiantes
+                    pertenecientes a los cursos que imparten.
+                  </div>
+                  <br />
+                  <div>
+                    Abajo se listan los distintos Profesores existentes en el Postgrado en
+                    Geoquímica
+                  </div>
+                </HelpButton>
+              </>
+            }
             components={{
               Action: (props) => {
                 const {
@@ -132,7 +151,7 @@ class TeachersList extends Component {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/profesores/modificar/${rowData.id}`);
+                  history.push(`/usuarios/profesores/modificar/${rowData.id}`);
                 },
               },
               {
@@ -161,6 +180,9 @@ class TeachersList extends Component {
             localization={{
               header: {
                 actions: 'Acciones',
+              },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay profesores disponibles',
               },
             }}
             isLoading={isLoading}

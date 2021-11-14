@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, CircularProgress } from '@material-ui/core';
 import { Form, reduxForm, submit, FieldArray, formValueSelector } from 'redux-form';
 import PropTypes from 'prop-types';
 import Fab from '@material-ui/core/Fab';
@@ -83,7 +83,7 @@ class SubjectDetail extends Component {
                     field: `${schoolProgram}.id`,
                     id: `${schoolProgram}.id`,
                     type: 'select',
-                    label: 'Programa academico',
+                    label: 'Programa académico',
                     options: this.unselectedSchoolPrograms(index).map((post) => {
                       return {
                         key: post.school_program_name,
@@ -156,120 +156,128 @@ class SubjectDetail extends Component {
       <Form onSubmit={handleSubmit(saveSubject)}>
         <Grid container>
           <Grid item xs={12}>
-            <h3> {subjectId ? `Materia: ${subject.name}` : 'Nuevo Materia'}</h3>
+            <h3> {subjectId ? `Asignatura: ${subject.name || ''}` : 'Nueva Asignatura'}</h3>
             <hr />
           </Grid>
-          <Grid item xs={12} className={classes.form}>
-            <Grid container justify="space-between">
-              <RenderFields>
-                {[
-                  {
-                    label: 'Codigo de la materia',
-                    field: 'subjectCode',
-                    id: 'subjectCode',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Nombre de la materia',
-                    field: 'subjectName',
-                    id: 'subjectName',
-                    type: 'text',
-                  },
-                  {
-                    label: 'Unidades de credito',
-                    field: 'uc',
-                    id: 'uc',
-                    type: 'number',
-                    min: 0,
-                  },
-                  {
-                    label: 'Horas de laboratorio',
-                    field: 'laboratoryHours',
-                    id: 'laboratoryHours',
-                    type: 'number',
-                    min: 0,
-                  },
-                  {
-                    label: 'Horas practica',
-                    field: 'practicalHours',
-                    id: 'practicalHours',
-                    type: 'number',
-                    min: 0,
-                  },
-                  {
-                    label: 'Horas teoricas',
-                    field: 'theoreticalHours',
-                    id: 'theoreticalHours',
-                    type: 'number',
-                    min: 0,
-                  },
+          {!subjectId || subject.id ? (
+            <Grid item xs={12} className={classes.form}>
+              <Grid container justify="space-between">
+                <RenderFields>
+                  {[
+                    {
+                      label: 'Codigo de la asignatura',
+                      field: 'subjectCode',
+                      id: 'subjectCode',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Nombre de la asignatura',
+                      field: 'subjectName',
+                      id: 'subjectName',
+                      type: 'text',
+                    },
+                    {
+                      label: 'Unidades de crédito',
+                      field: 'uc',
+                      id: 'uc',
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'Horas de laboratorio (total por semana)',
+                      field: 'laboratoryHours',
+                      id: 'laboratoryHours',
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'Horas practica (total por semana)',
+                      field: 'practicalHours',
+                      id: 'practicalHours',
+                      type: 'number',
+                      min: 0,
+                    },
+                    {
+                      label: 'Horas teoricas (total por semana)',
+                      field: 'theoreticalHours',
+                      id: 'theoreticalHours',
+                      type: 'number',
+                      min: 0,
+                    },
 
-                  {
-                    label: '¿Prela a una materia final?',
-                    field: 'isProjectSubject',
-                    id: 'isProjectSubject',
-                    type: 'switch',
-                  },
-                  {
-                    label: '¿Es materia final? Ej: TEG, Tesis',
-                    field: 'isFinalSubject',
-                    id: 'isFinalSubject',
-                    type: 'switch',
-                  },
-                ]}
-              </RenderFields>
-              <Grid item xs={12} className={classes.subtitle}>
-                <Typography variant="h6" gutterBottom>
-                  Programa academicos a los que pertenece la materia
-                </Typography>
+                    {
+                      label: '¿Prela a una asignatura final?',
+                      field: 'isProjectSubject',
+                      id: 'isProjectSubject',
+                      type: 'switch',
+                      tooltipText:
+                        'Esta opción hace referencia a las materias de tipo proyecto que deben cursarse antes de presentar Trabajos Especiales de Grado',
+                    },
+                    {
+                      label: '¿Es asignatura final? Ej: TEG, Tesis',
+                      field: 'isFinalSubject',
+                      id: 'isFinalSubject',
+                      type: 'switch',
+                    },
+                  ]}
+                </RenderFields>
+                <Grid item xs={12} className={classes.subtitle}>
+                  <Typography variant="h6" gutterBottom>
+                    Programa académico a los que pertenece la asignatura
+                  </Typography>
+                </Grid>
+                <FieldArray name="schoolPrograms" component={this.renderSchoolPrograms} />
               </Grid>
-              <FieldArray name="schoolPrograms" component={this.renderSchoolPrograms} />
-            </Grid>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid
-                  container
-                  className={classes.buttonContainer}
-                  justify="space-between"
-                  spacing={16}
-                >
-                  <Grid item xs={12} sm={3}>
-                    <Button
-                      variant="contained"
-                      className={`${classes.save} ${classes.button}`}
-                      onClick={() =>
-                        subjectId
-                          ? this.handleDialogShow('actualizar', submitDispatch)
-                          : submitDispatch('materia')
-                      }
-                      disabled={!valid || pristine || submitting}
-                    >
-                      Guardar Cambios
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={goBack} className={classes.button}>
-                      Ir al listado
-                    </Button>
-                  </Grid>
-
-                  <Grid item xs={12} sm={3}>
-                    {subjectId ? (
+              <Grid container>
+                <Grid item xs={12}>
+                  <Grid
+                    container
+                    className={classes.buttonContainer}
+                    justify="space-between"
+                    spacing={16}
+                  >
+                    <Grid item xs={12} sm={3}>
                       <Button
-                        className={classes.button}
                         variant="contained"
-                        color="secondary"
-                        onClick={() => this.handleDialogShow('borrar', handleSubjectDelete)}
+                        className={`${classes.save} ${classes.button}`}
+                        onClick={() =>
+                          subjectId
+                            ? this.handleDialogShow('actualizar', submitDispatch)
+                            : submitDispatch('asignatura')
+                        }
+                        disabled={!valid || pristine || submitting}
                       >
-                        Borrar
+                        Guardar Cambios
                       </Button>
-                    ) : null}
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      <Button variant="contained" onClick={goBack} className={classes.button}>
+                        Ir al listado
+                      </Button>
+                    </Grid>
+
+                    <Grid item xs={12} sm={3}>
+                      {subjectId ? (
+                        <Button
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => this.handleDialogShow('borrar', handleSubjectDelete)}
+                        >
+                          Borrar
+                        </Button>
+                      ) : null}
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          ) : (
+            <Grid container justify="center">
+              <CircularProgress />
+            </Grid>
+          )}
         </Grid>
         <Dialog handleAgree={func} />
       </Form>
@@ -321,15 +329,15 @@ SubjectDetail.defaultProps = {
 const subjectValidation = (values) => {
   const errors = {};
   if (!values.subjectCode) {
-    errors.subjectCode = 'Codigo de Materia es requerido';
+    errors.subjectCode = 'Codigo de asignatura es requerido';
   }
 
   if (!values.subjectName) {
-    errors.subjectName = 'Nombre de Materia es requerido';
+    errors.subjectName = 'Nombre de asignatura es requerido';
   }
 
   if (!values.uc) {
-    errors.uc = 'Unidades de credito es requerido';
+    errors.uc = 'Unidades de crédito es requerido';
   }
 
   if (values.schoolPrograms && values.schoolPrograms.length) {
@@ -354,11 +362,11 @@ const subjectValidation = (values) => {
 };
 
 let SubjectDetailWrapper = reduxForm({
-  form: 'materia',
+  form: 'asignatura',
   validate: subjectValidation,
   enableReinitialize: true,
 })(SubjectDetail);
-const selector = formValueSelector('materia');
+const selector = formValueSelector('asignatura');
 
 SubjectDetailWrapper = connect(
   (state) => ({
@@ -387,9 +395,9 @@ SubjectDetailWrapper = connect(
         : false,
       schoolPrograms: state.subjectReducer.selectedSubject.school_programs
         ? state.subjectReducer.selectedSubject.school_programs.map((sp) => ({
-            id: sp.id,
-            type: sp.school_program_subject.type,
-          }))
+          id: sp.id,
+          type: sp.school_program_subject.type,
+        }))
         : [{}],
     },
     schoolProgramsSelected: selector(state, 'schoolPrograms'),

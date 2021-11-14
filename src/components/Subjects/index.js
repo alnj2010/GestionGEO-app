@@ -6,6 +6,7 @@ import Add from '@material-ui/icons/Add';
 import { Fab, Grid } from '@material-ui/core';
 import Dialog from '../Dialog';
 import handleExportCsv from '../../utils/handleExportCsv';
+import HelpButton from '../HelpButton';
 
 class SubjectsList extends Component {
   constructor() {
@@ -48,10 +49,10 @@ class SubjectsList extends Component {
             size="medium"
             color="primary"
             aria-label="Add"
-            onClick={() => history.push(`/materias/agregar`)}
+            onClick={() => history.push(`/asignaturas/agregar`)}
           >
             <Add />
-            Agregar materia
+            Agregar Asignatura
           </Fab>
         </Grid>
         <Grid item xs={12}>
@@ -60,21 +61,43 @@ class SubjectsList extends Component {
               { title: '#', field: 'id', hidden: true },
               { title: 'Codigo', field: 'subjectCode' },
               { title: 'Nombre', field: 'subjectName' },
-              { title: 'Unidades de Credito', field: 'uc' },
+              { title: 'Unidades de Crédito', field: 'uc' },
             ]}
             data={this.transformData(subjects)}
-            title={matches ? 'Materias' : ''}
+            title={
+              matches ? (
+                <>
+                  Asignaturas{' '}
+                  <HelpButton>
+                    <div>
+                      <b> Asignaturas</b>
+                    </div>
+                    <div>
+                      Son los cursos que se dictan en los diferentes Programas Académicos del
+                      Postgrado en Geoquímica
+                    </div>
+                    <br />
+                    <div>
+                      Abajo se listan los distintos asignaturas existentes en el Postgrado de
+                      Geoquímica
+                    </div>
+                  </HelpButton>
+                </>
+              ) : (
+                ''
+              )
+            }
             actions={[
               {
                 icon: 'visibility',
                 tooltip: 'Ver detalles',
                 onClick: (event, rowData) => {
-                  history.push(`/materias/modificar/${rowData.id}`);
+                  history.push(`/asignaturas/modificar/${rowData.id}`);
                 },
               },
               {
                 icon: 'delete',
-                tooltip: 'Borrar materia',
+                tooltip: 'Borrar asignatura',
                 onClick: (event, rowData) => {
                   this.handleDialogShow('eliminar', () => handleDeleteSubject(rowData.id));
                 },
@@ -92,6 +115,9 @@ class SubjectsList extends Component {
             localization={{
               header: {
                 actions: 'Acciones',
+              },
+              body: {
+                emptyDataSourceMessage: isLoading ? '' : 'No hay asignaturas disponibles',
               },
             }}
             isLoading={isLoading}

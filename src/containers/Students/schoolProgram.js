@@ -41,7 +41,7 @@ class StudentSchoolProgramContainer extends Component {
       }
     });
 
-    defineDispatch('programa academico del estudiante');
+    defineDispatch('programa académico del estudiante');
   };
 
   componentWillUnmount = () => {
@@ -88,7 +88,7 @@ class StudentSchoolProgramContainer extends Component {
         params: { userId },
       },
     } = this.props;
-    history.push(`/estudiantes/modificar/${userId}`);
+    history.push(`/usuarios/estudiantes/modificar/${userId}`);
   };
 
   handleSchoolProgramDelete = () => {
@@ -100,7 +100,7 @@ class StudentSchoolProgramContainer extends Component {
       },
     } = this.props;
     deleteSchoolProgramDispatch(userId, studentId).then(() =>
-      history.push(`/estudiantes/modificar/${userId}`)
+      history.push(`/usuarios/estudiantes/modificar/${userId}`)
     );
   };
 
@@ -112,6 +112,9 @@ class StudentSchoolProgramContainer extends Component {
       student,
       schoolProgram,
       getSubjectBySchoolProgramDispatch,
+      match: {
+        params: { studentId: schoolProgramId },
+      },
     } = this.props;
     let schoolPrograms = allSchoolPrograms;
     if (!schoolProgram) {
@@ -123,6 +126,7 @@ class StudentSchoolProgramContainer extends Component {
 
     return (
       <StudentSchoolProgram
+        schoolProgramId={schoolProgramId}
         schoolPrograms={schoolPrograms}
         subjects={subjects}
         getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}

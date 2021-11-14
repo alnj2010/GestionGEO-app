@@ -10,12 +10,14 @@ import {
   deleteSchoolProgram,
   getConstance,
 } from '../../actions/student';
+import { restorePassword } from '../../actions/user';
 import { getList as getTeacherList } from '../../actions/teacher';
 import { getSubjectBySchoolProgram } from '../../actions/subject';
 import { getList as getSchoolProgramList } from '../../actions/schoolProgram';
 import StudentDetail from '../../components/Students/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionUserRol } from '../../storage/sessionStorage';
+import { cleanUserToConvert, setUserToConvert } from '../../actions/userToConvert';
 
 class StudentDetailContainer extends Component {
   componentDidMount = () => {
@@ -26,8 +28,14 @@ class StudentDetailContainer extends Component {
       defineDispatch,
       getSchoolProgramListDispatch,
       getTeacherListDispatch,
+      cleanUserToConvertDispatch,
     } = this.props;
-    if (match.params.id) findStudentByIdDispatch(match.params.id);
+    if (match.params.id) {
+      findStudentByIdDispatch(match.params.id);
+    } else {
+      cleanUserToConvertDispatch();
+    }
+
     getSchoolProgramListDispatch();
     getTeacherListDispatch();
     defineDispatch(rol !== 'A' ? 'perfil' : 'estudiante');
@@ -37,6 +45,12 @@ class StudentDetailContainer extends Component {
     const { cleanSelectedStudentDispatch, cleanDialogDispatch } = this.props;
     cleanSelectedStudentDispatch();
     cleanDialogDispatch();
+  };
+
+  convertUserTo = ({ userType, userData }) => {
+    const { history, setUserToConvertDispatch } = this.props;
+    setUserToConvertDispatch(userData);
+    history.push(`/usuarios/${userType}/agregar`);
   };
 
   saveStudent = (values) => {
@@ -65,6 +79,7 @@ class StudentDetailContainer extends Component {
         testPeriod: student.student[0].test_period,
         currentStatus: student.student[0].current_status,
         equivalence: student.student[0].equivalence,
+        allowPostInscription: student.student[0].allow_post_inscription,
         guideTeacherId: student.student[0].guide_teacher_id
           ? student.student[0].guide_teacher_id
           : undefined,
@@ -80,12 +95,12 @@ class StudentDetailContainer extends Component {
 
   goBack = () => {
     const { history } = this.props;
-    history.push('/estudiantes');
+    history.push('/usuarios/estudiantes');
   };
 
   handleStudentDelete = () => {
     const { deleteStudentDispatch, history, match } = this.props;
-    deleteStudentDispatch(match.params.id).then(() => history.push('/estudiantes'));
+    deleteStudentDispatch(match.params.id).then(() => history.push('/usuarios/estudiantes'));
   };
 
   handleDeleteSchoolProgram = (userId, studentId) => {
@@ -93,6 +108,10 @@ class StudentDetailContainer extends Component {
     deleteSchoolProgramDispatch(userId, studentId).then(() =>
       findStudentByIdDispatch(match.params.id)
     );
+  };
+  handleRestoreUser = () => {
+    const { restorePasswordDispatch, match } = this.props;
+    restorePasswordDispatch(match.params.id);
   };
 
   render() {
@@ -104,16 +123,19 @@ class StudentDetailContainer extends Component {
       listBySchoolPeriod,
       getSubjectBySchoolProgramDispatch,
       teachers,
+      match,
     } = this.props;
     return (
       <StudentDetail
+        convertUserTo={this.convertUserTo}
+        handleRestoreUser={this.handleRestoreUser}
         schoolPrograms={schoolPrograms}
         teachersGuide={teachers}
         saveStudent={this.saveStudent}
         goBack={this.goBack}
         listBySchoolPeriod={listBySchoolPeriod}
         getSubjectBySchoolProgram={getSubjectBySchoolProgramDispatch}
-        userId={student.id}
+        userId={match.params.id}
         student={student}
         handleStudentDelete={this.handleStudentDelete}
         history={history}
@@ -173,6 +195,9 @@ StudentDetailContainer.propTypes = {
   deleteSchoolProgramDispatch: PropTypes.func.isRequired,
   getConstanceDispatch: PropTypes.func.isRequired,
   getTeacherListDispatch: PropTypes.func.isRequired,
+  setUserToConvertDispatch: PropTypes.func.isRequired,
+  cleanUserToConvertDispatch: PropTypes.func.isRequired,
+  restorePasswordDispatch: PropTypes.func.isRequired,
 };
 
 StudentDetailContainer.defaultProps = {
@@ -201,6 +226,9 @@ const mD = {
   getSchoolProgramListDispatch: getSchoolProgramList,
   deleteSchoolProgramDispatch: deleteSchoolProgram,
   getConstanceDispatch: getConstance,
+  cleanUserToConvertDispatch: cleanUserToConvert,
+  restorePasswordDispatch: restorePassword,
+  setUserToConvertDispatch: setUserToConvert,
 };
 
 export default connect(mS, mD)(StudentDetailContainer);

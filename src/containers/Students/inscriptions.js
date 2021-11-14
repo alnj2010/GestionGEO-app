@@ -8,6 +8,7 @@ import {
   findStudentById,
   cleanSelectedStudent,
   deleteInscription,
+  getConstance,
 } from '../../actions/student';
 import StudentInscriptions from '../../components/Students/inscriptions';
 
@@ -28,7 +29,9 @@ class StudentInscriptionsContainer extends Component {
       },
       defineDispatch,
     } = this.props;
-    getInscribedSchoolPeriodsDispatch(studentId).then(() => this.setState({ isLoading: false }));
+    getInscribedSchoolPeriodsDispatch(studentId)
+      .then(() => this.setState({ isLoading: false }))
+      .catch(() => this.setState({ isLoading: false }));
     findStudentByIdDispatch(userId);
     defineDispatch('inscripcion');
   };
@@ -60,15 +63,18 @@ class StudentInscriptionsContainer extends Component {
       inscribedSchoolPeriods,
       history,
       showDispatch,
+      getConstanceDispatch,
       match: {
         params: { studentId, userId },
       },
       student,
     } = this.props;
 
-    const fullname = `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
-      student.second_surname || ''
-    }`;
+    const fullname = student.first_name
+      ? `${student.first_name} ${student.second_name || ''} ${student.first_surname} ${
+          student.second_surname || ''
+        }`
+      : 'Cargando...';
 
     const { isLoading } = this.state;
     return (
@@ -77,11 +83,7 @@ class StudentInscriptionsContainer extends Component {
         inscribedSchoolPeriods={inscribedSchoolPeriods}
         studentId={studentId}
         userId={userId}
-        localization={{
-          header: {
-            actions: 'Acciones',
-          },
-        }}
+        getConstance={getConstanceDispatch}
         isLoading={isLoading}
         history={history}
         fullname={fullname}
@@ -111,6 +113,7 @@ StudentInscriptionsContainer.propTypes = {
   getInscribedSchoolPeriodsDispatch: PropTypes.func.isRequired,
   findStudentByIdDispatch: PropTypes.func.isRequired,
   cleanSelectedStudentDispatch: PropTypes.func.isRequired,
+  getConstanceDispatch: PropTypes.func.isRequired,
 };
 const mS = (state) => ({
   inscribedSchoolPeriods: state.studentReducer.inscribedSchoolPeriods,
@@ -126,6 +129,7 @@ const mD = {
   showDispatch: show,
   defineDispatch: define,
   cleanDialogDispatch: cleanDialog,
+  getConstanceDispatch: getConstance,
 };
 
 export default connect(mS, mD)(StudentInscriptionsContainer);

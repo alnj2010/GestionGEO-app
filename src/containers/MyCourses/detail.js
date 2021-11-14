@@ -6,14 +6,33 @@ import {
   updateQualifications,
   cleanEnrolledStudents,
 } from '../../actions/myCourse';
+import { findSubjectById } from '../../actions/subject';
+
 import CourseDetail from '../../components/MyCourses/detail';
 import { define, cleanDialog } from '../../actions/dialog';
 import { getSessionTeacherId } from '../../storage/sessionStorage';
 
 class CourseDetailContainer extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   componentDidMount = () => {
-    const { match, getEnrolledStudentsDispatch, defineDispatch } = this.props;
-    if (match.params.id) getEnrolledStudentsDispatch(match.params.id);
+    const {
+      match,
+      getEnrolledStudentsDispatch,
+      defineDispatch,
+      findSubjectByIdDispatch,
+    } = this.props;
+    if (match.params.id) {
+      getEnrolledStudentsDispatch(match.params.id, match.params.teacherId || parseInt(getSessionTeacherId()))
+        .then(() => this.setState({ isLoading: false }))
+        .catch(() => this.setState({ isLoading: false }));
+      findSubjectByIdDispatch(match.params.subjectId);
+    }
     defineDispatch('Actualizar curso');
   };
 
@@ -24,15 +43,14 @@ class CourseDetailContainer extends Component {
   };
 
   goBack = () => {
-    const { history } = this.props;
-
-    history.push('/mis-cursos');
+    const { history, match } = this.props;
+    history.push(match.params.teacherId ? '/periodo-semestral/en-curso' : '/mis-cursos');
   };
 
   updateQualifications = (value) => {
     const { match, updateQualificationsDispatch, getEnrolledStudentsDispatch } = this.props;
     const payload = {
-      teacher_id: parseInt(getSessionTeacherId(), 10),
+      teacher_id: match.params.teacherId || parseInt(getSessionTeacherId(), 10),
       school_period_subject_teacher_id: parseInt(match.params.id, 10),
       student_notes: [
         {
@@ -42,18 +60,22 @@ class CourseDetailContainer extends Component {
       ],
     };
     return updateQualificationsDispatch(payload).then(() =>
-      getEnrolledStudentsDispatch(match.params.id)
+      getEnrolledStudentsDispatch(match.params.id, match.params.teacherId || parseInt(getSessionTeacherId()))
     );
   };
 
+
   render() {
-    const { students, loadNotes } = this.props;
+    const { students, loadNotes, subject } = this.props;
+    const { isLoading } = this.state;
     return (
       <CourseDetail
+        subject={subject}
+        isLoading={isLoading}
         students={students}
         goBack={this.goBack}
         loadNotes={loadNotes}
-        updateQualifications={this.updateQualifications}
+        updateQualifications={(this.updateQualifications)}
       />
     );
   }
@@ -83,12 +105,14 @@ CourseDetailContainer.defaultProps = {
 const mS = (state) => ({
   students: state.myCourseReducer.enrolledStudents,
   loadNotes: !!state.schoolPeriodReducer.selectedSchoolPeriod.load_notes,
+  subject: state.subjectReducer.selectedSubject,
 });
 
 const mD = {
   getEnrolledStudentsDispatch: getEnrolledStudents,
   updateQualificationsDispatch: updateQualifications,
   cleanEnrolledStudentsDispatch: cleanEnrolledStudents,
+  findSubjectByIdDispatch: findSubjectById,
   defineDispatch: define,
   cleanDialogDispatch: cleanDialog,
 };

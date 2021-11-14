@@ -75,15 +75,16 @@ class SchoolPeriodDetailContainer extends Component {
   };
 
   render() {
-    const { schoolPeriod, subjects, teachers } = this.props;
+    const { schoolPeriod, subjects, teachers, match, history } = this.props;
     return (
       <SchoolPeriodDetail
         subjects={subjects}
         teachers={teachers}
         saveSchoolPeriod={this.saveSchoolPeriod}
         goBack={this.goBack}
+        history={history}
         schoolPeriod={schoolPeriod}
-        schoolPeriodId={schoolPeriod.id}
+        schoolPeriodId={match.params.id}
         handleSchoolPeriodDelete={this.handleSchoolPeriodDelete}
       />
     );
