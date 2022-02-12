@@ -132,31 +132,34 @@ export const saveSchoolPeriod = (schoolPeriod) => async (dispatch) => {
     project_duty: schoolPeriod.projectDuty,
     final_work_duty: schoolPeriod.finalWorkDuty,
     subjects: schoolPeriod.subjects
-      ? schoolPeriod.subjects.map((subject) => ({
-          subject_id: subject.subjectId,
-          teacher_id: subject.teacherId,
-          modality: subject.modality,
-          end_date:
-            subject.modality !== SUBJECT_PERIOD_MODALITY.REGULAR && subject.endDate
-              ? subject.endDate
+      ? schoolPeriod.subjects.map((subject) => {
+          return {
+            subject_id: subject.subjectId,
+            teacher_id: subject.teacherId,
+            duty: subject.duty,
+            modality: subject.modality,
+            end_date:
+              subject.modality !== SUBJECT_PERIOD_MODALITY.REGULAR && subject.endDate
+                ? subject.endDate
+                : undefined,
+            start_date:
+              subject.modality !== SUBJECT_PERIOD_MODALITY.REGULAR && subject.startDate
+                ? subject.startDate
+                : undefined,
+            limit: subject.limit,
+            schedules: subject.schedules
+              ? subject.schedules.map((schedule) => ({
+                  day: schedule.day,
+                  start_hour: schedule.startHour,
+                  end_hour: schedule.endHour,
+                  classroom: schedule.classroom,
+                }))
               : undefined,
-          start_date:
-            subject.modality !== SUBJECT_PERIOD_MODALITY.REGULAR && subject.startDate
-              ? subject.startDate
-              : undefined,
-          duty: subject.duty,
-          limit: subject.limit,
-          schedules: subject.schedules
-            ? subject.schedules.map((schedule) => ({
-                day: schedule.day,
-                start_hour: schedule.startHour,
-                end_hour: schedule.endHour,
-                classroom: schedule.classroom,
-              }))
-            : undefined,
-        }))
+          };
+        })
       : undefined,
   };
+  console.log(payload);
   return SchoolPeriod.saveSchoolPeriod(payload)
     .then((res) => {
       show('Periodo semestral guardado', 'success')(dispatch);

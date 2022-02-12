@@ -71,7 +71,9 @@ class SchoolPeriodDetailContainer extends Component {
 
   handleSchoolPeriodDelete = () => {
     const { deleteSchoolPeriodDispatch, history, match } = this.props;
-    deleteSchoolPeriodDispatch(match.params.id).then(() => history.push('/periodo-semestral'));
+    deleteSchoolPeriodDispatch(match.params.id).then(() =>
+      history.push('/periodo-semestral/periodos')
+    );
   };
 
   render() {

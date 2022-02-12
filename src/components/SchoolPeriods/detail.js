@@ -174,9 +174,11 @@ class SchoolPeriodDetail extends Component {
                       label: 'Profesor',
                       options: teachers.map((teacher) => {
                         return {
-                          key: `${teacher.first_name} ${teacher.second_name ? teacher.second_name : ''
-                            } ${teacher.first_surname} ${teacher.second_surname ? teacher.second_surname : ''
-                            }`,
+                          key: `${teacher.first_name} ${
+                            teacher.second_name ? teacher.second_name : ''
+                          } ${teacher.first_surname} ${
+                            teacher.second_surname ? teacher.second_surname : ''
+                          }`,
                           value: teacher.teacher.id,
                         };
                       }),
@@ -364,14 +366,14 @@ class SchoolPeriodDetail extends Component {
                         type: 'date',
                       },
                       {
-                        label: 'Aranceles para el proyecto',
+                        label: 'Aranceles para el proyecto ($)',
                         field: `projectDuty`,
                         id: `projectDuty`,
                         type: 'number',
                         min: 0,
                       },
                       {
-                        label: 'Aranceles para el trabajo final',
+                        label: 'Aranceles para el trabajo final ($)',
                         field: `finalWorkDuty`,
                         id: `finalWorkDuty`,
                         type: 'number',
@@ -626,31 +628,31 @@ SchoolPeriodDetailWrapper = connect(
         : 0,
       subjects: state.schoolPeriodReducer.selectedSchoolPeriod.subjects
         ? state.schoolPeriodReducer.selectedSchoolPeriod.subjects.map((subj) => ({
-          id: subj.id,
-          subjectId: subj.subject_id,
-          teacherId: subj.teacher_id,
-          modality: subj.modality,
-          startDate: subj.start_date,
-          endDate: subj.end_date,
-          limit: subj.limit,
-          duty: subj.duty,
-          schedules: subj.schedules
-            ? subj.schedules.map((sche) => ({
-              schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
-              day: sche.day,
-              startHour: sche.start_hour,
-              endHour: sche.end_hour,
-              classroom: sche.classroom,
-            }))
-            : [{}],
-        }))
+            id: subj.id,
+            subjectId: subj.subject_id,
+            teacherId: subj.teacher_id,
+            modality: subj.modality,
+            startDate: subj.start_date,
+            endDate: subj.end_date,
+            limit: subj.limit,
+            duty: subj.duty,
+            schedules: subj.schedules
+              ? subj.schedules.map((sche) => ({
+                  schoolPeriodSubjectTeacherId: sche.school_period_subject_teacher_id,
+                  day: sche.day,
+                  startHour: sche.start_hour,
+                  endHour: sche.end_hour,
+                  classroom: sche.classroom,
+                }))
+              : [{}],
+          }))
         : [
-          {
-            schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
-            startDate: moment().format('YYYY-MM-DD'),
-            endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
-          },
-        ],
+            {
+              schedules: [{ endHour: '00:00:00', startHour: '00:00:00' }],
+              startDate: moment().format('YYYY-MM-DD'),
+              endDate: moment().add(1, 'days').format('YYYY-MM-DD'),
+            },
+          ],
     },
     action: state.dialogReducer.action,
     startDate: selector(state, 'startDate'),
