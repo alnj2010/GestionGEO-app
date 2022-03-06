@@ -39,6 +39,7 @@ export default function Date({
   disabled,
   maxDateMessage,
   minDateMessage,
+  maxDate,
 }) {
   return (
     <Field
@@ -50,6 +51,7 @@ export default function Date({
       label={label}
       id={id}
       minDate={minDate || undefined}
+      maxDate={maxDate || undefined}
       disabled={disabled}
       maxDateMessage={maxDateMessage}
       minDateMessage={minDateMessage}

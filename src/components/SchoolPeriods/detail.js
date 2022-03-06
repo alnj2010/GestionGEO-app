@@ -347,8 +347,12 @@ class SchoolPeriodDetail extends Component {
                         field: 'endDate',
                         id: 'endDate',
                         type: 'date',
-                        minDateMessage: 'La fecha fin no debe ser anterior a la fecha de inicio',
-                        minDate: moment(startDate).add(1, 'days'),
+                        minDateMessage:
+                          'La fecha fin debe tener al menos 12 semanas desde la fecha de inicio',
+                        minDate: moment(startDate).add(12, 'weeks'),
+                        maxDate: moment(startDate).add(18, 'weeks'),
+                        maxDateMessage:
+                          'La fecha fin debe tener maximo 18 semanas desde la fecha de inicio',
                       },
                       {
                         label: 'Fecha Limite de retiro',
@@ -513,6 +517,11 @@ const schoolPeriodValidation = (values) => {
 
   if (!values.endDate) errors.endDate = '*Fecha fin es requerida';
   else {
+    /*  const diffWeeks = moment(values.endDate).diff(moment(values.startDate), 'weeks');
+    if (diffWeeks < 12 || diffWeeks > 18) {
+      console.log('entro', diffWeeks);
+      errors.endDate = '*Un Periodo semestral debe durar entre 12 y 18 semanas';
+    } */
     if (moment(values.endDate) <= moment(values.startDate))
       errors.endDate = '*Fecha fin no debe estar por debajo de la inicial';
 
