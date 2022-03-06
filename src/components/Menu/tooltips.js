@@ -44,8 +44,9 @@ export const tutorialSteps = {
           <>
             <div className={classes.title}>
               Bienvenido{' '}
-              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${secondSurname || ''
-                }`}
+              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
+                secondSurname || ''
+              }`}
             </div>
             <div className={classes.descriptionContainer}>
               <span className={classes.introduction}>
@@ -223,8 +224,9 @@ export const tutorialSteps = {
           <>
             <div className={classes.title}>
               Bienvenido{' '}
-              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${secondSurname || ''
-                }`}
+              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
+                secondSurname || ''
+              }`}
             </div>
             <div className={classes.descriptionContainer}>
               <span className={classes.introduction}>
@@ -274,7 +276,7 @@ export const tutorialSteps = {
             <div className={classes.descriptionContainer}>
               Luego de haber seleccionado, por medio de <Visibility />, una asignatura de la lista
               en <strong>Asignaturas Impartidas</strong> Ud. accederá a la lista de los estudiantes
-              en donde podrá ver, en la columna <em>Calificación</em>, su estatus, inicialmente
+              en donde podrá ver, en la columna <em>Calificación</em>, su estado, inicialmente
               estará en 'sin calificar', pero cuando el administrador de GestionGeo habilite la
               carga de notas podrá observar la columna <em>Acciones</em> y haciendo click en el
               icono <EditIcon /> podrá cargar la nota del estudiante.
@@ -319,8 +321,9 @@ export const tutorialSteps = {
           <>
             <div className={classes.title}>
               Bienvenido{' '}
-              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${secondSurname || ''
-                }`}
+              {`${levelInstruction}. ${firstName} ${secondName || ''} ${firstSurname} ${
+                secondSurname || ''
+              }`}
             </div>
             <div className={classes.descriptionContainer}>
               <span className={classes.introduction}>

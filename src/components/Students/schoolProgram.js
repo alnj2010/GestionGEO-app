@@ -42,12 +42,8 @@ class StudentSchoolProgram extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      schoolProgramSelected,
-      getSubjectBySchoolProgram,
-      changeDispatch,
-      schoolProgram,
-    } = this.props;
+    const { schoolProgramSelected, getSubjectBySchoolProgram, changeDispatch, schoolProgram } =
+      this.props;
     if (
       nextProps.schoolProgramSelected !== schoolProgramSelected &&
       nextProps.schoolProgramSelected !== ''
@@ -92,8 +88,9 @@ class StudentSchoolProgram extends Component {
             <h3>
               Estudiante: {selectedStudent.first_surname} {selectedStudent.first_name} <br />
               {schoolProgramId
-                ? `Programa académico: ${schoolProgram ? schoolProgram.school_program.school_program_name : ''
-                }`
+                ? `Programa académico: ${
+                    schoolProgram ? schoolProgram.school_program.school_program_name : ''
+                  }`
                 : `Agregar programa académico`}
             </h3>
             <hr />
@@ -166,7 +163,7 @@ class StudentSchoolProgram extends Component {
                       disabled: rol !== 'A',
                     },
                     {
-                      label: 'Profesor Guia',
+                      label: 'Profesor Guía',
                       field: `guideTeacherId`,
                       id: `guideTeacherId`,
                       type: 'select',
@@ -430,11 +427,11 @@ StudentSchoolProgramWrapper = connect(
         : false,
       equivalences:
         state.studentReducer.selectedSchoolProgram &&
-          !!state.studentReducer.selectedSchoolProgram.equivalence
+        !!state.studentReducer.selectedSchoolProgram.equivalence
           ? state.studentReducer.selectedSchoolProgram.equivalence.map((subj) => ({
-            subject_id: subj.subject_id,
-            qualification: subj.qualification,
-          }))
+              subject_id: subj.subject_id,
+              qualification: subj.qualification,
+            }))
           : [],
     },
     action: state.dialogReducer.action,

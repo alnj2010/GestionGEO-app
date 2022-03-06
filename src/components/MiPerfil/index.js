@@ -96,7 +96,7 @@ class MiPerfil extends Component {
                     disabled: rol !== 'A',
                   },
                   {
-                    label: 'cédula',
+                    label: 'Cédula',
                     field: 'identification',
                     id: 'identification',
                     type: 'text',
@@ -218,7 +218,7 @@ MiPerfil.propTypes = {
 const studentValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'cédula es requerida';
+    errors.identification = 'Cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';
@@ -230,7 +230,7 @@ const studentValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'móvil es requerido';
+    errors.mobile = 'Móvil es requerido';
   }
   if (!values.email) {
     errors.email = 'Email es requerido';

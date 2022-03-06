@@ -103,7 +103,7 @@ function Inscription({
                     field: 'financing',
                     id: 'financing',
                     type: 'select',
-                    label: 'financiación',
+                    label: 'Financiación',
                     tooltipText: 'Modalidad en la que se realizara el pago del periodo escolar.',
                     options: jsonToOptions(FINANCING_TYPE),
                   },

@@ -76,7 +76,7 @@ function FinalWorkTable({
             hidden: true,
           },
           {
-            title: 'Codigo',
+            title: 'Código',
             field: 'code',
             editable: 'never',
           },

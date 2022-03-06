@@ -59,7 +59,7 @@ class SubjectsList extends Component {
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
-              { title: 'Codigo', field: 'subjectCode' },
+              { title: 'Código', field: 'subjectCode' },
               { title: 'Nombre', field: 'subjectName' },
               { title: 'Unidades de Crédito', field: 'uc' },
             ]}

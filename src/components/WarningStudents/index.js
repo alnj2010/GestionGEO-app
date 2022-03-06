@@ -67,10 +67,10 @@ function WarningStudents({
         columns={[
           { title: '#User', field: 'idUser', hidden: true, editable: 'never' },
           { title: '#SchoolProgram', field: 'idSchoolProgram', hidden: true, editable: 'never' },
-          { title: 'cédula', field: 'identification', editable: 'never' },
+          { title: 'Cédula', field: 'identification', editable: 'never' },
           { title: 'Nombre', field: 'first_name', editable: 'never' },
-          { title: 'apellido', field: 'first_surname', editable: 'never' },
-          { title: 'estado', field: 'currentStatus', lookup: studenStatus },
+          { title: 'Apellido', field: 'first_surname', editable: 'never' },
+          { title: 'Estado', field: 'currentStatus', lookup: studenStatus },
           { title: '', field: 'second_name', hidden: true, editable: 'never' },
           { title: '', field: 'second_surname', hidden: true, editable: 'never' },
           { title: '', field: 'telephone', hidden: true, editable: 'never' },

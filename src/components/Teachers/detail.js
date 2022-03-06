@@ -86,7 +86,7 @@ class TeacherDetail extends Component {
               </h3>
               {teacherId && (
                 <div className={classes.headerOptions}>
-                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: Cédula del usuario.">
                     <Button
                       variant="outlined"
                       onClick={() =>
@@ -145,7 +145,7 @@ class TeacherDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'cédula',
+                      label: 'Cédula',
                       field: 'identification',
                       id: 'identification',
                       type: 'text',
@@ -244,7 +244,7 @@ class TeacherDetail extends Component {
                   <RenderFields>
                     {[
                       {
-                        label: 'Pais',
+                        label: 'País',
                         field: 'country',
                         id: 'country',
                         type: 'text',
@@ -354,7 +354,7 @@ TeacherDetail.defaultProps = {
 const teacherValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'cédula es requerida';
+    errors.identification = 'Cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';
@@ -366,7 +366,7 @@ const teacherValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'móvil es requerido';
+    errors.mobile = 'Móvil es requerido';
   }
 
   if (!values.email) {

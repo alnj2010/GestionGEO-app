@@ -175,12 +175,12 @@ class SchoolPeriodActual extends Component {
                 { title: '#', field: 'id', hidden: true },
                 { title: '#', field: 'subjectId', hidden: true },
                 { title: '#', field: 'teacherId', hidden: true },
-                { title: 'Codigo', field: 'courseCode' },
+                { title: 'Código', field: 'courseCode' },
                 { title: 'Asignatura', field: 'courseName' },
                 { title: 'Unidades de Crédito', field: 'uc' },
-                { title: 'profesor', field: 'teacherName' },
+                { title: 'Profesor', field: 'teacherName' },
                 { title: 'UC', field: 'uc' },
-                { title: 'limite', field: 'limit' },
+                { title: 'Limite', field: 'limit' },
               ]}
               data={this.transformData(subjects)}
               localization={{

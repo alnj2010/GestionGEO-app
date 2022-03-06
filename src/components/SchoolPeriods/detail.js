@@ -325,7 +325,7 @@ class SchoolPeriodDetail extends Component {
                   <RenderFields>
                     {[
                       {
-                        label: 'Codigo',
+                        label: 'Código',
                         field: 'codSchoolPeriod',
                         id: 'codSchoolPeriod',
                         type: 'text',
@@ -507,7 +507,7 @@ SchoolPeriodDetail.defaultProps = {
 const schoolPeriodValidation = (values) => {
   const errors = {};
   if (!values.codSchoolPeriod) {
-    errors.codSchoolPeriod = '*codigo es requerido';
+    errors.codSchoolPeriod = '*Código es requerido';
   }
   if (!values.startDate) errors.startDate = '*Fecha inicial es requerida';
 

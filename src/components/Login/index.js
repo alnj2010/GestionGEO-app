@@ -91,7 +91,7 @@ let LoginForm = (props) => {
               id: 'identification',
               type: 'text',
               label: 'Cédula',
-              placeholder: 'Ingresa tu cédula',
+              placeholder: 'Ingresa tu Cédula',
             },
             {
               field: 'password',
@@ -208,7 +208,7 @@ LoginForm.defaultProps = {
 const loginValidator = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'cédula es requerida';
+    errors.identification = 'Cédula es requerida';
   }
   if (!values.userType) {
     errors.userType = 'rol es requerido';

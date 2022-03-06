@@ -165,7 +165,7 @@ class SubjectDetail extends Component {
                 <RenderFields>
                   {[
                     {
-                      label: 'Codigo de la asignatura',
+                      label: 'Código de la asignatura',
                       field: 'subjectCode',
                       id: 'subjectCode',
                       type: 'text',
@@ -329,7 +329,7 @@ SubjectDetail.defaultProps = {
 const subjectValidation = (values) => {
   const errors = {};
   if (!values.subjectCode) {
-    errors.subjectCode = 'Codigo de asignatura es requerido';
+    errors.subjectCode = 'Código de asignatura es requerido';
   }
 
   if (!values.subjectName) {
@@ -395,9 +395,9 @@ SubjectDetailWrapper = connect(
         : false,
       schoolPrograms: state.subjectReducer.selectedSubject.school_programs
         ? state.subjectReducer.selectedSubject.school_programs.map((sp) => ({
-          id: sp.id,
-          type: sp.school_program_subject.type,
-        }))
+            id: sp.id,
+            type: sp.school_program_subject.type,
+          }))
         : [{}],
     },
     schoolProgramsSelected: selector(state, 'schoolPrograms'),

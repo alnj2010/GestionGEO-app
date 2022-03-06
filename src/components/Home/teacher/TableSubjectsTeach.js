@@ -38,17 +38,17 @@ class TableSubjectsTeach extends Component {
               : ''
           }
           columns={[
-            { title: 'id', field: 'id', hidden: true },
-            { title: 'Codigo', field: 'code' },
+            { title: 'Id', field: 'id', hidden: true },
+            { title: 'Código', field: 'code' },
             { title: 'Asignatura', field: 'name' },
           ]}
           data={
             Array.isArray(currentSubjects)
               ? currentSubjects.map((subj) => ({
-                id: subj.id,
-                code: subj.subject.code,
-                name: subj.subject.name,
-              }))
+                  id: subj.id,
+                  code: subj.subject.code,
+                  name: subj.subject.name,
+                }))
               : []
           }
           localization={{

@@ -192,7 +192,7 @@ class StudentDetail extends Component {
               </h3>
               {userId && (
                 <div className={classes.headerOptions}>
-                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: Cédula del usuario.">
                     <Button
                       variant="outlined"
                       onClick={() =>
@@ -251,7 +251,7 @@ class StudentDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'cédula',
+                      label: 'Cédula',
                       field: 'identification',
                       id: 'identification',
                       type: 'text',
@@ -360,7 +360,7 @@ class StudentDetail extends Component {
                         'Universidad o instituto del cual proviene el estudiante. Ej. Universidad Central de Venezuela, Universidad Simón Bolívar, Universidad de Carabobo, etc... ',
                     },
                     {
-                      label: 'Profesor Guia',
+                      label: 'Profesor Guía',
                       field: `guideTeacherId`,
                       id: `guideTeacherId`,
                       type: !userId && rol === 'A' ? 'select' : 'hidden',
@@ -568,7 +568,7 @@ class StudentDetail extends Component {
                 columns={[
                   { title: '#', field: 'id', hidden: true },
                   { title: 'Programa académico', field: 'schoolProgram' },
-                  { title: 'Estatus Actual', field: 'current_status' },
+                  { title: 'Estado Actual', field: 'current_status' },
                 ]}
                 data={student.student.map((item) => ({
                   ...item,
@@ -703,7 +703,7 @@ StudentDetail.defaultProps = {
 const studentValidation = (values) => {
   const errors = {};
   if (!values.identification) {
-    errors.identification = 'cédula es requerida';
+    errors.identification = 'Cédula es requerida';
   }
   if (!values.firstName) {
     errors.firstName = 'Nombre es requerido';
@@ -715,7 +715,7 @@ const studentValidation = (values) => {
   } else if (/(?=[0-9])/.test(values.firstSurname))
     errors.firstSurname = 'El Apellido no debe contener numeros';
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'móvil es requerido';
+    errors.mobile = 'Móvil es requerido';
   }
   if (!values.email) {
     errors.email = 'Email es requerido';
@@ -732,7 +732,7 @@ const studentValidation = (values) => {
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (!subj || !subj.qualification) {
-        subjErrors.qualification = '*calificación es requerido';
+        subjErrors.qualification = '*Calificación es requerido';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
     });

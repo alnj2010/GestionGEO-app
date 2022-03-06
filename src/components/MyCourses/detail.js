@@ -68,7 +68,7 @@ function SchoolProgramDetail({
           columns={[
             { title: '#', field: 'id', hidden: true },
             {
-              title: 'cédula',
+              title: 'Cédula',
               field: 'identification',
               editable: 'never',
             },
@@ -76,7 +76,7 @@ function SchoolProgramDetail({
             { title: 'Apellido', field: 'surname', editable: 'never' },
             { title: 'Estado', field: 'status', editable: 'never' },
             {
-              title: 'calificación',
+              title: 'Calificación',
               field: 'qualification',
               type: 'numeric',
               editable: loadNotes ? 'always' : 'never',
@@ -109,8 +109,8 @@ function SchoolProgramDetail({
                         newData.status === SUBJECT_STATE.RETIRADO
                           ? newData.status
                           : newData.qualification < 10
-                            ? reverseJson(SUBJECT_STATE)[SUBJECT_STATE.REPROBADO]
-                            : reverseJson(SUBJECT_STATE)[SUBJECT_STATE.APROBADO],
+                          ? reverseJson(SUBJECT_STATE)[SUBJECT_STATE.REPROBADO]
+                          : reverseJson(SUBJECT_STATE)[SUBJECT_STATE.APROBADO],
                     };
                     setStudentsData([...dataUpdate]);
 

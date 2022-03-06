@@ -83,7 +83,7 @@ class AdminDetail extends Component {
               </h3>
               {adminId && (
                 <div className={classes.headerOptions}>
-                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: cédula del usuario.">
+                  <Tooltip title="Esta acción restablecerá la contraseña de este usuario a su contraseña por defecto: Cédula del usuario.">
                     <Button
                       variant="outlined"
                       onClick={() =>
@@ -142,7 +142,7 @@ class AdminDetail extends Component {
                       type: 'text',
                     },
                     {
-                      label: 'cédula',
+                      label: 'Cédula',
                       field: 'identification',
                       id: 'identification',
                       type: 'text',
@@ -338,7 +338,7 @@ const adminValidation = (values) => {
     errors.firstSurname = 'El Apellido no debe contener numeros';
 
   if (!values.identification) {
-    errors.identification = 'cédula es requerido';
+    errors.identification = 'Cédula es requerido';
   }
 
   if (!values.email) {
@@ -348,7 +348,7 @@ const adminValidation = (values) => {
   }
 
   if (!values.mobile || values.mobile === '(   )    -    ') {
-    errors.mobile = 'móvil es requerido';
+    errors.mobile = 'Móvil es requerido';
   }
   if (!values.nationality) errors.nationality = ' Nacionalidad Requerido';
   if (!values.sex) errors.sex = ' Sexo Requerido';

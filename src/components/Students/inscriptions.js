@@ -74,9 +74,9 @@ class StudentInscriptions extends Component {
         <Grid item xs={12}>
           <MaterialTable
             columns={[
-              { title: 'id', field: 'id', hidden: true },
+              { title: 'Id', field: 'id', hidden: true },
               { title: 'inscriptionId', field: 'inscriptionId', hidden: true },
-              { title: 'Codigo', field: 'code' },
+              { title: 'Código', field: 'code' },
               { title: 'Fecha Inicio', field: 'startDate' },
               { title: 'Fecha fin', field: 'endDate' },
             ]}

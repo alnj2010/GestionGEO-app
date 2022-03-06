@@ -109,7 +109,7 @@ class SchoolProgramDetail extends Component {
                       min: 0,
                     },
                     {
-                      label: 'min. de UC para la TEG',
+                      label: 'Min. de UC para la TEG',
                       field: 'minNumCuFinalWork',
                       id: 'minNumCuFinalWork',
                       type: conduciveToDegreeSelected ? 'number' : 'hidden',
@@ -120,7 +120,7 @@ class SchoolProgramDetail extends Component {
                         'Ingrese la mínima cantidad de Unidades de Crédito necesaria para presentar el Trabajo especial de Grado',
                     },
                     {
-                      label: 'min. de semestres para la TEG',
+                      label: 'Min. de semestres para la TEG',
                       field: 'minDuration',
                       id: 'minDuration',
                       type: conduciveToDegreeSelected ? 'number' : 'hidden',
@@ -129,7 +129,7 @@ class SchoolProgramDetail extends Component {
                         'Ingrese la cantidad mínima de semestres necesarios para presentar el Trabajo especial de Grado',
                     },
                     {
-                      label: 'min. de UC para examen doctoral',
+                      label: 'Min. de UC para examen doctoral',
                       field: 'minCuToDoctoralExam',
                       id: 'minCuToDoctoralExam',
                       type: conduciveToDegreeSelected && doctoralExam ? 'number' : 'hidden',

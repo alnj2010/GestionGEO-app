@@ -59,7 +59,7 @@ class SchoolPeriodsList extends Component {
           <MaterialTable
             columns={[
               { title: '#', field: 'id', hidden: true },
-              { title: 'Codigo', field: 'codSchoolPeriod' },
+              { title: 'Código', field: 'codSchoolPeriod' },
               { title: 'Fecha Inicio', field: 'startDate' },
               { title: 'Fecha Fin', field: 'endDate' },
             ]}

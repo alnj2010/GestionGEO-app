@@ -48,11 +48,11 @@ class SubjectsList extends Component {
             columns={[
               { title: '#', field: 'id', hidden: true },
               { title: '#', field: 'subjectId', hidden: true },
-              { title: 'Codigo', field: 'courseCode' },
+              { title: 'Código', field: 'courseCode' },
               { title: 'Asignatura', field: 'courseName' },
               { title: 'Unidades de Crédito', field: 'uc' },
               { title: 'Cursando', field: 'enrolled' },
-              { title: 'limite', field: 'limit' },
+              { title: 'Limite', field: 'limit' },
             ]}
             data={this.transformData(myCourses)}
             title={

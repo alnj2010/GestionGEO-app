@@ -46,7 +46,7 @@ class TableEnrolledSubjects extends Component {
           title={codSchoolPeriod}
           columns={[
             { title: 'id', field: 'id', hidden: true },
-            { title: 'Codigo', field: 'code' },
+            { title: 'Código', field: 'code' },
             { title: 'Asignatura', field: 'name' },
             { title: 'Profesor', field: 'teacher' },
             { title: 'Calificación', field: 'qualification' },
@@ -55,13 +55,13 @@ class TableEnrolledSubjects extends Component {
           data={
             currentSubjects
               ? currentSubjects.map((subj) => ({
-                id: subj.id,
-                code: subj.data_subject.subject.code,
-                name: subj.data_subject.subject.name,
-                teacher: `${subj.data_subject.teacher.user.first_name} ${subj.data_subject.teacher.user.first_surname}`,
-                qualification: subj.qualification || 'Sin calificar',
-                status: reverseJson(SUBJECT_STATE)[subj.status],
-              }))
+                  id: subj.id,
+                  code: subj.data_subject.subject.code,
+                  name: subj.data_subject.subject.name,
+                  teacher: `${subj.data_subject.teacher.user.first_name} ${subj.data_subject.teacher.user.first_surname}`,
+                  qualification: subj.qualification || 'Sin calificar',
+                  status: reverseJson(SUBJECT_STATE)[subj.status],
+                }))
               : []
           }
           localization={{
@@ -80,14 +80,14 @@ class TableEnrolledSubjects extends Component {
           actions={
             withdrawalDeadline && moment().isBefore(withdrawalDeadline)
               ? [
-                (rowData) => ({
-                  icon: () => <Cancel />,
-                  tooltip: 'Retirar asignatura',
-                  disabled: rowData.status === reverseJson(SUBJECT_STATE)[SUBJECT_STATE.RETIRADO],
-                  onClick: () =>
-                    this.handleDialogShow('retirar', () => handleRetireSubject(rowData.id)),
-                }),
-              ]
+                  (rowData) => ({
+                    icon: () => <Cancel />,
+                    tooltip: 'Retirar asignatura',
+                    disabled: rowData.status === reverseJson(SUBJECT_STATE)[SUBJECT_STATE.RETIRADO],
+                    onClick: () =>
+                      this.handleDialogShow('retirar', () => handleRetireSubject(rowData.id)),
+                  }),
+                ]
               : null
           }
           options={{

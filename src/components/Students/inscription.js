@@ -160,14 +160,14 @@ class StudentInscription extends Component {
             <hr />
           </Grid>
           {idSchoolPeriod ||
-            (currentStatus &&
-              [
-                STUDENT_STATUS.GRADUADO,
-                STUDENT_STATUS['RETIRO TIPO A'],
-                STUDENT_STATUS['RETIRO TIPO B'],
-                STUDENT_STATUS['DESINCORPORADO TIPO A'],
-                STUDENT_STATUS['DESINCORPORADO TIPO B'],
-              ].indexOf(currentStatus) === -1) ? (
+          (currentStatus &&
+            [
+              STUDENT_STATUS.GRADUADO,
+              STUDENT_STATUS['RETIRO TIPO A'],
+              STUDENT_STATUS['RETIRO TIPO B'],
+              STUDENT_STATUS['DESINCORPORADO TIPO A'],
+              STUDENT_STATUS['DESINCORPORADO TIPO B'],
+            ].indexOf(currentStatus) === -1) ? (
             <Grid item xs={12} className={classes.form}>
               <Grid container justify="space-between">
                 <RenderFields>
@@ -296,7 +296,7 @@ class StudentInscription extends Component {
                   <Grid container item xs={12} className={classes.listSubjects}>
                     <Typography variant="h6" gutterBottom>
                       {fws[0].is_final_subject ||
-                        (fws[0].isProject !== undefined && !fws[0].isProject)
+                      (fws[0].isProject !== undefined && !fws[0].isProject)
                         ? 'Trabajo final'
                         : 'Proyecto y seminario'}
                     </Typography>
@@ -305,7 +305,7 @@ class StudentInscription extends Component {
                       nonRepeatOptions={finalWorkSubjects}
                       distributions={
                         fws[0].is_final_subject ||
-                          (fws[0].isProject !== undefined && !fws[0].isProject)
+                        (fws[0].isProject !== undefined && !fws[0].isProject)
                           ? [2, 1, 1, 2, 2, 2, 2]
                           : [3, 1, 3, 3, 2]
                       }
@@ -359,7 +359,7 @@ class StudentInscription extends Component {
                             id: `projectId`,
                             type:
                               fws[0].is_final_subject ||
-                                (fws[0].isProject !== undefined && !fws[0].isProject)
+                              (fws[0].isProject !== undefined && !fws[0].isProject)
                                 ? 'select'
                                 : 'hidden',
                             label: 'Proyecto',
@@ -374,7 +374,7 @@ class StudentInscription extends Component {
                             id: `advisors`,
                             type:
                               fws[0].is_final_subject ||
-                                (fws[0].isProject !== undefined && !fws[0].isProject)
+                              (fws[0].isProject !== undefined && !fws[0].isProject)
                                 ? 'select'
                                 : 'hidden',
                             multiple: true,
@@ -552,7 +552,7 @@ const studentInscriptionValidation = (values) => {
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if ((subj && parseInt(subj.nota, 10) < 0) || parseInt(subj.nota, 10) > 20) {
-        subjErrors.nota = '*nota debe estar entre 0 y 20';
+        subjErrors.nota = '*Nota debe estar entre 0 y 20';
         subjectArrayErrors[subjIndex] = subjErrors;
       }
       if (subjectArrayErrors.length) {
@@ -619,26 +619,26 @@ StudentInscriptionWrapper = connect(
         : 0,
       subjects: state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects
         ? state.studentReducer.selectedStudentSchoolPeriod.enrolled_subjects.map((subject) => ({
-          subjectId: subject.school_period_subject_teacher_id,
-          status: subject.status,
-          nota: subject.qualification,
-        }))
+            subjectId: subject.school_period_subject_teacher_id,
+            status: subject.status,
+            nota: subject.qualification,
+          }))
         : [],
       finalWorks: state.studentReducer.selectedStudentSchoolPeriod.final_work_data
         ? state.studentReducer.selectedStudentSchoolPeriod.final_work_data.map((finalWork) => ({
-          title: finalWork.final_work.title,
-          status: finalWork.status,
-          descriptionStatus: finalWork.description_status,
-          subjectId: finalWork.final_work.subject_id,
-          isProject: finalWork.final_work.is_project,
-          projectId: finalWork.final_work.project_id,
-          approvalDate: finalWork.final_work.approval_date
-            ? finalWork.final_work.approval_date
-            : moment().format('YYYY-MM-DD'),
-          advisors: finalWork.final_work.teachers.length
-            ? finalWork.final_work.teachers[0].id
-            : null,
-        }))
+            title: finalWork.final_work.title,
+            status: finalWork.status,
+            descriptionStatus: finalWork.description_status,
+            subjectId: finalWork.final_work.subject_id,
+            isProject: finalWork.final_work.is_project,
+            projectId: finalWork.final_work.project_id,
+            approvalDate: finalWork.final_work.approval_date
+              ? finalWork.final_work.approval_date
+              : moment().format('YYYY-MM-DD'),
+            advisors: finalWork.final_work.teachers.length
+              ? finalWork.final_work.teachers[0].id
+              : null,
+          }))
         : [],
       doctoralExam: state.studentReducer.selectedStudentSchoolPeriod.doctoral_exam
         ? state.studentReducer.selectedStudentSchoolPeriod.doctoral_exam.status

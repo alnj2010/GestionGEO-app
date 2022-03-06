@@ -68,7 +68,7 @@ class TeachersList extends Component {
               { title: '#', field: 'id', hidden: true },
               { title: 'Nombre', field: 'firstName' },
               { title: 'Apellido', field: 'firstSurname' },
-              { title: 'cédula', field: 'identification' },
+              { title: 'Cédula', field: 'identification' },
               { title: 'Email', field: 'email' },
             ]}
             data={this.transformData(teachers)}
